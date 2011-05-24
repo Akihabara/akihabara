@@ -21,7 +21,6 @@ var help={
 		return null;
 	},
 
-
 	/**
 	* Generates numbers from st to ed, along with a skip value.
 	* @param {Integer} st Starting number.
@@ -90,7 +89,6 @@ var help={
 	random:function(min,range) {
 		return min+Math.floor(Math.random()*range);
 	},
-
 
 	 /**
 	* Determines which frame of a given animation to display. Will loop an animation.
@@ -578,24 +576,22 @@ var help={
 
 
 		if (!data||!data.hardwareonly) {
-			if (help.geturlparameter("touch")=="no");
-				else if ((help.geturlparameter("touch")=="yes")||device.touch)
-					switch (data.padmode) {
-						case "fretboard": {
-							iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});
-							break;
-						}
-						case "none": {
-							break;
-						}
-						default: {
-							iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});
-							break;
-						}
+			if (help.geturlparameter("touch")!="no" && (help.geturlparameter("touch")=="yes"||device.touch)){
+				switch (data.padmode) {
+					case "fretboard": {
+						iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});
+						break;
 					}
+					case "none": {
+						break;
+					}
+					default: {
+						iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});
+						break;
+					}
+				}
+			}
 		}
-
 		return device;
 	}
 }
-
