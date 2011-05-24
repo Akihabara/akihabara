@@ -20,13 +20,13 @@ var iphopad={
 	_brad:(Math.PI*0.25),
 	_positions:[
 		{up:false,down:false,left:false,right:true},
-		{up:false,down:true,left:false,right:true},
-		{up:false,down:true,left:false,right:false},
-		{up:false,down:true,left:true,right:false},
-		{up:false,down:false,left:true,right:false},
-		{up:true,down:false,left:true,right:false},
-		{up:true,down:false,left:false,right:false},
-		{up:true,down:false,left:false,right:true}
+		{up:false,down:true, left:false,right:true},
+		{up:false,down:true, left:false,right:false},
+		{up:false,down:true, left:true, right:false},
+		{up:false,down:false,left:true, right:false},
+		{up:true, down:false,left:true, right:false},
+		{up:true, down:false,left:false,right:false},
+		{up:true, down:false,left:false,right:true}
 	],
 	_swap:false,
 	_listen:function(e) {
@@ -42,7 +42,7 @@ var iphopad={
 					nb.b=true;
 				else if (rp.x>iphopad._width-iphopad._buttonsize3)
 					nb.c=true;
-			
+
 		}
 		this._swap=!this._swap;
 		for (var i in this._cross) {
@@ -55,7 +55,7 @@ var iphopad={
 				if (nb[i]) gbox._keydown({fake:true,keyCode:gbox._keymap[i]});
 				else gbox._keyup({fake:true,keyCode:gbox._keymap[i]});
 		}
-		
+
 		iphopad._cross=nc;
 		iphopad._buttons=nb;
 	},
@@ -69,10 +69,10 @@ var iphopad={
 			]
 		});
 	},
-	
+
 	/**
 	* Initializes the game controls for use with an I-product or Android device.
-	* @param {Object} data passes in information about the screen and its traits such as size. 
+	* @param {Object} data passes in information about the screen and its traits such as size.
 	*/
 	initialize:function(data) {
 		var oElement=document.createElement("div");
@@ -82,7 +82,7 @@ var iphopad={
 		oElement.style.width="100%";
 		oElement.style.backgroundImage="url("+data.bg+")";
 		oElement.style.backgroundRepeat="repeat-x";
-		
+
 		var tpad=document.createElement("div");
 		tpad.style.cssFloat="left";
 		tpad.style.padding="0px";
@@ -100,7 +100,7 @@ var iphopad={
 		bpad.style.width=iphopad._buttonsize3+"px";
 		bpad.style.backgroundImage="url("+data.buttons+")";
 		bpad.style.backgroundRepeat="no-repeat";
-		
+
 		oElement.appendChild(tpad);
 		oElement.appendChild(bpad);
 		gbox._box.appendChild(oElement);
@@ -114,7 +114,6 @@ var iphopad={
 		this._gapy=sizes.y;
 		this._width=sizes.w;
 		this._height=sizes.h;
-		this._center={x:Math.floor(this._height/2),y:Math.floor(this._height/2)};			
+		this._center={x:Math.floor(this._height/2),y:Math.floor(this._height/2)};
 	}
-	
 }

@@ -19,7 +19,7 @@ var iphofretboard={
 		var fret;
 		for (var i=0;i<e.touches.length;i++) {
 			fret=Math.floor((e.touches[i].pageX-iphofretboard._gapx)/iphofretboard._fretw);
-			if (fret<iphofretboard._frets.length)			
+			if (fret<iphofretboard._frets.length)
 				nc[iphofretboard._frets[fret]]=true;
 			else
 				nc[iphofretboard._move[Math.floor((e.touches[i].pageY-iphofretboard._gapy)/iphofretboard._moveh)]]=true;
@@ -30,17 +30,18 @@ var iphofretboard={
 				if (nc[i]) gbox._keydown({fake:true,keyCode:gbox._keymap[i]});
 				else gbox._keyup({fake:true,keyCode:gbox._keymap[i]});
 		}
-		
+
 		iphofretboard._buttons=nc;
 	},
+
 	initialize:function(data) {
 		var oElement=document.createElement("img");
-		oElement.src=data.bg;		
+		oElement.src=data.bg;
 		oElement.style.margin="auto";
 		oElement.style.padding="0px";
 		oElement.style.height=data.h+"px";
 		oElement.style.width="100%";
-		
+
 		gbox._box.appendChild(oElement);
 
 		oElement.ontouchstart=function(evt) { evt.preventDefault();evt.stopPropagation(); iphofretboard._listen(evt) };
@@ -53,5 +54,4 @@ var iphofretboard={
 		this._fretw=sizes.w/(this._frets.length+1);
 		this._moveh=sizes.h/(this._move.length);
 	}
-	
 }

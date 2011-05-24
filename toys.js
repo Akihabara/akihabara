@@ -30,7 +30,6 @@ var toys={
 	* Top-view RPG specific libraries.
 	*/
 	topview:{
-
 		/**
 		* Checks if an object checks that both objects are on the same Z plane and if so it calls gbox.collides.
 		* @param {Object} fr The object which collision is being checked for.
@@ -145,7 +144,7 @@ var toys={
 
 		/**
 		* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using help.copyModel.
-    * This initializes some basic basic variables for the object and sets the Z index.
+		* This initializes some basic basic variables for the object and sets the Z index.
 		* @param {Object} th References 'this' which is the object that called the method (generally).
 		* <ul>
 		* <li>y {Integer}: (required) The object's y position.</li>
@@ -358,7 +357,6 @@ var toys={
 		* </ul>
 		*/
 		tileCollision:function(th,map,tilemap,defaulttile,data) {
-
 			th.touchedup=false;
 			th.toucheddown=false;
 			th.touchedleft=false;
@@ -402,7 +400,6 @@ var toys={
 				th.accx=0;
 				th.x=help.xPixelToTile(map,th.x+th.colx+th.colw-1)-th.colx-th.colw;
 			}
-
 		},
 
 		/**
@@ -424,7 +421,7 @@ var toys={
 		*/
 		spritewallCollision:function(th,data) {
 			var wl;
-			for (var i in gbox._objects[data.group])
+			for (var i in gbox._objects[data.group]){
 				if ((!gbox._objects[data.group][i].initialize)&&toys.topview.collides(th,gbox._objects[data.group][i])) {
 					wl=gbox._objects[data.group][i];
 					if (toys.topview.pixelcollides({x:th.x+th.colx,y:th.y+th.coly+th.colhh},wl)) {
@@ -446,7 +443,7 @@ var toys={
 						th.y=wl.y+wl.coly+wl.colh-th.coly;
 					}
 				}
-
+			}
 		},
 
 		/**
@@ -473,16 +470,10 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		adjustZindex:function(th) {
 			gbox.setZindex(th,th.y+th.h);
 		},
 
-		/**
-		*
-		*/
 		// Helper: returns the ahead pixel (i.e. destination use action)
 		getAheadPixel:function(th,data) {
 			switch (th.facing) {
@@ -505,9 +496,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		// Helper: trigger a method in colliding objects (i.e. "use action")
 		callInColliding:function(th,data) {
 			for (var i in gbox._objects[data.group])
@@ -519,9 +507,6 @@ var toys={
 			return false;
 		},
 
-		/**
-		*
-		*/
 		// Enemy methods
 		wander:function(th,map,tilemap,defaulttile,data) {
 			if ((!th.wandercounter)||(th.toucheddown||th.touchedup||th.touchedleft||th.touchedright)) {
@@ -564,15 +549,9 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		// generators (firebullet specific for topdown - more complex than SHMUP one)
 		fireBullet:function(gr,id,data) {
-
 			var ts=gbox.getTiles(data.tileset);
-
-
 			var obj=gbox.addObject(
 				help.mergeWithModel(
 					data,{
@@ -640,8 +619,8 @@ var toys={
 				}
 				if (!this.bulletIsAlive()) gbox.trashObject(this);
 				else if (this.toucheddown||this.touchedup||this.touchedleft||this.touchedright) this.onWallHit();
-				else if (this.collidegroup!=null)
-					for (var i in gbox._objects[this.collidegroup])
+				else if (this.collidegroup!=null){
+					for (var i in gbox._objects[this.collidegroup]){
 						if ((!gbox._objects[this.collidegroup][i].initialize)&&toys.topview.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
 							if (gbox._objects[this.collidegroup][i]["hitByBullet"]!=null)
 								if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
@@ -649,6 +628,8 @@ var toys={
 									gbox.trashObject(this);
 								}
 						}
+					}
+				}
 			}
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
@@ -662,11 +643,7 @@ var toys={
 
 		},
 
-		/**
-		*
-		*/
 		makedoor:function(gr,id,map,data) {
-
 			var mts=gbox.getTiles(map.tileset);
 			var ts=gbox.getTiles(data.tileset);
 
@@ -774,9 +751,6 @@ var toys={
 	// Shoot'em up specifics
 	shmup:{
 
-		/**
-		*
-		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
 				th,
@@ -801,9 +775,6 @@ var toys={
 			toys.shmup.spawn(th);
 		},
 
-		/**
-		*
-		*/
 		spawn:function(th,data) {
 			th.xpushing=toys.PUSH_NONE; // user is moving side
 			th.vpushing=toys.PUSH_NONE; // user is moving side
@@ -813,19 +784,8 @@ var toys={
 			help.copyModel(th,data);
 		},
 
-		/**
-		*
-		*/
 		getNextX:function(th) { return th.x+help.limit(th.accx,-th.maxacc,th.maxacc); },
-
-		/**
-		*
-		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxacc,th.maxacc); },
-
-		/**
-		*
-		*/
 		controlKeys:function(th,keys) {
 
 			if (gbox.keyIsPressed(keys.left)) {
@@ -848,25 +808,16 @@ var toys={
 			} else th.ypushing=toys.PUSH_NONE;
 		},
 
-		/**
-		*
-		*/
 		applyForces:function(th) {
 			th.x=toys.shmup.getNextX(th);
 			th.y=toys.shmup.getNextY(th);
 		},
 
-		/**
-		*
-		*/
 		handleAccellerations:function(th) {
 			if (!th.xpushing) th.accx=help.goToZero(th.accx);
 			if (!th.ypushing) th.accy=help.goToZero(th.accy);
 		},
 
-		/**
-		*
-		*/
 		keepInBounds:function(th) {
 			if (th.x<th.bounds.x) {
 				th.x=th.bounds.x;
@@ -884,21 +835,13 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		setFrame:function(th) {
 			if (th.hittimer) th.hittimer--;
 			th.frame=help.decideFrame(th.counter,(th.hittimer?th.frames.hit:th.frames.still));
 		},
 
-		/**
-		*
-		*/
 		fireBullet:function(gr,id,data) {
-
 			var ts=gbox.getTiles(data.tileset);
-
 			var obj=gbox.addObject(
 				help.mergeWithModel(
 					data,{
@@ -947,9 +890,6 @@ var toys={
 
 		},
 
-		/**
-		*
-		*/
 		hitByBullet:function(th,by) {
 			if (by.power) {
 				th.health-=by.power;
@@ -957,9 +897,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		generateEnemy:function(gr,id,data,model) {
 			help.mergeWithModel(data,model);
 			var obj=gbox.addObject(
@@ -1122,9 +1059,6 @@ var toys={
 
 		},
 
-		/**
-		*
-		*/
 		generateScroller:function(gr,id,data) {
 			var obj=gbox.addObject(
 				help.mergeWithModel(
@@ -1213,7 +1147,6 @@ var toys={
 					}
 				}
 
-				// Cerca il blocco da mostrare
 				this.trb=this.block;
 				this.tbly=this.bly;
 				do {
@@ -1224,13 +1157,11 @@ var toys={
 				this.block=this.trb-1;
 				this.bly=this.tbly-gbox.getImage(this.stage[this.trb].image).height;
 
-
 				if (this.lget==2) {
 					this.lblock=this.block;
 					this.lbly=this.bly;
 					this.lget=3;
 				}
-
 			}
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
@@ -1253,9 +1184,6 @@ var toys={
 	*/
 	platformer:{
 
-		/**
-		*
-		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
 				th,
@@ -1276,9 +1204,6 @@ var toys={
 			toys.platformer.spawn(th);
 		},
 
-		/**
-		*
-		*/
 		spawn:function(th,data) {
 			th.curjsize=0; // current jump size
 			th.counter=0; // self counter
@@ -1291,27 +1216,15 @@ var toys={
 			help.copyModel(th,data);
 		},
 
-		/**
-		*
-		*/
 		getNextX:function(th) { return th.x+th.accx; },
 
-		/**
-		*
-		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxaccy,th.maxaccy); },
 
-		/**
-		*
-		*/
 		applyGravity:function(th) {
 			th.x=toys.platformer.getNextX(th);
 			th.y=toys.platformer.getNextY(th);
 		},
 
-		/**
-		*
-		*/
 		horizontalKeys:function(th,keys) {
 			if (gbox.keyIsPressed(keys.left)) {
 				th.pushing=toys.PUSH_LEFT;
@@ -1322,9 +1235,6 @@ var toys={
 			} else th.pushing=toys.PUSH_NONE;
 		},
 
-		/**
-		*
-		*/
 		verticalTileCollision:function(th,map,tilemap) {
 			var bottom=help.getTileInMap(th.x+(th.w/2),th.y+th.h,map,0,tilemap);
 			var top=help.getTileInMap(th.x+(th.w/2),th.y,map,0,tilemap);
@@ -1343,9 +1253,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		horizontalTileCollision:function(th,map,tilemap,precision) {
 			var left=0;
 			var right=0;
@@ -1380,9 +1287,6 @@ var toys={
 			return th.touchedfloor;
 		},
 
-		/**
-		*
-		*/
 		jumpKeys:function(th,key) {
 			if ((toys.platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
 				if (key.audiojump) gbox.hitAudio(key.audiojump);
@@ -1397,17 +1301,11 @@ var toys={
 			return false;
 		},
 
-		/**
-		*
-		*/
 		bounce:function(th,data) {
 			th.curjsize=0;
 			th.accy=-data.jumpsize;
 		},
 
-		/**
-		*
-		*/
 		handleAccellerations:function(th) {
 			// Gravity
 			if (!th.touchedfloor) th.accy++;
@@ -1415,16 +1313,10 @@ var toys={
 			if (th.pushing==toys.PUSH_NONE) if (th.accx) th.accx=help.goToZero(th.accx);
 		},
 
-		/**
-		*
-		*/
 		setSide:function(th) {
 			if (th.accx) th.side=th.accx>0;
 		},
 
-		/**
-		*
-		*/
 		setFrame:function(th) {
 			if (th.touchedfloor)
 				if (th.pushing!=toys.PUSH_NONE)
@@ -1437,9 +1329,6 @@ var toys={
 				th.frame=help.decideFrame(th.counter,th.frames.jumping);
 		},
 
-		/**
-		*
-		*/
 		auto:{
 			// Moves on a platform. It tries to do not fall down, if specified.
 			// Args: (object,{moveWhileFalling:<moves while not touching the floor>,speed:<movement speed>})
@@ -1482,45 +1371,22 @@ var toys={
 
 	// Generical toys method
 
-	/**
-	*
-	*/
 	resetToy:function(th,id) { if (th.toys) delete th.toys[id] },
-
-	/**
-	*
-	*/
 	getToyValue:function(th,id,v,def) { return ((th.toys==null)||(th.toys[id]==null)?def:th.toys[id][v]) },
-
-	/**
-	*
-	*/
 	getToyStatus:function(th,id) { return ((th.toys==null)||(th.toys[id]==null)?toys.TOY_BUSY:th.toys[id].__status) },
 
-	/**
-	*
-	*/
 	_toydone:function(th,id) {
 		if (th.toys[id].__status<toys.TOY_IDLE) th.toys[id].__status++;
 		return th.toys[id].__status;
 	},
 
-	/**
-	*
-	*/
 	_toybusy:function(th,id) {
 		th.toys[id].__status=toys.TOY_BUSY;
 		return th.toys[id].__status;
 	},
 
-	/**
-	*
-	*/
 	_toyfrombool:function(th,id,b) { return (b?toys._toydone(th,id):toys._toybusy(th,id)) },
 
-	/**
-	*
-	*/
 	_maketoy:function(th,id){
 		if (!th.toys) th.toys={};
 		if (!th.toys[id]) {
@@ -1535,9 +1401,6 @@ var toys={
 	// Pure timers
 	timer:{
 
-		/**
-		*
-		*/
 		randomly:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].time=help.random(data.base,data.range);
@@ -1551,9 +1414,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		real:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].subtimer=gbox.getFps();
@@ -1579,9 +1439,6 @@ var toys={
 
 		},
 
-		/**
-		*
-		*/
 		every:function(th,id,frames){
 			if (toys._maketoy(th,id)) th.toys[id].timer=0;
 			th.toys[id].timer++;
@@ -1591,9 +1448,6 @@ var toys={
 			} else return toys._toybusy(th,id)
 		},
 
-		/**
-		*
-		*/
 		after:function(th,id,frames) {
 			if (toys._maketoy(th,id)) th.toys[id].timer=0;
 			if (th.toys[id].timer==frames) return toys._toydone(th,id); else {
@@ -1603,15 +1457,8 @@ var toys={
 		}
 	},
 
-	/**
-	*
-	*/
 	// Logical helpers
 	logic: {
-
-		/**
-		*
-		*/
 		once:function(th,id,cond){
 			if (toys._maketoy(th,id)) th.toys[id].done=false;
 			if (th.toys[id].done) return false; else if (cond) th.toys[id].done=true;
@@ -1619,15 +1466,9 @@ var toys={
 		}
 	},
 
-	/**
-	*
-	*/
 	// UI
 	ui:{
 
-		/**
-		*
-		*/
 		menu:function(th,id,opt) {
 			if (toys._maketoy(th,id)||opt.resetmenu) {
 				var fd=gbox.getFont(opt.font);
@@ -1669,9 +1510,6 @@ var toys={
 			} else return toys._toybusy(th,id);
 		},
 
-		/**
-		*
-		*/
 		// Returns a full customizable object for optimized huds
 		hud:function(id) {
 			gbox.createCanvas(id);
@@ -1679,9 +1517,6 @@ var toys={
 				w:{},
 				surfaceid:id,
 
-				/**
-				*
-				*/
 				updateWidget:function(i){
 					if (!this.w[i].__hidden) {
 						if (this.w[i].widget=="label") {
@@ -1738,39 +1573,24 @@ var toys={
 					}
 				},
 
-				/**
-				*
-				*/
 				hideWidgets:function(l) {
 					for (var i=0;i<l.length;i++) this.w[l[i]].__hidden=true;
 					this.redraw();
 				},
 
-				/**
-				*
-				*/
 				showWidgets:function(l) {
 					for (var i=0;i<l.length;i++) this.w[l[i]].__hidden=false;
 					this.redraw();
 				},
 
-				/**
-				*
-				*/
 				getValue:function(w,k) {
 					return this.w[w][k];
 				},
 
-				/**
-				*
-				*/
 				getNumberValue:function(w,k) {
 					return this.w[w][k]*1;
 				},
 
-				/**
-				*
-				*/
 				setValue:function(w,k,v) {
 					if (this.w[w][k]!=v) {
 						if (k=="value") {
@@ -1783,56 +1603,34 @@ var toys={
 					}
 				},
 
-				/**
-				*
-				*/
 				pushValue:function(w,k,v) {
 					this.w[w][k].push(v);
 					this.updateWidget(w);
 				},
 
-				/**
-				*
-				*/
 				addValue:function(w,k,v) {
 					if (v) this.setValue(w,k,this.w[w][k]+v);
 				},
 
-				/**
-				*
-				*/
 				setWidget:function(id,w) {
 					this.w[id]=w;
 					this.updateWidget(id);
 				},
 
-				/**
-				*
-				*/
 				redraw:function() {
 					gbox.blitClear(gbox.getCanvasContext(this.surfaceid));
 					for (var i in this.w) this.updateWidget(i);
 				},
 
-				/**
-				*
-				*/
 				blit:function() {
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas(this.surfaceid),{dx:0,dy:0});
 				}
-
 			}
 		}
 	},
 
-	/**
-	*
-	*/
 	fullscreen:{
 
-		/**
-		*
-		*/
 		fadeout:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
 				th.toys[id].fade=0;
@@ -1852,9 +1650,6 @@ var toys={
 			return toys._toyfrombool(th,id,th.toys[id].fade==1)
 		},
 
-		/**
-		*
-		*/
 		fadein:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
 				th.toys[id].fade=1;
@@ -1873,14 +1668,8 @@ var toys={
 		}
 	},
 
-	/**
-	*
-	*/
 	text:{
 
-		/**
-		*
-		*/
 		blink:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].texttimer=0;
@@ -1897,9 +1686,6 @@ var toys={
 			return toys._toyfrombool(th,id,(data.times?data.times<th.toys[id].times:false));
 		},
 
-		/**
-		*
-		*/
 		fixed:function(th,id,tox,data) {
 			if (toys._maketoy(th,id))
 				th.toys[id].texttimer=0;
@@ -1910,14 +1696,8 @@ var toys={
 		}
 	},
 
-	/**
-	*
-	*/
 	logos:{
 
-		/**
-		*
-		*/
 		linear:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].x=data.sx;
@@ -1952,9 +1732,6 @@ var toys={
 			return toys._toyfrombool(th,id,(data.x==th.toys[id].x)&&(data.y==th.toys[id].y));
 		},
 
-		/**
-		*
-		*/
 		crossed:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].gapx=data.gapx;
@@ -1977,9 +1754,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		zoomout:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].zoom=data.zoom;
@@ -2000,9 +1774,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		rising:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].cnt=0;
@@ -2026,9 +1797,6 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		bounce:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].accy=data.accy;
@@ -2051,14 +1819,8 @@ var toys={
 		}
 	},
 
-	/**
-	*
-	*/
 	dialogue: {
 
-		/**
-		*
-		*/
 		render:function(th,id,data){
 			if (toys._maketoy(th,id)) {
 				th.toys[id].newscene=true;
@@ -2211,13 +1973,10 @@ var toys={
 								}
 							}
 						}
-
 					}
-
 				}
 
 				// RENDERING
-
 
 				if (th.toys[id].scene.talk) { // DIALOGUES
 					if (data.who[th.toys[id].scene.who].box)
@@ -2239,14 +1998,8 @@ var toys={
 	// GENERATORS
 
 
-	/**
-	*
-	*/
 	generate: {
 
-		/**
-		*
-		*/
 		sparks:{
 			simple:function(th,group,id,data) {
 				var ts=gbox.getTiles(data.tileset);
@@ -2296,9 +2049,6 @@ var toys={
 				return obj;
 			},
 
-			/**
-			*
-			*/
 			popupText:function(th,group,id,data) {
 				data.text+="";
 				var fd=gbox.getFont(data.font);
@@ -2348,9 +2098,6 @@ var toys={
 				return obj;
 			},
 
-			/**
-			*
-			*/
 			bounceDie:function(th,group,id,data){
 				var obj=gbox.addObject(
 					help.mergeWithModel(
@@ -2391,14 +2138,8 @@ var toys={
 			}
 		},
 
-		/**
-		*
-		*/
 		audio:{
 
-			/**
-			*
-			*/
 			fadeOut:function(th,group,id,data){
 				var obj=gbox.addObject(
 					help.mergeWithModel(
@@ -2442,9 +2183,6 @@ var toys={
 					}
 				}
 			}
-
 		}
-
 	}
 }
-

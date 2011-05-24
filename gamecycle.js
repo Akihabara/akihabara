@@ -136,9 +136,7 @@ var gamecycle={
 		/**
 		 * Actions done during the game (i.e. stage is clear or other ending conditions)
 		 */
-		gameEvents:function() {
-
-		},
+		gameEvents:function() { },
 
 		gameMenu:function(reset) {
 			if (reset) {
@@ -427,4 +425,3 @@ var gamecycle={
 	});
 	}
 }
-
