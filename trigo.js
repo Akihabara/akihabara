@@ -7,6 +7,7 @@
  * direction or following a round path.
  */
 var trigo={
+
 	ANGLE_RIGHT:0,
 	ANGLE_DOWN:Math.PI*0.5,
 	ANGLE_LEFT:Math.PI,

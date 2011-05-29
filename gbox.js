@@ -3,6 +3,7 @@
 // ---
 
 var dynalist={
+
 	create:function() {
 		return {
 			first:null,
@@ -107,6 +108,7 @@ var dynalist={
 
 // A special circular queue with some features useful for the resource loader
 var cyclelist={
+
 	create:function(size) {
 		return {
 			_head:0,
@@ -154,6 +156,7 @@ var cyclelist={
 
 // A simple circular cache handler
 var cachelist={
+
 	create:function(size) {
 		return {
 			_cache:{},
@@ -188,6 +191,7 @@ var cachelist={
  * audio, double buffering and FSEs. Gamebox can also store and load data from cookies!
  */
 var gbox={
+
 	// CONSTANTS
 	ALIGN_CENTER:0,
 	ALIGN_MIDDLE:0,

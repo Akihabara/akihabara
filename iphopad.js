@@ -6,6 +6,7 @@
  * Iphopad module provides a touchpad for touch-based device (for now, Android and iDevices).
  */
 var iphopad={
+
 	_buttonsize:50,
 	_buttonsize2:100,
 	_buttonsize3:150,
@@ -18,6 +19,7 @@ var iphopad={
 	_buttons:{a:false,b:false,c:false},
 	_transl:(Math.PI*0.125),
 	_brad:(Math.PI*0.25),
+	_swap:false,
 	_positions:[
 		{up:false,down:false,left:false,right:true},
 		{up:false,down:true, left:false,right:true},
@@ -28,7 +30,7 @@ var iphopad={
 		{up:true, down:false,left:false,right:false},
 		{up:true, down:false,left:false,right:true}
 	],
-	_swap:false,
+
 	_listen:function(e) {
 		var nc={up:false,down:false,left:false,right:false};
 		var nb={a:false,b:false,c:false};
@@ -59,6 +61,7 @@ var iphopad={
 		iphopad._cross=nc;
 		iphopad._buttons=nb;
 	},
+
 	_fakelisten:function(e) {
 		iphopad._listen({
 			touches:[
@@ -108,7 +111,6 @@ var iphopad={
 		oElement.ontouchstart=function(evt) { evt.preventDefault();evt.stopPropagation(); iphopad._listen(evt) };
 		oElement.ontouchend=function(evt) { evt.preventDefault();evt.stopPropagation();iphopad._listen(evt) };
 		oElement.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();iphopad._listen(evt) };
-		//oElement.onmousemove=function(evt) { iphopad._fakelisten(evt) };
 		var sizes=gbox._domgetabsposition(oElement);
 		this._gapx=sizes.x;
 		this._gapy=sizes.y;

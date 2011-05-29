@@ -6,6 +6,7 @@
  * Fretboard module provides a touchpad for touch-based device (for now, Android and iDevices).
  */
 var iphofretboard={
+
 	_swap:false,
 	_frets:["a","b","c","left","right"],
 	_move:["up","down"],
