@@ -1980,7 +1980,7 @@ var toys={
 
 				if (th.toys[id].scene.talk) { // DIALOGUES
 					if (data.who[th.toys[id].scene.who].box)
-							gbox.blitRect(gbox.getBufferContext(),data.who[th.toys[id].scene.who].box);
+						gbox.blitRect(gbox.getBufferContext(),data.who[th.toys[id].scene.who].box);
 					if (data.who[th.toys[id].scene.who].tileset) {
 						th.toys[id].anim=(th.toys[id].anim+1)%20;
 						gbox.blitTile(gbox.getBufferContext(),{tileset:data.who[th.toys[id].scene.who].tileset,tile:help.decideFrame(th.toys[id].anim,data.who[th.toys[id].scene.who].frames),dx:data.who[th.toys[id].scene.who].portraitx,dy:data.who[th.toys[id].scene.who].portraity,camera:false,fliph:data.who[th.toys[id].scene.who].fliph,flipv:data.who[th.toys[id].scene.who].flipv});
