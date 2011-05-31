@@ -1871,21 +1871,24 @@ var toys={
 				}
 				if (!th.toys[id].ended) {
 					if (th.toys[id].wait) {
-						if (gbox.keyIsHit(data.esckey)) th.toys[id].ended=true; else
-						if (gbox.keyIsHit(data.skipkey)) th.toys[id].newscene=true;
+						if (gbox.keyIsHit(data.esckey))
+							th.toys[id].ended=true;
+						else if (gbox.keyIsHit(data.skipkey))
+							th.toys[id].newscene=true;
 					} else {
 
 						// SKIP KEYS
 
-						if (gbox.keyIsHit(data.esckey)) th.toys[id].ended=true; else
-						if (gbox.keyIsHold(data.skipkey)) th.toys[id].counter=th.toys[id].scene.speed;
-						else th.toys[id].counter++;
+						if (gbox.keyIsHit(data.esckey))
+							th.toys[id].ended=true;
+						else if (gbox.keyIsHold(data.skipkey))
+							th.toys[id].counter=th.toys[id].scene.speed;
+						else
+							th.toys[id].counter++;
 
 						// MOVING
 
 						if (th.toys[id].scene.talk) { // DIALOGUES
-
-
 							if (th.toys[id].counter==th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter=0;
