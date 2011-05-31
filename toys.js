@@ -191,13 +191,13 @@ var toys={
 				th.facing=toys.FACE_LEFT;
 				if (th.accx>th.responsive) th.accx=th.responsive;
 				if (th.staticspeed) th.accx=-th.staticspeed; else th.accx=help.limit(th.accx-1,-th.controlmaxacc,th.controlmaxacc);
-				if (th.nodiagonals) { cancely=true; idley=true }
+				if (th.nodiagonals) { cancely=true; idley=true; }
 			} else if (gbox.keyIsPressed(keys.right)||keys.pressright) {
 				th.xpushing=toys.PUSH_RIGHT;
 				th.facing=toys.FACE_RIGHT;
 				if (th.accx<-th.responsive) th.accx=-th.responsive;
 				if (th.staticspeed) th.accx=th.staticspeed; else th.accx=help.limit(th.accx+1,-th.controlmaxacc,th.controlmaxacc);
-				if (th.nodiagonals) { cancely=true; idley=true }
+				if (th.nodiagonals) { cancely=true; idley=true; }
 			} else idlex=true;
 
 			if (!cancely&&(gbox.keyIsPressed(keys.up)||keys.pressup)) {
@@ -477,22 +477,14 @@ var toys={
 		// Helper: returns the ahead pixel (i.e. destination use action)
 		getAheadPixel:function(th,data) {
 			switch (th.facing) {
-				case toys.FACE_RIGHT:{
+				case toys.FACE_RIGHT:
 					return {x:th.x+th.colx+th.colw+data.distance,y:th.y+th.coly+th.colhh};
-					break;
-				}
-				case toys.FACE_LEFT:{
+				case toys.FACE_LEFT:
 					return {x:th.x+th.colx-data.distance,y:th.y+th.coly+th.colhh};
-					break;
-				}
-				case toys.FACE_UP:{
+				case toys.FACE_UP:
 					return {x:th.x+th.colx+th.colhw,y:th.y+th.coly-data.distance};
-					break;
-				}
-				case toys.FACE_DOWN:{
+				case toys.FACE_DOWN:
 					return {x:th.x+th.colx+th.colhw,y:th.y+th.coly+th.colh+data.distance};
-					break;
-				}
 			}
 		},
 
@@ -514,38 +506,34 @@ var toys={
 				th.wanderdirection=help.random(0,4);
 			} else th.wandercounter--;
 			switch (th.wanderdirection) {
-				case toys.FACE_LEFT: {
+				case toys.FACE_LEFT:
 					th.xpushing=toys.PUSH_LEFT;
 					th.ypushing=toys.PUSH_NONE;
 					th.facing=toys.FACE_LEFT;
 					th.accx=-data.speed;
 					th.accy=0;
 					break;
-				}
-				case toys.FACE_RIGHT: {
+				case toys.FACE_RIGHT:
 					th.xpushing=toys.PUSH_RIGHT;
 					th.ypushing=toys.PUSH_NONE;
 					th.facing=toys.FACE_RIGHT;
 					th.accx=data.speed;
 					th.accy=0;
 					break;
-				}
-				case toys.FACE_UP: {
+				case toys.FACE_UP:
 					th.ypushing=toys.PUSH_UP;
 					th.xpushing=toys.PUSH_NONE;
 					th.facing=toys.FACE_UP;
 					th.accy=-data.speed;
 					th.accx=0;
 					break;
-				}
-				case toys.FACE_DOWN: {
+				case toys.FACE_DOWN:
 					th.ypushing=toys.PUSH_DOWN;
 					th.xpushing=toys.PUSH_NONE;
 					th.facing=toys.FACE_DOWN;
 					th.accy=data.speed;
 					th.accx=0;
 					break;
-				}
 			}
 		},
 
@@ -580,7 +568,6 @@ var toys={
 						defaulttile:0,
 						applyzgravity:false,
 						map:null,
-						defaulttile:0,
 						mapindex:"",
 						spritewalls:null,
 						colx:(data.fullhit?0:null),
@@ -622,7 +609,7 @@ var toys={
 				else if (this.collidegroup!=null){
 					for (var i in gbox._objects[this.collidegroup]){
 						if ((!gbox._objects[this.collidegroup][i].initialize)&&toys.topview.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
-							if (gbox._objects[this.collidegroup][i]["hitByBullet"]!=null)
+							if (gbox._objects[this.collidegroup][i].hitByBullet!=null)
 								if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
 									this.spark(this);
 									gbox.trashObject(this);
@@ -630,12 +617,12 @@ var toys={
 						}
 					}
 				}
-			}
+			};
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				if (!gbox.objectIsTrash(this))
 					gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
-			}
+			};
 
 			gbox.setZindex(obj,obj.y+obj.h);
 
@@ -671,7 +658,6 @@ var toys={
 						opening:false,
 						doorheight:ts.tileh,
 						opencounter:0,
-						opening:false,
 						closing:false,
 						audiobefore:null,
 						audioafter:null,
@@ -725,12 +711,12 @@ var toys={
 						if (!this.whenOpened()) gbox.trashObject(this);
 					}
 				}
-			}
+			};
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				if (!gbox.objectIsTrash(this))
 					gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y+this.z+this.opencounter,h:this.h-this.opencounter,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
-			}
+			};
 
 			gbox.setZindex(obj,obj.y+obj.h);
 
@@ -874,17 +860,17 @@ var toys={
 				else if (this.collidegroup!=null)
 					for (var i in gbox._objects[this.collidegroup])
 						if ((!gbox._objects[this.collidegroup][i].initialize)&&gbox.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
-							if (gbox._objects[this.collidegroup][i]["hitByBullet"]!=null)
+							if (gbox._objects[this.collidegroup][i].hitByBullet!=null)
 								if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
 									this.spark(this);
 									gbox.trashObject(this);
 								}
 						}
-			}
+			};
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
-			}
+			};
 
 			return obj;
 
@@ -970,7 +956,7 @@ var toys={
 						if (this.script[this.scriptline]==null)
 							this.ended=true;
 						else {
-							if (this.script[this.scriptline]["goto"]!=null) this.scriptline=this.script[this.scriptline]["goto"];
+							if (this.script[this.scriptline].goto!=null) this.scriptline=this.script[this.scriptline].goto;
 							this.line=this.script[this.scriptline];
 							if (this.line.afterframes!=null)
 								this.waitframes=this.line.afterframes;
@@ -988,9 +974,8 @@ var toys={
 									once:(this.line.doit.once=="keep"?this.dohandler.once:this.line.doit.once),
 									action:(this.line.doit.action=="keep"?this.dohandler.action:this.line.doit.action),
 									render:(this.line.doit.render=="keep"?this.dohandler.render:this.line.doit.render)
-								}
+								};
 							}
-
 						}
 					}
 					if (!this.waitframes&&this.doframes&&!this.ended) {
@@ -1048,12 +1033,12 @@ var toys={
 				this.y+=this.accy;
 				this.cnt=(this.cnt+1)%10;
 
-			}
+			};
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames[this.animationset]),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
 				if (this.dohandler&&(this.dohandler.render!=null)) this.dohandler.render(this);
-			}
+			};
 
 			return obj;
 
@@ -1162,7 +1147,7 @@ var toys={
 					this.lbly=this.bly;
 					this.lget=3;
 				}
-			}
+			};
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				var dy=this.tbly-this.y;
@@ -1173,7 +1158,7 @@ var toys={
 					this.trb++;
 					dy+=gbox.getImage(this.stage[this.trb].image).height;
 				} while (!done);
-			}
+			};
 
 			return obj;
 		}
@@ -1371,9 +1356,9 @@ var toys={
 
 	// Generical toys method
 
-	resetToy:function(th,id) { if (th.toys) delete th.toys[id] },
-	getToyValue:function(th,id,v,def) { return ((th.toys==null)||(th.toys[id]==null)?def:th.toys[id][v]) },
-	getToyStatus:function(th,id) { return ((th.toys==null)||(th.toys[id]==null)?toys.TOY_BUSY:th.toys[id].__status) },
+	resetToy:function(th,id) { if (th.toys) delete th.toys[id]; },
+	getToyValue:function(th,id,v,def) { return ((th.toys==null)||(th.toys[id]==null)?def:th.toys[id][v]); },
+	getToyStatus:function(th,id) { return ((th.toys==null)||(th.toys[id]==null)?toys.TOY_BUSY:th.toys[id].__status); },
 
 	_toydone:function(th,id) {
 		if (th.toys[id].__status<toys.TOY_IDLE) th.toys[id].__status++;
@@ -1385,7 +1370,7 @@ var toys={
 		return th.toys[id].__status;
 	},
 
-	_toyfrombool:function(th,id,b) { return (b?toys._toydone(th,id):toys._toybusy(th,id)) },
+	_toyfrombool:function(th,id,b) { return (b?toys._toydone(th,id):toys._toybusy(th,id)); },
 
 	_maketoy:function(th,id){
 		if (!th.toys) th.toys={};
@@ -1445,7 +1430,7 @@ var toys={
 			if (th.toys[id].timer==frames) {
 				th.toys[id].timer=0;
 				return toys._toydone(th,id);
-			} else return toys._toybusy(th,id)
+			} else return toys._toybusy(th,id);
 		},
 
 		after:function(th,id,frames) {
@@ -1474,11 +1459,11 @@ var toys={
 				var fd=gbox.getFont(opt.font);
 				th.toys[id].selected=(opt.selected?opt.selected:0);
 				th.toys[id].ok=0;
-				var w=0;
-				for (var i=0;i<opt.items.length;i++)
+				var w=0, i;
+				for (i=0;i<opt.items.length;i++)
 					if (opt.items[i].length>w) w=opt.items[i].length;
 				gbox.createCanvas("menu-"+id,{w:w*fd.tilew,h:opt.items.length*fd.tileh});
-				for (var i=0;i<opt.items.length;i++)
+				for (i=0;i<opt.items.length;i++)
 					gbox.blitText(gbox.getCanvasContext("menu-"+id),{font:opt.font,text:opt.items[i],dx:0,dy:fd.tileh*i});
 				th.toys[id].fh=fd.tileh;
 				th.toys[id].fw=fd.tilew;
@@ -1519,6 +1504,8 @@ var toys={
 
 				updateWidget:function(i){
 					if (!this.w[i].__hidden) {
+						var ts;
+
 						if (this.w[i].widget=="label") {
 							if (this.w[i].prepad!=null) this.w[i].text=help.prepad(this.w[i].value,this.w[i].prepad,this.w[i].padwith); else
 							if (this.w[i].postpad!=null) this.w[i].text=help.postpad(this.w[i].value,this.w[i].postpad,this.w[i].padwith); else
@@ -1526,7 +1513,7 @@ var toys={
 							gbox.blitText(gbox.getCanvasContext(this.surfaceid),this.w[i]);
 						}
 						if (this.w[i].widget=="symbols") {
-							var ts=gbox.getTiles(this.w[i].tileset);
+							ts=gbox.getTiles(this.w[i].tileset);
 							gbox.blitClear(gbox.getCanvasContext(this.surfaceid),{x:this.w[i].dx,y:this.w[i].dy,w:((this.w[i].maxshown-1)*this.w[i].gapx)+ts.tilew,h:((this.w[i].maxshown-1)*this.w[i].gapy)+ts.tileh});
 							var cnt=this.w[i].value;
 							for (var x=0;x<this.w[i].maxshown;x++) {
@@ -1540,7 +1527,7 @@ var toys={
 
 						}
 						if (this.w[i].widget=="stack") {
-							var ts=gbox.getTiles(this.w[i].tileset);
+							ts=gbox.getTiles(this.w[i].tileset);
 							var bw=((this.w[i].maxshown-1)*this.w[i].gapx)+ts.tilew;
 							gbox.blitClear(gbox.getCanvasContext(this.surfaceid),{x:this.w[i].dx-(this.w[i].rightalign?bw:0),y:this.w[i].dy,w:bw,h:((this.w[i].maxshown-1)*this.w[i].gapy)+ts.tileh});
 							for (var x=0;x<this.w[i].maxshown;x++)
@@ -1548,25 +1535,25 @@ var toys={
 									gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].value[x],dx:(this.w[i].rightalign?this.w[i].dx-ts.tileh-(this.w[i].gapx*x):this.w[i].dx+(x*this.w[i].gapx)),dy:this.w[i].dy+(x*this.w[i].gapy),fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 						}
 						if (this.w[i].widget=="radio") {
-							var ts=gbox.getTiles(this.w[i].tileset);
+							ts=gbox.getTiles(this.w[i].tileset);
 							gbox.blitClear(gbox.getCanvasContext(this.surfaceid),{x:this.w[i].dx,y:this.w[i].dy,w:ts.tilew,h:ts.tileh});
 							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].frames[this.w[i].value],dx:this.w[i].dx,dy:this.w[i].dy,fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 
 						}
 						if (this.w[i].widget=="blit") {
-							var ts=gbox.getTiles(this.w[i].tileset);
+							ts=gbox.getTiles(this.w[i].tileset);
 							gbox.blitClear(gbox.getCanvasContext(this.surfaceid),{x:this.w[i].dx,y:this.w[i].dy,w:ts.tilew,h:ts.tileh});
 							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].value,dx:this.w[i].dx,dy:this.w[i].dy,fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 
 						}
 						if (this.w[i].widget=="bool") {
-							var ts=gbox.getTiles(this.w[i].tileset);
+							ts=gbox.getTiles(this.w[i].tileset);
 							gbox.blitClear(gbox.getCanvasContext(this.surfaceid),{x:this.w[i].dx,y:this.w[i].dy,w:ts.tilew,h:ts.tileh});
 							if (this.w[i].value)
 								gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].frame,dx:this.w[i].dx,dy:this.w[i].dy,fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 						}
 						if (this.w[i].widget=="gauge") {
-							var ts=gbox.getTiles(this.w[i].tileset);
+							ts=gbox.getTiles(this.w[i].tileset);
 							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:0,dx:this.w[i].dx,dy:this.w[i].dy});
 							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:1,dx:this.w[i].dx,dy:this.w[i].dy,w:(this.w[i].value*ts.tilew)/this.w[i].maxvalue});
 						}
@@ -1625,7 +1612,7 @@ var toys={
 				blit:function() {
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas(this.surfaceid),{dx:0,dy:0});
 				}
-			}
+			};
 		}
 	},
 
@@ -1647,7 +1634,7 @@ var toys={
 					gbox.stopChannel(data.audiochannelfade);
 				else
 					gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
-			return toys._toyfrombool(th,id,th.toys[id].fade==1)
+			return toys._toyfrombool(th,id,th.toys[id].fade==1);
 		},
 
 		fadein:function(th,id,tox,data) {
@@ -2042,12 +2029,12 @@ var toys={
 						if (this.gravity) this.accy++;
 						if ((this.timer==this.toptimer)||(this.trashoffscreen&&(!gbox.objectIsVisible(this)))) gbox.trashObject(this);
 					}
-				}
+				};
 
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if ((this.timer>=0)&&(!this.blinkspeed||(Math.floor(this.timer/this.blinkspeed)%2)))
 						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.timer,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.fliph,flipv:this.flipv,alpha:this.alpha});
-				}
+				};
 
 				return obj;
 			},
@@ -2077,11 +2064,11 @@ var toys={
 					var fd=gbox.getFont(this.font);
 					gbox.createCanvas("poptext-"+this.id,{w:this.text.length*fd.tilew,h:fd.tileh});
 					gbox.blitText(gbox.getCanvasContext("poptext-"+this.id),{font:this.font,text:this.text,dx:0,dy:0});
-				}
+				};
 
 				obj.onpurge=function() {
 					gbox.deleteCanvas("poptext-"+this.id);
-				}
+				};
 
 				obj[(data.logicon==null?"first":data.logicon)]=function() {
 					if (gbox.objectIsVisible(this)) {
@@ -2092,11 +2079,11 @@ var toys={
 						this.y+=this.vaccy;
 						if (this.cnt>=this.keep) gbox.trashObject(this);
 					} else gbox.trashObject(this);
-				}
+				};
 
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas("poptext-"+this.id),{dx:this.x,dy:this.y,camera:this.camera});
-				}
+				};
 
 				return obj;
 			},
@@ -2130,12 +2117,12 @@ var toys={
 						this.x+=this.accx;
 						this.cnt++;
 					} else gbox.trashObject(this);
-				}
+				};
 
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if (!this.blinkspeed||(Math.floor(this.cnt/this.blinkspeed)%2))
 						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
-				}
+				};
 
 				return obj;
 			}
@@ -2165,7 +2152,7 @@ var toys={
 						else
 							if (this.fadespeed>0) this.destination=gbox.getChannelDefaultVolume(this.channel); else this.destination=0;
 					if (this.fadespeed>0) gbox.playAudio(this.audio);
-				}
+				};
 
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if (this.audio) gbox.changeAudioVolume(this.audio,this.fadespeed);
@@ -2184,8 +2171,8 @@ var toys={
 						if (this.audio&&this.stoponmute&&(this.fadespeed<0)) gbox.stopAudio(this.audio);
 						gbox.trashObject(this);
 					}
-				}
+				};
 			}
 		}
 	}
-}
+};
