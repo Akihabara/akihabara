@@ -102,9 +102,9 @@ var dynalist={
 				this.gar.push(this.data[obd].__id);
 				delete this.data[this.data[obd].__id];
 			}
-		}
+		};
 	}
-}
+};
 
 // A special circular queue with some features useful for the resource loader
 var cyclelist={
@@ -118,13 +118,13 @@ var cyclelist={
 			_total:0,
 			_done:0,
 			_current:null,
-			getTotal:function(){return this._total}, // Number of elements to be "poped"
-			getDone:function(){return this._done}, // Number of popped elements since the last empty
-			getSize:function(){return this._size}, // The maximum number of elements in the queue
-			isProcessing:function(){return this._current!=null}, // The last pop was not a null (i.e. the queue returned a valid object)
-			isEnded:function(){return (this._head==this._tail)}, // There are other elements in the queue
-			isBusy:function(){return this.isProcessing()||!this.isEnded()}, // There are elements in the queue/the last one pop returned an object that is being processed
-			getCurrent:function(){return this._current}, // Return the last popped element
+			getTotal:function(){return this._total; }, // Number of elements to be "poped"
+			getDone:function(){return this._done; }, // Number of popped elements since the last empty
+			getSize:function(){return this._size; }, // The maximum number of elements in the queue
+			isProcessing:function(){return this._current!=null; }, // The last pop was not a null (i.e. the queue returned a valid object)
+			isEnded:function(){return(this._head==this._tail); }, // There are other elements in the queue
+			isBusy:function(){return(this.isProcessing()||!this.isEnded()); }, // There are elements in the queue/the last one pop returned an object that is being processed
+			getCurrent:function(){return this._current; }, // Return the last popped element
 			push:function(d) {
 				this._data[this._head]=d;
 				this._head=(this._head+1)%this._size;
@@ -150,9 +150,9 @@ var cyclelist={
 				r+="\n\n"+this._done+"/"+this._total;
 				return r;
 			}
-		}
+		};
 	}
-}
+};
 
 // A simple circular cache handler
 var cachelist={
@@ -180,9 +180,9 @@ var cachelist={
 				this._queue=[];
 				this._head=0;
 			}
-		}
+		};
 	}
-}
+};
 
 /**
  * @namespace
@@ -284,7 +284,7 @@ var gbox={
 	},
 	_minimalexpired:0, // 0: not triggered, 1: triggered, 2: done
 	setCanLog:function(c) { this._canlog=c&&window.console; },
-	canLog:function() { return this._canlog},
+	canLog:function() { return this._canlog; },
 	log:function() {}, // Overridden if console is really available
 	_safedrawimage:function(tox,img,sx,sy,sw,sh,dx,dy,dw,dh) {
 		if (!img||!tox) return;
@@ -350,21 +350,21 @@ var gbox={
 	* Sets the gbox._forcedidle property.
 	* @param {Boolean} f The value to write to gbox._forcedidle.
 	*/
-	setForcedIdle:function(f) { this._forcedidle=f},
+	setForcedIdle:function(f) { this._forcedidle=f; },
 
 	/**
 	* Returns a gbox flag at index f.
 	* @param {Object} f The index of the flag you want returned.
 	*/
-	getFlag:function(f) { return this._flags[f] },
+	getFlag:function(f) { return this._flags[f]; },
 
 	/**
 	* Sets the gbox._statbar property. Only useful if called before gbox.initScreen. Debugging funtionality.
 	* Much easier to access if you add '?statusbar=1' to your URL.
 	* @param {Boolean} f The value to write to gbox._statbar.
 	*/
-	setStatusBar:function(a) { this._statbar=a },
-	setScreenBorder:function(a) { this._border=a},
+	setStatusBar:function(a) { this._statbar=a; },
+	setScreenBorder:function(a) { this._border=a; },
 
 	/**
 	* Initializes the screen to a certain width and height, applies zoom attributes, populates the
@@ -439,7 +439,7 @@ var gbox={
 		gbox.setCanAudio(true); // Tries to enable audio by default
 
 		switch (gbox._flags.fse) { // Initialize FSEs
-			case "scanlines": {
+			case "scanlines":
 				gbox.createCanvas("-gbox-fse",{w:w,h:h});
 				gbox.getCanvasContext("-gbox-fse").save();
 				gbox.getCanvasContext("-gbox-fse").globalAlpha=0.2;
@@ -449,13 +449,11 @@ var gbox={
 				gbox.getCanvasContext("-gbox-fse").restore();
 				gbox._localflags.fse=true;
 				break;
-			}
-			case "lcd":{
+			case "lcd":
 				gbox.createCanvas("-gbox-fse-old",{w:w,h:h});
 				gbox.createCanvas("-gbox-fse-new",{w:w,h:h});
 				gbox._localflags.fse=true;
 				break;
-			}
 		}
 	},
 
@@ -463,13 +461,13 @@ var gbox={
 	* Sets the gbox._db property. Turns on an off double buffering.
 	* @param {Boolean} db The value to write to gbox._db. True enables double buffering, false disables.
 	*/
-	setDoubleBuffering:function(db){this._db=db},
+	setDoubleBuffering:function(db){this._db=db; },
 
 	/**
 	* Writes text to the status bar, but only if the status bar is enabled.
 	* @param {String} txt The text to write to the status bar.
 	*/
-	setStatBar:function(txt){ if (gbox._statbar) this._statbar.innerHTML=(txt?txt:"&nbsp")},
+	setStatBar:function(txt){ if (gbox._statbar) this._statbar.innerHTML=(txt?txt:"&nbsp"); },
 
 	/**
 	* Set the frames per second rate.
@@ -477,46 +475,46 @@ var gbox={
 	*/
 	setFps:function(f){
 		this._fps=f;
-		this._mspf=Math.floor(1000/f)
+		this._mspf=Math.floor(1000/f);
 	},
 
 	/**
 	* Get the frames per second rate (default is 25).
 	* @returns {Integer} Returns the frames per second.
 	*/
-	getFps:function() { return this._fps },
-	setAutoskip:function(f){this._autoskip=f},
-	setFrameskip:function(f){this._frameskip=f},
+	getFps:function() { return this._fps; },
+	setAutoskip:function(f){this._autoskip=f; },
+	setFrameskip:function(f){this._frameskip=f; },
 
 	/**
 	* Get the screen height.
 	* @returns {Integer} Screen height in pixels.
 	*/
-	getScreenH:function(){return this._screenh},
+	getScreenH:function(){return this._screenh; },
 
 	/**
 	* Get the screen width.
 	* @returns {Integer} Screen width in pixels.
 	*/
-	getScreenW:function(){return this._screenw},
+	getScreenW:function(){return this._screenw; },
 
 	/**
 	* Get the screen half-height.
 	* @returns {Integer} Screen half-height in pixels.
 	*/
-	getScreenHH:function(){return this._screenhh},
+	getScreenHH:function(){return this._screenhh; },
 
 	/**
 	* Get the screen half-width.
 	* @returns {Integer} Screen half-width in pixels.
 	*/
-	getScreenHW:function(){return this._screenhw},
+	getScreenHW:function(){return this._screenhw; },
 
 	/**
 	* Sets the gbox._zoom parameter, only works before gbox.initScreen is called.
 	* @param {Integer} z Zoom factor.
 	*/
-	setZoom:function(z) { this._zoom=z},
+	setZoom:function(z) { this._zoom=z; },
 
 	/**
 	* Deprecated: gbox._cb is now set by passing it directly into gbox.loadAll(). Left in for backwards compatibility.
@@ -546,11 +544,10 @@ var gbox={
 	*/
 	_applyfse:function(){
 		switch (gbox._flags.fse) {
-			case "scanlines": {
+			case "scanlines":
 				gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"),0,0);
 				break;
-			}
-			case "lcd":{
+			case "lcd":
 				if (gbox._localflags.fselcdget&&gbox.getBuffer())
 					gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(),0,0);
 				gbox.getBufferContext().save();
@@ -561,7 +558,6 @@ var gbox={
 					gbox.swapCanvas("-gbox-fse-new","-gbox-fse-old");
 				gbox._localflags.fselcdget=!gbox._localflags.fselcdget;
 				break;
-			}
 		}
 	},
 
@@ -651,16 +647,16 @@ var gbox={
 	*/
 	debugGetstats:function() {
 		var statline="Idle: "+gbox._framestart+"/"+gbox._mspf+(gbox._frameskip>0?" ("+gbox._frameskip+"skip)":"")+" | ";
-		var cnt=0;
-		for (var g=0;g<gbox._groups.length;g++)
+		var cnt=0, g=0;
+		for (g=0;g<gbox._groups.length;g++)
 			if (gbox._groupplay[gbox._groups[g]]) {
 				cnt=0;
 				for (var obj in gbox._objects[gbox._groups[g]]) cnt++;
 				if (cnt) statline+=gbox._groups[g]+"["+cnt+"] ";
 			}
-		var cnt=0;
+		cnt=0;
 		var ply=0;
-		for (var g in gbox._audio.aud)
+		for (g in gbox._audio.aud)
 			for (var x=0;x<gbox._audio.aud[g].length;x++) {
 				cnt++;
 				if (!gbox._audio.aud[g][x].paused&&!gbox._audio.aud[g][x].ended) ply++;
@@ -689,14 +685,14 @@ var gbox={
 	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
 	* @returns {Boolean} True if the given key is transitioning from unpressed to pressed in this frame.
 	*/
-	keyIsHit:function(id) { return this._keyboard[this._keymap[id]]==1},
+	keyIsHit:function(id) { return this._keyboard[this._keymap[id]]==1; },
 
 	/**
 	* Returns true if a given key in this._keymap is being held down. Returns true as long as the key is held down.
 	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
 	* @returns {Boolean} True if the given key is held down.
 	*/
-	keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0},
+	keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0; },
 
 	/**
 	* Returns true if a given key in this._keymap has been held down for at least one frame. Will not return true if a key
@@ -704,22 +700,22 @@ var gbox={
 	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
 	* @returns {Boolean} True if the given key has been held down for at least one frame.
 	*/
-	keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1},
+	keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1; },
 
 	/**
 	* Returns true if a given key in this._keymap is released. Only returns true on the transition from pressed to unpressed.
 	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
 	* @returns {Boolean} True if the given key is transitioning from pressed to unpressed in this frame.
 	*/
-	keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1},
+	keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1; },
 
 	_savesettings:function() {
 		var saved="";
 		for (var k in this._keymap) saved+="keymap-"+k+":"+this._keymap[k]+"~";
 		for (var f in this._flags) {
 			switch (this._flagstype[f]) {
-				case "check": { saved+="flag-"+f+":"+(this._flags[f]?1:0)+"~"; break; }
-				case "list": { saved+="flag-"+f+":"+this._flags[f]+"~"; break; }
+				case "check": saved+="flag-"+f+":"+(this._flags[f]?1:0)+"~"; break;
+				case "list":  saved+="flag-"+f+":"+this._flags[f]+"~"; break;
 			}
 		}
 		this.dataSave("sys",saved);
@@ -734,14 +730,13 @@ var gbox={
 				kv=cfg[i].split(":");
 				mk=kv[0].split("-");
 				switch (mk[0]) {
-					case "keymap": { this._keymap[mk[1]]=kv[1]*1; break }
-					case "flag": {
+					case "keymap": this._keymap[mk[1]]=kv[1]*1; break;
+					case "flag":
 						switch (this._flagstype[mk[1]]) {
-							case "check": { this._flags[mk[1]]=kv[1]*1; break }
-							case "list": { this._flags[mk[1]]=kv[1]; break }
+							case "check": this._flags[mk[1]]=kv[1]*1; break;
+							case "list":  this._flags[mk[1]]=kv[1]; break;
 						}
-						break
-					}
+						break;
 				}
 			}
 		}
@@ -791,7 +786,7 @@ var gbox={
 	* Clears a value stored in a  key-value pair in a browser cookie. Sets value to "". Only works if user has cookies enabled.
 	* @param {String} k The key which identifies the value you are clearing.
 	*/
-	dataClear:function(k) { this.dataSave(k,"",-1) },
+	dataClear:function(k) { this.dataSave(k,"",-1); },
 
 	/**
 	* Gets the current camera object.
@@ -914,9 +909,9 @@ var gbox={
 			delete this._objects[group][obj];
 		}
 	},
-	playGroups:function(gid){for (var i=0;i<gid.length;i++)this.playGroup(gid[i])},
-	stopGroups:function(gid){for (var i=0;i<gid.length;i++)this.stopGroup(gid[i])},
-	toggleGroups:function(gid){for (var i=0;i<gid.length;i++)this.toggleGroup(gid[i])},
+	playGroups:function(gid){for (var i=0;i<gid.length;i++)this.playGroup(gid[i]); },
+	stopGroups:function(gid){for (var i=0;i<gid.length;i++)this.stopGroup(gid[i]); },
+	toggleGroups:function(gid){for (var i=0;i<gid.length;i++)this.toggleGroup(gid[i]); },
 
 	/**
 	* Given a group and an id for a particular object instance, this returns the instance requested.
@@ -930,7 +925,7 @@ var gbox={
 	* playertemp = gbox.getObject('player','player_id');
 	* player.health = player.health/2;
 	*/
-	getObject:function(group,id) {return this._objects[group][id]},
+	getObject:function(group,id) {return this._objects[group][id]; },
 
 	/**
 	* Creates a font.
@@ -977,9 +972,9 @@ var gbox={
 	purgeGarbage:function() {
 		for (var group in this._garbage)
 			for (var id in this._garbage[group]) {
-				if (this._objects[group][id]["onpurge"]) this._objects[group][id].onpurge();
+				if (this._objects[group][id].onpurge) this._objects[group][id].onpurge();
 				if (this._objects[group][id].__zt!=null)
-					this._zindex.remove(this._objects[group][id].__zt)
+					this._zindex.remove(this._objects[group][id].__zt);
 				delete this._objects[group][id];
 			}
 		gbox._garbage={};
@@ -1001,7 +996,7 @@ var gbox={
 	* @param {Object} o The object you're checking.
 	* @returns {Boolean} True if the object is marked as trash.
 	*/
-	objectIsTrash:function(o) { return o.__trashing },
+	objectIsTrash:function(o) { return o.__trashing; },
 
 	/**
 	* Creates a new game object. Generally speaking you pass a fully-defined object as the parameter (including a group, id, tileset, and so on).
@@ -1097,7 +1092,7 @@ var gbox={
 	* @param {String} id The id of the image.
 	* @returns {Boolean} True if the image has been loaded.
 	*/
-	imageIsLoaded:function(id){ return this._images[id]&&(this._images[id].getAttribute("wasloaded"))&&this._images[id].width },
+	imageIsLoaded:function(id){ return this._images[id]&&(this._images[id].getAttribute("wasloaded"))&&this._images[id].width; },
 
 	/**
 	* Gets information about a loaded image.
@@ -1107,26 +1102,26 @@ var gbox={
 	* image = gbox.getImage('logo');
 	* image; // => <img src=?"logo.png?_brc=5-7-2010-15-48-42" src_org=?"logo.png" id=?"logo" wasloaded=?"true">?
 	*/
-	getImage:function(id){return this._images[id]},
+	getImage:function(id){return this._images[id]; },
 
 	/**
 	* Gets the buffer canvas (automatically created by gbox.initScreen).
 	* @returns {Object} A DOM Canvas element, including the width and height of the canvas.
 	*/
-	getBuffer:function(){return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvas("_buffer"):this._screen):null)},
+	getBuffer:function(){return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvas("_buffer"):this._screen):null); },
 
 	/**
 	* Gets the buffer canvas context.
 	* @returns {Object} A DOM Canvas context object.
 	*/
-	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
+	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null); },
 
 	/**
 	* Gets a given canvas.
 	* @param {Object} id The identifier of the canvas.
 	* @returns {Object} A DOM Canvas element, including the width and height of the canvas.
 	*/
-	getCanvas:function(id){return this._canvas[id]},
+	getCanvas:function(id){return this._canvas[id]; },
 
 	/**
 	* Gets the two-dimensional canvas context of a given canvas. The object it returns contains all the drawing functions for the canvas.
@@ -1188,7 +1183,7 @@ var gbox={
 	* <li>gapx {Integer}: x-coord gap between tile columns, in pixels</li>
 	* <li>gapy {Integer}: y-coord gap between tile rows, in pixels</li></ul>
 	*/
-	getTiles:function(t) { return this._tiles[t] },
+	getTiles:function(t) { return this._tiles[t]; },
 
 	/**
 	* Loads the initial splash screen and debugging font, then calls gbox._waitforloaded which adds to the game all the previously
@@ -1483,9 +1478,9 @@ var gbox={
 			su.play();
 		} else if (gbox._audiocompatmode==2) {
 			su.load();
-			gbox._playerforcer=setInterval(function(e){try{su.play();clearInterval(gbox._playerforcer)}catch(e){}},1000);
+			gbox._playerforcer=setInterval(function(e){try{su.play();clearInterval(gbox._playerforcer);}catch(e){}},1000);
 		} else {
-			try { su.currentTime=0; } catch (e) {}
+			try { su.currentTime=0; } catch(e){}
 			su.play();
 		}
 	},
@@ -1525,16 +1520,16 @@ var gbox={
 	_audiofiletomime:function(f) {
 		var fsp=f.split(".");
 		switch (fsp.pop().toLowerCase()) {
-			case "ogg": { return "audio/ogg"; break }
-			case "mp3": { return "audio/mpeg"; break }
-			default: {
-				return "audio/mpeg";
-			}
+			case "ogg": return "audio/ogg";
+			case "mp3": return "audio/mpeg";
+			default: return "audio/mpeg";
 		}
 	},
 
-	_pushaudio:function(){try {this.currentTime=1.0} catch(e){} },
+	_pushaudio:function(){try {this.currentTime=1.0; } catch(e){} },
 	_createnextaudio:function(cau) {
+		var ael;
+
 		if (cau.def) {
 			gbox.deleteAudio(cau.id);
 			this._audio.aud[cau.id]=[];
@@ -1542,10 +1537,10 @@ var gbox={
 			if (cau.def) for (var a in cau.def) this._audio.ast[cau.id][a]=cau.def[a];
 		}
 		if ((gbox._createmode==0)&&(cau.team>0)) {
-			var ael =this._audio.aud[cau.id][0].cloneNode(true);
+			ael =this._audio.aud[cau.id][0].cloneNode(true);
 			gbox._finalizeaudio(null,ael,false);
 		} else {
-			var ael=document.createElement('audio');
+			ael=document.createElement('audio');
 			ael.volume=gbox._audiomutevolume;
 		}
 		if (!gbox._showplayers) {
@@ -1624,12 +1619,12 @@ var gbox={
 				this._audiomastervolume*
 				(this._audio.ast[a].volume!=null?this._audio.ast[a].volume:1)*
 				((this._audio.ast[a].channel!=null)&&(this._audiochannels[this._audio.ast[a].channel]!=null)&&(this._audiochannels[this._audio.ast[a].channel].volume!=null)?this._audiochannels[this._audio.ast[a].channel].volume:1)
-			)
+			);
 		}
 	},
 
 	_minimaltimeexpired:function() { gbox._minimalexpired=2; },
-	_splashscreeniscompleted:function() { return (gbox._splash.background?gbox.imageIsLoaded("_splash"):true) && (gbox._splash.minilogo?gbox.imageIsLoaded("logo"):true) && (gbox._splash.footnotes?gbox.imageIsLoaded("_dbf"):true) },
+	_splashscreeniscompleted:function() { return (gbox._splash.background?gbox.imageIsLoaded("_splash"):true) && (gbox._splash.minilogo?gbox.imageIsLoaded("logo"):true) && (gbox._splash.footnotes?gbox.imageIsLoaded("_dbf"):true); },
 	_addqueue:function(a) {
 		if (!gbox._audiodequeuetime)
 			gbox._dequeueaudio(null,a);
@@ -1644,19 +1639,16 @@ var gbox={
 	_dequeueaudio:function(k,rt) {
 			var ac=(rt?rt:gbox._audioactions.pop());
 			switch (ac.t) {
-				case 0: {
+				case 0:
 					gbox._updateaudio(ac.a.getAttribute("aki_id"));
 					gbox._rawplayaudio(ac.a);
-					break
-				}
-				case 1: {
+					break;
+				case 1:
 					gbox._rawstopaudio(ac.a);
 					break;
-				}
-				case 2: {
+				case 2:
 					gbox._updateaudio(ac.a.getAttribute("aki_id"));
 					break;
-				}
 			}
 			if (!rt&&gbox._audioactions.length) {
 				gbox._audio.qtimer=true;
@@ -1666,12 +1658,12 @@ var gbox={
 	},
 
 	getAudioIsSingleChannel:function() { return this._singlechannelaudio; },
-	setAudioIsSingleChannel:function(m) { gbox._singlechannelaudio=m },
-	setAudioPositionDelay:function(m) { gbox._positiondelay=m },
-	setAudioDequeueTime:function(m) { gbox._audiodequeuetime=m },
-	setShowPlayers:function(m) { gbox._showplayers=m},
-	setAudioCompatMode:function(m) { gbox._audiocompatmode=m },
-	setAudioCreateMode:function(m) { gbox._createmode=m },
+	setAudioIsSingleChannel:function(m) { gbox._singlechannelaudio=m; },
+	setAudioPositionDelay:function(m) { gbox._positiondelay=m; },
+	setAudioDequeueTime:function(m) { gbox._audiodequeuetime=m; },
+	setShowPlayers:function(m) { gbox._showplayers=m; },
+	setAudioCompatMode:function(m) { gbox._audiocompatmode=m; },
+	setAudioCreateMode:function(m) { gbox._createmode=m; },
 	addAudio:function(id,filename,def) {
 		if (gbox._canaudio) {
 			if (gbox._audio.aud[id])
@@ -1738,12 +1730,12 @@ var gbox={
 	},
 	setChannelVolume:function(ch,a) {
 		if (this._canaudio&&this._audiochannels[ch]) {
-			if (ch=="master") this._audiomastervolume=a; else this._audiochannels[ch].volume=a
+			if (ch=="master") this._audiomastervolume=a; else this._audiochannels[ch].volume=a;
 			for (var j in gbox._audio.aud)
 				if (this._audio.ast[j].cy>-1) this._updateaudio(j);
 		}
 	},
-	getChannelVolume:function(ch) { if (ch=="master") return this._audiomastervolume; else if (this._audiochannels[ch]) return this._audiochannels[ch].volume; else return 0 },
+	getChannelVolume:function(ch) { if (ch=="master") return this._audiomastervolume; else if (this._audiochannels[ch]) return this._audiochannels[ch].volume; else return 0; },
 	changeChannelVolume:function(ch,a) {
 		if (this._canaudio&&this._audiochannels[ch]) {
 			var vol=this.getChannelVolume(ch)+a;
@@ -1760,15 +1752,15 @@ var gbox={
 
 	setAudioUnmute:function(a) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].mute=false; this._updateaudio(a); } },
 	setAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].mute=true; this._updateaudio(a); } },
-	getAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].mute; else return null},
+	getAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].mute; else return null; },
 
 	setAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].volume=vol; this._updateaudio(a); } },
-	getAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].volume; else return null},
+	getAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].volume; else return null; },
 
 	setAudioPosition:function(a,p) {  if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) this._audio.aud[a][this._audio.ast[a].cy].currentTime=p;},
-	getAudioPosition:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) if (this._audio.aud[a][this._audio.ast[a].cy].currentTime>this._positiondelay) return this._audio.aud[a][this._audio.ast[a].cy].currentTime-this._positiondelay; else return 0; else return 0},
+	getAudioPosition:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) if (this._audio.aud[a][this._audio.ast[a].cy].currentTime>this._positiondelay) return this._audio.aud[a][this._audio.ast[a].cy].currentTime-this._positiondelay; else return 0; else return 0; },
 
-	getAudioDuration:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) return this._audio.aud[a][this._audio.ast[a].cy].duration; else return 0},
+	getAudioDuration:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) return this._audio.aud[a][this._audio.ast[a].cy].duration; else return 0; },
 
 	changeAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { if (this._audio.ast[a].volume+vol>1) this._audio.ast[a].volume=1; else  if (this._audio.ast[a].volume+vol<0) this._audio.ast[a].volume=0; else this._audio.ast[a].volume+=vol; this._updateaudio(a); } },
 	setCanAudio:function(a) { this._canaudio=!this._flags.noaudio&&a;},
@@ -1805,15 +1797,17 @@ var gbox={
 	},
 
 	readBundleData:function(pack,call) {
+		var i=0;
+
 		// Local resources first
-		if (pack.setObject) for (var i=0;i<pack.setObject.length;i++) eval("("+pack.setObject[i].object+")")[pack.setObject[i].property]=pack.setObject[i].value;
-		if (pack.addFont) for (var i=0;i<pack.addFont.length;i++) gbox.addFont(pack.addFont[i]);
-		if (pack.addTiles) for (var i=0;i<pack.addTiles.length;i++) gbox.addTiles(pack.addTiles[i]);
+		if (pack.setObject) for (i=0;i<pack.setObject.length;i++) eval("("+pack.setObject[i].object+")")[pack.setObject[i].property]=pack.setObject[i].value;
+		if (pack.addFont) for (i=0;i<pack.addFont.length;i++) gbox.addFont(pack.addFont[i]);
+		if (pack.addTiles) for (i=0;i<pack.addTiles.length;i++) gbox.addTiles(pack.addTiles[i]);
 		// Remote resources for last
-		if (pack.addImage) for (var i=0;i<pack.addImage.length;i++) gbox.addImage(pack.addImage[i][0],pack.addImage[i][1]);
-		if (pack.addAudio) for (var i=0;i<pack.addAudio.length;i++) gbox.addAudio(pack.addAudio[i][0],pack.addAudio[i][1],pack.addAudio[i][2]);
-		if (pack.addBundle) for (var i=0;i<pack.addBundle.length;i++) gbox.addBundle(pack.addBundle[i]);
-		if (pack.addScript) for (var i=0;i<pack.addScript.length;i++) gbox.addScript(pack.addScript[i]);
+		if (pack.addImage) for (i=0;i<pack.addImage.length;i++) gbox.addImage(pack.addImage[i][0],pack.addImage[i][1]);
+		if (pack.addAudio) for (i=0;i<pack.addAudio.length;i++) gbox.addAudio(pack.addAudio[i][0],pack.addAudio[i][1],pack.addAudio[i][2]);
+		if (pack.addBundle) for (i=0;i<pack.addBundle.length;i++) gbox.addBundle(pack.addBundle[i]);
+		if (pack.addScript) for (i=0;i<pack.addScript.length;i++) gbox.addScript(pack.addScript[i]);
 		// Trigger the onLoad events in resource and loader
 		if (pack.onLoad) gbox._addtoloader({type:"exec-onl",func:pack.onLoad,call:call,pack:pack});
 		if (call.onLoad) gbox._addtoloader({type:"exec-onl",func:call.onLoad,call:call,pack:pack});
@@ -1870,7 +1864,7 @@ var gbox={
 		var current=gbox._loaderqueue.pop();
 		if (gbox._loaderqueue.isProcessing()) {
 			switch (gbox._loaderqueue.getCurrent().type) {
-				case "image":{
+				case "image":
 					gbox._images[current.id]=new Image();
 					gbox.addEventListener(gbox._images[current.id],'load', gbox._loaderimageloaded);
 					gbox._images[current.id].src=gbox._breakcacheurl(current.filename);
@@ -1878,8 +1872,7 @@ var gbox={
 					gbox._images[current.id].setAttribute('id',current.id);
 					gbox._images[current.id].setAttribute('wasloaded',false);
 					break;
-				}
-				case "bundle":{
+				case "bundle":
 					var done=false;
 					if (!current.call.skipCacheLoad) {
 						var data=gbox._loadercache.read(current.call.file);
@@ -1901,27 +1894,22 @@ var gbox={
 						} else gbox._xmlhttp.send();
 					}
 					break;
-				}
-				case "audio":{
+				case "audio":
 					gbox._createnextaudio(current.data);
 					break;
-				}
-				case "exec-onl":{
+				case "exec-onl":
 					current.func(current.call,current.pack);
 					gbox._loaderloaded();
 					break;
-				}
-				case "script":{
+				case "script":
 					var script= document.createElement('script');
 					script.type="text/javascript";
 					script.onload=gbox._loaderscript;
 					script.src=current.call.file;
 					document.getElementsByTagName('body')[0].appendChild(script);
 					break;
-				}
 			}
 		}
-
 	},
 	_waitforloaded:function() {
 		var aul;
@@ -1935,7 +1923,7 @@ var gbox={
 			}
 			if (gbox._splash.loading) gbox._splash.loading(tox,gbox._loaderqueue.getDone(),gbox._loaderqueue.getTotal());
 			switch (gbox._flags.loadscreen) {
-				case "c64": {
+				case "c64":
 					var p=0;
 					var l=0;
 					while (p!=gbox.getScreenH()) {
@@ -1953,8 +1941,7 @@ var gbox={
 						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:(gbox.getScreenW()-dw)/2,dy:(gbox.getScreenH()-dh)/2,dw:dw,dh:dh});
 					}
 					break;
-				}
-				default:{
+				default:
 					if (gbox._splash.background&&gbox.imageIsLoaded("_splash"))
 						gbox.blit(tox,gbox.getImage("_splash"),{w:gbox.getImage("_splash").width,h:gbox.getImage("_splash").height,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
 					if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
@@ -1986,7 +1973,6 @@ var gbox={
 						tox.fillStyle = gbox._splash.gaugeColor;
 						tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),(bw>0?bw:0),gbox._splash.gaugeHeight-2);
 					}
-				}
 			}
 			tox.restore();
 			gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
@@ -2017,14 +2003,15 @@ var gbox={
 		else to.detachEvent('on'+event,code);
 	},
 	XMLHttpFactories:[
-		function () {return new XMLHttpRequest()},
-		function () {return new ActiveXObject("Msxml2.XMLHTTP")},
-		function () {return new ActiveXObject("Msxml3.XMLHTTP")},
-		function () {return new ActiveXObject("Microsoft.XMLHTTP")}
+		function () {return new XMLHttpRequest(); },
+		function () {return new ActiveXObject("Msxml2.XMLHTTP"); },
+		function () {return new ActiveXObject("Msxml3.XMLHTTP"); },
+		function () {return new ActiveXObject("Microsoft.XMLHTTP"); }
 	],
 	createXmlHttpRequest:function() {
 		var xmlhttp=false;
-		/* running locally on IE5.5, IE6, IE7 */                                              ; /*@cc_on
+		/* running locally on IE5.5, IE6, IE7 */
+		/*@cc_on
 		if(location.protocol=="file:"){
 			if(!xmlhttp)try{ xmlhttp=new ActiveXObject("MSXML2.XMLHTTP"); }catch(e){xmlhttp=false;}
 			if(!xmlhttp)try{ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }catch(e){xmlhttp=false;}
