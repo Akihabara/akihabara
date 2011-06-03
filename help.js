@@ -528,6 +528,7 @@ var help={
 			};
 			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false};
 		}
+		if (data.offlinecache) gbox.setOfflineCache(data.offlinecache);
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
 		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
 		if (!data.splash||(data.splash.minimalTime==null)) gbox.setSplashSettings({minimalTime:3000});

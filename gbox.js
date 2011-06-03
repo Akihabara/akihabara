@@ -222,15 +222,17 @@ var gbox={
 	},
 	_flagstype:{
 		experimental:"check",
-		noaudio:"check",
+		fse:"list",
+		offlinecache:"check",
 		loadscreen:"list",
-		fse:"list"
+		noaudio:"check"
 	},
 	_flags:{
 		experimental:false,
-		noaudio:false,
+		fse:"none",
+		offlinecache:false,
 		loadscreen:"normal",
-		fse:"none"
+		noaudio:false
 	},
 	_localflags:{},
 	_fonts:{},
@@ -266,7 +268,7 @@ var gbox={
 	_db:false,
 	_systemcookie:"__gboxsettings",
 	_sessioncache:"",
-	_breakcacheurl:function(a) {return a+(a.indexOf("?")==-1?"?":"&")+"_brc="+gbox._sessioncache; },
+	_breakcacheurl:function(a) {return (this._flags.offlinecache?a:a+(a.indexOf("?")==-1?"?":"&")+"_brc="+gbox._sessioncache); },
 	_forcedidle:0,
 	_gamewaiting:0,
 	_canlog:false,
@@ -1717,6 +1719,7 @@ var gbox={
 		}
 	},
 	setSplashSettings:function(a) { for (var n in a) this._splash[n]=a[n]; },
+	setOfflineCache:function(a) { this._flags.offlinecache=a; },
 	resetChannel:function(ch) {
 		if (this._canaudio&&this._audiochannels[ch])
 			if (ch=="master")
