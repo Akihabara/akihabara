@@ -77,7 +77,7 @@ var help={
 	* @returns True if the two objects are overlapping enough and by.accy>0.
 	*/
 	isSquished:function(th,by) {
-		return ((by.accy>0)&&gbox.collides(th,by)&&(Math.abs(th.y-(by.y+by.h))<(th.h/2)))
+		return ((by.accy>0)&&gbox.collides(th,by)&&(Math.abs(th.y-(by.y+by.h))<(th.h/2)));
 	},
 
 	/**
@@ -452,7 +452,7 @@ var help={
 	getDeviceConfig:function() {
 		var cap;
 		if (navigator.userAgent.match(/nintendo wii/i))
-			cap={iswii:true,height:window.innerHeight,doublebuffering:true} // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
+			cap={iswii:true,height:window.innerHeight,doublebuffering:true}; // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
 		else if (navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
 			cap={touch:true,width:320};
 		else if (navigator.userAgent.match(/iPad/i))
@@ -526,7 +526,7 @@ var help={
 				b:172,
 				c:13
 			};
-			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false};
+			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false; };
 		}
 		if (data.offlinecache) gbox.setOfflineCache(data.offlinecache);
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
@@ -579,20 +579,17 @@ var help={
 		if (!data||!data.hardwareonly) {
 			if (help.geturlparameter("touch")!="no" && (help.geturlparameter("touch")=="yes"||device.touch)){
 				switch (data.padmode) {
-					case "fretboard": {
+					case "fretboard":
 						iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});
 						break;
-					}
-					case "none": {
+					case "none":
 						break;
-					}
-					default: {
+					default:
 						iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});
 						break;
-					}
 				}
 			}
 		}
 		return device;
 	}
-}
+};

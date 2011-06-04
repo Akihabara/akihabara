@@ -32,9 +32,10 @@ var iphopad={
 	],
 
 	_listen:function(e) {
+		var i;
 		var nc={up:false,down:false,left:false,right:false};
 		var nb={a:false,b:false,c:false};
-		for (var i=0;i<e.touches.length;i++) {
+		for (i=0;i<e.touches.length;i++) {
 			rp={x:e.touches[i].pageX-iphopad._gapx,y:e.touches[i].pageY-iphopad._gapy};
 			if (rp.x<iphopad._height)
 				nc=iphopad._positions[Math.floor(trigo.getAngle(iphopad._center,rp,iphopad._transl)/iphopad._brad)];
@@ -47,12 +48,12 @@ var iphopad={
 
 		}
 		this._swap=!this._swap;
-		for (var i in this._cross) {
+		for (i in this._cross) {
 			if (nc[i]!=iphopad._cross[i])
 				if (nc[i]) gbox._keydown({fake:true,keyCode:gbox._keymap[i]});
 				else gbox._keyup({fake:true,keyCode:gbox._keymap[i]});
 		}
-		for (var i in this._buttons) {
+		for (i in this._buttons) {
 			if (nb[i]!=iphopad._buttons[i])
 				if (nb[i]) gbox._keydown({fake:true,keyCode:gbox._keymap[i]});
 				else gbox._keyup({fake:true,keyCode:gbox._keymap[i]});
@@ -108,9 +109,9 @@ var iphopad={
 		oElement.appendChild(bpad);
 		gbox._box.appendChild(oElement);
 
-		oElement.ontouchstart=function(evt) { evt.preventDefault();evt.stopPropagation(); iphopad._listen(evt) };
-		oElement.ontouchend=function(evt) { evt.preventDefault();evt.stopPropagation();iphopad._listen(evt) };
-		oElement.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();iphopad._listen(evt) };
+		oElement.ontouchstart=function(evt) { evt.preventDefault();evt.stopPropagation(); iphopad._listen(evt); };
+		oElement.ontouchend=function(evt) { evt.preventDefault();evt.stopPropagation();iphopad._listen(evt); };
+		oElement.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();iphopad._listen(evt); };
 		var sizes=gbox._domgetabsposition(oElement);
 		this._gapx=sizes.x;
 		this._gapy=sizes.y;
@@ -118,4 +119,4 @@ var iphopad={
 		this._height=sizes.h;
 		this._center={x:Math.floor(this._height/2),y:Math.floor(this._height/2)};
 	}
-}
+};

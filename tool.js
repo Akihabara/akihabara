@@ -43,11 +43,12 @@ var tool={
 	*/
 	makecels:function(data) {
 		this._data=data;
+		loaded = function(){tool._loaded(this.id);};
 		var id=0;
 		for (var r=0;r<data.rows.length;r++) {
 			for (var i=0;i<data.rows[r].length;i++) {
 				this._images[id]=new Image();
-				gbox.addEventListener(this._images[id],'load', function(){tool._loaded(this.id)});
+				gbox.addEventListener(this._images[id],'load', loaded);
 				this._images[id].setAttribute("id",id);
 				this._images[id].src=data.rows[r][i].img;
 				this._count++;
@@ -67,10 +68,12 @@ var tool={
 		var hei=0;
 		var curwid=0;
 		var id=0;
-		for (var r=0;r<data.rows.length;r++) {
+		var r,i;
+
+		for (r=0;r<data.rows.length;r++) {
 			hei+=this._images[id].height*1;
 			curwid=0;
-			for (var i=0;i<data.rows[r].length;i++) { curwid+=this._images[id].width*1; id++}
+			for (i=0;i<data.rows[r].length;i++) { curwid+=this._images[id].width*1; id++; }
 			if (wid<curwid) wid=curwid;
 		}
 
@@ -84,9 +87,9 @@ var tool={
 		var curx=0;
 		var cury=0;
 		id=0;
-		for (var r=0;r<data.rows.length;r++) {
+		for (r=0;r<data.rows.length;r++) {
 			curx=0;
-			for (var i=0;i<data.rows[r].length;i++) {
+			for (i=0;i<data.rows[r].length;i++) {
 				ctx.drawImage(this._images[id],curx,cury);
 				if (data.rows[r][i].filter) {
 					if (data.rows[r][i].filter) {
@@ -125,4 +128,4 @@ var tool={
 			cury+=this._images[id-1].height*1;
 		}
 	}
-}
+};
