@@ -956,7 +956,7 @@ var toys={
 						if (this.script[this.scriptline]==null)
 							this.ended=true;
 						else {
-							if (this.script[this.scriptline].goto!=null) this.scriptline=this.script[this.scriptline].goto;
+							if (this.script[this.scriptline]["goto"]!=null) this.scriptline=this.script[this.scriptline]["goto"];
 							this.line=this.script[this.scriptline];
 							if (this.line.afterframes!=null)
 								this.waitframes=this.line.afterframes;
