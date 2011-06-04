@@ -49,11 +49,12 @@ var dynalist={
 				return nid;
 			},
 			setPrio:function(obd,prio) {
+				var i;
 				if (this.data[obd].__prio==prio) return;
 				if (this.first!=this.last)
 				if (this.data[obd].__prio<prio) {
 					if (this.data[obd].__id!=this.last) {
-						var i=this.data[obd].__next;
+						i=this.data[obd].__next;
 						while (i!=null)
 							if (this.data[i].__prio>=prio) break; else i=this.data[i].__next;
 						if ((i==null)||(this.data[i].__first!=this.data[obd].__id)) {
@@ -75,7 +76,7 @@ var dynalist={
 					}
 				} else {
 					if (this.data[obd].__id!=this.first) {
-						var i=this.data[obd].__first;
+						i=this.data[obd].__first;
 						while (i!=null)
 							if (this.data[i].__prio<=prio) break; else i=this.data[i].__first;
 						if ((i==null)||(this.data[i].__next!=this.data[obd].__id)) {
@@ -595,12 +596,12 @@ var gbox={
 		} else {
 			gbox._gamewaiting=3;
 			gbox._framestart=new Date().getTime();
-			var gr="";
+			var i, gr="";
 			for (var g=0;g<gbox._renderorder.length;g++)
 				if (gbox._groupplay[gbox._renderorder[g]])
 					if (gbox._renderorder[g]==gbox.ZINDEX_LAYER) {
 						var id;
-						for (var i=0;i<gbox._actionqueue.length;i++) {
+						for (i=0;i<gbox._actionqueue.length;i++) {
 							id=gbox._zindex.first;
 							while (id!=null) {
 								if (gbox._groupplay[gbox._zindex.data[id].g])
@@ -609,7 +610,7 @@ var gbox={
 							}
 						}
 					} else
-						for (var i=0;i<gbox._actionqueue.length;i++)
+						for (i=0;i<gbox._actionqueue.length;i++)
 							for (var obj in gbox._objects[gbox._renderorder[g]])
 								gbox._playobject(gbox._renderorder[g],obj,gbox._actionqueue[i]);
 			if (gbox._fskid>=gbox._frameskip) {
@@ -622,7 +623,7 @@ var gbox={
 
 			if (gbox._zindexch.length) {
 
-				for (var i=0;i<gbox._zindexch.length;i++) {
+				for (i=0;i<gbox._zindexch.length;i++) {
 					if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o])
 						if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt==null)
 							gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt=gbox._zindex.addObject(gbox._zindexch[i].o,gbox._zindexch[i].z);
@@ -1530,7 +1531,7 @@ var gbox={
 
 	_pushaudio:function(){try {this.currentTime=1.0; } catch(e){} },
 	_createnextaudio:function(cau) {
-		var ael;
+		var ael,i;
 
 		if (cau.def) {
 			gbox.deleteAudio(cau.id);
@@ -1560,7 +1561,7 @@ var gbox={
 		gbox.addEventListener(ael,'loadedmetadata', gbox._pushaudio); // Push locked audio in safari
 		if (((gbox._createmode==0)&&(cau.team==0))||(gbox._createmode==1)) {
 			if (gbox._forcedmimeaudio) {
-				for (var i=0;i<cau.filename.length;i++) {
+				for (i=0;i<cau.filename.length;i++) {
 					if (gbox._audiofiletomime(cau.filename[i]).indexOf(gbox._forcedmimeaudio)!=-1) {
 						ael.src=gbox._breakcacheurl(cau.filename[i]);
 						break;
@@ -1568,7 +1569,7 @@ var gbox={
 				}
 			} else if (ael.canPlayType) {
 				var cmime;
-				for (var i=0;i<cau.filename.length;i++) {
+				for (i=0;i<cau.filename.length;i++) {
 					cmime=gbox._audiofiletomime(cau.filename[i]);
 					if (("no" != ael.canPlayType(cmime)) && ("" != ael.canPlayType(cmime))) {
 						ael.src=gbox._breakcacheurl(cau.filename[i]);
@@ -1576,7 +1577,7 @@ var gbox={
 					}
 				}
 			} else {
-				for (var i=0;i<cau.filename.length;i++) {
+				for (i=0;i<cau.filename.length;i++) {
 					var src=document.createElement('source');
 					src.setAttribute('src', gbox._breakcacheurl(cau.filename[i]));
 					ael.appendChild(src);
@@ -1925,10 +1926,8 @@ var gbox={
 				setTimeout(gbox._minimaltimeexpired,gbox._splash.minimalTime);
 			}
 			if (gbox._splash.loading) gbox._splash.loading(tox,gbox._loaderqueue.getDone(),gbox._loaderqueue.getTotal());
-			switch (gbox._flags.loadscreen) {
-				case "c64":
-					var p=0;
-					var l=0;
+			if (gbox._flags.loadscreen == "c64") {
+					var p=0, l=0;
 					while (p!=gbox.getScreenH()) {
 						l=10+Math.floor(Math.random()*gbox.getScreenH()/4);
 						if (p+l>gbox.getScreenH()) l=gbox.getScreenH()-p;
@@ -1943,8 +1942,7 @@ var gbox={
 						var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
 						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:(gbox.getScreenW()-dw)/2,dy:(gbox.getScreenH()-dh)/2,dw:dw,dh:dh});
 					}
-					break;
-				default:
+			} else {
 					if (gbox._splash.background&&gbox.imageIsLoaded("_splash"))
 						gbox.blit(tox,gbox.getImage("_splash"),{w:gbox.getImage("_splash").width,h:gbox.getImage("_splash").height,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
 					if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
