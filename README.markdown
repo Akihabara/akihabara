@@ -25,4 +25,10 @@ Improvement
 
 Nice to have
 ----
+
 * Networking
+
+Wiki
+----
+
+* For more informations follow our [Wiki](https://github.com/akihabara/akihabara/wiki)
