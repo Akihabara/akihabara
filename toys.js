@@ -1842,13 +1842,13 @@ var toys={
 							gbox.createCanvas("scroller-"+id,{w:th.toys[id].sceneW,h:(th.toys[id].scene.scroller.length)*(th.toys[id].fd.tileh+th.toys[id].scene.spacing)});
 							for (var i=0;i<th.toys[id].scene.scroller.length;i++)
 								gbox.blitText(gbox.getCanvasContext("scroller-"+id),{
-										font:th.toys[id].fd.id,
-										dx:0,
-										dy:i*(th.toys[id].fd.tileh+th.toys[id].scene.spacing),
-										dw:th.toys[id].sceneW,
-										halign:gbox.ALIGN_CENTER,
-										text:th.toys[id].scene.scroller[i]
-									});
+									font:th.toys[id].fd.id,
+									dx:0,
+									dy:i*(th.toys[id].fd.tileh+th.toys[id].scene.spacing),
+									dw:th.toys[id].sceneW,
+									halign:gbox.ALIGN_CENTER,
+									text:th.toys[id].scene.scroller[i]
+								});
 						}
 						if (th.toys[id].scene.bonus) {
 							gbox.createCanvas("bonus-"+id,{w:th.toys[id].sceneW,h:(th.toys[id].scene.bonus.length)*(th.toys[id].fd.tileh+th.toys[id].scene.spacing)});
