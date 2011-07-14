@@ -240,6 +240,7 @@ var gbox={
 	_tiles:{},
 	_images:{},
 	_camera:{},
+	_debugfont:"akihabara/debugfont.png",
 	_screen:0,
 	_screenposition:0,
 	_keyboardpicker:0,
@@ -1199,7 +1200,7 @@ var gbox={
 		// Set the callback function, which is called after the resources are loaded.
 		if (!this._cb) this._cb = cb;
 		// Default stuff
-		this.addImage("_dbf","akihabara/debugfont.png");
+		this.addImage("_dbf",this._debugfont);
 		if (this._splash.background) this.addImage("_splash",this._splash.background);
 		gbox.addFont({id:"_dbf",image:"_dbf",firstletter:" ",tileh:5,tilew:4,tilerow:16,gapx:0,gapy:0});
 		if (!gbox._splash.minimalTime)
@@ -1721,6 +1722,7 @@ var gbox={
 	},
 	setSplashSettings:function(a) { for (var n in a) this._splash[n]=a[n]; },
 	setOfflineCache:function(a) { this._flags.offlinecache=a; },
+	setDebugFont:function(a) { this._debugfont=a; },
 	resetChannel:function(ch) {
 		if (this._canaudio&&this._audiochannels[ch])
 			if (ch=="master")
