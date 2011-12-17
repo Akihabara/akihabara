@@ -28,6 +28,11 @@ Nice to have
 
 * Networking
 
+Mailing List
+------------
+
+* https://groups.google.com/forum/#!forum/akihabara-engine
+
 Wiki
 ----
 
