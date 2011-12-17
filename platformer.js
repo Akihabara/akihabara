@@ -1,7 +1,7 @@
 /**
 * @namespace platformer The libraries for generating a 2D platformer game.
 */
-platformer:{
+var platformer={
 	// CONSTANTS
 	PUSH_NONE:0,
 	PUSH_LEFT:1,
