@@ -209,7 +209,7 @@ var gbox={
 	},
 
 	// VARS
-	_basepath : "akihabara/",
+	_basepath : "akihabara/images/",
 	_autoid:0,
 	_cb:null, // callback for loadAll()
 	_keyboard:[],
