@@ -24,7 +24,7 @@ var platformer={
 				}
 			)
 		);
-		toys.platformer.spawn(th);
+		platformer.spawn(th);
 	},
 
 	spawn:function(th,data) {
@@ -34,7 +34,7 @@ var platformer={
 		th.touchedceil=false;
 		th.touchedleftwall=false;
 		th.touchedrightwall=false;
-		th.pushing=toys.PUSH_NONE; // user is moving side
+		th.pushing=platformer.PUSH_NONE; // user is moving side
 		th.killed=false;
 		help.copyModel(th,data);
 	},
@@ -44,18 +44,18 @@ var platformer={
 	getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxaccy,th.maxaccy); },
 
 	applyGravity:function(th) {
-		th.x=toys.platformer.getNextX(th);
-		th.y=toys.platformer.getNextY(th);
+		th.x=platformer.getNextX(th);
+		th.y=platformer.getNextY(th);
 	},
 
 	horizontalKeys:function(th,keys) {
 		if (gbox.keyIsPressed(keys.left)) {
-			th.pushing=toys.PUSH_LEFT;
+			th.pushing=platformer.PUSH_LEFT;
 			th.accx=help.limit(th.accx-1,-th.maxaccx,th.maxaccx);
 		} else if (gbox.keyIsPressed(keys.right)) {
-			th.pushing=toys.PUSH_RIGHT;
+			th.pushing=platformer.PUSH_RIGHT;
 			th.accx=help.limit(th.accx+1,-th.maxaccx,th.maxaccx);
-		} else th.pushing=toys.PUSH_NONE;
+		} else th.pushing=platformer.PUSH_NONE;
 	},
 
 	verticalTileCollision:function(th,map,tilemap) {
@@ -111,7 +111,7 @@ var platformer={
 	},
 
 	jumpKeys:function(th,key) {
-		if ((toys.platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
+		if ((platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
 			if (key.audiojump) gbox.hitAudio(key.audiojump);
 			th.accy=-th.jumpaccy;
 			th.curjsize=th.jumpsize;
@@ -133,7 +133,7 @@ var platformer={
 		// Gravity
 		if (!th.touchedfloor) th.accy++;
 		// Attrito
-		if (th.pushing==toys.PUSH_NONE) if (th.accx) th.accx=help.goToZero(th.accx);
+		if (th.pushing==platformer.PUSH_NONE) if (th.accx) th.accx=help.goToZero(th.accx);
 	},
 
 	setSide:function(th) {
@@ -142,7 +142,7 @@ var platformer={
 
 	setFrame:function(th) {
 		if (th.touchedfloor)
-			if (th.pushing!=toys.PUSH_NONE)
+			if (th.pushing!=platformer.PUSH_NONE)
 				th.frame=help.decideFrame(th.counter,th.frames.walking);
 			else
 				th.frame=help.decideFrame(th.counter,th.frames.still);
@@ -159,19 +159,19 @@ var platformer={
 		goomba:function(th,data) {
 			if (data.moveWhileFalling||th.touchedfloor) {
 				if (th.side) {
-					th.pushing=toys.PUSH_LEFT;
+					th.pushing=platformer.PUSH_LEFT;
 					th.accx=-data.speed;
 				} else {
-					th.pushing=toys.PUSH_RIGHT;
+					th.pushing=platformer.PUSH_RIGHT;
 					th.accx=data.speed;
 				}
-			} else th.pushing=toys.PUSH_NONE;
+			} else th.pushing=platformer.PUSH_NONE;
 		},
 		dontFall:function(th,map,tilemap) {
 			if (th.accx&&th.touchedfloor) {
 				var til;
-				if (th.accx>0) til=help.getTileInMap(toys.platformer.getNextX(th)+th.w-1+th.accx,th.y+th.h,map,0,tilemap);
-				else til=help.getTileInMap(toys.platformer.getNextX(th),th.y+th.h,map,0,tilemap);
+				if (th.accx>0) til=help.getTileInMap(platformer.getNextX(th)+th.w-1+th.accx,th.y+th.h,map,0,tilemap);
+				else til=help.getTileInMap(platformer.getNextX(th),th.y+th.h,map,0,tilemap);
 				if (!map.tileIsSolidFloor(th,til)) {
 					th.side=!th.side;
 					th.accx=0;
