@@ -1019,9 +1019,9 @@ var gbox={
 	*   x: 0,
 	*   y: 0,
 	*   initialize: function() {
-	    this.x = 10;
-	    this.y = 10;
-	    },
+	*     this.x = 10;
+	*     this.y = 10;
+	*   },
 	* };
 	* gbox.addObject(data);
 	*/
@@ -1370,7 +1370,7 @@ var gbox={
 		this._screen.getContext("2d").drawImage(image,0,0);
 	},
 
-	 /**
+	/**
 	* Draws a filled rectangle over an entire canvas context.
 	* @param {Object} tox The canvas context to be filled.
 	* @param {Object} data An object containing a set of data, including:
@@ -1739,8 +1739,8 @@ var gbox={
 	resetChannel:function(ch) {
 		if (this._canaudio&&this._audiochannels[ch])
 			if (ch=="master")
-				for (var ch in this._audiochannels)
-					this.setChannelVolume(ch,this._audiochannels[ch]._def.volume);
+				for (var cha in this._audiochannels)
+					this.setChannelVolume(cha,this._audiochannels[cha]._def.volume);
 			else if (this._audiochannels[ch])
 				this.setChannelVolume(ch,this._audiochannels[ch]._def.volume);
 	},
@@ -2008,7 +2008,7 @@ var gbox={
 	// ---
 
 	checkCanvasSupport:function() {
-	  return !!document.createElement('canvas').getContext;
+		return !!document.createElement('canvas').getContext;
 	},
 	addEventListener:function(to,event,code) {
 		if (to.addEventListener) to.addEventListener(event,code,false);
