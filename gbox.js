@@ -244,6 +244,7 @@ var gbox={
 	_debugfont: "debugfont.png",
 	getDebugFont: function(){ return gbox._basepath + gbox._debugfont; },
 	_screen:0,
+	_screenCtx:null,
 	_screenposition:0,
 	_keyboardpicker:0,
 	_screenh:0,
@@ -397,6 +398,7 @@ var gbox={
 		this._box.style.verticalAlign="middle";
 
 		this._screen=document.createElement("canvas");
+		this._screenCtx = this._screen.getContext('2d');
 		if (this._border) this._screen.style.border="1px solid black";
 		this._screen.setAttribute('height',h);
 		this._screen.setAttribute('width',w);
@@ -556,10 +558,11 @@ var gbox={
 			case "lcd":
 				if (gbox._localflags.fselcdget&&gbox.getBuffer())
 					gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(),0,0);
-				gbox.getBufferContext().save();
-				gbox.getBufferContext().globalAlpha=0.5;
-				gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse-old"),0,0);
-				gbox.getBufferContext().restore();
+				var gboxBufferContext = gbox.getBufferContext();
+				gboxBufferContext.save();
+				gboxBufferContext.globalAlpha=0.5;
+				gboxBufferContext.drawImage(gbox.getCanvas("-gbox-fse-old"),0,0);
+				gboxBufferContext.restore();
 				if (gbox._localflags.fselcdget)
 					gbox.swapCanvas("-gbox-fse-new","-gbox-fse-old");
 				gbox._localflags.fselcdget=!gbox._localflags.fselcdget;
@@ -580,18 +583,18 @@ var gbox={
 	go:function() {
 		if (gbox._loaderqueue.isBusy()) {
 			if (gbox._gamewaiting==1) {
-				gbox.blitFade(gbox._screen.getContext("2d"),{alpha:0.5});
-				gbox.blitText(gbox._screen.getContext("2d"),{font:"_dbf",dx:2,dy:2,text:"LOADING..."});
+				gbox.blitFade(gbox._screenCtx,{alpha:0.5});
+				gbox.blitText(gbox._screenCtx,{font:"_dbf",dx:2,dy:2,text:"LOADING..."});
 				gbox._gamewaiting=true;
 			}
 			if (gbox._gamewaiting<=1) {
 				var bw=Math.floor(((gbox.getScreenW()-4)*gbox._loaderqueue.getDone())/gbox._loaderqueue.getSize());
-				gbox._screen.getContext("2d").globalAlpha=1;
-				gbox._screen.getContext("2d").fillStyle = gbox._splash.gaugeLittleBackColor;
-				gbox._screen.getContext("2d").fillRect(0,4+gbox.getFont("_dbf").tileh,gbox.getScreenW(),1);
-				gbox._screen.getContext("2d").fillStyle = gbox._splash.gaugeLittleColor;
-				gbox._screen.getContext("2d").fillRect(0,4+gbox.getFont("_dbf").tileh,(bw>0?bw:0),1);
-				gbox._screen.getContext("2d").restore();
+				gbox._screenCtx.globalAlpha=1;
+				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleBackColor;
+				gbox._screenCtx.fillRect(0,4+gbox.getFont("_dbf").tileh,gbox.getScreenW(),1);
+				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleColor;
+				gbox._screenCtx.fillRect(0,4+gbox.getFont("_dbf").tileh,(bw>0?bw:0),1);
+				gbox._screenCtx.restore();
 				gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
 			}
 			if (gbox._gamewaiting) gbox._gamewaiting--;
@@ -1065,11 +1068,12 @@ var gbox={
 		this._canvas[id]=document.createElement("canvas");
 		this._canvas[id].setAttribute('height',h);
 		this._canvas[id].setAttribute('width',w);
-		this._canvas[id].getContext("2d").save();
-		this._canvas[id].getContext("2d").globalAlpha=0;
-		this._canvas[id].getContext("2d").fillStyle = gbox.COLOR_BLACK;
-		this._canvas[id].getContext("2d").fillRect(0,0,w,h);
-		this._canvas[id].getContext("2d").restore();
+		var canvasCtx = this._canvas[id].getContext("2d");
+		canvasCtx.save();
+		canvasCtx.globalAlpha=0;
+		canvasCtx.fillStyle = gbox.COLOR_BLACK;
+		canvasCtx.fillRect(0,0,w,h);
+		canvasCtx.restore();
 	},
 
 	/**
@@ -1120,7 +1124,7 @@ var gbox={
 	* Gets the buffer canvas context.
 	* @returns {Object} A DOM Canvas context object.
 	*/
-	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null); },
+	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screenCtx):null); },
 
 	/**
 	* Gets a given canvas.
@@ -1367,7 +1371,7 @@ var gbox={
 	* Draws an image directly to the screen's current canvas context. Used internally in gbox.go(). Probably shouldn't be used otherwise.
 	*/
 	blitImageToScreen:function(image) {
-		this._screen.getContext("2d").drawImage(image,0,0);
+		this._screenCtx.drawImage(image,0,0);
 	},
 
 	 /**
@@ -1933,37 +1937,37 @@ var gbox={
 	_waitforloaded:function() {
 		var aul;
 		if (gbox._loaderqueue.isBusy()||(gbox._minimalexpired!=2)) {
-			var tox=gbox._screen.getContext("2d");
-			tox.save();
-			gbox.blitFade(tox,{alpha:1});
+			var tox = gbox._screenCtx;
+			gbox._screenCtx.save();
+			gbox.blitFade(gbox._screenCtx,{alpha:1});
 			if (!gbox._minimalexpired&&gbox._splashscreeniscompleted()) {
 				gbox._minimalexpired=1;
 				setTimeout(gbox._minimaltimeexpired,gbox._splash.minimalTime);
 			}
-			if (gbox._splash.loading) gbox._splash.loading(tox,gbox._loaderqueue.getDone(),gbox._loaderqueue.getTotal());
+			if (gbox._splash.loading) gbox._splash.loading(gbox._screenCtx,gbox._loaderqueue.getDone(),gbox._loaderqueue.getTotal());
 			if (gbox._flags.loadscreen == "c64") {
 					var p=0, l=0;
 					while (p!=gbox.getScreenH()) {
 						l=10+Math.floor(Math.random()*gbox.getScreenH()/4);
 						if (p+l>gbox.getScreenH()) l=gbox.getScreenH()-p;
-						tox.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random()*gbox.PALETTES.c64.order.length)]];
-						tox.fillRect(0,p,gbox.getScreenW(),l);
+						gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random()*gbox.PALETTES.c64.order.length)]];
+						gbox._screenCtx.fillRect(0,p,gbox.getScreenW(),l);
 						p+=l;
 					}
-					tox.fillStyle = gbox.PALETTES.c64.colors.lightblue;
-					tox.fillRect(Math.floor(gbox.getScreenW()/10),Math.floor(gbox.getScreenH()/10),gbox.getScreenW()-Math.floor(gbox.getScreenW()/5),gbox.getScreenH()-Math.floor(gbox.getScreenH()/5));
+					gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors.lightblue;
+					gbox._screenCtx.fillRect(Math.floor(gbox.getScreenW()/10),Math.floor(gbox.getScreenH()/10),gbox.getScreenW()-Math.floor(gbox.getScreenW()/5),gbox.getScreenH()-Math.floor(gbox.getScreenH()/5));
 					if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
 						var dw=gbox.getScreenW()/4;
 						var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
-						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:(gbox.getScreenW()-dw)/2,dy:(gbox.getScreenH()-dh)/2,dw:dw,dh:dh});
+						gbox.blit(gbox._screenCtx,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:(gbox.getScreenW()-dw)/2,dy:(gbox.getScreenH()-dh)/2,dw:dw,dh:dh});
 					}
 			} else {
 					if (gbox._splash.background&&gbox.imageIsLoaded("_splash"))
-						gbox.blit(tox,gbox.getImage("_splash"),{w:gbox.getImage("_splash").width,h:gbox.getImage("_splash").height,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
+						gbox.blit(gbox._screenCtx,gbox.getImage("_splash"),{w:gbox.getImage("_splash").width,h:gbox.getImage("_splash").height,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
 					if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
 						var dw=gbox.getScreenW()/4;
 						var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
-						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:gbox.getScreenW()-dw-5,dy:gbox.getScreenH()-dh-5,dw:dw,dh:dh});
+						gbox.blit(gbox._screenCtx,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:gbox.getScreenW()-dw-5,dy:gbox.getScreenH()-dh-5,dw:dw,dh:dh});
 					}
 					if (gbox._splash.footnotes&&gbox.imageIsLoaded("_dbf")) {
 						if (!gbox.getCanvas("_footnotes")) {
@@ -1977,20 +1981,20 @@ var gbox={
 												text:gbox._splash.footnotes[i]
 											});
 						}
-						gbox.blitAll(tox,gbox.getCanvas("_footnotes"),{dx:5,dy:gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
+						gbox.blitAll(gbox._screenCtx,gbox.getCanvas("_footnotes"),{dx:5,dy:gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
 					}
 					if (gbox._loaderqueue.isBusy()) {
 						var bw=Math.floor(((gbox.getScreenW()-4)*gbox._loaderqueue.getDone())/gbox._loaderqueue.getTotal());
-						tox.globalAlpha=1;
-						tox.fillStyle = gbox._splash.gaugeBorderColor;
-						tox.fillRect(0,Math.floor((gbox.getScreenH()-gbox._splash.gaugeHeight)/2),gbox.getScreenW(),gbox._splash.gaugeHeight);
-						tox.fillStyle = gbox._splash.gaugeBackColor;
-						tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),gbox.getScreenW()-4,gbox._splash.gaugeHeight-2);
-						tox.fillStyle = gbox._splash.gaugeColor;
-						tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),(bw>0?bw:0),gbox._splash.gaugeHeight-2);
+						gbox._screenCtx.globalAlpha=1;
+						gbox._screenCtx.fillStyle = gbox._splash.gaugeBorderColor;
+						gbox._screenCtx.fillRect(0,Math.floor((gbox.getScreenH()-gbox._splash.gaugeHeight)/2),gbox.getScreenW(),gbox._splash.gaugeHeight);
+						gbox._screenCtx.fillStyle = gbox._splash.gaugeBackColor;
+						gbox._screenCtx.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),gbox.getScreenW()-4,gbox._splash.gaugeHeight-2);
+						gbox._screenCtx.fillStyle = gbox._splash.gaugeColor;
+						gbox._screenCtx.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),(bw>0?bw:0),gbox._splash.gaugeHeight-2);
 					}
 			}
-			tox.restore();
+			gbox._screenCtx.restore();
 			gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
 			setTimeout(gbox._waitforloaded,50);
 		} else {
