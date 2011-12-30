@@ -209,6 +209,7 @@ var gbox={
 	},
 
 	// VARS
+	_basepath : "akihabara/",
 	_autoid:0,
 	_cb:null, // callback for loadAll()
 	_keyboard:[],
@@ -240,7 +241,8 @@ var gbox={
 	_tiles:{},
 	_images:{},
 	_camera:{},
-	_debugfont:"akihabara/debugfont.png",
+	_debugfont: "debugfont.png",
+	getDebugFont: function(){ return gbox._basepath + gbox._debugfont; },
 	_screen:0,
 	_screenposition:0,
 	_keyboardpicker:0,
@@ -932,7 +934,7 @@ var gbox={
 	getObject:function(group,id) {return this._objects[group][id]; },
 
 	/**
-	* Creates a font.
+	* Creates a <font></font>.
 	* @param {Object} data An object containing: <ul><li>id: the id of the font</li>
 	* <li>image: reference to the font image loaded (must contain font character tiles in ASCII order)</li>
 	* <li>firstletter: the ASCII character that the font image's first character corresponds to</li>
@@ -942,7 +944,7 @@ var gbox={
 	* <li>gapx: x-coord gap between tile columns, in pixels</li>
 	* <li>gapy: y-coord gap between tile rows, in pixels</li></ul>
 	* @example
-	* gbox.addImage('font', 'font.png');
+	* gbox.('font', 'font.png');
 	* gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
 	*/
 	addFont:function(data) {
@@ -1200,7 +1202,7 @@ var gbox={
 		// Set the callback function, which is called after the resources are loaded.
 		if (!this._cb) this._cb = cb;
 		// Default stuff
-		this.addImage("_dbf",this._debugfont);
+		this.addImage("_dbf",this.getDebugFont() );
 		if (this._splash.background) this.addImage("_splash",this._splash.background);
 		gbox.addFont({id:"_dbf",image:"_dbf",firstletter:" ",tileh:5,tilew:4,tilerow:16,gapx:0,gapy:0});
 		if (!gbox._splash.minimalTime)
@@ -1328,8 +1330,18 @@ var gbox={
 			tile=data.text.charCodeAt(y)-fn.firstascii;
 			if (tile>=0) {
 				if (data.clear) tox.clearRect(dx+(y*fn.tilew),dy,(data.w?data.w:fn.tilew),(data.h?data.h:fn.tileh));
-				this._safedrawimage(tox,this.getImage(fn.image), fn.gapx+(fn.tilew*(tile%fn.tilerow)),
-				fn.gapy+(fn.tileh*Math.floor(tile/fn.tilerow)),fn.tilew,fn.tileh,dx+(y*fn.tilew),dy,(data.w?data.w:fn.tilew),(data.h?data.h:fn.tileh));
+				this._safedrawimage(
+					tox,
+					this.getImage(fn.image),
+					fn.gapx+( fn.tilew * ( tile % fn.tilerow ) ),
+					fn.gapy+( fn.tileh * Math.floor( tile / fn.tilerow ) ),
+					fn.tilew,
+					fn.tileh,
+					dx+( y * fn.tilew ),
+					dy,
+					( data.w ? data.w : fn.tilew ),
+					( data.h ? data.h : fn.tileh )
+				);
 			}
 		}
 		tox.restore();
@@ -1720,6 +1732,7 @@ var gbox={
 			}
 		}
 	},
+	setBasePath :function(a){ this._basepath = a; },
 	setSplashSettings:function(a) { for (var n in a) this._splash[n]=a[n]; },
 	setOfflineCache:function(a) { this._flags.offlinecache=a; },
 	setDebugFont:function(a) { this._debugfont=a; },
