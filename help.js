@@ -528,10 +528,12 @@ var help={
 			};
 			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false; };
 		}
+
+		if (typeof data.basepath == 'string') gbox.setBasePath(data.basepath);
 		if (data.debugfont) gbox.setDebugFont(data.debugfont);
 		if (data.offlinecache) gbox.setOfflineCache(data.offlinecache);
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
-		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
+		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background: gbox._basepath + "splash.png"});
 		if (!data.splash||(data.splash.minimalTime==null)) gbox.setSplashSettings({minimalTime:3000});
 		if (!data.splash||(data.splash.footnotes==null)) gbox.setSplashSettings({footnotes:footnotes});
 		if (!data||!data.hardwareonly) {
@@ -581,12 +583,12 @@ var help={
 			if (help.geturlparameter("touch")!="no" && (help.geturlparameter("touch")=="yes"||device.touch)){
 				switch (data.padmode) {
 					case "fretboard":
-						iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});
+						iphofretboard.initialize({h:100,bg: gbox._basepath + "fretboard.png"});
 						break;
 					case "none":
 						break;
 					default:
-						iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});
+						iphopad.initialize({h:100,dpad: gbox._basepath + "dpad.png",buttons: gbox._basepath + "buttons.png",bg: gbox._basepath + "padbg.png"});
 						break;
 				}
 			}
