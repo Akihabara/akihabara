@@ -1937,7 +1937,6 @@ var gbox={
 	_waitforloaded:function() {
 		var aul;
 		if (gbox._loaderqueue.isBusy()||(gbox._minimalexpired!=2)) {
-			var tox = gbox._screenCtx;
 			gbox._screenCtx.save();
 			gbox.blitFade(gbox._screenCtx,{alpha:1});
 			if (!gbox._minimalexpired&&gbox._splashscreeniscompleted()) {
