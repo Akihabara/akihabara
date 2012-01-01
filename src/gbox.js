@@ -6,6 +6,7 @@ var dynalist={
 
 	create:function() {
 		return {
+			test:null,
 			first:null,
 			last:null,
 			data:[],
@@ -209,6 +210,7 @@ var gbox={
 	},
 
 	// VARS
+	_debugTool : {},
 	_basepath : "akihabara/images/",
 	_autoid:0,
 	_cb:null, // callback for loadAll()
@@ -539,6 +541,7 @@ var gbox={
 	},
 
 	_nextframe:function(){
+		debug.run( gbox._debugTool );
 		gbox._framestart=gbox._mspf-(new Date().getTime()-gbox._framestart);
 		if (gbox._autoskip)
 			if ((gbox._framestart<gbox._autoskip.lowidle)&&(gbox._frameskip<gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip+1); else
@@ -581,6 +584,7 @@ var gbox={
 	* This function is called once per frame. This is where the basic rendering and processing of groups occurs.
 	*/
 	go:function() {
+
 		if (gbox._loaderqueue.isBusy()) {
 			if (gbox._gamewaiting==1) {
 				gbox.blitFade(gbox._screenCtx,{alpha:0.5});
