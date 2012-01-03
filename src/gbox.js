@@ -6,6 +6,7 @@ var dynalist={
 
 	create:function() {
 		return {
+			test:null,
 			first:null,
 			last:null,
 			data:[],
@@ -209,6 +210,7 @@ var gbox={
 	},
 
 	// VARS
+	_debugTool : {},
 	_basepath : "akihabara/images/",
 	_autoid:0,
 	_cb:null, // callback for loadAll()
@@ -243,6 +245,7 @@ var gbox={
 	_camera:{},
 	_debugfont: "debugfont.png",
 	getDebugFont: function(){ return gbox._basepath + gbox._debugfont; },
+	_container:'',
 	_screen:0,
 	_screenCtx:null,
 	_screenposition:0,
@@ -264,7 +267,7 @@ var gbox={
 	_frameskip:0,
 	_autoskip:{min:0,max:5,lowidle:0,hiidle:5}, // minimum frameskip, maximum frameskip, minimum idle time allowed for increasing frameskip, maximum idle time allowed for decreasing frameskip
 	_fskid:0,
-	_statbar:0,
+	_statbar:'',
 	_border:0,
 	_garbage:[],
 	_zindexch:[],
@@ -365,12 +368,6 @@ var gbox={
 	*/
 	getFlag:function(f) { return this._flags[f]; },
 
-	/**
-	* Sets the gbox._statbar property. Only useful if called before gbox.initScreen. Debugging funtionality.
-	* Much easier to access if you add '?statusbar=1' to your URL.
-	* @param {Boolean} f The value to write to gbox._statbar.
-	*/
-	setStatusBar:function(a) { this._statbar=a; },
 	setScreenBorder:function(a) { this._border=a; },
 
 	/**
@@ -412,6 +409,7 @@ var gbox={
 		this._camera.y=0;
 		this._camera.h=h;
 		this._camera.w=w;
+		gbox._container = this._box;
 		this._box.appendChild(this._screen);
 		container.appendChild(this._box);
 		document.body.appendChild(container);
@@ -419,16 +417,7 @@ var gbox={
 		this.createCanvas("_buffer");
 		gbox.addEventListener(window,'keydown', this._keydown);
 		gbox.addEventListener(window,'keyup', this._keyup);
-		if (this._statbar) {
-			this._statbar=document.createElement("div");
-			if (this._border) this._statbar.style.border="1px solid black";
-			this._statbar.style.margin="auto";
-			this._statbar.style.backgroundColor="#ffffff";
-			this._statbar.style.fontSize="10px";
-			this._statbar.style.fontFamily="sans-serif";
-			this._statbar.style.width=(w*this._zoom)+"px";
-			this._box.appendChild(this._statbar);
-		}
+
 		// Keyboard support on devices that needs focus (like iPad) - actually is not working for a bug on WebKit's "focus" command.
 		this._keyboardpicker=document.createElement("input");
 		this._keyboardpicker.onclick=function(evt) { gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
@@ -470,12 +459,6 @@ var gbox={
 	* @param {Boolean} db The value to write to gbox._db. True enables double buffering, false disables.
 	*/
 	setDoubleBuffering:function(db){this._db=db; },
-
-	/**
-	* Writes text to the status bar, but only if the status bar is enabled.
-	* @param {String} txt The text to write to the status bar.
-	*/
-	setStatBar:function(txt){ if (gbox._statbar) this._statbar.innerHTML=(txt?txt:"&nbsp"); },
 
 	/**
 	* Set the frames per second rate.
@@ -543,8 +526,8 @@ var gbox={
 		if (gbox._autoskip)
 			if ((gbox._framestart<gbox._autoskip.lowidle)&&(gbox._frameskip<gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip+1); else
 			if ((gbox._framestart>gbox._autoskip.hiidle)&&(gbox._frameskip>gbox._autoskip.min)) gbox.setFrameskip(gbox._frameskip-1);
-		if (gbox._statbar) gbox.debugGetstats();
 		this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));
+		debug.run( gbox._debugTool );
 	},
 
 	/**
@@ -581,6 +564,7 @@ var gbox={
 	* This function is called once per frame. This is where the basic rendering and processing of groups occurs.
 	*/
 	go:function() {
+
 		if (gbox._loaderqueue.isBusy()) {
 			if (gbox._gamewaiting==1) {
 				gbox.blitFade(gbox._screenCtx,{alpha:0.5});
@@ -595,7 +579,7 @@ var gbox={
 				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleColor;
 				gbox._screenCtx.fillRect(0,4+gbox.getFont("_dbf").tileh,(bw>0?bw:0),1);
 				gbox._screenCtx.restore();
-				gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
+				debug.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
 			}
 			if (gbox._gamewaiting) gbox._gamewaiting--;
 			setTimeout(gbox.go,1000);
@@ -649,37 +633,6 @@ var gbox={
 			else
 				gbox._nextframe();
 		}
-	},
-
-	/**
-	* Displays basic audio, object, and performance statistics in the status bar. Automatically called each frame if the status bar is enabled.
-	*/
-	debugGetstats:function() {
-		var statline="Idle: "+gbox._framestart+"/"+gbox._mspf+(gbox._frameskip>0?" ("+gbox._frameskip+"skip)":"")+" | ";
-		var cnt=0, g=0;
-		for (g=0;g<gbox._groups.length;g++)
-			if (gbox._groupplay[gbox._groups[g]]) {
-				cnt=0;
-				for (var obj in gbox._objects[gbox._groups[g]]) cnt++;
-				if (cnt) statline+=gbox._groups[g]+"["+cnt+"] ";
-			}
-		cnt=0;
-		var ply=0;
-		for (g in gbox._audio.aud)
-			for (var x=0;x<gbox._audio.aud[g].length;x++) {
-				cnt++;
-				if (!gbox._audio.aud[g][x].paused&&!gbox._audio.aud[g][x].ended) ply++;
-			}
-		statline+="| audio: "+ply+"/"+cnt+":"+this._audioteam;
-			/*
-			statline+="<br><br>";
-		var id=gbox._zindex.first;
-			while (id!=null) {
-				if (gbox._groupplay[gbox._zindex.data[id].g]) statline+=gbox._zindex.data[id].g+" | "+gbox._zindex.data[id].o+" ("+gbox._zindex.data[id].__prio+")<br>";
-				id=gbox._zindex.data[id].__next;
-			}
-			*/
-		gbox.setStatBar(statline);
 	},
 
 	setZindex:function(th,z) {
@@ -1994,11 +1947,11 @@ var gbox={
 					}
 			}
 			gbox._screenCtx.restore();
-			gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
+			debug.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
 			setTimeout(gbox._waitforloaded,50);
 		} else {
 			gbox.deleteImage("_splash");
-			gbox.setStatBar();
+			debug.setStatBar();
 			gbox._cb();
 		}
 	},
