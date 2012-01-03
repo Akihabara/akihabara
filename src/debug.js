@@ -28,9 +28,10 @@ var debug = {
 	statusBar : function(data){
 
 		// Default options
-		data.background	|| ( data.backgorund 	= "#FFF" );
-		data.color 			|| ( data.color 			= "#FFF" );
-		data.font 			|| ( data.font 				= 'lighter 10px sans-serif' );
+		data 									|| ( data 								= {} );
+		data.backgroundColor	|| ( data.backgroundColor	= "#FFF" );
+		data.color 						|| ( data.color 					= "#000" );
+		data.font 						|| ( data.font 						= 'lighter 10px sans-serif' );
 
 		this.addDebugAction('statusBar', data);
 	},
@@ -40,6 +41,8 @@ var debug = {
 		gbox._statbar.innerHTML = ( txt || "&nbsp" );
 
 		function createStatBar(){
+			if( !gbox._debugTool.statusBar ) return false;
+
 			var statbar=document.createElement("div");
 			if (gbox._border) statbar.style.border = "1px solid black";
 			statbar.style.margin = "auto";
@@ -59,8 +62,6 @@ var debug = {
 	},
 
 	run : function(data){
-
-		//console.log('Debug Init: ', data);
 
 		if(data.fpsCounter){
 
