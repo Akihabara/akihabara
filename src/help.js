@@ -540,7 +540,7 @@ var help={
 			document.body.style.backgroundColor="#000000";
 			gbox.setScreenBorder(false);
 		}
-		if (help.geturlparameter("statusbar")) gbox.setStatusBar(1);
+		if (help.geturlparameter("statusbar")) debug.statusBar();
 		if (help.geturlparameter("db")||device.doublebuffering) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
