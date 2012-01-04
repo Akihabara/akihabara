@@ -37,7 +37,7 @@ Nice to have
 Mailing List
 ------------
 
-* https://groups.google.com/forum/#!forum/akihabara-engine
+* http://groups.google.com.br/group/akihabara-engine
 
 Wiki
 ----
