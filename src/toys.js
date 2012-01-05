@@ -282,34 +282,34 @@ var toys={
 		fadeout:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
 				th.toys[id].fade=0;
-				if (data.audiofade) th.toys[id].stv=gbox.getAudioVolume(data.audiofade);
-				if (data.audiochannelfade) th.toys[id].chv=gbox.getChannelVolume(data.audiochannelfade);
+				if (data.audiofade) th.toys[id].stv=audio.getAudioVolume(data.audiofade);
+				if (data.audiochannelfade) th.toys[id].chv=audio.getChannelVolume(data.audiochannelfade);
 			}
 			th.toys[id].fade+=data.fadespeed;
 			if (th.toys[id].fade>1) th.toys[id].fade=1;
 			data.alpha=th.toys[id].fade;
 			gbox.blitFade(tox,data);
-			if (data.audiofade) gbox.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
+			if (data.audiofade) audio.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
 			if (data.audiochannelfade)
 				if (data.alpha==1)
-					gbox.stopChannel(data.audiochannelfade);
+					audio.stopChannel(data.audiochannelfade);
 				else
-					gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
+					audio.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
 			return toys._toyfrombool(th,id,th.toys[id].fade==1);
 		},
 
 		fadein:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
 				th.toys[id].fade=1;
-				if (data.audiofade) th.toys[id].stv=gbox.getAudioVolume(data.audiofade);
-				if (data.audiochannelfade) th.toys[id].chv=gbox.getChannelDefaultVolume(data.audiochannelfade);
+				if (data.audiofade) th.toys[id].stv=audio.getAudioVolume(data.audiofade);
+				if (data.audiochannelfade) th.toys[id].chv=audio.getChannelDefaultVolume(data.audiochannelfade);
 			}
 			th.toys[id].fade-=data.fadespeed;
 			if (th.toys[id].fade<0) th.toys[id].fade=0;
 			if (th.toys[id].fade) {
 				data.alpha=th.toys[id].fade;
-				if (data.audiofade) gbox.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
-				if (data.audiochannelfade) gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
+				if (data.audiofade) audio.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
+				if (data.audiochannelfade) audio.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
 				gbox.blitFade(tox,data);
 			}
 			return toys._toyfrombool(th,id,th.toys[id].fade==0);
@@ -811,24 +811,24 @@ var toys={
 						if (this.audio)
 							if (this.fadespeed>0) this.destination=1; else this.destination=0;
 						else
-							if (this.fadespeed>0) this.destination=gbox.getChannelDefaultVolume(this.channel); else this.destination=0;
-					if (this.fadespeed>0) gbox.playAudio(this.audio);
+							if (this.fadespeed>0) this.destination=audio.getChannelDefaultVolume(this.channel); else this.destination=0;
+					if (this.fadespeed>0) audio.playAudio(this.audio);
 				};
 
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
-					if (this.audio) gbox.changeAudioVolume(this.audio,this.fadespeed);
+					if (this.audio) audio.changeAudioVolume(this.audio,this.fadespeed);
 					if (this.channel) gbox.changeChannelVolume(this.channel,this.fadespeed);
 					if ((this.audio&&(
-							((this.fadespeed<0)&&(gbox.getAudioVolume(this.audio)<=this.destination))||
-							((this.fadespeed>0)&&(gbox.getAudioVolume(this.audio)>=this.destination))
+							((this.fadespeed<0)&&(audio.getAudioVolume(this.audio)<=this.destination))||
+							((this.fadespeed>0)&&(audio.getAudioVolume(this.audio)>=this.destination))
 						))||
 						(this.channel&&(
-							((this.fadespeed<0)&&(gbox.getChannelVolume(this.channel)<=this.destination))||
-							((this.fadespeed>0)&&(gbox.getChannelVolume(this.channel)>=this.destination))
+							((this.fadespeed<0)&&(audio.getChannelVolume(this.channel)<=this.destination))||
+							((this.fadespeed>0)&&(audio.getChannelVolume(this.channel)>=this.destination))
 						))
 					) {
-						if (this.channel&&this.stoponmute&&(this.fadespeed<0)) gbox.stopChannel(this.channel);
-						if (this.audio&&this.stoponmute&&(this.fadespeed<0)) gbox.stopAudio(this.audio);
+						if (this.channel&&this.stoponmute&&(this.fadespeed<0)) audio.stopChannel(this.channel);
+						if (this.audio&&this.stoponmute&&(this.fadespeed<0)) audio.stopAudio(this.audio);
 						gbox.trashObject(this);
 					}
 				};

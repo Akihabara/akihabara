@@ -92,12 +92,12 @@ var debug = {
 				}
 			cnt = 0;
 			var ply = 0;
-			for (g in gbox._audio.aud)
-				for (var x = 0; x < gbox._audio.aud[g].length; x++) {
+			for (g in audio._audio.aud)
+				for (var x = 0; x < audio._audio.aud[g].length; x++) {
 					cnt++;
-					if (!gbox._audio.aud[g][x].paused&&!gbox._audio.aud[g][x].ended) ply++;
+					if (!audio._audio.aud[g][x].paused&&!audio._audio.aud[g][x].ended) ply++;
 				}
-			statline += "| audio: " + ply + "/" + cnt + ":" + gbox._audioteam;
+			statline += "| audio: " + ply + "/" + cnt + ":" + audio._audioteam;
 			this.setStatBar(statline);
 		}
 

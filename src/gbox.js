@@ -1532,7 +1532,7 @@ var gbox={
 					}
 					break;
 				case "audio":
-					gbox._createnextaudio(current.data);
+					audio._createnextaudio(current.data);
 					break;
 				case "exec-onl":
 					current.func(current.call,current.pack);
