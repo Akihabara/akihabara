@@ -453,7 +453,7 @@ var topview = {
 		th.touchedfloor=false;
 		if (th.z>0) {
 			th.accz=(data==null?0:-Math.floor(th.accz/data.bounce));
-			if (data&&data.audiobounce&&th.accz) gbox.hitAudio(data.audiobounce);
+			if (data&&data.audiobounce&&th.accz) audio.hitAudio(data.audiobounce);
 			th.z=0;
 			th.touchedfloor=true;
 		}
@@ -674,13 +674,13 @@ var topview = {
 		obj[(data.logicon==null?"first":data.logicon)]=function() {
 			if (this.closing) {
 				if (!this.ismoving) {
-					if (this.audiobefore) gbox.hitAudio(this.audiobefore);
+					if (this.audiobefore) audio.hitAudio(this.audiobefore);
 					this.ismoving=true;
 				}
 				this.whileMoving();
 				this.opencounter--;
 				if (this.opencounter<0) {
-					if (this.audioafter) gbox.hitAudio(this.audioafter);
+					if (this.audioafter) audio.hitAudio(this.audioafter);
 					this.ismoving=false;
 					this.opencounter=0;
 					this.closing=false;
@@ -689,13 +689,13 @@ var topview = {
 			}
 			if (this.opening) {
 				if (!this.ismoving) {
-					if (this.audiobefore) gbox.hitAudio(this.audiobefore);
+					if (this.audiobefore) audio.hitAudio(this.audiobefore);
 					this.ismoving=true;
 				}
 				this.whileMoving();
 				this.opencounter++;
 				if (this.opencounter>=this.doorheight) {
-					if (this.audioafter) gbox.hitAudio(this.audioafter);
+					if (this.audioafter) audio.hitAudio(this.audioafter);
 					this.ismoving=false;
 					if (!this.whenOpened()) gbox.trashObject(this);
 				}

@@ -76,7 +76,7 @@ var toys={
 					if (th.toys[id].time) {
 						th.toys[id].time--;
 						if (data.audiocritical&&(th.toys[id].time<=data.critical))
-							gbox.hitAudio(data.audiocritical);
+							audio.hitAudio(data.audiocritical);
 					} else th.toys[id].done=true;
 				} else
 					th.toys[id].time++;
@@ -131,15 +131,15 @@ var toys={
 			}
 			if (!th.toys[id].ok) {
 				if (gbox.keyIsHit(opt.keys.up)&&(th.toys[id].selected>0)) {
-					if (opt.audiooption) gbox.hitAudio(opt.audiooption);
+					if (opt.audiooption) audio.hitAudio(opt.audiooption);
 					th.toys[id].selected--;
 				} else
 				if (gbox.keyIsHit(opt.keys.down)&&(th.toys[id].selected<opt.items.length-1)) {
-					if (opt.audiooption) gbox.hitAudio(opt.audiooption);
+					if (opt.audiooption) audio.hitAudio(opt.audiooption);
 					th.toys[id].selected++;
 				} else
 				if (gbox.keyIsHit(opt.keys.ok)) {
-					if (opt.audioconfirm) gbox.hitAudio(opt.audioconfirm);
+					if (opt.audioconfirm) audio.hitAudio(opt.audioconfirm);
 					th.toys[id].ok=1;
 				} else
 				if (gbox.keyIsHit(opt.keys.cancel)) th.toys[id].ok=-1;
@@ -362,7 +362,7 @@ var toys={
 						trigo.translate(th.toys[id],trigo.getAngle(th.toys[id],data),data.speed);
 				else
 					if (!th.toys[id].played) {
-						if (data.audioreach) gbox.hitAudio(data.audioreach);
+						if (data.audioreach) audio.hitAudio(data.audioreach);
 						th.toys[id].played=true;
 					}
 				th.toys[id].every=data.every;
@@ -395,7 +395,7 @@ var toys={
 			} else {
 				if (!th.toys[id].done) {
 					th.toys[id].done=true;
-					if (data.audioreach) gbox.hitAudio(data.audioreach);
+					if (data.audioreach) audio.hitAudio(data.audioreach);
 				}
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y});
 				return toys._toydone(th,id);
@@ -412,7 +412,7 @@ var toys={
 				th.toys[id].zoom-=data.speed;
 				if (th.toys[id].zoom<=1) {
 					th.toys[id].zoom=1;
-					if (data.audioreach) gbox.hitAudio(data.audioreach);
+					if (data.audioreach) audio.hitAudio(data.audioreach);
 				}
 				gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{h:th.toys[id].img.height,w:th.toys[id].img.width,dx:data.x-Math.floor(th.toys[id].img.width*(th.toys[id].zoom-1)/2),dy:data.y-Math.floor(th.toys[id].img.height*(th.toys[id].zoom-1)/2),dh:Math.floor(th.toys[id].img.height*th.toys[id].zoom),dw:Math.floor(th.toys[id].img.width*th.toys[id].zoom),alpha:1/th.toys[id].zoom});
 				return toys._toybusy(th,id);
@@ -435,7 +435,7 @@ var toys={
 				gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{dh:th.toys[id].cnt,dw:th.toys[id].lw,dx:data.x,dy:data.y+th.toys[id].lh-th.toys[id].cnt,alpha:data.alpha});
 				if (data.reflex) gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{dh:th.toys[id].cnt,dw:th.toys[id].lw,dx:data.x,dy:data.y+th.toys[id].lh,alpha:data.reflex,flipv:true});
 				if (th.toys[id].cnt>=th.toys[id].lh)
-					if (data.audioreach) gbox.hitAudio(data.audioreach);
+					if (data.audioreach) audio.hitAudio(data.audioreach);
 				return toys._toybusy(th,id);
 			} else {
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y});
@@ -454,7 +454,7 @@ var toys={
 			}
 			if (!th.toys[id].done) {
 				if (th.toys[id].y+th.toys[id].h>=data.floory) {
-					if (data.audiobounce) gbox.hitAudio(data.audiobounce);
+					if (data.audiobounce) audio.hitAudio(data.audiobounce);
 					th.toys[id].y=data.floory-th.toys[id].h;
 					th.toys[id].accy=-Math.ceil(th.toys[id].accy/(data.heavy?data.heavy:2));
 					th.toys[id].done=(th.toys[id].accy==0);
@@ -514,7 +514,7 @@ var toys={
 						if (th.toys[id].scene.bonus) {
 							gbox.createCanvas("bonus-"+id,{w:th.toys[id].sceneW,h:(th.toys[id].scene.bonus.length)*(th.toys[id].fd.tileh+th.toys[id].scene.spacing)});
 						}
-						if (th.toys[id].scene.audiomusic) gbox.hitAudio(th.toys[id].scene.audiomusic);
+						if (th.toys[id].scene.audiomusic) audio.hitAudio(th.toys[id].scene.audiomusic);
 					}
 				}
 				if (!th.toys[id].ended) {
@@ -540,7 +540,7 @@ var toys={
 							if (th.toys[id].counter==th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter=0;
-								if (th.toys[id].scene.audio&&!(th.toys[id].letter%3)) gbox.hitAudio(th.toys[id].scene.audio);
+								if (th.toys[id].scene.audio&&!(th.toys[id].letter%3)) audio.hitAudio(th.toys[id].scene.audio);
 								var tmp=th.toys[id].letter;
 								var row=0;
 								while (tmp>th.toys[id].scene.talk[row].length) {

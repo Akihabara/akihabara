@@ -112,7 +112,7 @@ var platformer={
 
 	jumpKeys:function(th,key) {
 		if ((platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
-			if (key.audiojump) gbox.hitAudio(key.audiojump);
+			if (key.audiojump) audio.hitAudio(key.audiojump);
 			th.accy=-th.jumpaccy;
 			th.curjsize=th.jumpsize;
 			return true;
