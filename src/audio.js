@@ -323,7 +323,7 @@ var audio={
 	getAudioDuration:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) return this._audio.aud[a][this._audio.ast[a].cy].duration; else return 0; },
 
 	changeAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { if (this._audio.ast[a].volume+vol>1) this._audio.ast[a].volume=1; else  if (this._audio.ast[a].volume+vol<0) this._audio.ast[a].volume=0; else this._audio.ast[a].volume+=vol; this._updateaudio(a); } },
-	setCanAudio:function(a) { this._canaudio=!this._flags.noaudio&&a;},
+	setCanAudio:function(a) { this._canaudio=!gbox._flags.noaudio&&a;},
 	setForcedMimeAudio:function(a){ this._forcedmimeaudio=a;},
 	setAudioChannels:function(a){
 		this._audiochannels=a;
@@ -334,5 +334,5 @@ var audio={
 		}
 	},
 	setAudioTeam:function(a){ this._audioteam=a; },
-	setLowerAudioTeam:function(a){ this._loweraudioteam=a; },
-
+	setLowerAudioTeam:function(a){ this._loweraudioteam=a; }
+}
