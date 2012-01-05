@@ -26,22 +26,22 @@ var audio={
 	_singlechannelaudio:false,
 	_audiomutevolume:0.0001, // Zero is still not accepted by everyone :(
 	_rawstopaudio:function(su) {
-		if (this._audiocompatmode==1) {
-			if (su.duration-su.currentTime>this._fakestoptime)
-				su.currentTime=su.duration-this._fakestoptime;
+		if (audio._audiocompatmode==1) {
+			if (su.duration-su.currentTime>audio._fakestoptime)
+				su.currentTime=su.duration-audio._fakestoptime;
 			su.muted=true;
 		} else
 			su.pause();
 	},
 
 	_rawplayaudio:function(su) {
-		if (this._audiocompatmode==1) {
+		if (audio._audiocompatmode==1) {
 			try { su.currentTime=0; } catch (e) {}
 			su.muted=false;
 			su.play();
-		} else if (this._audiocompatmode==2) {
+		} else if (audio._audiocompatmode==2) {
 			su.load();
-			this._playerforcer=setInterval(function(e){try{su.play();clearInterval(this._playerforcer);}catch(e){}},1000);
+			audio._playerforcer=setInterval(function(e){try{su.play();clearInterval(audio._playerforcer);}catch(e){}},1000);
 		} else {
 			try { su.currentTime=0; } catch(e){}
 			su.play();
@@ -50,34 +50,34 @@ var audio={
 
 	_finalizeaudio:function(ob,who,donext){
 		var cur=(who?who:this);
-		gbox.removeEventListener(cur,'ended', this._finalizeaudio);
-		gbox.removeEventListener(cur,'timeupdate', this._checkprogress);
+		gbox.removeEventListener(cur,'ended', audio._finalizeaudio);
+		gbox.removeEventListener(cur,'timeupdate', audio._checkprogress);
 
-		gbox.addEventListener(cur,'ended', this._playbackended);
+		gbox.addEventListener(cur,'ended', audio._playbackended);
 		if (donext) gbox._loaderloaded();
 	},
 
 	_audiodoload:function() {
-		if (this._audiocompatmode==1) this._audio.lding.muted=true;
-		else if (this._audiocompatmode==2)
-			this._finalizeaudio(null,this._audio.lding,true);
+		if (audio._audiocompatmode==1) audio._audio.lding.muted=true;
+		else if (audio._audiocompatmode==2)
+			audio._finalizeaudio(null,audio._audio.lding,true);
 		else {
-			this._audio.lding.load();
-			this._audio.lding.play();
+			audio._audio.lding.load();
+			audio._audio.lding.play();
 		}
 	},
 
 	_timedfinalize:function() {
-		this._rawstopaudio(this._audio.lding);
-		this._finalizeaudio(null,this._audio.lding,true);
+		audio._rawstopaudio(audio._audio.lding);
+		audio._finalizeaudio(null,audio._audio.lding,true);
 	},
 
 	_checkprogress:function() {
-		if (this._audio.lding.currentTime>this._audioprefetch) this._timedfinalize();
+		if (audio._audio.lding.currentTime>audio._audioprefetch) audio._timedfinalize();
 	},
 
 	_fakecheckprogress:function() {
-		if (this._audio.lding.currentTime>this._audioprefetch) this._timedfinalize(); else setTimeout(this._fakecheckprogress,this._fakecheckprogressspeed);
+		if (audio._audio.lding.currentTime>audio._audioprefetch) audio._timedfinalize(); else setTimeout(audio._fakecheckprogress,audio._fakecheckprogressspeed);
 	},
 
 	_audiofiletomime:function(f) {
@@ -95,18 +95,18 @@ var audio={
 
 		if (cau.def) {
 			this.deleteAudio(cau.id);
-			this._audio.aud[cau.id]=[];
-			this._audio.ast[cau.id]={cy:-1,volume:1,channel:null,play:false,mute:false,filename:cau.filename[0]};
-			if (cau.def) for (var a in cau.def) this._audio.ast[cau.id][a]=cau.def[a];
+			audio._audio.aud[cau.id]=[];
+			audio._audio.ast[cau.id]={cy:-1,volume:1,channel:null,play:false,mute:false,filename:cau.filename[0]};
+			if (cau.def) for (var a in cau.def) audio._audio.ast[cau.id][a]=cau.def[a];
 		}
-		if ((this._createmode==0)&&(cau.team>0)) {
-			ael =this._audio.aud[cau.id][0].cloneNode(true);
-			this._finalizeaudio(null,ael,false);
+		if ((audio._createmode==0)&&(cau.team>0)) {
+			ael =audio._audio.aud[cau.id][0].cloneNode(true);
+			audio._finalizeaudio(null,ael,false);
 		} else {
 			ael=document.createElement('audio');
-			ael.volume=this._audiomutevolume;
+			ael.volume=audio._audiomutevolume;
 		}
-		if (!this._showplayers) {
+		if (!audio._showplayers) {
 			ael.style.display="none";
 			ael.style.visibility="hidden";
 			ael.style.width="1px";
@@ -115,14 +115,14 @@ var audio={
 			ael.style.left="0px";
 			ael.style.top="-1000px";
 		}
-		ael.setAttribute('controls',this._showplayers);
+		ael.setAttribute('controls',audio._showplayers);
 		ael.setAttribute('aki_id',cau.id);
 		ael.setAttribute('aki_cnt',cau.team);
-		gbox.addEventListener(ael,'loadedmetadata', this._pushaudio); // Push locked audio in safari
-		if (((this._createmode==0)&&(cau.team==0))||(this._createmode==1)) {
-			if (this._forcedmimeaudio) {
+		gbox.addEventListener(ael,'loadedmetadata', audio._pushaudio); // Push locked audio in safari
+		if (((audio._createmode==0)&&(cau.team==0))||(audio._createmode==1)) {
+			if (audio._forcedmimeaudio) {
 				for (i=0;i<cau.filename.length;i++) {
-					if (this._audiofiletomime(cau.filename[i]).indexOf(this._forcedmimeaudio)!=-1) {
+					if (audio._audiofiletomime(cau.filename[i]).indexOf(audio._forcedmimeaudio)!=-1) {
 						ael.src=gbox._breakcacheurl(cau.filename[i]);
 						break;
 					}
@@ -130,7 +130,7 @@ var audio={
 			} else if (ael.canPlayType) {
 				var cmime;
 				for (i=0;i<cau.filename.length;i++) {
-					cmime=this._audiofiletomime(cau.filename[i]);
+					cmime=audio._audiofiletomime(cau.filename[i]);
 					if (("no" != ael.canPlayType(cmime)) && ("" != ael.canPlayType(cmime))) {
 						ael.src=gbox._breakcacheurl(cau.filename[i]);
 						break;
@@ -143,196 +143,196 @@ var audio={
 					ael.appendChild(src);
 				}
 			}
-			gbox.addEventListener(ael,'ended',this._finalizeaudio);
-			if (this._audiocompatmode==1)
-				setTimeout(this._fakecheckprogress,this._fakecheckprogressspeed);
+			gbox.addEventListener(ael,'ended',audio._finalizeaudio);
+			if (audio._audiocompatmode==1)
+				setTimeout(audio._fakecheckprogress,audio._fakecheckprogressspeed);
 			else
-				gbox.addEventListener(ael,'timeupdate',this._checkprogress);
+				gbox.addEventListener(ael,'timeupdate',audio._checkprogress);
 			ael.setAttribute('buffering',"auto");
 			ael.volume=0;
-			this._audio.aud[cau.id].push(ael);
+			audio._audio.aud[cau.id].push(ael);
 			document.body.appendChild(ael);
-			this._audio.lding=ael;
-			setTimeout(this._audiodoload,1);
+			audio._audio.lding=ael;
+			setTimeout(audio._audiodoload,1);
 		} else {
-			this._audio.aud[cau.id].push(ael);
+			audio._audio.aud[cau.id].push(ael);
 			document.body.appendChild(ael);
 			gbox._loaderloaded();
 		}
 	},
 
 	_playbackended:function(e) {
-		if (this._audio.ast[this.getAttribute('aki_id')].cy==this.getAttribute('aki_cnt')) {
-			if (this._audio.ast[this.getAttribute('aki_id')].play&&this._audio.ast[this.getAttribute('aki_id')].loop)
-				if (this._audiocompatmode==2)
-					this._rawplayaudio(this);
+		if (audio._audio.ast[this.getAttribute('aki_id')].cy==this.getAttribute('aki_cnt')) {
+			if (audio._audio.ast[this.getAttribute('aki_id')].play&&audio._audio.ast[this.getAttribute('aki_id')].loop)
+				if (audio._audiocompatmode==2)
+					audio._rawplayaudio(this);
 				else
 					this.currentTime=0;
 			else
-				this._audio.ast[this.getAttribute('aki_id')].play=false;
-		} else if (this._audiocompatmode==1) {
+				audio._audio.ast[this.getAttribute('aki_id')].play=false;
+		} else if (audio._audiocompatmode==1) {
 			this.pause();
 			this.muted=false;
 		}
 	},
 
 	_updateaudio:function(a) {
-		if (this._audio.ast[a].play) {
-			this._audio.aud[a][this._audio.ast[a].cy].volume=(this._audio.ast[a].mute?this._audiomutevolume:
-				this._audiomastervolume*
-				(this._audio.ast[a].volume!=null?this._audio.ast[a].volume:1)*
-				((this._audio.ast[a].channel!=null)&&(this._audiochannels[this._audio.ast[a].channel]!=null)&&(this._audiochannels[this._audio.ast[a].channel].volume!=null)?this._audiochannels[this._audio.ast[a].channel].volume:1)
+		if (audio._audio.ast[a].play) {
+			audio._audio.aud[a][audio._audio.ast[a].cy].volume=(audio._audio.ast[a].mute?audio._audiomutevolume:
+				audio._audiomastervolume*
+				(audio._audio.ast[a].volume!=null?audio._audio.ast[a].volume:1)*
+				((audio._audio.ast[a].channel!=null)&&(audio._audiochannels[audio._audio.ast[a].channel]!=null)&&(audio._audiochannels[audio._audio.ast[a].channel].volume!=null)?audio._audiochannels[audio._audio.ast[a].channel].volume:1)
 			);
 		}
 	},
 
 	_addqueue:function(a) {
-		if (!this._audiodequeuetime)
-			this._dequeueaudio(null,a);
+		if (!audio._audiodequeuetime)
+			audio._dequeueaudio(null,a);
 		else {
-			this._audioactions.push(a);
-			if (!this._audio.qtimer) {
-				this._audio.qtimer=true;
-				setTimeout(this._dequeueaudio,this._audiodequeuetime);
+			audio._audioactions.push(a);
+			if (!audio._audio.qtimer) {
+				audio._audio.qtimer=true;
+				setTimeout(audio._dequeueaudio,audio._audiodequeuetime);
 			}
 		}
 	},
 	_dequeueaudio:function(k,rt) {
-			var ac=(rt?rt:this._audioactions.pop());
+			var ac=(rt?rt:audio._audioactions.pop());
 			switch (ac.t) {
 				case 0:
-					this._updateaudio(ac.a.getAttribute("aki_id"));
-					this._rawplayaudio(ac.a);
+					audio._updateaudio(ac.a.getAttribute("aki_id"));
+					audio._rawplayaudio(ac.a);
 					break;
 				case 1:
-					this._rawstopaudio(ac.a);
+					audio._rawstopaudio(ac.a);
 					break;
 				case 2:
-					this._updateaudio(ac.a.getAttribute("aki_id"));
+					audio._updateaudio(ac.a.getAttribute("aki_id"));
 					break;
 			}
-			if (!rt&&this._audioactions.length) {
-				this._audio.qtimer=true;
-				setTimeout(this._dequeueaudio,this._audiodequeuetime);
-			} else this._audio.qtimer=false;
+			if (!rt&&audio._audioactions.length) {
+				audio._audio.qtimer=true;
+				setTimeout(audio._dequeueaudio,audio._audiodequeuetime);
+			} else audio._audio.qtimer=false;
 
 	},
 
-	getAudioIsSingleChannel:function() { return this._singlechannelaudio; },
-	setAudioIsSingleChannel:function(m) { this._singlechannelaudio=m; },
-	setAudioPositionDelay:function(m) { this._positiondelay=m; },
-	setAudioDequeueTime:function(m) { this._audiodequeuetime=m; },
-	setShowPlayers:function(m) { this._showplayers=m; },
-	setAudioCompatMode:function(m) { this._audiocompatmode=m; },
-	setAudioCreateMode:function(m) { this._createmode=m; },
+	getAudioIsSingleChannel:function() { return audio._singlechannelaudio; },
+	setAudioIsSingleChannel:function(m) { audio._singlechannelaudio=m; },
+	setAudioPositionDelay:function(m) { audio._positiondelay=m; },
+	setAudioDequeueTime:function(m) { audio._audiodequeuetime=m; },
+	setShowPlayers:function(m) { audio._showplayers=m; },
+	setAudioCompatMode:function(m) { audio._audiocompatmode=m; },
+	setAudioCreateMode:function(m) { audio._createmode=m; },
 	addAudio:function(id,filename,def) {
-		if (this._canaudio) {
-			if (this._audio.aud[id])
-				if (this._audio.ast[id].filename==filename[0])
+		if (audio._canaudio) {
+			if (audio._audio.aud[id])
+				if (audio._audio.ast[id].filename==filename[0])
 					return;
 				else
 					this.deleteAudio(id);
-			if (!this._singlechannelaudio||(def.channel==this._singlechannelname)) {
-				var grsize=(def.channel==this._singlechannelname?this._loweraudioteam:(def.background?this._loweraudioteam:this._audioteam));
+			if (!audio._singlechannelaudio||(def.channel==audio._singlechannelname)) {
+				var grsize=(def.channel==audio._singlechannelname?audio._loweraudioteam:(def.background?audio._loweraudioteam:audio._audioteam));
 				for (var i=0;i<grsize;i++)
 					gbox._addtoloader({type:"audio",data:{id:id,filename:filename,def:(i==0?def:null),team:i}});
 			}
 		}
 	},
 	deleteAudio:function(id) {
-		if (this._audio.aud[id]) {
-			for (var i=0;i<this._audio.aud[id].length;i++) {
-				try {document.body.removeChild(this._audio.aud[id][i]);}catch(e){}
-				delete this._audio.aud[id][i];
+		if (audio._audio.aud[id]) {
+			for (var i=0;i<audio._audio.aud[id].length;i++) {
+				try {document.body.removeChild(audio._audio.aud[id][i]);}catch(e){}
+				delete audio._audio.aud[id][i];
 			}
-			delete this._audio.aud[id];
-			if (this._audio.ast[id]) delete this._audio.ast[id];
+			delete audio._audio.aud[id];
+			if (audio._audio.ast[id]) delete audio._audio.ast[id];
 		}
 	},
 	playAudio:function(a,data) {
-		if (this._canaudio&&this._audio.ast[a])
-			if (!this._audio.ast[a].play) this.hitAudio(a,data);
+		if (audio._canaudio&&audio._audio.ast[a])
+			if (!audio._audio.ast[a].play) this.hitAudio(a,data);
 	},
 	hitAudio:function(a,data) {
-		if (this._canaudio&&this._audio.ast[a]) {
+		if (audio._canaudio&&audio._audio.ast[a]) {
 			var ael;
-			if (this._audio.ast[a].cy!=-1)
+			if (audio._audio.ast[a].cy!=-1)
 				this.stopAudio(a,true);
-			this._audio.ast[a].cy=(this._audio.ast[a].cy+1)%this._audio.aud[a].length;
-			ael=this._audio.aud[a][this._audio.ast[a].cy];
+			audio._audio.ast[a].cy=(audio._audio.ast[a].cy+1)%audio._audio.aud[a].length;
+			ael=audio._audio.aud[a][audio._audio.ast[a].cy];
 			if (data)
-				for (var n in data) this._audio.ast[a][n]=data[n];
-			this._audio.ast[a].play=true;
-			this._addqueue({t:0,a:ael});
+				for (var n in data) audio._audio.ast[a][n]=data[n];
+			audio._audio.ast[a].play=true;
+			audio._addqueue({t:0,a:ael});
 		}
 	},
 	stopAudio:function(a,permissive) {
-		if (this._canaudio) {
+		if (audio._canaudio) {
 			var ael;
-			if (this._canaudio&&this._audio.ast[a]&&this._audio.ast[a].play) {
-				this._audio.ast[a].play=false;
-				ael=this._audio.aud[a][this._audio.ast[a].cy];
+			if (audio._canaudio&&audio._audio.ast[a]&&audio._audio.ast[a].play) {
+				audio._audio.ast[a].play=false;
+				ael=audio._audio.aud[a][audio._audio.ast[a].cy];
 				if (ael.duration-1.5>0)
-					this._addqueue({t:1,a:ael});
+					audio._addqueue({t:1,a:ael});
 			}
 		}
 	},
 	resetChannel:function(ch) {
-		if (this._canaudio&&this._audiochannels[ch])
+		if (audio._canaudio&&audio._audiochannels[ch])
 			if (ch=="master")
-				for (var cha in this._audiochannels)
-					this.setChannelVolume(cha,this._audiochannels[cha]._def.volume);
-			else if (this._audiochannels[ch])
-				this.setChannelVolume(ch,this._audiochannels[ch]._def.volume);
+				for (var cha in audio._audiochannels)
+					this.setChannelVolume(cha,audio._audiochannels[cha]._def.volume);
+			else if (audio._audiochannels[ch])
+				this.setChannelVolume(ch,audio._audiochannels[ch]._def.volume);
 	},
 	getChannelDefaultVolume:function(ch) {
-		if (this._canaudio&&this._audiochannels[ch]) return this._audiochannels[ch]._def.volume; else return null;
+		if (audio._canaudio&&audio._audiochannels[ch]) return audio._audiochannels[ch]._def.volume; else return null;
 	},
 	setChannelVolume:function(ch,a) {
-		if (this._canaudio&&this._audiochannels[ch]) {
-			if (ch=="master") this._audiomastervolume=a; else this._audiochannels[ch].volume=a;
-			for (var j in this._audio.aud)
-				if (this._audio.ast[j].cy>-1) this._updateaudio(j);
+		if (audio._canaudio&&audio._audiochannels[ch]) {
+			if (ch=="master") audio._audiomastervolume=a; else audio._audiochannels[ch].volume=a;
+			for (var j in audio._audio.aud)
+				if (audio._audio.ast[j].cy>-1) audio._updateaudio(j);
 		}
 	},
-	getChannelVolume:function(ch) { if (ch=="master") return this._audiomastervolume; else if (this._audiochannels[ch]) return this._audiochannels[ch].volume; else return 0; },
+	getChannelVolume:function(ch) { if (ch=="master") return audio._audiomastervolume; else if (audio._audiochannels[ch]) return audio._audiochannels[ch].volume; else return 0; },
 	changeChannelVolume:function(ch,a) {
-		if (this._canaudio&&this._audiochannels[ch]) {
+		if (audio._canaudio&&audio._audiochannels[ch]) {
 			var vol=this.getChannelVolume(ch)+a;
 			if (vol>1) vol=1; else if (vol<0) vol=0;
 			this.setChannelVolume(ch,vol);
 		}
 	},
 	stopChannel:function(ch) {
-		if (this._canaudio)
-			for (var j in this._audio.aud)
-				if (this._audio.ast[j].cy>-1&&this._audio.ast[j].play&&((ch=="master")||(this._audio.ast[j].channel==ch)))
+		if (audio._canaudio)
+			for (var j in audio._audio.aud)
+				if (audio._audio.ast[j].cy>-1&&audio._audio.ast[j].play&&((ch=="master")||(audio._audio.ast[j].channel==ch)))
 					this.stopAudio(j);
 	},
 
-	setAudioUnmute:function(a) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].mute=false; this._updateaudio(a); } },
-	setAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].mute=true; this._updateaudio(a); } },
-	getAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].mute; else return null; },
+	setAudioUnmute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].mute=false; audio._updateaudio(a); } },
+	setAudioMute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].mute=true; audio._updateaudio(a); } },
+	getAudioMute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) return audio._audio.ast[a].mute; else return null; },
 
-	setAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].volume=vol; this._updateaudio(a); } },
-	getAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].volume; else return null; },
+	setAudioVolume:function(a,vol) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].volume=vol; audio._updateaudio(a); } },
+	getAudioVolume:function(a,vol) { if (audio._canaudio&&audio._audio.ast[a]) return audio._audio.ast[a].volume; else return null; },
 
-	setAudioPosition:function(a,p) {  if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) this._audio.aud[a][this._audio.ast[a].cy].currentTime=p;},
-	getAudioPosition:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) if (this._audio.aud[a][this._audio.ast[a].cy].currentTime>this._positiondelay) return this._audio.aud[a][this._audio.ast[a].cy].currentTime-this._positiondelay; else return 0; else return 0; },
+	setAudioPosition:function(a,p) {  if (audio._canaudio&&audio._audio.ast[a]&&audio._audio.aud[a][audio._audio.ast[a].cy]) audio._audio.aud[a][audio._audio.ast[a].cy].currentTime=p;},
+	getAudioPosition:function(a) {if (audio._canaudio&&audio._audio.ast[a]&&audio._audio.aud[a][audio._audio.ast[a].cy]) if (audio._audio.aud[a][audio._audio.ast[a].cy].currentTime>audio._positiondelay) return audio._audio.aud[a][audio._audio.ast[a].cy].currentTime-audio._positiondelay; else return 0; else return 0; },
 
-	getAudioDuration:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) return this._audio.aud[a][this._audio.ast[a].cy].duration; else return 0; },
+	getAudioDuration:function(a) {if (audio._canaudio&&audio._audio.ast[a]&&audio._audio.aud[a][audio._audio.ast[a].cy]) return audio._audio.aud[a][audio._audio.ast[a].cy].duration; else return 0; },
 
-	changeAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { if (this._audio.ast[a].volume+vol>1) this._audio.ast[a].volume=1; else  if (this._audio.ast[a].volume+vol<0) this._audio.ast[a].volume=0; else this._audio.ast[a].volume+=vol; this._updateaudio(a); } },
-	setCanAudio:function(a) { this._canaudio=!gbox._flags.noaudio&&a;},
-	setForcedMimeAudio:function(a){ this._forcedmimeaudio=a;},
+	changeAudioVolume:function(a,vol) { if (audio._canaudio&&audio._audio.ast[a]) { if (audio._audio.ast[a].volume+vol>1) audio._audio.ast[a].volume=1; else  if (audio._audio.ast[a].volume+vol<0) audio._audio.ast[a].volume=0; else audio._audio.ast[a].volume+=vol; audio._updateaudio(a); } },
+	setCanAudio:function(a) { audio._canaudio=!gbox._flags.noaudio&&a;},
+	setForcedMimeAudio:function(a){ audio._forcedmimeaudio=a;},
 	setAudioChannels:function(a){
-		this._audiochannels=a;
+		audio._audiochannels=a;
 		for (var ch in a) {
-			this._audiochannels[ch]._def={};
-			for (var attr in this._audiochannels[ch])
-				if (attr!="_def") this._audiochannels[ch]._def[attr]=this._audiochannels[ch][attr];
+			audio._audiochannels[ch]._def={};
+			for (var attr in audio._audiochannels[ch])
+				if (attr!="_def") audio._audiochannels[ch]._def[attr]=audio._audiochannels[ch][attr];
 		}
 	},
-	setAudioTeam:function(a){ this._audioteam=a; },
-	setLowerAudioTeam:function(a){ this._loweraudioteam=a; }
+	setAudioTeam:function(a){ audio._audioteam=a; },
+	setLowerAudioTeam:function(a){ audio._loweraudioteam=a; }
 }

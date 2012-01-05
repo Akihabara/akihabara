@@ -1442,7 +1442,7 @@ var gbox={
 		if (pack.addTiles) for (i=0;i<pack.addTiles.length;i++) gbox.addTiles(pack.addTiles[i]);
 		// Remote resources for last
 		if (pack.addImage) for (i=0;i<pack.addImage.length;i++) gbox.addImage(pack.addImage[i][0],pack.addImage[i][1]);
-		if (pack.addAudio) for (i=0;i<pack.addAudio.length;i++) gbox.addAudio(pack.addAudio[i][0],pack.addAudio[i][1],pack.addAudio[i][2]);
+		if (pack.addAudio) for (i=0;i<pack.addAudio.length;i++) audio.addAudio(pack.addAudio[i][0],pack.addAudio[i][1],pack.addAudio[i][2]);
 		if (pack.addBundle) for (i=0;i<pack.addBundle.length;i++) gbox.addBundle(pack.addBundle[i]);
 		if (pack.addScript) for (i=0;i<pack.addScript.length;i++) gbox.addScript(pack.addScript[i]);
 		// Trigger the onLoad events in resource and loader
