@@ -536,6 +536,7 @@ var help={
 			document.body.style.backgroundColor="#000000";
 			gbox.setScreenBorder(false);
 		}
+		if(data.backgroundColor) document.body.style.backgroundColor = data.backgroundColor;
 		if (help.geturlparameter("statusbar")) debug.statusBar();
 		if (help.geturlparameter("db")||device.doublebuffering) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
