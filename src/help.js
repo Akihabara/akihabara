@@ -555,8 +555,8 @@ var help={
 		if (!data||!data.hardwareonly) gbox.initScreen(screenwidth,screenheight);
 
 		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers")=="yes");
-		if (help.geturlparameter("canaudio")) gbox.setCanAudio(help.geturlparameter("canaudio")=="yes"); else
-			gbox.setCanAudio(device.canaudio&&(!device.audioisexperimental||gbox.getFlag("experimental")));
+		if (help.geturlparameter("canaudio")) audio.setCanAudio(help.geturlparameter("canaudio")=="yes"); else
+			audio.setCanAudio(device.canaudio&&(!device.audioisexperimental||gbox.getFlag("experimental")));
 		if (help.geturlparameter("audiocompatmode")) gbox.setAudioCompatMode(help.geturlparameter("audiocompatmode")*1); else
 			if (help.isDefined(device.audiocompatmode)) gbox.setAudioCompatMode(device.audiocompatmode);
 		if (help.geturlparameter("audioteam")) gbox.setAudioTeam(help.geturlparameter("audioteam")*1); else

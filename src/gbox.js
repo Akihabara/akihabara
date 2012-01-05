@@ -429,7 +429,7 @@ var gbox={
 		gbox._sessioncache=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear()+"-"+d.getHours()+"-"+d.getMinutes()+"-"+d.getSeconds();
 
 		gbox._loadsettings(); // Load default configuration
-		gbox.setCanAudio(true); // Tries to enable audio by default
+		audio.setCanAudio(true); // Tries to enable audio by default
 
 		switch (gbox._flags.fse) { // Initialize FSEs
 			case "scanlines":
