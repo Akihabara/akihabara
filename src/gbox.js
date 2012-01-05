@@ -288,10 +288,6 @@ var gbox={
 		footnotes:null,
 		footnotesSpacing:1
 	},
-	setBasePath :function(a){ this._basepath = a; },
-	setSplashSettings:function(a) { for (var n in a) this._splash[n]=a[n]; },
-	setOfflineCache:function(a) { this._flags.offlinecache=a; },
-	setDebugFont:function(a) { this._debugfont=a; },
 	_minimalexpired:0, // 0: not triggered, 1: triggered, 2: done
 	setCanLog:function(c) { this._canlog=c&&window.console; },
 	canLog:function() { return this._canlog; },
