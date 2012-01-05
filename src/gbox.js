@@ -206,6 +206,7 @@ var gbox={
 	},
 
 	// VARS
+	_pauseGame: false,
 	_debugTool : {},
 	_basepath : "akihabara/images/",
 	_autoid:0,
@@ -218,7 +219,9 @@ var gbox={
 		left:37,
 		a:90,
 		b:88,
-		c:67
+		c:67,
+		pause: 80, //p
+		mute: 77 //m
 	},
 	_flagstype:{
 		experimental:"check",
@@ -309,6 +312,25 @@ var gbox={
 		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
 		gbox._keyboard[key]=-1;
+		//Check for global action keys
+		if( e.keyCode === gbox._keymap.pause ) gbox.pauseGame();
+		if( e.keyCode === gbox._keymap.mute ){
+			if( !audio._totalAudioMute ){
+				audio.totalAudioMute();
+				audio._totalAudioMute = true;
+			}else{
+				audio.totalAudioUnmute();
+				audio._totalAudioMute = false;
+			}
+		};
+	},
+	pauseGame:function(){
+		if(!gbox._pauseGame){
+			gbox._pauseGame = true;
+		}else{
+			gbox._pauseGame = false;
+			gbox._nextframe();
+		}
 	},
 	_resetkeys:function() {
 		for (var key in gbox._keymap)
@@ -522,7 +544,10 @@ var gbox={
 		if (gbox._autoskip)
 			if ((gbox._framestart<gbox._autoskip.lowidle)&&(gbox._frameskip<gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip+1); else
 			if ((gbox._framestart>gbox._autoskip.hiidle)&&(gbox._frameskip>gbox._autoskip.min)) gbox.setFrameskip(gbox._frameskip-1);
-		this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));
+
+		if(!gbox._pauseGame)
+			this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));
+
 		debug.run( gbox._debugTool );
 	},
 
@@ -1442,7 +1467,7 @@ var gbox={
 		if (pack.addTiles) for (i=0;i<pack.addTiles.length;i++) gbox.addTiles(pack.addTiles[i]);
 		// Remote resources for last
 		if (pack.addImage) for (i=0;i<pack.addImage.length;i++) gbox.addImage(pack.addImage[i][0],pack.addImage[i][1]);
-		if (pack.addAudio) for (i=0;i<pack.addAudio.length;i++) gbox.addAudio(pack.addAudio[i][0],pack.addAudio[i][1],pack.addAudio[i][2]);
+		if (pack.addAudio) for (i=0;i<pack.addAudio.length;i++) audio.addAudio(pack.addAudio[i][0],pack.addAudio[i][1],pack.addAudio[i][2]);
 		if (pack.addBundle) for (i=0;i<pack.addBundle.length;i++) gbox.addBundle(pack.addBundle[i]);
 		if (pack.addScript) for (i=0;i<pack.addScript.length;i++) gbox.addScript(pack.addScript[i]);
 		// Trigger the onLoad events in resource and loader

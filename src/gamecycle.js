@@ -44,7 +44,7 @@ var gamecycle = {
 		// game intro animation
 		gameIntroAnimation:function(reset) {
 			if (reset) {
-				gbox.stopChannel("bgmusic");
+				audio.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -230,7 +230,7 @@ var gamecycle = {
 					switch (this.state) {
 						case 100: // Press to start
 							if (this.stateFirstIteration) {
-								gbox.resetChannel("bgmusic");
+								audio.resetChannel("bgmusic");
 								this.pressStartIntroAnimation(true);
 								this.stateIsReady();
 							}
@@ -238,7 +238,7 @@ var gamecycle = {
 							break;
 						case 101: // Game menu
 							if (this.stateFirstIteration) {
-								gbox.setChannelVolume("bgmusic",0.5);
+								audio.setChannelVolume("bgmusic",0.5);
 								this.gameMenu(true);
 								this.stateIsReady();
 							}
