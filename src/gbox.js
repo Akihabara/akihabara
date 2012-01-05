@@ -1408,6 +1408,11 @@ var gbox={
 	_minimaltimeexpired:function() { gbox._minimalexpired=2; },
 	_splashscreeniscompleted:function() { return (gbox._splash.background?gbox.imageIsLoaded("_splash"):true) && (gbox._splash.minilogo?gbox.imageIsLoaded("logo"):true) && (gbox._splash.footnotes?gbox.imageIsLoaded("_dbf"):true); },
 
+	setBasePath :function(a){ this._basepath = a; },
+	setSplashSettings:function(a) { for (var n in a) this._splash[n]=a[n]; },
+	setOfflineCache:function(a) { this._flags.offlinecache=a; },
+	setDebugFont:function(a) { this._debugfont=a; },
+
 	// ---
 	// ---
 	// ---  DYNAMIC SCRIPT INCLUSION

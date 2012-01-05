@@ -277,10 +277,6 @@ var audio={
 			}
 		}
 	},
-	setBasePath :function(a){ this._basepath = a; },
-	setSplashSettings:function(a) { for (var n in a) this._splash[n]=a[n]; },
-	setOfflineCache:function(a) { this._flags.offlinecache=a; },
-	setDebugFont:function(a) { this._debugfont=a; },
 	resetChannel:function(ch) {
 		if (this._canaudio&&this._audiochannels[ch])
 			if (ch=="master")
@@ -338,5 +334,6 @@ var audio={
 		}
 	},
 	setAudioTeam:function(a){ this._audioteam=a; },
-	setLowerAudioTeam:function(a){ this._loweraudioteam=a; },
+	setLowerAudioTeam:function(a){ this._loweraudioteam=a; }
+}
 
