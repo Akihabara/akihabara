@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * @namespace Trigo module provides some math stuff for moving objects in a
  * direction or following a round path.

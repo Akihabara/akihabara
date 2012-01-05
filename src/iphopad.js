@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * Iphopad module provides a touchpad for touch-based device (for now, Android and iDevices).
  */

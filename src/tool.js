@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * @namespace Tool module provides simple developing tools. Currently, this file only has a cel-composer:
  * it can compose an image stacking a set of frames for animating objects, applying a

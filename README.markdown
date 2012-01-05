@@ -43,3 +43,9 @@ Wiki
 ----
 
 * For more informations follow our [Wiki](https://github.com/akihabara/akihabara/wiki)
+
+Legal informations
+------------------
+
+The initial akihabara code was made by Fracesco Cottone (http://kesiev.com) as an open source project dual licensed by MIT and GPL.
+Thanks to Carlos Benitez form EtnasSoft (http://www.etnassoft.com/) for all patches and helping on akihabara development.

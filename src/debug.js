@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2011 EtnasSoft, http://www.etnassoft.com/
-// ---
-
 /**
  * @namespace Debug module provides some utils for debug the Akihabara user project.
  */

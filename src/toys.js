@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * @namespace
  * Toys module provides lots of common routines during the game developing:

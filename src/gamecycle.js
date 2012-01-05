@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * @namespace
  * Gamecycle contains your basic game loop: intro, menus,

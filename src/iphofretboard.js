@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * Fretboard module provides a touchpad for touch-based device (for now, Android and iDevices).
  */

@@ -1,7 +1,3 @@
-// ---
-// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
-// ---
-
 /**
  * @namespace Help module provides some Javascript-specific functions, such object copying, randomizing functions,
  * string/array handlers and the akihabaraInit function.
