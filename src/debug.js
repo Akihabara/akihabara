@@ -98,6 +98,10 @@ var debug = {
 					if (!audio._audio.aud[g][x].paused&&!audio._audio.aud[g][x].ended) ply++;
 				}
 			statline += "| audio: " + ply + "/" + cnt + ":" + audio._audioteam;
+
+			if( audio._totalAudioMute ) statline += ' MUTE ON';
+			if( gbox._pauseGame ) statline += ' | PAUSE ON';
+
 			this.setStatBar(statline);
 		}
 

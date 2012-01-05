@@ -309,7 +309,18 @@ var audio={
 				if (audio._audio.ast[j].cy>-1&&audio._audio.ast[j].play&&((ch=="master")||(audio._audio.ast[j].channel==ch)))
 					this.stopAudio(j);
 	},
-
+	totalAudioMute: function(){
+		for( var j in audio._audio.aud ){
+			if( audio._audio.ast[j].play )
+				audio.setAudioMute(j);
+		}
+	},
+	totalAudioUnmute: function(){
+		for( var j in audio._audio.aud ){
+			if( audio._audio.ast[j].mute )
+				audio.setAudioUnmute(j);
+		}
+	},
 	setAudioUnmute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].mute=false; audio._updateaudio(a); } },
 	setAudioMute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].mute=true; audio._updateaudio(a); } },
 	getAudioMute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) return audio._audio.ast[a].mute; else return null; },
