@@ -211,18 +211,6 @@ var gbox={
 	_basepath : "akihabara/images/",
 	_autoid:0,
 	_cb:null, // callback for loadAll()
-	_keyboard:[],
-	_keymap:{
-		up:38,
-		down:40,
-		right:39,
-		left:37,
-		a:90,
-		b:88,
-		c:67,
-		pause: 80, //p
-		mute: 77 //m
-	},
 	_flagstype:{
 		experimental:"check",
 		fse:"list",
@@ -248,7 +236,6 @@ var gbox={
 	_screen:0,
 	_screenCtx:null,
 	_screenposition:0,
-	_keyboardpicker:0,
 	_screenh:0,
 	_screenw:0,
 	_screenhh:0,
@@ -303,27 +290,6 @@ var gbox={
 		if (sy+sh>img.height) { dh=(dh/sh)*(img.height-sy);sh=img.height-sy;}
 		try { if ((sh>0)&&(sw>0)&&(sx<img.width)&&(sy<img.height)) tox.drawImage(img, sx,sy,sw,sh,dx,dy,dw,dh); } catch(e){}
 	},
-	_keydown:function(e){
-		if (e.preventDefault) e.preventDefault();
-		var key=(e.fake||window.event?e.keyCode:e.which);
-		if (!gbox._keyboard[key]) gbox._keyboard[key]=1;
-	},
-	_keyup:function(e){
-		if (e.preventDefault) e.preventDefault();
-		var key=(e.fake||window.event?e.keyCode:e.which);
-		gbox._keyboard[key]=-1;
-		//Check for global action keys
-		if( e.keyCode === gbox._keymap.pause ) gbox.pauseGame();
-		if( e.keyCode === gbox._keymap.mute ){
-			if( !audio._totalAudioMute ){
-				audio.totalAudioMute();
-				audio._totalAudioMute = true;
-			}else{
-				audio.totalAudioUnmute();
-				audio._totalAudioMute = false;
-			}
-		};
-	},
 	pauseGame:function(){
 		if(!gbox._pauseGame){
 			gbox._pauseGame = true;
@@ -331,36 +297,6 @@ var gbox={
 			gbox._pauseGame = false;
 			gbox._nextframe();
 		}
-	},
-	_resetkeys:function() {
-		for (var key in gbox._keymap)
-			gbox._keyup({fake:1,keyCode:gbox._keymap[key]});
-	},
-	_showkeyboardpicker:function(){
-		gbox._keyboardpicker.value="Click/Tap here to enable the keyboard";
-		gbox._keyboardpicker.style.left=(gbox._screenposition.x+5)+"px";
-		gbox._keyboardpicker.style.top=(gbox._screenposition.y+5)+"px";
-		gbox._keyboardpicker.style.width=(gbox._screenposition.w-10)+"px";
-		gbox._keyboardpicker.style.height="30px";
-		this._keyboardpicker.style.border="1px dashed white";
-		this._keyboardpicker.readOnly=null;
-	},
-	_hidekeyboardpicker:function(){
-		this._keyboardpicker.style.zIndex=100;
-		this._keyboardpicker.readOnly="yes";
-		this._keyboardpicker.style.position="absolute";
-		this._keyboardpicker.style.textAlign="center";
-		this._keyboardpicker.style.backgroundColor="#000000";
-		this._keyboardpicker.style.color="#fefefe";
-		this._keyboardpicker.style.cursor="pointer";
-		this._keyboardpicker.value="";
-		this._keyboardpicker.style.left="0px";
-		this._keyboardpicker.style.top="0px";
-		this._keyboardpicker.style.height="0px";
-		this._keyboardpicker.style.width="0px";
-		this._keyboardpicker.style.border="0px";
-		this._keyboardpicker.style.padding="0px";
-		this._keyboardpicker.style.margin="0px";
 	},
 	_domgetabsposition:function(oElement) {
 		var sizes={x:0,y:0,h:0,w:0};
@@ -433,19 +369,10 @@ var gbox={
 		document.body.appendChild(container);
 
 		this.createCanvas("_buffer");
-		gbox.addEventListener(window,'keydown', this._keydown);
-		gbox.addEventListener(window,'keyup', this._keyup);
+		input.addKeyListernerTo(gbox);
+		input.focusDrivenKeyboardSuport(gbox);
 
-		// Keyboard support on devices that needs focus (like iPad) - actually is not working for a bug on WebKit's "focus" command.
-		this._keyboardpicker=document.createElement("input");
-		this._keyboardpicker.onclick=function(evt) { gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
-		this._hidekeyboardpicker(this._keyboardpicker);
-
-		gbox._box.appendChild(this._keyboardpicker);
-		gbox._screen.ontouchstart=function(evt) { gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.touches[0].pageY-gbox._screenposition.y<30) gbox._showkeyboardpicker();else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
-		gbox._screen.ontouchend=function(evt) {evt.preventDefault();evt.stopPropagation();};
-		gbox._screen.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();};
-		gbox._screen.onmousedown=function(evt) {gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.pageY-gbox._screenposition.y<30)  gbox._showkeyboardpicker(); else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
+		input.addTouchEventsTo(gbox._screen);
 
 		var d=new Date();
 		gbox._sessioncache=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear()+"-"+d.getHours()+"-"+d.getMinutes()+"-"+d.getSeconds();
@@ -646,9 +573,9 @@ var gbox={
 
 
 			// Handle holding
-			for (var key in gbox._keymap)
-				if (gbox._keyboard[gbox._keymap[key]]==-1) gbox._keyboard[gbox._keymap[key]]=0; else
-				if (gbox._keyboard[gbox._keymap[key]]&&(gbox._keyboard[gbox._keymap[key]]<100))	gbox._keyboard[gbox._keymap[key]]++;
+			for (var key in input._keymap)
+				if (input._keyboard[gbox._keymap[key]]==-1) input._keyboard[gbox._keymap[key]]=0; else
+				if (input._keyboard[gbox._keymap[key]]&&(input._keyboard[gbox._keymap[key]]<100)) input._keyboard[gbox._keymap[key]]++;
 			if (gbox._forcedidle)
 				this._gametimer=setTimeout(gbox._nextframe,gbox._forcedidle); // Wait for the browser
 			else
@@ -662,35 +589,6 @@ var gbox={
 			this._zindexch.push({o:{g:th.group,o:th.id},z:z});
 		}
 	},
-
-	/**
-	* Returns true if a given key in this._keymap is pressed. Only returns true on the transition from unpressed to pressed.
-	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
-	* @returns {Boolean} True if the given key is transitioning from unpressed to pressed in this frame.
-	*/
-	keyIsHit:function(id) { return this._keyboard[this._keymap[id]]==1; },
-
-	/**
-	* Returns true if a given key in this._keymap is being held down. Returns true as long as the key is held down.
-	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
-	* @returns {Boolean} True if the given key is held down.
-	*/
-	keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0; },
-
-	/**
-	* Returns true if a given key in this._keymap has been held down for at least one frame. Will not return true if a key
-	* is quickly tapped, only once it has been held down for a frame.
-	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
-	* @returns {Boolean} True if the given key has been held down for at least one frame.
-	*/
-	keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1; },
-
-	/**
-	* Returns true if a given key in this._keymap is released. Only returns true on the transition from pressed to unpressed.
-	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
-	* @returns {Boolean} True if the given key is transitioning from pressed to unpressed in this frame.
-	*/
-	keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1; },
 
 	_savesettings:function() {
 		var saved="";
