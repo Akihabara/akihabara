@@ -475,7 +475,7 @@ var gbox={
 		if(!gbox._pauseGame)
 			this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));
 
-		debug.run( gbox._debugTool );
+		if(typeof debug != "undefined") debug.run( gbox._debugTool );
 	},
 
 	/**
@@ -1531,11 +1531,11 @@ var gbox={
 					}
 			}
 			gbox._screenCtx.restore();
-			debug.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
+			if(typeof debug != "undefined") debug.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
 			setTimeout(gbox._waitforloaded,50);
 		} else {
 			gbox.deleteImage("_splash");
-			debug.setStatBar();
+			if(typeof debug != "undefined") debug.setStatBar();
 			gbox._cb();
 		}
 	},
