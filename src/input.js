@@ -22,12 +22,12 @@ var input={
 	_keydown:function(e){
 		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
-		if (!gbox._keyboard[key]) gbox._keyboard[key]=1;
+		if (!input._keyboard[key]) input._keyboard[key]=1;
 	},
 	_keyup:function(e){
 		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
-		gbox._keyboard[key]=-1;
+		input._keyboard[key]=-1;
 		//Check for global action keys
 		if( e.keyCode === input._keymap.pause ) gbox.pauseGame();
 		if( e.keyCode === input._keymap.mute ){
@@ -45,30 +45,30 @@ var input={
 			input._keyup({fake:1,keyCode:input._keymap[key]});
 	},
 	_showkeyboardpicker:function(th){
-		th._keyboardpicker.value="Click/Tap here to enable the keyboard";
-		th._keyboardpicker.style.left=(gbox._screenposition.x+5)+"px";
-		th._keyboardpicker.style.top=(gbox._screenposition.y+5)+"px";
-		th._keyboardpicker.style.width=(gbox._screenposition.w-10)+"px";
-		th._keyboardpicker.style.height="30px";
-		th._keyboardpicker.style.border="1px dashed white";
-		th._keyboardpicker.readOnly=null;
+		input._keyboardpicker.value="Click/Tap here to enable the keyboard";
+		input._keyboardpicker.style.left=(gbox._screenposition.x+5)+"px";
+		input._keyboardpicker.style.top=(gbox._screenposition.y+5)+"px";
+		input._keyboardpicker.style.width=(gbox._screenposition.w-10)+"px";
+		input._keyboardpicker.style.height="30px";
+		input._keyboardpicker.style.border="1px dashed white";
+		input._keyboardpicker.readOnly=null;
 	},
 	_hidekeyboardpicker:function(th){
-		th._keyboardpicker.style.zIndex=100;
-		th._keyboardpicker.readOnly="yes";
-		th._keyboardpicker.style.position="absolute";
-		th._keyboardpicker.style.textAlign="center";
-		th._keyboardpicker.style.backgroundColor="#000000";
-		th._keyboardpicker.style.color="#fefefe";
-		th._keyboardpicker.style.cursor="pointer";
-		th._keyboardpicker.value="";
-		th._keyboardpicker.style.left="0px";
-		th._keyboardpicker.style.top="0px";
-		th._keyboardpicker.style.height="0px";
-		th._keyboardpicker.style.width="0px";
-		th._keyboardpicker.style.border="0px";
-		th._keyboardpicker.style.padding="0px";
-		th._keyboardpicker.style.margin="0px";
+		input._keyboardpicker.style.zIndex=100;
+		input._keyboardpicker.readOnly="yes";
+		input._keyboardpicker.style.position="absolute";
+		input._keyboardpicker.style.textAlign="center";
+		input._keyboardpicker.style.backgroundColor="#000000";
+		input._keyboardpicker.style.color="#fefefe";
+		input._keyboardpicker.style.cursor="pointer";
+		input._keyboardpicker.value="";
+		input._keyboardpicker.style.left="0px";
+		input._keyboardpicker.style.top="0px";
+		input._keyboardpicker.style.height="0px";
+		input._keyboardpicker.style.width="0px";
+		input._keyboardpicker.style.border="0px";
+		input._keyboardpicker.style.padding="0px";
+		input._keyboardpicker.style.margin="0px";
 	},
 
 	/**
@@ -107,10 +107,10 @@ var input={
 
 	// Keyboard support on devices that needs focus (like iPad) - actually is not working for a bug on WebKit's "focus" command.
 	focusDrivenKeyboardSuport:function(th) {
-		th._keyboardpicker=document.createElement("input");
-		th._keyboardpicker.onclick=function(evt) { input._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
-		th._hidekeyboardpicker(this._keyboardpicker);
-		th._box.appendChild(this._keyboardpicker);
+		input._keyboardpicker=document.createElement("input");
+		input._keyboardpicker.onclick=function(evt) { input._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
+		input._hidekeyboardpicker(input._keyboardpicker);
+		th._box.appendChild(input._keyboardpicker);
 	},
 
 	//

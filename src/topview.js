@@ -14,6 +14,7 @@ var topview = {
 	PUSH_DOWN:4,
 
 	FACES:["up","right","down","left"],
+	FACES_ANGLE:[trigo.ANGLE_UP,trigo.ANGLE_RIGHT,trigo.ANGLE_DOWN,trigo.ANGLE_LEFT],
 	FACE_UP:0,
 	FACE_RIGHT:1,
 	FACE_DOWN:2,
@@ -175,13 +176,13 @@ var topview = {
 		var idlex=false;
 		var idley=false;
 
-		if (gbox.keyIsPressed(keys.left)||keys.pressleft) {
+		if (input.keyIsPressed(keys.left)||keys.pressleft) {
 			th.xpushing=topview.PUSH_LEFT;
 			th.facing=topview.FACE_LEFT;
 			if (th.accx>th.responsive) th.accx=th.responsive;
 			if (th.staticspeed) th.accx=-th.staticspeed; else th.accx=help.limit(th.accx-1,-th.controlmaxacc,th.controlmaxacc);
 			if (th.nodiagonals) { cancely=true; idley=true; }
-		} else if (gbox.keyIsPressed(keys.right)||keys.pressright) {
+		} else if (input.keyIsPressed(keys.right)||keys.pressright) {
 			th.xpushing=topview.PUSH_RIGHT;
 			th.facing=topview.FACE_RIGHT;
 			if (th.accx<-th.responsive) th.accx=-th.responsive;
@@ -189,13 +190,13 @@ var topview = {
 			if (th.nodiagonals) { cancely=true; idley=true; }
 		} else idlex=true;
 
-		if (!cancely&&(gbox.keyIsPressed(keys.up)||keys.pressup)) {
+		if (!cancely&&(input.keyIsPressed(keys.up)||keys.pressup)) {
 			th.ypushing=topview.PUSH_UP;
 			th.facing=topview.FACE_UP;
 			if (th.accy>th.responsive) th.accy=th.responsive;
 			if (th.staticspeed) th.accy=-th.staticspeed; else th.accy=help.limit(th.accy-1,-th.controlmaxacc,th.controlmaxacc);
 			if (th.nodiagonals) { cancelx=true; idlex=true; }
-		} else if (!cancely&&(gbox.keyIsPressed(keys.down)||keys.pressdown)) {
+		} else if (!cancely&&(input.keyIsPressed(keys.down)||keys.pressdown)) {
 			th.ypushing=topview.PUSH_DOWN;
 			th.facing=topview.FACE_DOWN;
 			if (th.accy<-th.responsive) th.accy=-th.responsive;

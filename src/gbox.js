@@ -574,8 +574,8 @@ var gbox={
 
 			// Handle holding
 			for (var key in input._keymap)
-				if (input._keyboard[gbox._keymap[key]]==-1) input._keyboard[gbox._keymap[key]]=0; else
-				if (input._keyboard[gbox._keymap[key]]&&(input._keyboard[gbox._keymap[key]]<100)) input._keyboard[gbox._keymap[key]]++;
+				if (input._keyboard[input._keymap[key]]==-1) input._keyboard[input._keymap[key]]=0; else
+				if (input._keyboard[input._keymap[key]]&&(input._keyboard[input._keymap[key]]<100)) input._keyboard[input._keymap[key]]++;
 			if (gbox._forcedidle)
 				this._gametimer=setTimeout(gbox._nextframe,gbox._forcedidle); // Wait for the browser
 			else

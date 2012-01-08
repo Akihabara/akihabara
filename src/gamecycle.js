@@ -55,7 +55,7 @@ var gamecycle = {
 		// level intro animation
 		levelIntroAnimation:function(reset) {
 			if (reset) {
-				gbox.stopChannel("bgmusic");
+				audio.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -66,7 +66,7 @@ var gamecycle = {
 		 // Life intro animation
 		 newlifeIntroAnimation:function(reset) {
 			 if (reset) {
-				gbox.stopChannel("bgmusic");
+				audio.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -77,7 +77,7 @@ var gamecycle = {
 		// gameover animation
 		gameoverIntroAnimation:function(reset) {
 			 if (reset) {
-				gbox.stopChannel("bgmusic");
+				audio.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -88,7 +88,7 @@ var gamecycle = {
 		// game title animation
 		gameTitleIntroAnimation:function(reset) {
 			if (reset)
-				gbox.stopChannel("bgmusic");
+				audio.stopChannel("bgmusic");
 			else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
 				gbox.blitText(gbox.getBufferContext(),{font:"small",text:"GAME TITLE",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()-100});
@@ -120,7 +120,7 @@ var gamecycle = {
 				toys.resetToy(this,"default-blinker");
 			} else {
 				toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"PRESS A TO START",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:Math.floor(gbox.getScreenH()/3),dw:gbox.getScreenW(),dh:Math.floor(gbox.getScreenH()/3)*2,blinkspeed:10});
-				return gbox.keyIsHit("a");
+				return input.keyIsHit("a");
 			}
 		},
 
@@ -326,12 +326,12 @@ var gamecycle = {
 								gbox.playAllGroups();
 								break;
 							case 700:
-								gbox.resetChannel("bgmusic");
+								audio.resetChannel("bgmusic");
 								gbox.soloGroup(this.group);
 								this.gameoverIntroAnimation(true);
 								break;
 							case 801:
-								gbox.resetChannel("bgmusic");
+								audio.resetChannel("bgmusic");
 								gbox.soloGroup(this.group);
 								this.gameEndingIntroAnimation(true);
 								break;

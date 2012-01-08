@@ -130,19 +130,19 @@ var toys={
 				th.toys[id].fw=fd.tilew;
 			}
 			if (!th.toys[id].ok) {
-				if (gbox.keyIsHit(opt.keys.up)&&(th.toys[id].selected>0)) {
+				if (input.keyIsHit(opt.keys.up)&&(th.toys[id].selected>0)) {
 					if (opt.audiooption) audio.hitAudio(opt.audiooption);
 					th.toys[id].selected--;
 				} else
-				if (gbox.keyIsHit(opt.keys.down)&&(th.toys[id].selected<opt.items.length-1)) {
+				if (input.keyIsHit(opt.keys.down)&&(th.toys[id].selected<opt.items.length-1)) {
 					if (opt.audiooption) audio.hitAudio(opt.audiooption);
 					th.toys[id].selected++;
 				} else
-				if (gbox.keyIsHit(opt.keys.ok)) {
+				if (input.keyIsHit(opt.keys.ok)) {
 					if (opt.audioconfirm) audio.hitAudio(opt.audioconfirm);
 					th.toys[id].ok=1;
 				} else
-				if (gbox.keyIsHit(opt.keys.cancel)) th.toys[id].ok=-1;
+				if (input.keyIsHit(opt.keys.cancel)) th.toys[id].ok=-1;
 			}
 			gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas("menu-"+id),{dx:opt.x+th.toys[id].fw,dy:opt.y,camera:opt.camera});
 			if (!(th.toys[id].ok%2)) gbox.blitText(gbox.getBufferContext(),{font:opt.font,text:opt.selector,dx:opt.x,dy:opt.y+th.toys[id].selected*th.toys[id].fh,camera:opt.camera});
@@ -519,17 +519,17 @@ var toys={
 				}
 				if (!th.toys[id].ended) {
 					if (th.toys[id].wait) {
-						if (gbox.keyIsHit(data.esckey))
+						if (input.keyIsHit(data.esckey))
 							th.toys[id].ended=true;
-						else if (gbox.keyIsHit(data.skipkey))
+						else if (input.keyIsHit(data.skipkey))
 							th.toys[id].newscene=true;
 					} else {
 
 						// SKIP KEYS
 
-						if (gbox.keyIsHit(data.esckey))
+						if (input.keyIsHit(data.esckey))
 							th.toys[id].ended=true;
-						else if (gbox.keyIsHold(data.skipkey))
+						else if (input.keyIsHold(data.skipkey))
 							th.toys[id].counter=th.toys[id].scene.speed;
 						else
 							th.toys[id].counter++;
@@ -817,7 +817,7 @@ var toys={
 
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if (this.audio) audio.changeAudioVolume(this.audio,this.fadespeed);
-					if (this.channel) gbox.changeChannelVolume(this.channel,this.fadespeed);
+					if (this.channel) audio.changeChannelVolume(this.channel,this.fadespeed);
 					if ((this.audio&&(
 							((this.fadespeed<0)&&(audio.getAudioVolume(this.audio)<=this.destination))||
 							((this.fadespeed>0)&&(audio.getAudioVolume(this.audio)>=this.destination))
