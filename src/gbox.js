@@ -298,6 +298,13 @@ var gbox={
 			gbox._nextframe();
 		}
 	},
+	showPauseMessage:function(){
+			gbox.blitFade(gbox.getBufferContext(),{alpha:0.5});
+			var ctx = gbox._screenCtx;
+			ctx.fillStyle = '#FFF';
+			ctx.font = '12px sans-serif';
+			ctx.fillText( 'PAUSE', 141, 125 );
+	},
 	_domgetabsposition:function(oElement) {
 		var sizes={x:0,y:0,h:0,w:0};
 		sizes.h=oElement.offsetHeight;
@@ -474,6 +481,8 @@ var gbox={
 
 		if(!gbox._pauseGame)
 			this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));
+		else
+			gbox.showPauseMessage();
 
 		if(typeof debug != "undefined") debug.run( gbox._debugTool );
 	},
