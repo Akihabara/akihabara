@@ -5,6 +5,7 @@
 // ---
 
 var audio={
+	_totalMute: false,
 	_audiochannels:{},
 	_audiomastervolume:1.0,
 	_canaudio:false,
@@ -45,6 +46,7 @@ var audio={
 		} else {
 			try { su.currentTime=0; } catch(e){}
 			su.play();
+			if(audio._totalMute) audio.totalAudioMute();
 		}
 	},
 
@@ -310,16 +312,15 @@ var audio={
 					this.stopAudio(j);
 	},
 	totalAudioMute: function(){
-		for( var j in audio._audio.aud ){
-			if( audio._audio.ast[j].play )
-				audio.setAudioMute(j);
-		}
+		console.log(audio._audio);
+		audio._totalMute = true;
+		for( var j in audio._audio.aud )
+			audio.setAudioMute(j);
 	},
 	totalAudioUnmute: function(){
-		for( var j in audio._audio.aud ){
-			if( audio._audio.ast[j].mute )
-				audio.setAudioUnmute(j);
-		}
+		audio._totalMute = false;
+		for( var j in audio._audio.aud )
+			audio.setAudioUnmute(j);
 	},
 	setAudioUnmute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].mute=false; audio._updateaudio(a); } },
 	setAudioMute:function(a) { if (audio._canaudio&&audio._audio.ast[a]) { audio._audio.ast[a].mute=true; audio._updateaudio(a); } },
