@@ -312,7 +312,6 @@ var audio={
 					this.stopAudio(j);
 	},
 	totalAudioMute: function(){
-		console.log(audio._audio);
 		audio._totalMute = true;
 		for( var j in audio._audio.aud )
 			audio.setAudioMute(j);
