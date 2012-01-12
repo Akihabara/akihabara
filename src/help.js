@@ -522,7 +522,7 @@ var help={
 				b:172,
 				c:13
 			};
-			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false; };
+			document.onkeypress=function(e){ if (e.preventDefault) e.preventDefault(); return false; };
 		}
 
 		if (typeof data.basepath == 'string') gbox.setBasePath(data.basepath);
