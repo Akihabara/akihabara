@@ -39,7 +39,7 @@ var debug = {
 		function createStatBar(){
 			if( !gbox._debugTool.statusBar ) return false;
 
-			var statbar=document.createElement("div");
+			var statbar = document.createElement("div");
 			if (gbox._border) statbar.style.border = "1px solid black";
 			statbar.style.margin = "auto";
 			statbar.style.backgroundColor = gbox._debugTool.statusBar.backgroundColor;
@@ -82,20 +82,20 @@ var debug = {
 		}
 
 		if(data.statusBar){
-			var statline="Idle: " + gbox._framestart + "/" + gbox._mspf + (gbox._frameskip > 0 ? " (" + gbox._frameskip + "skip)" : "" ) + " | ";
+			var statline = "Idle: " + gbox._framestart + "/" + gbox._mspf + (gbox._frameskip > 0 ? " (" + gbox._frameskip + "skip)" : "" ) + " | ";
 			var cnt = 0, g = 0;
 			for ( g = 0; g < gbox._groups.length; g++ )
 				if ( gbox._groupplay[gbox._groups[g]] ) {
 					cnt = 0;
 					for (var obj in gbox._objects[gbox._groups[g]]) cnt++;
-					if (cnt) statline+=gbox._groups[g]+"["+cnt+"] ";
+					if (cnt) statline += gbox._groups[g] + "[" + cnt + "] ";
 				}
 			cnt = 0;
 			var ply = 0;
 			for (g in audio._audio.aud)
 				for (var x = 0; x < audio._audio.aud[g].length; x++) {
 					cnt++;
-					if (!audio._audio.aud[g][x].paused&&!audio._audio.aud[g][x].ended) ply++;
+					if (!audio._audio.aud[g][x].paused && !audio._audio.aud[g][x].ended) ply++;
 				}
 			statline += "| audio: " + ply + "/" + cnt + ":" + audio._audioteam;
 
