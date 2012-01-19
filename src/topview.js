@@ -97,10 +97,8 @@ var topview = {
 	* </ul>
 	*/
 	initialize: function(th, data) {
-		help.mergeWithModel(
-			th,
-			help.mergeWithModel(
-				data,
+		Akihabara.extendsFrom(
+			Akihabara.extendsFrom(
 				{
 					x: 0, y: 0,
 					z: 0,
@@ -122,8 +120,8 @@ var topview = {
 					staticspeed: 0,
 					nodiagonals: false,
 					noreset: false
-				}
-			)
+				}, data
+			), th
 		);
 		if (th.coly == null) th.coly = gbox.getTiles(th.tileset).tileh-th.colh;
 		th.colhh = Math.floor(th.colh/2);
@@ -531,8 +529,8 @@ var topview = {
 	fireBullet: function(gr, id, data) {
 		var ts = gbox.getTiles(data.tileset);
 		var obj = gbox.addObject(
-			help.mergeWithModel(
-				data, {
+			Akihabara.extendsFrom(
+				{
 					_bullet: true,
 					zindex: 0,
 					fliph: false, flipv: false,
@@ -572,7 +570,7 @@ var topview = {
 					bulletIsAlive: function() {
 						return gbox.objectIsVisible(this);
 					}
-				}
+				}, data
 			)
 		);
 
@@ -625,8 +623,8 @@ var topview = {
 		var ts = gbox.getTiles(data.tileset);
 
 		var obj = gbox.addObject(
-			help.mergeWithModel(
-				data, {
+			Akihabara.extendsFrom(
+				{
 					zindex: 0,
 					fliph: false, flipv: false,
 					id: id,
@@ -660,7 +658,7 @@ var topview = {
 					hitByBullet: function(by) {
 
 					}
-				}
+				}, data
 			)
 		);
 

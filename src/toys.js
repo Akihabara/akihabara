@@ -660,8 +660,8 @@ var toys = {
 				}
 
 				var obj = gbox.addObject(
-					help.mergeWithModel(
-						data, {
+					Akihabara.extendsFrom(
+						{
 							id: id,
 							group: group,
 							x: th.x + th.hw-ts.tilehw + (data.gapx == null?0:data.gapx),
@@ -678,7 +678,7 @@ var toys = {
 							trashoffscreen: true,
 							fliph: (data.fliph == null?th.fliph: data.fliph), flipv: (data.flipv == null?th.flipv: data.flipv),
 							blinkspeed: 0
-						}
+						}, data
 					)
 				);
 
@@ -705,8 +705,8 @@ var toys = {
 				var fd = gbox.getFont(data.font);
 
 				var obj = gbox.addObject(
-					help.mergeWithModel(
-						data, {
+					Akihabara.extendsFrom(
+						{
 							id: id,
 							group: group,
 							x: Math.floor(th.x + th.hw-(fd.tilehw*data.text.length)),
@@ -717,7 +717,7 @@ var toys = {
 							text: data.text + "",
 							cnt: 0,
 							camera: th.camera
-						}
+						}, data
 					)
 				);
 
@@ -751,8 +751,8 @@ var toys = {
 
 			bounceDie: function(th, group, id, data){
 				var obj = gbox.addObject(
-					help.mergeWithModel(
-						data, {
+					Akihabara.extendsFrom(
+						{
 							id: id,
 							group: group,
 							tileset: th.tileset,
@@ -767,7 +767,7 @@ var toys = {
 							cnt: 0,
 							blinkspeed: 0,
 							camera: th.camera
-						}
+						}, data
 					)
 				);
 
@@ -793,8 +793,8 @@ var toys = {
 
 			fadeOut: function(th, group, id, data){
 				var obj = gbox.addObject(
-					help.mergeWithModel(
-						data, {
+					Akihabara.extendsFrom(
+						{
 							id: id,
 							group: group,
 							fadespeed: -0.02*(data.fadein?-1:1),
@@ -802,7 +802,7 @@ var toys = {
 							audio: null,
 							channel: null,
 							destination: null
-						}
+						}, data
 					)
 				);
 

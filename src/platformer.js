@@ -8,10 +8,8 @@ var platformer = {
 	PUSH_RIGHT: 2,
 
 	initialize: function(th, data) {
-		help.mergeWithModel(
-			th,
-			help.mergeWithModel(
-				data,
+		Akihabara.extendsFrom(
+			Akihabara.extendsFrom(
 				{
 					maxaccx: 5, maxaccy: 10,
 					jumpsize: 6, jumpaccy: 6,
@@ -21,8 +19,8 @@ var platformer = {
 					camera: true,
 					flipv: false,
 					side: false
-				}
-			)
+				}, data
+			), th
 		);
 		platformer.spawn(th);
 	},

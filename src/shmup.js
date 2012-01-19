@@ -13,10 +13,8 @@ var shmup = {
 	PUSH_DOWN: 4,
 
 	initialize: function(th, data) {
-		help.mergeWithModel(
-			th,
-			help.mergeWithModel(
-				data,
+		Akihabara.extendsFrom(
+			Akihabara.extendsFrom(
 				{
 					x: 0, y: 0,
 					accx: 0, accy: 0,
@@ -30,8 +28,8 @@ var shmup = {
 					flipv: false, fliph: false,
 					health: 1,
 					tolerance: 4
-				}
-			)
+				}, data
+			), th
 		);
 		shmup.spawn(th);
 	},
@@ -104,8 +102,8 @@ var shmup = {
 	fireBullet: function(gr, id, data) {
 		var ts = gbox.getTiles(data.tileset);
 		var obj = gbox.addObject(
-			help.mergeWithModel(
-				data, {
+			Akihabara.extendsFrom(
+				{
 					_bullet: true,
 					fliph: false, flipv: false,
 					id: id,
@@ -123,7 +121,7 @@ var shmup = {
 					collidegroup: "",
 					spark: shmup.NOOP,
 					power: 1
-				}
+				}, data
 			)
 		);
 
@@ -159,10 +157,10 @@ var shmup = {
 	},
 
 	generateEnemy: function(gr, id, data, model) {
-		help.mergeWithModel(data, model);
+		Akihabara.extendsFrom(model, data);
 		var obj = gbox.addObject(
-			help.mergeWithModel(
-				data, {
+			Akihabara.extendsFrom(
+				{
 					id: id,
 					group: gr,
 					cnt: 0,
@@ -214,7 +212,7 @@ var shmup = {
 							if (this.health <= 0) this.kill(this, by); else this.hitAnimation();
 						}
 					}
-				}
+				}, data
 			)
 		);
 
@@ -321,7 +319,7 @@ var shmup = {
 
 	generateScroller: function(gr, id, data) {
 		var obj = gbox.addObject(
-			help.mergeWithModel(
+			Akihabara.extendsFrom(
 				help.cloneObject(data), {
 					id: id, group: gr,
 					y: 0, x: 0,
