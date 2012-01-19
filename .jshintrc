@@ -26,7 +26,7 @@
     "boss"          : false,  // Tolerate assignments inside if, for & while. Usually conditions & loops are for comparison, not assignments.
     "curly"         : true,   // Require {} for every new block or scope.
     "eqeqeq"        : true,   // Require triple equals i.e. `===`.
-    "eqnull"        : false,  // Tolerate use of `== null`.
+    "eqnull"        : true,  // Tolerate use of `== null`.
     "evil"          : false,  // Tolerate use of `eval`.
     "expr"          : false,  // Tolerate `ExpressionStatement` as Programs.
     "forin"         : false,  // Tolerate `for in` loops without `hasOwnPrototype`.
