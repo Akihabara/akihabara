@@ -1,10 +1,7 @@
 {
     "predef": [
-        "jasmine",
-        "spyOn",
-        "it",
-        "describe",
-        "expect"
+        "jasmine", "it", "describe", "expect",
+        "Akihabara", "AkihabaraAudio", "gbox"
     ],
 
     // Browser, Frameworks and Globals
