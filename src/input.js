@@ -31,12 +31,12 @@ var input = {
 		//Check for global action keys
 		if( e.keyCode === input._keymap.pause ) gbox.pauseGame();
 		if( e.keyCode === input._keymap.mute ){
-			if( !audio._totalAudioMute ){
-				audio.totalAudioMute();
-				audio._totalAudioMute = true;
+			if( !AkihabaraAudio._totalAudioMute ){
+				AkihabaraAudio.totalAudioMute();
+				AkihabaraAudio._totalAudioMute = true;
 			}else{
-				audio.totalAudioUnmute();
-				audio._totalAudioMute = false;
+				AkihabaraAudio.totalAudioUnmute();
+				AkihabaraAudio._totalAudioMute = false;
 			}
 		}
 	},

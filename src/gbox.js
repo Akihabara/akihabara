@@ -385,7 +385,7 @@ var gbox = {
 		gbox._sessioncache = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "-" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();
 
 		gbox._loadsettings(); // Load default configuration
-		audio.setCanAudio(true); // Tries to enable audio by default
+		AkihabaraAudio.setCanAudio(true); // Tries to enable audio by default
 
 		switch (gbox._flags.fse) { // Initialize FSEs
 			case "scanlines":
@@ -1374,7 +1374,7 @@ var gbox = {
 		if (pack.addTiles) for (i = 0; i < pack.addTiles.length; i++) gbox.addTiles(pack.addTiles[i]);
 		// Remote resources for last
 		if (pack.addImage) for (i = 0; i < pack.addImage.length; i++) gbox.addImage(pack.addImage[i][0], pack.addImage[i][1]);
-		if (pack.addAudio) for (i = 0; i < pack.addAudio.length; i++) audio.addAudio(pack.addAudio[i][0], pack.addAudio[i][1], pack.addAudio[i][2]);
+		if (pack.addAudio) for (i = 0; i < pack.addAudio.length; i++) AkihabaraAudio.addAudio(pack.addAudio[i][0], pack.addAudio[i][1], pack.addAudio[i][2]);
 		if (pack.addBundle) for (i = 0; i < pack.addBundle.length; i++) gbox.addBundle(pack.addBundle[i]);
 		if (pack.addScript) for (i = 0; i < pack.addScript.length; i++) gbox.addScript(pack.addScript[i]);
 		// Trigger the onLoad events in resource and loader
@@ -1464,7 +1464,7 @@ var gbox = {
 					}
 					break;
 				case "audio":
-					audio._createnextaudio(current.data);
+					AkihabaraAudio._createnextaudio(current.data);
 					break;
 				case "exec-onl":
 					current.func(current.call, current.pack);

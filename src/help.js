@@ -556,24 +556,24 @@ var help = {
 		if (!data || !data.hardwareonly) gbox.initScreen(screenwidth, screenheight);
 
 		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers") == "yes");
-		if (help.geturlparameter("canaudio")) audio.setCanAudio(help.geturlparameter("canaudio") == "yes"); else
-			audio.setCanAudio(device.canaudio && (!device.audioisexperimental || gbox.getFlag("experimental")));
-		if (help.geturlparameter("audiocompatmode")) audio.setAudioCompatMode(help.geturlparameter("audiocompatmode")*1); else
-			if (help.isDefined(device.audiocompatmode)) audio.setAudioCompatMode(device.audiocompatmode);
-		if (help.geturlparameter("audioteam")) audio.setAudioTeam(help.geturlparameter("audioteam")*1); else
-			if (help.isDefined(device.audioteam)) audio.setAudioTeam(device.audioteam);
-		if (help.geturlparameter("loweraudioteam")) audio.setLowerAudioTeam(help.geturlparameter("loweraudioteam")*1); else
-			if (help.isDefined(device.loweraudioteam)) audio.setLowerAudioTeam(device.loweraudioteam);
-		if (help.geturlparameter("audiocreatemode")) audio.setAudioCreateMode(help.geturlparameter("audiocreatemode")*1); else
-			if (help.isDefined(device.audiocreatemode)) audio.setAudioCreateMode(device.audiocreatemode);
-		if (help.geturlparameter("audiodequeuetime")) audio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime")*1); else
-			if (help.isDefined(device.audiodequeuetime)) audio.setAudioDequeueTime(device.audiodequeuetime);
-		if (help.geturlparameter("audiopositiondelay")) audio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay")*1); else
-			if (help.isDefined(device.audiopositiondelay)) audio.setAudioPositionDelay(device.audiopositiondelay);
-		if (help.geturlparameter("forcedmimeaudio")) audio.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio")); else
-			if (help.isDefined(device.forcedmimeaudio)) audio.setForcedMimeAudio(device.forcedmimeaudio);
-		if (help.geturlparameter("audioissinglechannel")) audio.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel") == "yes"); else
-			if (help.isDefined(device.audioissinglechannel)) audio.setAudioIsSingleChannel(device.audioissinglechannel);
+		if (help.geturlparameter("canaudio")) AkihabaraAudio.setCanAudio(help.geturlparameter("canaudio") == "yes"); else
+			AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || gbox.getFlag("experimental")));
+		if (help.geturlparameter("audiocompatmode")) AkihabaraAudio.setAudioCompatMode(help.geturlparameter("audiocompatmode")*1); else
+			if (help.isDefined(device.audiocompatmode)) AkihabaraAudio.setAudioCompatMode(device.audiocompatmode);
+		if (help.geturlparameter("audioteam")) AkihabaraAudio.setAudioTeam(help.geturlparameter("audioteam")*1); else
+			if (help.isDefined(device.audioteam)) AkihabaraAudio.setAudioTeam(device.audioteam);
+		if (help.geturlparameter("loweraudioteam")) AkihabaraAudio.setLowerAudioTeam(help.geturlparameter("loweraudioteam")*1); else
+			if (help.isDefined(device.loweraudioteam)) AkihabaraAudio.setLowerAudioTeam(device.loweraudioteam);
+		if (help.geturlparameter("audiocreatemode")) AkihabaraAudio.setAudioCreateMode(help.geturlparameter("audiocreatemode")*1); else
+			if (help.isDefined(device.audiocreatemode)) AkihabaraAudio.setAudioCreateMode(device.audiocreatemode);
+		if (help.geturlparameter("audiodequeuetime")) AkihabaraAudio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime")*1); else
+			if (help.isDefined(device.audiodequeuetime)) AkihabaraAudio.setAudioDequeueTime(device.audiodequeuetime);
+		if (help.geturlparameter("audiopositiondelay")) AkihabaraAudio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay")*1); else
+			if (help.isDefined(device.audiopositiondelay)) AkihabaraAudio.setAudioPositionDelay(device.audiopositiondelay);
+		if (help.geturlparameter("forcedmimeaudio")) AkihabaraAudio.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio")); else
+			if (help.isDefined(device.forcedmimeaudio)) AkihabaraAudio.setForcedMimeAudio(device.forcedmimeaudio);
+		if (help.geturlparameter("audioissinglechannel")) AkihabaraAudio.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel") == "yes"); else
+			if (help.isDefined(device.audioissinglechannel)) AkihabaraAudio.setAudioIsSingleChannel(device.audioissinglechannel);
 
 
 		if (!data || !data.hardwareonly) {

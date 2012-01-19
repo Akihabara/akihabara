@@ -44,7 +44,7 @@ var gamecycle = {
 		// game intro animation
 		gameIntroAnimation: function(reset) {
 			if (reset) {
-				audio.stopChannel("bgmusic");
+				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
@@ -55,7 +55,7 @@ var gamecycle = {
 		// level intro animation
 		levelIntroAnimation: function(reset) {
 			if (reset) {
-				audio.stopChannel("bgmusic");
+				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
@@ -66,7 +66,7 @@ var gamecycle = {
 		 // Life intro animation
 		 newlifeIntroAnimation: function(reset) {
 			 if (reset) {
-				audio.stopChannel("bgmusic");
+				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
@@ -77,7 +77,7 @@ var gamecycle = {
 		// gameover animation
 		gameoverIntroAnimation: function(reset) {
 			 if (reset) {
-				audio.stopChannel("bgmusic");
+				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
@@ -88,7 +88,7 @@ var gamecycle = {
 		// game title animation
 		gameTitleIntroAnimation: function(reset) {
 			if (reset)
-				audio.stopChannel("bgmusic");
+				AkihabaraAudio.stopChannel("bgmusic");
 			else {
 				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
 				gbox.blitText(gbox.getBufferContext(), {font: "small",text: "GAME TITLE",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()-100});
@@ -230,7 +230,7 @@ var gamecycle = {
 					switch (this.state) {
 						case 100: // Press to start
 							if (this.stateFirstIteration) {
-								audio.resetChannel("bgmusic");
+								AkihabaraAudio.resetChannel("bgmusic");
 								this.pressStartIntroAnimation(true);
 								this.stateIsReady();
 							}
@@ -238,7 +238,7 @@ var gamecycle = {
 							break;
 						case 101: // Game menu
 							if (this.stateFirstIteration) {
-								audio.setChannelVolume("bgmusic",0.5);
+								AkihabaraAudio.setChannelVolume("bgmusic",0.5);
 								this.gameMenu(true);
 								this.stateIsReady();
 							}
@@ -326,12 +326,12 @@ var gamecycle = {
 								gbox.playAllGroups();
 								break;
 							case 700:
-								audio.resetChannel("bgmusic");
+								AkihabaraAudio.resetChannel("bgmusic");
 								gbox.soloGroup(this.group);
 								this.gameoverIntroAnimation(true);
 								break;
 							case 801:
-								audio.resetChannel("bgmusic");
+								AkihabaraAudio.resetChannel("bgmusic");
 								gbox.soloGroup(this.group);
 								this.gameEndingIntroAnimation(true);
 								break;

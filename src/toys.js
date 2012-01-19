@@ -76,7 +76,7 @@ var toys = {
 					if (th.toys[id].time) {
 						th.toys[id].time--;
 						if (data.audiocritical && (th.toys[id].time <= data.critical))
-							audio.hitAudio(data.audiocritical);
+							AkihabaraAudio.hitAudio(data.audiocritical);
 					} else th.toys[id].done = true;
 				} else
 					th.toys[id].time++;
@@ -131,15 +131,15 @@ var toys = {
 			}
 			if (!th.toys[id].ok) {
 				if (input.keyIsHit(opt.keys.up) && (th.toys[id].selected > 0)) {
-					if (opt.audiooption) audio.hitAudio(opt.audiooption);
+					if (opt.audiooption) AkihabaraAudio.hitAudio(opt.audiooption);
 					th.toys[id].selected--;
 				} else
 				if (input.keyIsHit(opt.keys.down) && (th.toys[id].selected < opt.items.length-1)) {
-					if (opt.audiooption) audio.hitAudio(opt.audiooption);
+					if (opt.audiooption) AkihabaraAudio.hitAudio(opt.audiooption);
 					th.toys[id].selected++;
 				} else
 				if (input.keyIsHit(opt.keys.ok)) {
-					if (opt.audioconfirm) audio.hitAudio(opt.audioconfirm);
+					if (opt.audioconfirm) AkihabaraAudio.hitAudio(opt.audioconfirm);
 					th.toys[id].ok = 1;
 				} else
 				if (input.keyIsHit(opt.keys.cancel)) th.toys[id].ok = -1;
@@ -282,34 +282,34 @@ var toys = {
 		fadeout: function(th, id, tox, data) {
 			if (toys._maketoy(th, id) || data.resetfade) {
 				th.toys[id].fade = 0;
-				if (data.audiofade) th.toys[id].stv = audio.getAudioVolume(data.audiofade);
-				if (data.audiochannelfade) th.toys[id].chv = audio.getChannelVolume(data.audiochannelfade);
+				if (data.audiofade) th.toys[id].stv = AkihabaraAudio.getAudioVolume(data.audiofade);
+				if (data.audiochannelfade) th.toys[id].chv = AkihabaraAudio.getChannelVolume(data.audiochannelfade);
 			}
 			th.toys[id].fade += data.fadespeed;
 			if (th.toys[id].fade > 1) th.toys[id].fade = 1;
 			data.alpha = th.toys[id].fade;
 			gbox.blitFade(tox, data);
-			if (data.audiofade) audio.setAudioVolume(data.audiofade, th.toys[id].stv*(1-data.alpha));
+			if (data.audiofade) AkihabaraAudio.setAudioVolume(data.audiofade, th.toys[id].stv*(1-data.alpha));
 			if (data.audiochannelfade)
 				if (data.alpha == 1)
-					audio.stopChannel(data.audiochannelfade);
+					AkihabaraAudio.stopChannel(data.audiochannelfade);
 				else
-					audio.setChannelVolume(data.audiochannelfade, th.toys[id].chv*(1-data.alpha));
+					AkihabaraAudio.setChannelVolume(data.audiochannelfade, th.toys[id].chv*(1-data.alpha));
 			return toys._toyfrombool(th, id, th.toys[id].fade == 1);
 		},
 
 		fadein: function(th, id, tox, data) {
 			if (toys._maketoy(th, id) || data.resetfade) {
 				th.toys[id].fade = 1;
-				if (data.audiofade) th.toys[id].stv = audio.getAudioVolume(data.audiofade);
-				if (data.audiochannelfade) th.toys[id].chv = audio.getChannelDefaultVolume(data.audiochannelfade);
+				if (data.audiofade) th.toys[id].stv = AkihabaraAudio.getAudioVolume(data.audiofade);
+				if (data.audiochannelfade) th.toys[id].chv = AkihabaraAudio.getChannelDefaultVolume(data.audiochannelfade);
 			}
 			th.toys[id].fade-=data.fadespeed;
 			if (th.toys[id].fade < 0) th.toys[id].fade = 0;
 			if (th.toys[id].fade) {
 				data.alpha = th.toys[id].fade;
-				if (data.audiofade) audio.setAudioVolume(data.audiofade, th.toys[id].stv*(1-data.alpha));
-				if (data.audiochannelfade) audio.setChannelVolume(data.audiochannelfade, th.toys[id].chv*(1-data.alpha));
+				if (data.audiofade) AkihabaraAudio.setAudioVolume(data.audiofade, th.toys[id].stv*(1-data.alpha));
+				if (data.audiochannelfade) AkihabaraAudio.setChannelVolume(data.audiochannelfade, th.toys[id].chv*(1-data.alpha));
 				gbox.blitFade(tox, data);
 			}
 			return toys._toyfrombool(th, id, th.toys[id].fade == 0);
@@ -362,7 +362,7 @@ var toys = {
 						trigo.translate(th.toys[id], trigo.getAngle(th.toys[id], data), data.speed);
 				else
 					if (!th.toys[id].played) {
-						if (data.audioreach) audio.hitAudio(data.audioreach);
+						if (data.audioreach) AkihabaraAudio.hitAudio(data.audioreach);
 						th.toys[id].played = true;
 					}
 				th.toys[id].every = data.every;
@@ -395,7 +395,7 @@ var toys = {
 			} else {
 				if (!th.toys[id].done) {
 					th.toys[id].done = true;
-					if (data.audioreach) audio.hitAudio(data.audioreach);
+					if (data.audioreach) AkihabaraAudio.hitAudio(data.audioreach);
 				}
 				gbox.blitAll(gbox.getBufferContext(), gbox.getImage(data.image), {dx: data.x, dy: data.y});
 				return toys._toydone(th, id);
@@ -412,7 +412,7 @@ var toys = {
 				th.toys[id].zoom-=data.speed;
 				if (th.toys[id].zoom <= 1) {
 					th.toys[id].zoom = 1;
-					if (data.audioreach) audio.hitAudio(data.audioreach);
+					if (data.audioreach) AkihabaraAudio.hitAudio(data.audioreach);
 				}
 				gbox.blit(gbox.getBufferContext(), gbox.getImage(data.image), {h: th.toys[id].img.height, w: th.toys[id].img.width, dx: data.x-Math.floor(th.toys[id].img.width*(th.toys[id].zoom-1)/2), dy: data.y-Math.floor(th.toys[id].img.height*(th.toys[id].zoom-1)/2), dh: Math.floor(th.toys[id].img.height*th.toys[id].zoom), dw: Math.floor(th.toys[id].img.width*th.toys[id].zoom), alpha: 1/th.toys[id].zoom});
 				return toys._toybusy(th, id);
@@ -435,7 +435,7 @@ var toys = {
 				gbox.blit(gbox.getBufferContext(), gbox.getImage(data.image), {dh: th.toys[id].cnt, dw: th.toys[id].lw, dx: data.x, dy: data.y + th.toys[id].lh-th.toys[id].cnt, alpha: data.alpha});
 				if (data.reflex) gbox.blit(gbox.getBufferContext(), gbox.getImage(data.image), {dh: th.toys[id].cnt, dw: th.toys[id].lw, dx: data.x, dy: data.y + th.toys[id].lh, alpha: data.reflex, flipv: true});
 				if (th.toys[id].cnt >= th.toys[id].lh)
-					if (data.audioreach) audio.hitAudio(data.audioreach);
+					if (data.audioreach) AkihabaraAudio.hitAudio(data.audioreach);
 				return toys._toybusy(th, id);
 			} else {
 				gbox.blitAll(gbox.getBufferContext(), gbox.getImage(data.image), {dx: data.x, dy: data.y});
@@ -454,7 +454,7 @@ var toys = {
 			}
 			if (!th.toys[id].done) {
 				if (th.toys[id].y + th.toys[id].h >= data.floory) {
-					if (data.audiobounce) audio.hitAudio(data.audiobounce);
+					if (data.audiobounce) AkihabaraAudio.hitAudio(data.audiobounce);
 					th.toys[id].y = data.floory-th.toys[id].h;
 					th.toys[id].accy = -Math.ceil(th.toys[id].accy/(data.heavy?data.heavy: 2));
 					th.toys[id].done = (th.toys[id].accy == 0);
@@ -514,7 +514,7 @@ var toys = {
 						if (th.toys[id].scene.bonus) {
 							gbox.createCanvas("bonus-" + id, {w: th.toys[id].sceneW, h: (th.toys[id].scene.bonus.length)*(th.toys[id].fd.tileh + th.toys[id].scene.spacing)});
 						}
-						if (th.toys[id].scene.audiomusic) audio.hitAudio(th.toys[id].scene.audiomusic);
+						if (th.toys[id].scene.audiomusic) AkihabaraAudio.hitAudio(th.toys[id].scene.audiomusic);
 					}
 				}
 				if (!th.toys[id].ended) {
@@ -540,7 +540,7 @@ var toys = {
 							if (th.toys[id].counter == th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter = 0;
-								if (th.toys[id].scene.audio && !(th.toys[id].letter%3)) audio.hitAudio(th.toys[id].scene.audio);
+								if (th.toys[id].scene.audio && !(th.toys[id].letter%3)) AkihabaraAudio.hitAudio(th.toys[id].scene.audio);
 								var tmp = th.toys[id].letter;
 								var row = 0;
 								while (tmp > th.toys[id].scene.talk[row].length) {
@@ -811,24 +811,21 @@ var toys = {
 						if (this.audio)
 							if (this.fadespeed > 0) this.destination = 1; else this.destination = 0;
 						else
-							if (this.fadespeed > 0) this.destination = audio.getChannelDefaultVolume(this.channel); else this.destination = 0;
-					if (this.fadespeed > 0) audio.playAudio(this.audio);
+							if (this.fadespeed > 0) this.destination = AkihabaraAudio.getChannelDefaultVolume(this.channel); else this.destination = 0;
+					if (this.fadespeed > 0) AkihabaraAudio.playAudio(this.audio);
 				};
 
 				obj[(data.bliton == null?"blit":data.bliton)] = function() {
-					if (this.audio) audio.changeAudioVolume(this.audio, this.fadespeed);
-					if (this.channel) audio.changeChannelVolume(this.channel, this.fadespeed);
-					if ((this.audio && (
-							((this.fadespeed < 0) && (audio.getAudioVolume(this.audio) <= this.destination))||
-							((this.fadespeed > 0) && (audio.getAudioVolume(this.audio) >= this.destination))
-						))||
-						(this.channel && (
-							((this.fadespeed < 0) && (audio.getChannelVolume(this.channel) <= this.destination))||
-							((this.fadespeed > 0) && (audio.getChannelVolume(this.channel) >= this.destination))
+					if (this.audio) AkihabaraAudio.changeAudioVolume(this.audio, this.fadespeed);
+					if (this.channel) AkihabaraAudio.changeChannelVolume(this.channel, this.fadespeed);
+					if (this.audio && (
+							((this.fadespeed < 0) && (AkihabaraAudio.getAudioVolume(this.audio) <= this.destination)) || ((this.fadespeed > 0) && (AkihabaraAudio.getAudioVolume(this.audio) >= this.destination))
+						) || (this.channel && (
+							((this.fadespeed < 0) && (AkihabaraAudio.getChannelVolume(this.channel) <= this.destination)) || ((this.fadespeed > 0) && (AkihabaraAudio.getChannelVolume(this.channel) >= this.destination))
 						))
 					) {
-						if (this.channel && this.stoponmute && (this.fadespeed < 0)) audio.stopChannel(this.channel);
-						if (this.audio && this.stoponmute && (this.fadespeed < 0)) audio.stopAudio(this.audio);
+						if (this.channel && this.stoponmute && (this.fadespeed < 0)) AkihabaraAudio.stopChannel(this.channel);
+						if (this.audio && this.stoponmute && (this.fadespeed < 0)) AkihabaraAudio.stopAudio(this.audio);
 						gbox.trashObject(this);
 					}
 				};

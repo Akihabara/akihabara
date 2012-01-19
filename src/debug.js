@@ -92,14 +92,14 @@ var debug = {
 				}
 			cnt = 0;
 			var ply = 0;
-			for (g in audio._audio.aud)
-				for (var x = 0; x < audio._audio.aud[g].length; x++) {
+			for (g in AkihabaraAudio._audio.aud)
+				for (var x = 0; x < AkihabaraAudio._audio.aud[g].length; x++) {
 					cnt++;
-					if (!audio._audio.aud[g][x].paused && !audio._audio.aud[g][x].ended) ply++;
+					if (!AkihabaraAudio._audio.aud[g][x].paused && !AkihabaraAudio._audio.aud[g][x].ended) ply++;
 				}
-			statline += "| audio: " + ply + "/" + cnt + ":" + audio._audioteam;
+			statline += "| audio: " + ply + "/" + cnt + ":" + AkihabaraAudio._audioteam;
 
-			if( audio._totalAudioMute ) statline += ' MUTE ON';
+			if( AkihabaraAudio._totalAudioMute ) statline += ' MUTE ON';
 			if( gbox._pauseGame ) statline += ' | PAUSE ON';
 
 			this.setStatBar(statline);

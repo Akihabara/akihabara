@@ -28,9 +28,9 @@ var audio = {
 	_audiomutevolume: 0.0001, // Zero is still not accepted by everyone :(
 
 	_rawstopaudio: function(su) {
-		if (audio._audiocompatmode === 1) {
-			if (su.duration - su.currentTime > audio._fakestoptime) {
-				su.currentTime = su.duration - audio._fakestoptime;
+		if (AkihabaraAudio._audiocompatmode === 1) {
+			if (su.duration - su.currentTime > AkihabaraAudio._fakestoptime) {
+				su.currentTime = su.duration - AkihabaraAudio._fakestoptime;
 			}
 			su.muted = true;
 		} else {
@@ -39,67 +39,67 @@ var audio = {
 	},
 
 	_rawplayaudio: function(su) {
-		if (audio._audiocompatmode === 1) {
+		if (AkihabaraAudio._audiocompatmode === 1) {
 			try { su.currentTime = 0; } catch (e) {}
 			su.muted = false;
 			su.play();
-		} else if (audio._audiocompatmode === 2) {
+		} else if (AkihabaraAudio._audiocompatmode === 2) {
 			su.load();
-			audio._playerforcer = setInterval(function(e) {
+			AkihabaraAudio._playerforcer = setInterval(function(e) {
 				try {
 					su.play();
-					clearInterval(audio._playerforcer);
+					clearInterval(AkihabaraAudio._playerforcer);
 				} catch (e) {}
 			}, 1000);
 		} else {
 			try { su.currentTime = 0; } catch (e) {}
 			su.play();
-			if (audio._totalMute) {
-				audio.totalAudioMute();
+			if (AkihabaraAudio._totalMute) {
+				AkihabaraAudio.totalAudioMute();
 			}
 		}
 	},
 
 	_finalizeaudio: function(ob, who, donext) {
 		var cur = (who ? who : this);
-		gbox.removeEventListener(cur, 'ended', audio._finalizeaudio);
-		gbox.removeEventListener(cur, 'timeupdate', audio._checkprogress);
+		gbox.removeEventListener(cur, 'ended', AkihabaraAudio._finalizeaudio);
+		gbox.removeEventListener(cur, 'timeupdate', AkihabaraAudio._checkprogress);
 
-		gbox.addEventListener(cur, 'ended', audio._playbackended);
+		gbox.addEventListener(cur, 'ended', AkihabaraAudio._playbackended);
 		if (donext) {
 			gbox._loaderloaded();
 		}
 	},
 
 	_audiodoload: function() {
-		if (audio._audiocompatmode === 1) {
-			audio._audio.lding.muted = true;
+		if (AkihabaraAudio._audiocompatmode === 1) {
+			AkihabaraAudio._audio.lding.muted = true;
 		} else {
-			if (audio._audiocompatmode === 2) {
-				audio._finalizeaudio(null, audio._audio.lding, true);
+			if (AkihabaraAudio._audiocompatmode === 2) {
+				AkihabaraAudio._finalizeaudio(null, AkihabaraAudio._audio.lding, true);
 			} else {
-				audio._audio.lding.load();
-				audio._audio.lding.play();
+				AkihabaraAudio._audio.lding.load();
+				AkihabaraAudio._audio.lding.play();
 			}
 		}
 	},
 
 	_timedfinalize: function() {
-		audio._rawstopaudio(audio._audio.lding);
-		audio._finalizeaudio(null, audio._audio.lding, true);
+		AkihabaraAudio._rawstopaudio(AkihabaraAudio._audio.lding);
+		AkihabaraAudio._finalizeaudio(null, AkihabaraAudio._audio.lding, true);
 	},
 
 	_checkprogress: function() {
-		if (audio._audio.lding.currentTime > audio._audioprefetch) {
-			audio._timedfinalize();
+		if (AkihabaraAudio._audio.lding.currentTime > AkihabaraAudio._audioprefetch) {
+			AkihabaraAudio._timedfinalize();
 		}
 	},
 
 	_fakecheckprogress: function() {
-		if (audio._audio.lding.currentTime > audio._audioprefetch) {
-			audio._timedfinalize();
+		if (AkihabaraAudio._audio.lding.currentTime > AkihabaraAudio._audioprefetch) {
+			AkihabaraAudio._timedfinalize();
 		} else {
-			setTimeout(audio._fakecheckprogress, audio._fakecheckprogressspeed);
+			setTimeout(AkihabaraAudio._fakecheckprogress, AkihabaraAudio._fakecheckprogressspeed);
 		}
 	},
 
@@ -122,22 +122,22 @@ var audio = {
 
 		if (cau.def) {
 			this.deleteAudio(cau.id);
-			audio._audio.aud[cau.id] = [];
-			audio._audio.ast[cau.id] = {cy: -1, volume: 1, channel: null, play: false, mute: false, filename: cau.filename[0]};
+			AkihabaraAudio._audio.aud[cau.id] = [];
+			AkihabaraAudio._audio.ast[cau.id] = {cy: -1, volume: 1, channel: null, play: false, mute: false, filename: cau.filename[0]};
 			if (cau.def) {
 				for (var a in cau.def) {
-					audio._audio.ast[cau.id][a] = cau.def[a];
+					AkihabaraAudio._audio.ast[cau.id][a] = cau.def[a];
 				}
 			}
 		}
-		if ((audio._createmode === 0) && (cau.team > 0)) {
-			ael = audio._audio.aud[cau.id][0].cloneNode(true);
-			audio._finalizeaudio(null, ael, false);
+		if ((AkihabaraAudio._createmode === 0) && (cau.team > 0)) {
+			ael = AkihabaraAudio._audio.aud[cau.id][0].cloneNode(true);
+			AkihabaraAudio._finalizeaudio(null, ael, false);
 		} else {
 			ael = document.createElement('audio');
-			ael.volume = audio._audiomutevolume;
+			ael.volume = AkihabaraAudio._audiomutevolume;
 		}
-		if (!audio._showplayers) {
+		if (!AkihabaraAudio._showplayers) {
 			ael.style.display = "none";
 			ael.style.visibility = "hidden";
 			ael.style.width = "1px";
@@ -146,14 +146,14 @@ var audio = {
 			ael.style.left = "0px";
 			ael.style.top = "-1000px";
 		}
-		ael.setAttribute('controls', audio._showplayers);
+		ael.setAttribute('controls', AkihabaraAudio._showplayers);
 		ael.setAttribute('aki_id', cau.id);
 		ael.setAttribute('aki_cnt', cau.team);
-		gbox.addEventListener(ael, 'loadedmetadata', audio._pushaudio); // Push locked audio in safari
-		if (((audio._createmode === 0) && (cau.team == 0)) || (audio._createmode === 1)) {
-			if (audio._forcedmimeaudio) {
+		gbox.addEventListener(ael, 'loadedmetadata', AkihabaraAudio._pushaudio); // Push locked audio in safari
+		if (((AkihabaraAudio._createmode === 0) && (cau.team == 0)) || (AkihabaraAudio._createmode === 1)) {
+			if (AkihabaraAudio._forcedmimeaudio) {
 				for (i = 0; i < cau.filename.length; i++) {
-					if (audio._audiofiletomime(cau.filename[i]).indexOf(audio._forcedmimeaudio) !== -1) {
+					if (AkihabaraAudio._audiofiletomime(cau.filename[i]).indexOf(AkihabaraAudio._forcedmimeaudio) !== -1) {
 						ael.src = gbox._breakcacheurl(cau.filename[i]);
 						break;
 					}
@@ -161,7 +161,7 @@ var audio = {
 			} else if (ael.canPlayType) {
 				var cmime;
 				for (i = 0; i < cau.filename.length; i++) {
-					cmime = audio._audiofiletomime(cau.filename[i]);
+					cmime = AkihabaraAudio._audiofiletomime(cau.filename[i]);
 					if (("no" !== ael.canPlayType(cmime)) && ("" !== ael.canPlayType(cmime))) {
 						ael.src = gbox._breakcacheurl(cau.filename[i]);
 						break;
@@ -174,38 +174,38 @@ var audio = {
 					ael.appendChild(src);
 				}
 			}
-			gbox.addEventListener(ael, 'ended', audio._finalizeaudio);
-			if (audio._audiocompatmode === 1) {
-				setTimeout(audio._fakecheckprogress, audio._fakecheckprogressspeed);
+			gbox.addEventListener(ael, 'ended', AkihabaraAudio._finalizeaudio);
+			if (AkihabaraAudio._audiocompatmode === 1) {
+				setTimeout(AkihabaraAudio._fakecheckprogress, AkihabaraAudio._fakecheckprogressspeed);
 			} else {
-				gbox.addEventListener(ael, 'timeupdate', audio._checkprogress);
+				gbox.addEventListener(ael, 'timeupdate', AkihabaraAudio._checkprogress);
 			}
 			ael.setAttribute('buffering', "auto");
 			ael.volume = 0;
-			audio._audio.aud[cau.id].push(ael);
+			AkihabaraAudio._audio.aud[cau.id].push(ael);
 			document.body.appendChild(ael);
-			audio._audio.lding = ael;
-			setTimeout(audio._audiodoload, 1);
+			AkihabaraAudio._audio.lding = ael;
+			setTimeout(AkihabaraAudio._audiodoload, 1);
 		} else {
-			audio._audio.aud[cau.id].push(ael);
+			AkihabaraAudio._audio.aud[cau.id].push(ael);
 			document.body.appendChild(ael);
 			gbox._loaderloaded();
 		}
 	},
 
 	_playbackended: function(e) {
-		if (audio._audio.ast[this.getAttribute('aki_id')].cy === this.getAttribute('aki_cnt')) {
-			if (audio._audio.ast[this.getAttribute('aki_id')].play && audio._audio.ast[this.getAttribute('aki_id')].loop) {
-				if (audio._audiocompatmode === 2) {
-					audio._rawplayaudio(this);
+		if (AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].cy === this.getAttribute('aki_cnt')) {
+			if (AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].play && AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].loop) {
+				if (AkihabaraAudio._audiocompatmode === 2) {
+					AkihabaraAudio._rawplayaudio(this);
 				} else {
 					this.currentTime = 0;
 				}
 			} else {
-				audio._audio.ast[this.getAttribute('aki_id')].play = false;
+				AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].play = false;
 			}
 		} else {
-			if (audio._audiocompatmode === 1) {
+			if (AkihabaraAudio._audiocompatmode === 1) {
 				this.pause();
 				this.muted = false;
 			}
@@ -213,64 +213,64 @@ var audio = {
 	},
 
 	_updateaudio: function(a) {
-		if (audio._audio.ast[a].play) {
-			audio._audio.aud[a][audio._audio.ast[a].cy].volume = (audio._audio.ast[a].mute ? audio._audiomutevolume : audio._audiomastervolume * (audio._audio.ast[a].volume != null ? audio._audio.ast[a].volume : 1) * ((audio._audio.ast[a].channel != null) && (audio._audiochannels[audio._audio.ast[a].channel] != null) && (audio._audiochannels[audio._audio.ast[a].channel].volume != null) ? audio._audiochannels[audio._audio.ast[a].channel].volume : 1));
+		if (AkihabaraAudio._audio.ast[a].play) {
+			AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].volume = (AkihabaraAudio._audio.ast[a].mute ? AkihabaraAudio._audiomutevolume : AkihabaraAudio._audiomastervolume * (AkihabaraAudio._audio.ast[a].volume != null ? AkihabaraAudio._audio.ast[a].volume : 1) * ((AkihabaraAudio._audio.ast[a].channel != null) && (AkihabaraAudio._audiochannels[AkihabaraAudio._audio.ast[a].channel] != null) && (AkihabaraAudio._audiochannels[AkihabaraAudio._audio.ast[a].channel].volume != null) ? AkihabaraAudio._audiochannels[AkihabaraAudio._audio.ast[a].channel].volume : 1));
 		}
 	},
 
 	_addqueue: function(a) {
-		if (!audio._audiodequeuetime) {
-			audio._dequeueaudio(null, a);
+		if (!AkihabaraAudio._audiodequeuetime) {
+			AkihabaraAudio._dequeueaudio(null, a);
 		} else {
-			audio._audioactions.push(a);
-			if (!audio._audio.qtimer) {
-				audio._audio.qtimer = true;
-				setTimeout(audio._dequeueaudio, audio._audiodequeuetime);
+			AkihabaraAudio._audioactions.push(a);
+			if (!AkihabaraAudio._audio.qtimer) {
+				AkihabaraAudio._audio.qtimer = true;
+				setTimeout(AkihabaraAudio._dequeueaudio, AkihabaraAudio._audiodequeuetime);
 			}
 		}
 	},
 
 	_dequeueaudio: function(k, rt) {
-		var ac = (rt ? rt : audio._audioactions.pop());
+		var ac = (rt ? rt : AkihabaraAudio._audioactions.pop());
 		switch (ac.t) {
 		case 0:
-			audio._updateaudio(ac.a.getAttribute("aki_id"));
-			audio._rawplayaudio(ac.a);
+			AkihabaraAudio._updateaudio(ac.a.getAttribute("aki_id"));
+			AkihabaraAudio._rawplayaudio(ac.a);
 			break;
 		case 1:
-			audio._rawstopaudio(ac.a);
+			AkihabaraAudio._rawstopaudio(ac.a);
 			break;
 		case 2:
-			audio._updateaudio(ac.a.getAttribute("aki_id"));
+			AkihabaraAudio._updateaudio(ac.a.getAttribute("aki_id"));
 			break;
 		}
-		if (!rt && audio._audioactions.length) {
-			audio._audio.qtimer = true;
-			setTimeout(audio._dequeueaudio, audio._audiodequeuetime);
+		if (!rt && AkihabaraAudio._audioactions.length) {
+			AkihabaraAudio._audio.qtimer = true;
+			setTimeout(AkihabaraAudio._dequeueaudio, AkihabaraAudio._audiodequeuetime);
 		} else {
-			audio._audio.qtimer = false;
+			AkihabaraAudio._audio.qtimer = false;
 		}
 	},
 
-	getAudioIsSingleChannel: function() { return audio._singlechannelaudio; },
-	setAudioIsSingleChannel: function(m) { audio._singlechannelaudio = m; },
-	setAudioPositionDelay: function(m) { audio._positiondelay = m; },
-	setAudioDequeueTime: function(m) { audio._audiodequeuetime = m; },
-	setShowPlayers: function(m) { audio._showplayers = m; },
-	setAudioCompatMode: function(m) { audio._audiocompatmode = m; },
-	setAudioCreateMode: function(m) { audio._createmode = m; },
+	getAudioIsSingleChannel: function() { return AkihabaraAudio._singlechannelaudio; },
+	setAudioIsSingleChannel: function(m) { AkihabaraAudio._singlechannelaudio = m; },
+	setAudioPositionDelay: function(m) { AkihabaraAudio._positiondelay = m; },
+	setAudioDequeueTime: function(m) { AkihabaraAudio._audiodequeuetime = m; },
+	setShowPlayers: function(m) { AkihabaraAudio._showplayers = m; },
+	setAudioCompatMode: function(m) { AkihabaraAudio._audiocompatmode = m; },
+	setAudioCreateMode: function(m) { AkihabaraAudio._createmode = m; },
 
 	addAudio: function(id, filename, def) {
-		if (audio._canaudio) {
-			if (audio._audio.aud[id]) {
-				if (audio._audio.ast[id].filename === filename[0]) {
+		if (AkihabaraAudio._canaudio) {
+			if (AkihabaraAudio._audio.aud[id]) {
+				if (AkihabaraAudio._audio.ast[id].filename === filename[0]) {
 					return;
 				} else {
 					this.deleteAudio(id);
 				}
 			}
-			if (!audio._singlechannelaudio || (def.channel === audio._singlechannelname)) {
-				var grsize = (def.channel === audio._singlechannelname ? audio._loweraudioteam : (def.background ? audio._loweraudioteam : audio._audioteam));
+			if (!AkihabaraAudio._singlechannelaudio || (def.channel === AkihabaraAudio._singlechannelname)) {
+				var grsize = (def.channel === AkihabaraAudio._singlechannelname ? AkihabaraAudio._loweraudioteam : (def.background ? AkihabaraAudio._loweraudioteam : AkihabaraAudio._audioteam));
 				for (var i = 0; i < grsize; i++) {
 					gbox._addtoloader({type: "audio", data: {id: id, filename: filename, def: (i === 0 ? def : null), team: i}});
 				}
@@ -279,87 +279,87 @@ var audio = {
 	},
 
 	deleteAudio: function(id) {
-		if (audio._audio.aud[id]) {
-			for (var i = 0; i < audio._audio.aud[id].length; i++) {
-				try {document.body.removeChild(audio._audio.aud[id][i]); } catch (e) {}
-				delete audio._audio.aud[id][i];
+		if (AkihabaraAudio._audio.aud[id]) {
+			for (var i = 0; i < AkihabaraAudio._audio.aud[id].length; i++) {
+				try {document.body.removeChild(AkihabaraAudio._audio.aud[id][i]); } catch (e) {}
+				delete AkihabaraAudio._audio.aud[id][i];
 			}
-			delete audio._audio.aud[id];
-			if (audio._audio.ast[id]) {
-				delete audio._audio.ast[id];
+			delete AkihabaraAudio._audio.aud[id];
+			if (AkihabaraAudio._audio.ast[id]) {
+				delete AkihabaraAudio._audio.ast[id];
 			}
 		}
 	},
 
 	playAudio: function(a, data) {
-		if (audio._canaudio && audio._audio.ast[a]) {
-			if (!audio._audio.ast[a].play) {
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) {
+			if (!AkihabaraAudio._audio.ast[a].play) {
 				this.hitAudio(a, data);
 			}
 		}
 	},
 
 	hitAudio: function(a, data) {
-		if (audio._canaudio && audio._audio.ast[a]) {
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) {
 			var ael;
-			if (audio._audio.ast[a].cy !== -1) {
+			if (AkihabaraAudio._audio.ast[a].cy !== -1) {
 				this.stopAudio(a, true);
 			}
-			audio._audio.ast[a].cy = (audio._audio.ast[a].cy + 1) % audio._audio.aud[a].length;
-			ael = audio._audio.aud[a][audio._audio.ast[a].cy];
+			AkihabaraAudio._audio.ast[a].cy = (AkihabaraAudio._audio.ast[a].cy + 1) % AkihabaraAudio._audio.aud[a].length;
+			ael = AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy];
 			if (data) {
-				for (var n in data) { audio._audio.ast[a][n] = data[n]; }
+				for (var n in data) { AkihabaraAudio._audio.ast[a][n] = data[n]; }
 			}
-			audio._audio.ast[a].play = true;
-			audio._addqueue({t: 0, a: ael});
+			AkihabaraAudio._audio.ast[a].play = true;
+			AkihabaraAudio._addqueue({t: 0, a: ael});
 		}
 	},
 
 	stopAudio: function(a, permissive) {
-		if (audio._canaudio) {
+		if (AkihabaraAudio._canaudio) {
 			var ael;
-			if (audio._canaudio && audio._audio.ast[a] && audio._audio.ast[a].play) {
-				audio._audio.ast[a].play = false;
-				ael = audio._audio.aud[a][audio._audio.ast[a].cy];
+			if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.ast[a].play) {
+				AkihabaraAudio._audio.ast[a].play = false;
+				ael = AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy];
 				if (ael.duration - 1.5 > 0) {
-					audio._addqueue({t: 1, a: ael});
+					AkihabaraAudio._addqueue({t: 1, a: ael});
 				}
 			}
 		}
 	},
 
 	resetChannel: function(ch) {
-		if (audio._canaudio && audio._audiochannels[ch]) {
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			if (ch === "master") {
-				for (var cha in audio._audiochannels) {
-					this.setChannelVolume(cha, audio._audiochannels[cha]._def.volume);
+				for (var cha in AkihabaraAudio._audiochannels) {
+					this.setChannelVolume(cha, AkihabaraAudio._audiochannels[cha]._def.volume);
 				}
 			} else {
-				if (audio._audiochannels[ch]) {
-					this.setChannelVolume(ch, audio._audiochannels[ch]._def.volume);
+				if (AkihabaraAudio._audiochannels[ch]) {
+					this.setChannelVolume(ch, AkihabaraAudio._audiochannels[ch]._def.volume);
 				}
 			}
 		}
 	},
 
 	getChannelDefaultVolume: function(ch) {
-		if (audio._canaudio && audio._audiochannels[ch]) {
-			return audio._audiochannels[ch]._def.volume;
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
+			return AkihabaraAudio._audiochannels[ch]._def.volume;
 		} else {
 			return null;
 		}
 	},
 
 	setChannelVolume: function(ch, a) {
-		if (audio._canaudio && audio._audiochannels[ch]) {
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			if (ch === "master") {
-				audio._audiomastervolume = a;
+				AkihabaraAudio._audiomastervolume = a;
 			} else {
-				audio._audiochannels[ch].volume = a;
+				AkihabaraAudio._audiochannels[ch].volume = a;
 			}
-			for (var j in audio._audio.aud) {
-				if (audio._audio.ast[j].cy > -1) {
-					audio._updateaudio(j);
+			for (var j in AkihabaraAudio._audio.aud) {
+				if (AkihabaraAudio._audio.ast[j].cy > -1) {
+					AkihabaraAudio._updateaudio(j);
 				}
 			}
 		}
@@ -367,10 +367,10 @@ var audio = {
 
 	getChannelVolume: function(ch) {
 		if (ch === "master") {
-			return audio._audiomastervolume;
+			return AkihabaraAudio._audiomastervolume;
 		} else {
-			if (audio._audiochannels[ch]) {
-				return audio._audiochannels[ch].volume;
+			if (AkihabaraAudio._audiochannels[ch]) {
+				return AkihabaraAudio._audiochannels[ch].volume;
 			} else {
 				return 0;
 			}
@@ -378,7 +378,7 @@ var audio = {
 	},
 
 	changeChannelVolume: function(ch, a) {
-		if (audio._canaudio && audio._audiochannels[ch]) {
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			var vol = this.getChannelVolume(ch) + a;
 			if (vol > 1) {
 				vol = 1;
@@ -392,9 +392,9 @@ var audio = {
 	},
 
 	stopChannel: function(ch) {
-		if (audio._canaudio) {
-			for (var j in audio._audio.aud) {
-				if (audio._audio.ast[j].cy > -1 && audio._audio.ast[j].play && ((ch === "master") || (audio._audio.ast[j].channel === ch))) {
+		if (AkihabaraAudio._canaudio) {
+			for (var j in AkihabaraAudio._audio.aud) {
+				if (AkihabaraAudio._audio.ast[j].cy > -1 && AkihabaraAudio._audio.ast[j].play && ((ch === "master") || (AkihabaraAudio._audio.ast[j].channel === ch))) {
 					this.stopAudio(j);
 				}
 			}
@@ -402,32 +402,32 @@ var audio = {
 	},
 
 	totalAudioMute: function() {
-		audio._totalMute = true;
-		for (var j in audio._audio.aud) {
-			audio.setAudioMute(j);
+		AkihabaraAudio._totalMute = true;
+		for (var j in AkihabaraAudio._audio.aud) {
+			AkihabaraAudio.setAudioMute(j);
 		}
 	},
 
 	totalAudioUnmute: function() {
-		audio._totalMute = false;
-		for (var j in audio._audio.aud) {
-			audio.setAudioUnmute(j);
+		AkihabaraAudio._totalMute = false;
+		for (var j in AkihabaraAudio._audio.aud) {
+			AkihabaraAudio.setAudioUnmute(j);
 		}
 	},
 
-	setAudioUnmute: function(a) { if (audio._canaudio && audio._audio.ast[a]) { audio._audio.ast[a].mute = false; audio._updateaudio(a); } },
-	setAudioMute: function(a) { if (audio._canaudio && audio._audio.ast[a]) { audio._audio.ast[a].mute = true; audio._updateaudio(a); } },
-	getAudioMute: function(a) { if (audio._canaudio && audio._audio.ast[a]) { return audio._audio.ast[a].mute; } else { return null; } },
+	setAudioUnmute: function(a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].mute = false; AkihabaraAudio._updateaudio(a); } },
+	setAudioMute: function(a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].mute = true; AkihabaraAudio._updateaudio(a); } },
+	getAudioMute: function(a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { return AkihabaraAudio._audio.ast[a].mute; } else { return null; } },
 
-	setAudioVolume: function(a, vol) { if (audio._canaudio && audio._audio.ast[a]) { audio._audio.ast[a].volume = vol; audio._updateaudio(a); } },
-	getAudioVolume: function(a, vol) { if (audio._canaudio && audio._audio.ast[a]) { return audio._audio.ast[a].volume; } else { return null; } },
+	setAudioVolume: function(a, vol) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].volume = vol; AkihabaraAudio._updateaudio(a); } },
+	getAudioVolume: function(a, vol) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { return AkihabaraAudio._audio.ast[a].volume; } else { return null; } },
 
-	setAudioPosition: function(a, p) {  if (audio._canaudio && audio._audio.ast[a] && audio._audio.aud[a][audio._audio.ast[a].cy]) { audio._audio.aud[a][audio._audio.ast[a].cy].currentTime = p; } },
+	setAudioPosition: function(a, p) {  if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) { AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime = p; } },
 
 	getAudioPosition: function(a) {
-		if (audio._canaudio && audio._audio.ast[a] && audio._audio.aud[a][audio._audio.ast[a].cy]) {
-			if (audio._audio.aud[a][audio._audio.ast[a].cy].currentTime > audio._positiondelay) {
-				return audio._audio.aud[a][audio._audio.ast[a].cy].currentTime - audio._positiondelay;
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) {
+			if (AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime > AkihabaraAudio._positiondelay) {
+				return AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime - AkihabaraAudio._positiondelay;
 			} else {
 				return 0;
 			}
@@ -437,43 +437,43 @@ var audio = {
 	},
 
 	getAudioDuration: function(a) {
-		if (audio._canaudio && audio._audio.ast[a] && audio._audio.aud[a][audio._audio.ast[a].cy]) {
-			return audio._audio.aud[a][audio._audio.ast[a].cy].duration;
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) {
+			return AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].duration;
 		} else {
 			return 0;
 		}
 	},
 
 	changeAudioVolume: function(a, vol) {
-		if (audio._canaudio && audio._audio.ast[a]) {
-			if (audio._audio.ast[a].volume + vol > 1) {
-				audio._audio.ast[a].volume = 1;
+		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) {
+			if (AkihabaraAudio._audio.ast[a].volume + vol > 1) {
+				AkihabaraAudio._audio.ast[a].volume = 1;
 			} else {
-				if (audio._audio.ast[a].volume + vol < 0) {
-					audio._audio.ast[a].volume = 0;
+				if (AkihabaraAudio._audio.ast[a].volume + vol < 0) {
+					AkihabaraAudio._audio.ast[a].volume = 0;
 				} else {
-					audio._audio.ast[a].volume += vol;
-					audio._updateaudio(a);
+					AkihabaraAudio._audio.ast[a].volume += vol;
+					AkihabaraAudio._updateaudio(a);
 				}
 			}
 		}
 	},
 
-	setCanAudio: function(a) { audio._canaudio = !gbox._flags.noaudio && a; },
-	setForcedMimeAudio: function(a) { audio._forcedmimeaudio = a; },
+	setCanAudio: function(a) { AkihabaraAudio._canaudio = !gbox._flags.noaudio && a; },
+	setForcedMimeAudio: function(a) { AkihabaraAudio._forcedmimeaudio = a; },
 
 	setAudioChannels: function(a) {
-		audio._audiochannels = a;
+		AkihabaraAudio._audiochannels = a;
 		for (var ch in a) {
-			audio._audiochannels[ch]._def = {};
-			for (var attr in audio._audiochannels[ch]) {
+			AkihabaraAudio._audiochannels[ch]._def = {};
+			for (var attr in AkihabaraAudio._audiochannels[ch]) {
 				if (attr !== "_def") {
-					audio._audiochannels[ch]._def[attr] = audio._audiochannels[ch][attr];
+					AkihabaraAudio._audiochannels[ch]._def[attr] = AkihabaraAudio._audiochannels[ch][attr];
 				}
 			}
 		}
 	},
 
-	setAudioTeam: function(a) { audio._audioteam = a; },
-	setLowerAudioTeam: function(a) { audio._loweraudioteam = a; }
+	setAudioTeam: function(a) { AkihabaraAudio._audioteam = a; },
+	setLowerAudioTeam: function(a) { AkihabaraAudio._loweraudioteam = a; }
 };
