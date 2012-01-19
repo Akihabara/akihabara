@@ -27,7 +27,7 @@ var AkihabaraAudio = {
 	_singlechannelaudio: false,
 	_audiomutevolume: 0.0001, // Zero is still not accepted by everyone :(
 
-	_rawstopaudio: function(su) {
+	_rawstopaudio: function (su) {
 		if (AkihabaraAudio._audiocompatmode === 1) {
 			if (su.duration - su.currentTime > AkihabaraAudio._fakestoptime) {
 				su.currentTime = su.duration - AkihabaraAudio._fakestoptime;
@@ -38,14 +38,14 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_rawplayaudio: function(su) {
+	_rawplayaudio: function (su) {
 		if (AkihabaraAudio._audiocompatmode === 1) {
 			try { su.currentTime = 0; } catch (e) {}
 			su.muted = false;
 			su.play();
 		} else if (AkihabaraAudio._audiocompatmode === 2) {
 			su.load();
-			AkihabaraAudio._playerforcer = setInterval(function(e) {
+			AkihabaraAudio._playerforcer = setInterval(function (e) {
 				try {
 					su.play();
 					clearInterval(AkihabaraAudio._playerforcer);
@@ -60,7 +60,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_finalizeaudio: function(ob, who, donext) {
+	_finalizeaudio: function (ob, who, donext) {
 		var cur = (who ? who : this);
 		gbox.removeEventListener(cur, 'ended', AkihabaraAudio._finalizeaudio);
 		gbox.removeEventListener(cur, 'timeupdate', AkihabaraAudio._checkprogress);
@@ -71,7 +71,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_audiodoload: function() {
+	_audiodoload: function () {
 		if (AkihabaraAudio._audiocompatmode === 1) {
 			AkihabaraAudio._audio.lding.muted = true;
 		} else {
@@ -84,18 +84,18 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_timedfinalize: function() {
+	_timedfinalize: function () {
 		AkihabaraAudio._rawstopaudio(AkihabaraAudio._audio.lding);
 		AkihabaraAudio._finalizeaudio(null, AkihabaraAudio._audio.lding, true);
 	},
 
-	_checkprogress: function() {
+	_checkprogress: function () {
 		if (AkihabaraAudio._audio.lding.currentTime > AkihabaraAudio._audioprefetch) {
 			AkihabaraAudio._timedfinalize();
 		}
 	},
 
-	_fakecheckprogress: function() {
+	_fakecheckprogress: function () {
 		if (AkihabaraAudio._audio.lding.currentTime > AkihabaraAudio._audioprefetch) {
 			AkihabaraAudio._timedfinalize();
 		} else {
@@ -103,7 +103,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_audiofiletomime: function(f) {
+	_audiofiletomime: function (f) {
 		var fsp = f.split(".");
 		switch (fsp.pop().toLowerCase()) {
 		case "ogg":
@@ -115,9 +115,9 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_pushaudio: function() { try {this.currentTime = 1.0; } catch (e) {} },
+	_pushaudio: function () { try {this.currentTime = 1.0; } catch (e) {} },
 
-	_createnextaudio: function(cau) {
+	_createnextaudio: function (cau) {
 		var ael, i;
 
 		if (cau.def) {
@@ -150,7 +150,7 @@ var AkihabaraAudio = {
 		ael.setAttribute('aki_id', cau.id);
 		ael.setAttribute('aki_cnt', cau.team);
 		gbox.addEventListener(ael, 'loadedmetadata', AkihabaraAudio._pushaudio); // Push locked audio in safari
-		if (((AkihabaraAudio._createmode === 0) && (cau.team == 0)) || (AkihabaraAudio._createmode === 1)) {
+		if (((AkihabaraAudio._createmode === 0) && (cau.team === 0)) || (AkihabaraAudio._createmode === 1)) {
 			if (AkihabaraAudio._forcedmimeaudio) {
 				for (i = 0; i < cau.filename.length; i++) {
 					if (AkihabaraAudio._audiofiletomime(cau.filename[i]).indexOf(AkihabaraAudio._forcedmimeaudio) !== -1) {
@@ -193,7 +193,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_playbackended: function(e) {
+	_playbackended: function (e) {
 		if (AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].cy === this.getAttribute('aki_cnt')) {
 			if (AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].play && AkihabaraAudio._audio.ast[this.getAttribute('aki_id')].loop) {
 				if (AkihabaraAudio._audiocompatmode === 2) {
@@ -212,13 +212,13 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_updateaudio: function(a) {
+	_updateaudio: function (a) {
 		if (AkihabaraAudio._audio.ast[a].play) {
 			AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].volume = (AkihabaraAudio._audio.ast[a].mute ? AkihabaraAudio._audiomutevolume : AkihabaraAudio._audiomastervolume * (AkihabaraAudio._audio.ast[a].volume != null ? AkihabaraAudio._audio.ast[a].volume : 1) * ((AkihabaraAudio._audio.ast[a].channel != null) && (AkihabaraAudio._audiochannels[AkihabaraAudio._audio.ast[a].channel] != null) && (AkihabaraAudio._audiochannels[AkihabaraAudio._audio.ast[a].channel].volume != null) ? AkihabaraAudio._audiochannels[AkihabaraAudio._audio.ast[a].channel].volume : 1));
 		}
 	},
 
-	_addqueue: function(a) {
+	_addqueue: function (a) {
 		if (!AkihabaraAudio._audiodequeuetime) {
 			AkihabaraAudio._dequeueaudio(null, a);
 		} else {
@@ -230,7 +230,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	_dequeueaudio: function(k, rt) {
+	_dequeueaudio: function (k, rt) {
 		var ac = (rt ? rt : AkihabaraAudio._audioactions.pop());
 		switch (ac.t) {
 		case 0:
@@ -252,15 +252,15 @@ var AkihabaraAudio = {
 		}
 	},
 
-	getAudioIsSingleChannel: function() { return AkihabaraAudio._singlechannelaudio; },
-	setAudioIsSingleChannel: function(m) { AkihabaraAudio._singlechannelaudio = m; },
-	setAudioPositionDelay: function(m) { AkihabaraAudio._positiondelay = m; },
-	setAudioDequeueTime: function(m) { AkihabaraAudio._audiodequeuetime = m; },
-	setShowPlayers: function(m) { AkihabaraAudio._showplayers = m; },
-	setAudioCompatMode: function(m) { AkihabaraAudio._audiocompatmode = m; },
-	setAudioCreateMode: function(m) { AkihabaraAudio._createmode = m; },
+	getAudioIsSingleChannel: function () { return AkihabaraAudio._singlechannelaudio; },
+	setAudioIsSingleChannel: function (m) { AkihabaraAudio._singlechannelaudio = m; },
+	setAudioPositionDelay: function (m) { AkihabaraAudio._positiondelay = m; },
+	setAudioDequeueTime: function (m) { AkihabaraAudio._audiodequeuetime = m; },
+	setShowPlayers: function (m) { AkihabaraAudio._showplayers = m; },
+	setAudioCompatMode: function (m) { AkihabaraAudio._audiocompatmode = m; },
+	setAudioCreateMode: function (m) { AkihabaraAudio._createmode = m; },
 
-	addAudio: function(id, filename, def) {
+	addAudio: function (id, filename, def) {
 		if (AkihabaraAudio._canaudio) {
 			if (AkihabaraAudio._audio.aud[id]) {
 				if (AkihabaraAudio._audio.ast[id].filename === filename[0]) {
@@ -278,7 +278,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	deleteAudio: function(id) {
+	deleteAudio: function (id) {
 		if (AkihabaraAudio._audio.aud[id]) {
 			for (var i = 0; i < AkihabaraAudio._audio.aud[id].length; i++) {
 				try {document.body.removeChild(AkihabaraAudio._audio.aud[id][i]); } catch (e) {}
@@ -291,7 +291,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	playAudio: function(a, data) {
+	playAudio: function (a, data) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) {
 			if (!AkihabaraAudio._audio.ast[a].play) {
 				this.hitAudio(a, data);
@@ -299,7 +299,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	hitAudio: function(a, data) {
+	hitAudio: function (a, data) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) {
 			var ael;
 			if (AkihabaraAudio._audio.ast[a].cy !== -1) {
@@ -315,7 +315,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	stopAudio: function(a, permissive) {
+	stopAudio: function (a, permissive) {
 		if (AkihabaraAudio._canaudio) {
 			var ael;
 			if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.ast[a].play) {
@@ -328,7 +328,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	resetChannel: function(ch) {
+	resetChannel: function (ch) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			if (ch === "master") {
 				for (var cha in AkihabaraAudio._audiochannels) {
@@ -342,7 +342,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	getChannelDefaultVolume: function(ch) {
+	getChannelDefaultVolume: function (ch) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			return AkihabaraAudio._audiochannels[ch]._def.volume;
 		} else {
@@ -350,7 +350,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	setChannelVolume: function(ch, a) {
+	setChannelVolume: function (ch, a) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			if (ch === "master") {
 				AkihabaraAudio._audiomastervolume = a;
@@ -365,7 +365,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	getChannelVolume: function(ch) {
+	getChannelVolume: function (ch) {
 		if (ch === "master") {
 			return AkihabaraAudio._audiomastervolume;
 		} else {
@@ -377,7 +377,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	changeChannelVolume: function(ch, a) {
+	changeChannelVolume: function (ch, a) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audiochannels[ch]) {
 			var vol = this.getChannelVolume(ch) + a;
 			if (vol > 1) {
@@ -391,7 +391,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	stopChannel: function(ch) {
+	stopChannel: function (ch) {
 		if (AkihabaraAudio._canaudio) {
 			for (var j in AkihabaraAudio._audio.aud) {
 				if (AkihabaraAudio._audio.ast[j].cy > -1 && AkihabaraAudio._audio.ast[j].play && ((ch === "master") || (AkihabaraAudio._audio.ast[j].channel === ch))) {
@@ -401,30 +401,30 @@ var AkihabaraAudio = {
 		}
 	},
 
-	totalAudioMute: function() {
+	totalAudioMute: function () {
 		AkihabaraAudio._totalMute = true;
 		for (var j in AkihabaraAudio._audio.aud) {
 			AkihabaraAudio.setAudioMute(j);
 		}
 	},
 
-	totalAudioUnmute: function() {
+	totalAudioUnmute: function () {
 		AkihabaraAudio._totalMute = false;
 		for (var j in AkihabaraAudio._audio.aud) {
 			AkihabaraAudio.setAudioUnmute(j);
 		}
 	},
 
-	setAudioUnmute: function(a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].mute = false; AkihabaraAudio._updateaudio(a); } },
-	setAudioMute: function(a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].mute = true; AkihabaraAudio._updateaudio(a); } },
-	getAudioMute: function(a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { return AkihabaraAudio._audio.ast[a].mute; } else { return null; } },
+	setAudioUnmute: function (a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].mute = false; AkihabaraAudio._updateaudio(a); } },
+	setAudioMute: function (a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].mute = true; AkihabaraAudio._updateaudio(a); } },
+	getAudioMute: function (a) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { return AkihabaraAudio._audio.ast[a].mute; } else { return null; } },
 
-	setAudioVolume: function(a, vol) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].volume = vol; AkihabaraAudio._updateaudio(a); } },
-	getAudioVolume: function(a, vol) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { return AkihabaraAudio._audio.ast[a].volume; } else { return null; } },
+	setAudioVolume: function (a, vol) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { AkihabaraAudio._audio.ast[a].volume = vol; AkihabaraAudio._updateaudio(a); } },
+	getAudioVolume: function (a, vol) { if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) { return AkihabaraAudio._audio.ast[a].volume; } else { return null; } },
 
-	setAudioPosition: function(a, p) {  if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) { AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime = p; } },
+	setAudioPosition: function (a, p) {  if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) { AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime = p; } },
 
-	getAudioPosition: function(a) {
+	getAudioPosition: function (a) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) {
 			if (AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime > AkihabaraAudio._positiondelay) {
 				return AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].currentTime - AkihabaraAudio._positiondelay;
@@ -436,7 +436,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	getAudioDuration: function(a) {
+	getAudioDuration: function (a) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a] && AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy]) {
 			return AkihabaraAudio._audio.aud[a][AkihabaraAudio._audio.ast[a].cy].duration;
 		} else {
@@ -444,7 +444,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	changeAudioVolume: function(a, vol) {
+	changeAudioVolume: function (a, vol) {
 		if (AkihabaraAudio._canaudio && AkihabaraAudio._audio.ast[a]) {
 			if (AkihabaraAudio._audio.ast[a].volume + vol > 1) {
 				AkihabaraAudio._audio.ast[a].volume = 1;
@@ -459,10 +459,10 @@ var AkihabaraAudio = {
 		}
 	},
 
-	setCanAudio: function(a) { AkihabaraAudio._canaudio = !gbox._flags.noaudio && a; },
-	setForcedMimeAudio: function(a) { AkihabaraAudio._forcedmimeaudio = a; },
+	setCanAudio: function (a) { AkihabaraAudio._canaudio = !gbox._flags.noaudio && a; },
+	setForcedMimeAudio: function (a) { AkihabaraAudio._forcedmimeaudio = a; },
 
-	setAudioChannels: function(a) {
+	setAudioChannels: function (a) {
 		AkihabaraAudio._audiochannels = a;
 		for (var ch in a) {
 			AkihabaraAudio._audiochannels[ch]._def = {};
@@ -474,6 +474,6 @@ var AkihabaraAudio = {
 		}
 	},
 
-	setAudioTeam: function(a) { AkihabaraAudio._audioteam = a; },
-	setLowerAudioTeam: function(a) { AkihabaraAudio._loweraudioteam = a; }
+	setAudioTeam: function (a) { AkihabaraAudio._audioteam = a; },
+	setLowerAudioTeam: function (a) { AkihabaraAudio._loweraudioteam = a; }
 };
