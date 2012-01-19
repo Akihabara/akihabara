@@ -4,7 +4,7 @@
 // ---
 // ---
 
-var audio = {
+var AkihabaraAudio = {
 	_totalMute: false,
 	_audiochannels: {},
 	_audiomastervolume: 1.0,
