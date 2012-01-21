@@ -120,7 +120,7 @@ var gamecycle = {
 				toys.resetToy(this, "default-blinker");
 			} else {
 				toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "PRESS A TO START",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: Math.floor(gbox.getScreenH()/3), dw: gbox.getScreenW(), dh: Math.floor(gbox.getScreenH()/3)*2, blinkspeed: 10});
-				return input.keyIsHit("a");
+				return AkihabaraInput.keyIsHit("a");
 			}
 		},
 

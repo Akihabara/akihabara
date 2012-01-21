@@ -376,10 +376,10 @@ var gbox = {
 		document.body.appendChild(container);
 
 		this.createCanvas("_buffer");
-		input.addKeyListernerTo(gbox);
-		input.focusDrivenKeyboardSuport(gbox);
+		AkihabaraInput.addKeyListernerTo(gbox);
+		AkihabaraInput.focusDrivenKeyboardSuport(gbox);
 
-		input.addTouchEventsTo(gbox._screen);
+		AkihabaraInput.addTouchEventsTo(gbox._screen);
 
 		var d = new Date();
 		gbox._sessioncache = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "-" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();
@@ -582,9 +582,9 @@ var gbox = {
 
 
 			// Handle holding
-			for (var key in input._keymap)
-				if (input._keyboard[input._keymap[key]] == -1) input._keyboard[input._keymap[key]] = 0; else
-				if (input._keyboard[input._keymap[key]] && (input._keyboard[input._keymap[key]] < 100)) input._keyboard[input._keymap[key]]++;
+			for (var key in AkihabaraInput._keymap)
+				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] == -1) AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] = 0; else
+				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] && (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] < 100)) AkihabaraInput._keyboard[AkihabaraInput._keymap[key]]++;
 			if (gbox._forcedidle)
 				this._gametimer = setTimeout(gbox._nextframe, gbox._forcedidle); // Wait for the browser
 			else

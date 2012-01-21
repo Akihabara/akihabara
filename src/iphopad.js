@@ -47,13 +47,13 @@ var iphopad = {
 		this._swap = !this._swap;
 		for (i in this._cross) {
 			if (nc[i] != iphopad._cross[i])
-				if (nc[i]) input._keydown({fake: true, keyCode: input._keymap[i]});
-				else input._keyup({fake: true, keyCode: input._keymap[i]});
+				if (nc[i]) AkihabaraInput._keydown({fake: true, keyCode: AkihabaraInput._keymap[i]});
+				else AkihabaraInput._keyup({fake: true, keyCode: AkihabaraInput._keymap[i]});
 		}
 		for (i in this._buttons) {
 			if (nb[i] != iphopad._buttons[i])
-				if (nb[i]) input._keydown({fake: true, keyCode: input._keymap[i]});
-				else input._keyup({fake: true, keyCode: input._keymap[i]});
+				if (nb[i]) AkihabaraInput._keydown({fake: true, keyCode: AkihabaraInput._keymap[i]});
+				else AkihabaraInput._keyup({fake: true, keyCode: AkihabaraInput._keymap[i]});
 		}
 
 		iphopad._cross = nc;

@@ -514,7 +514,7 @@ var help = {
 		var screenwidth = (data.width?data.width: (data.portrait?240:320));
 		var screenheight = (data.height?data.height: (data.portrait?320:240));
 		if (device.iswii) {
-			input._keymap = {
+			AkihabaraInput._keymap = {
 				left: 175,
 				right: 176,
 				up: 177,
