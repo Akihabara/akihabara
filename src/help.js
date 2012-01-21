@@ -12,7 +12,7 @@ var help = {
 	* @param {String} value The searched value.
 	* @returns The found object, otherwise null.
 	*/
-	searchObject: function(a, field, value) {
+	searchObject: function (a, field, value) {
 		if (!a) return null; else
 		for (var i = 0; i < a.length; a++) if (a[i][field] == value) return a[i];
 		return null;
@@ -25,7 +25,7 @@ var help = {
 	* @param {Integer} skip Number to increment by.
 	* @returns An array containing the set of numbers from st to ed, incrementing by skip.
 	*/
-	seq: function(st, ed, skip) {
+	seq: function (st, ed, skip) {
 		var ret = [];
 		for (var i = st; i < ed; i += (skip == null?1:skip)) ret.push(i);
 		return ret;
@@ -37,7 +37,7 @@ var help = {
 	* @param {Float} mul Second value.
 	* @returns An integer, v*mul, unless v < 2 in which case it returns 1.
 	*/
-	multiplier: function(v, mul) { // Handle a multiplier like counter. that means, 0=1 / 1=1 / 2=2*mul etc...
+	multiplier: function (v, mul) { // Handle a multiplier like counter. that means, 0=1 / 1=1 / 2=2*mul etc...
 		return (!v || (v < 2)?1:v*(!mul?1:mul));
 	},
 
@@ -48,7 +48,7 @@ var help = {
 	* @param {String} pad The string you wish to prepend to str.
 	* @returns A string whose length is no greater than len + pad.length, with pad prepending str repeatedly.
 	*/
-	prepad: function(str, len, pad) {
+	prepad: function (str, len, pad) {
 		str += "";
 		while (str.length < len) str = pad + str;
 		return str;
@@ -61,7 +61,7 @@ var help = {
 	* @param {String} pad The string you wish to postpend to str.
 	* @returns A string whose length is no greater than len + pad.length, with pad postpending str repeatedly.
 	*/
-	postpad: function(str, len, pad) {
+	postpad: function (str, len, pad) {
 		str += "";
 		while (str.length < len) str += pad;
 		return str;
@@ -73,7 +73,7 @@ var help = {
 	* @param {Object} by The object doing the jumping-on.
 	* @returns True if the two objects are overlapping enough and by.accy > 0.
 	*/
-	isSquished: function(th, by) {
+	isSquished: function (th, by) {
 		return ((by.accy > 0) && gbox.collides(th, by) && (Math.abs(th.y-(by.y + by.h)) < (th.h/2)));
 	},
 
@@ -83,7 +83,7 @@ var help = {
 	* @param {Integer} range The number of different values returned by the function.
 	* @returns An integer between min (includive) and min + range (noninclusive).
 	*/
-	random: function(min, range) {
+	random: function (min, range) {
 		return min + Math.floor(Math.random()*range);
 	},
 
@@ -93,7 +93,7 @@ var help = {
 	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
 	* @returns The particular animation frame to display during this step.
 	*/
-	decideFrame: function(cnt, anim) {
+	decideFrame: function (cnt, anim) {
 		return anim.frames[Math.floor(cnt/anim.speed)%anim.frames.length];
 	},
 
@@ -103,7 +103,7 @@ var help = {
 	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
 	* @returns The particular animation frame to display during this step.
 	*/
-	decideFrameOnce: function(cnt, anim) {
+	decideFrameOnce: function (cnt, anim) {
 		return anim.frames[(cnt >= anim.frames.length*anim.speed?anim.frames.length-1:Math.floor(cnt/anim.speed))];
 	},
 
@@ -113,7 +113,7 @@ var help = {
 	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
 	* @returns A boolean, true if the animation has been played at least once.
 	*/
-	isLastFrameOnce: function(cnt, anim) {
+	isLastFrameOnce: function (cnt, anim) {
 		return (cnt >= anim.frames.length*anim.speed);
 	},
 
@@ -123,7 +123,7 @@ var help = {
 	* @param {Integer} max This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.
 	* @returns An integer.
 	*/
-	upAndDown: function(counter, max) {
+	upAndDown: function (counter, max) {
 		if ((counter%max) > (max/2)) return max-(counter%max); else return (counter%max);
 	},
 
@@ -136,7 +136,7 @@ var help = {
 	* @param {String} mapid The id for the map array within the map object. Default is 'map'.
 	* @returns An integer representing the value of the tile in the map array at that x, y coordinate. If there is no tile, null is returned.
 	*/
-	getTileInMap: function(x, y, map, ifout, mapid) {
+	getTileInMap: function (x, y, map, ifout, mapid) {
 		if (!mapid) mapid = "map";
 		var ts = gbox._tiles[map.tileset];
 		var tx = Math.floor(x/ts.tilew);
@@ -152,14 +152,14 @@ var help = {
 	* @param {Array} tra A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ] or an object, formatted like { "char1":null, "char2":0, "char3":1 }. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.
 	* @returns A map array formatted such that it can be attached to a map object.
 	*/
-	asciiArtToMap: function(map, tra) {
-		if (tra instanceof Array){ //backwards compatibility
+	asciiArtToMap: function (map, tra) {
+		if (tra instanceof Array) { //backwards compatibility
 			var otra = {};
 			for (var i in tra) otra[tra[i][1]] = tra[i][0];
 			tra = otra;
 		}
 		var sz, ret = [];
-		for (var key in tra){ sz = key.length; break; }
+		for (var key in tra) { sz = key.length; break; }
 		for (var y = 0; y < map.length; y++) {
 			var row = [], mapy = map[y];
 			for (var c = 0; c < mapy.length; c += sz) row.push(tra[mapy.substr(c, sz)]);
@@ -176,7 +176,7 @@ var help = {
 	// Finalize a map definition, setting height and width in pixels etc.
 	// Args: (map)
 	// Outs: finalized map
-	finalizeTilemap: function(map) {
+	finalizeTilemap: function (map) {
 		var ts = gbox._tiles[map.tileset];
 		map.h = map.map.length*ts.tileh;
 		map.w = map.map[0].length*ts.tilew;
@@ -192,7 +192,7 @@ var help = {
 	* @param {Integer} gap (Not used.)
 	* @returns A map object with map.w, map.h, map.hh, and map.hw set correctly.
 	*/
-	xPixelToTileX: function(map, x, gap) {
+	xPixelToTileX: function (map, x, gap) {
 		var ts = gbox._tiles[map.tileset];
 		return Math.floor(x/ts.tilew);
 	},
@@ -204,7 +204,7 @@ var help = {
 	* @param {Integer} gap (Not used.)
 	* @returns A map object with map.w, map.h, map.hh, and map.hw set correctly.
 	*/
-	yPixelToTileY: function(map, y, gap) {
+	yPixelToTileY: function (map, y, gap) {
 		var ts = gbox._tiles[map.tileset];
 		return Math.floor(y/ts.tileh);
 	},
@@ -216,7 +216,7 @@ var help = {
 	* @param {Integer} gap Number of pixels gap in tilemap. Default is 0.
 	* @returns The x-coordinate in pixels of the tile column.
 	*/
-	xPixelToTile: function(map, x, gap) {
+	xPixelToTile: function (map, x, gap) {
 		var ts = gbox._tiles[map.tileset];
 		return (Math.floor(x/ts.tilew) + (gap?gap: 0))*ts.tilew;
 	},
@@ -228,7 +228,7 @@ var help = {
 	* @param {Integer} gap Number of pixels gap in tilemap. Default is 0.
 	* @returns The y-coordinate in pixels of the tile row.
 	*/
-	yPixelToTile: function(map, y, gap) {
+	yPixelToTile: function (map, y, gap) {
 		var ts = gbox._tiles[map.tileset];
 		return (Math.floor(y/ts.tileh) + (gap?gap: 0))*ts.tileh;
 	},
@@ -240,7 +240,7 @@ var help = {
 	 * @param {Float} max The maximum limit.
 	 * @returns A value equal to v if min < v < max. Returns min if v < min, max if v > max.
 	 */
-	limit: function(v, min, max) {
+	limit: function (v, min, max) {
 		if (v < min) return min; else if (v > max) return max; else return v;
 	},
 
@@ -249,7 +249,7 @@ var help = {
 	* @param {Integer} v A value.
 	* @returns A value that is one closer to 0 on the number line than v.
 	*/
-	goToZero: function(v) { return (v?v-(v/Math.abs(v)):0); },
+	goToZero: function (v) { return (v?v-(v/Math.abs(v)):0); },
 
 	/**
 	* Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
@@ -262,7 +262,7 @@ var help = {
 	* merged = help.mergeWithModel(dst, src);
 	* merged; // => {a: 1, b: 2, c: 3, d: "four"};
 	*/
-	mergeWithModel: function(data, model) {
+	mergeWithModel: function (data, model) {
 		if (data == null) data = {};
 		if (model != null)
 			for (var i in model)
@@ -281,7 +281,7 @@ var help = {
 	* merged = help.mergeWithModel(dst, src);
 	* merged; // => {a: 1, b: 2, c: "three", d: "four"}
 	*/
-	copyModel: function(data, model) {
+	copyModel: function (data, model) {
 		if (data == null) data = {};
 		if (model != null)
 			for (var i in model) data[i] = model[i];
@@ -298,7 +298,7 @@ var help = {
 	* newdata = help.createModel(data, ["a", "c"]);
 	* newdata; // => {a: 1, c: "three"}
 	*/
-	createModel: function(obj, attrs) {
+	createModel: function (obj, attrs) {
 		var ret = {};
 		for (var i = 0; i < attrs.length; i++) ret[attrs[i]] = obj[attrs[i]];
 		return ret;
@@ -313,7 +313,7 @@ var help = {
 	* newdata = help.cloneObject(data);
 	* newdata; // => {a: 1, b: 2, c: "three"}
 	*/
-	cloneObject: function(model) {
+	cloneObject: function (model) {
 		if (!model) return model;
 		var data = {};
 		for (var i in model) data[i] = model[i];
@@ -332,7 +332,7 @@ var help = {
 	* // Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.
 	* help.setTileInMap(gbox.getCanvasContext("map_canvas"), map, 1, 1, null, "map");
 	*/
-	setTileInMap: function(ctx, tilemap, x, y, tile, map) {
+	setTileInMap: function (ctx, tilemap, x, y, tile, map) {
 		var ts = gbox.getTiles(tilemap.tileset);
 		tilemap[(map == null?"map":map)][y][x] = tile;
 		if (tile == null)
@@ -350,7 +350,7 @@ var help = {
 	* @param {Integer} tile The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.
 	* @param {String} The ID of the map. Defaults to 'map'.
 	*/
-	setTileInMapAtPixel: function(ctx, tilemap, x, y, tile, map) {
+	setTileInMapAtPixel: function (ctx, tilemap, x, y, tile, map) {
 		var ts = gbox.getTiles(tilemap.tileset);
 		x = Math.floor(x/ts.tilew);
 		y = Math.floor(y/ts.tileh);
@@ -364,7 +364,7 @@ var help = {
 	* @param {Integer} id An index to the array.
 	* @returns If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].
 	*/
-	getArrayCapped: function(a, id) {
+	getArrayCapped: function (a, id) {
 		if (id >= a.length) return a[a.length-1]; else return a[id];
 	},
 
@@ -375,7 +375,7 @@ var help = {
 	* @param {String} field The property used to filter the array.
 	* @returns The object with the highest target value, otherwise the first element of the array.
 	*/
-	getArrayIndexed: function(a, value, field) {
+	getArrayIndexed: function (a, value, field) {
 		if (a[0][field] == null) return a[0];
 		var i = 0;
 		while ((value > a[i][field]) && (i != a.length-1)) i++;
@@ -394,7 +394,7 @@ var help = {
 	* timestamp = help.framestotime(25 * 60);
 	* timestamp; // => '01:00:00';
 	*/
-	framestotime: function(frames) {
+	framestotime: function (frames) {
 		var csec = Math.ceil(frames/gbox.getFps()*100);
 			return this.prepad((Math.floor(csec/6000)%60), 2, "0") + ":" + this.prepad((Math.floor(csec/100)%60), 2, "0") + ":" + this.prepad(csec%100, 2, "0");
 	},
@@ -408,7 +408,7 @@ var help = {
 	* player.lives = help.geturlparameter("lives");
 	* player.lives; // => 3
 	*/
-	geturlparameter: function( name ) {
+	geturlparameter: function ( name ) {
 		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 		var regexS = "[\\?&]" + name + " = ([^&#]*)";
 		var regex = new RegExp( regexS );
@@ -424,7 +424,7 @@ var help = {
 	* @param {Object} Any object.
 	* @returns A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.
 	*/
-	objToStr: function(o) {
+	objToStr: function (o) {
 		var ret = "";
 		for (var n in o) ret += n + ":[" + o[n] + "] ";
 		return ret;
@@ -439,14 +439,14 @@ var help = {
 	* help.isDefined(foo.a); // => true
 	* help.isDefined(foo.c); // => false
 	*/
-	isDefined: function(v) {
+	isDefined: function (v) {
 		return ((typeof(v) !== 'undefined') || (v === null));
 	},
 
 	/**
 	* Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
 	*/
-	getDeviceConfig: function() {
+	getDeviceConfig: function () {
 		var cap;
 		if (navigator.userAgent.match(/nintendo wii/i))
 			cap = {iswii: true, height: window.innerHeight, doublebuffering: true}; // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
@@ -501,7 +501,7 @@ var help = {
 	* be set manually by passing an object with the parameters defined, or via URL parameters.
 	* @param {Object} data An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.
 	*/
-	akihabaraInit: function(data) {
+	akihabaraInit: function (data) {
 		if ((typeof data).toLowerCase() == "string") data = {title: data};
 		var device = this.getDeviceConfig();
 		var footnotes = ["MADE WITH AKIHABARA (C)2012 - GPL2/MIT","Project: http://akihabara.github.com","Sources: http://github.com/akihabara"];
@@ -523,7 +523,7 @@ var help = {
 				b: 172,
 				c: 13
 			};
-			document.onkeypress = function(e){ if (e.preventDefault) e.preventDefault(); return false; };
+			document.onkeypress = function (e) { if (e.preventDefault) e.preventDefault(); return false; };
 		}
 
 		if (typeof data.basepath == 'string') gbox.setBasePath(data.basepath);
@@ -578,7 +578,7 @@ var help = {
 
 
 		if (!data || !data.hardwareonly) {
-			if (help.geturlparameter("touch") != "no" && (help.geturlparameter("touch") == "yes" || device.touch)){
+			if (help.geturlparameter("touch") != "no" && (help.geturlparameter("touch") == "yes" || device.touch)) {
 				switch (data.padmode) {
 					case "fretboard":
 						iphofretboard.initialize({h: 100, bg: gbox._basepath + "fretboard.png"});

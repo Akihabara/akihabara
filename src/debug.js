@@ -4,7 +4,7 @@
  */
 var debug = {
 
-	fpsCounterInit : function(data) {
+	fpsCounterInit: function (data) {
 
 		// Default options
 		data 						|| ( data 				= {} );
@@ -22,7 +22,7 @@ var debug = {
 		this.addDebugAction('fpsCounter', data);
 	},
 
-	statusBar : function(data){
+	statusBar: function (data) {
 
 		// Default options
 		data 									|| ( data 								= {} );
@@ -33,11 +33,11 @@ var debug = {
 		this.addDebugAction('statusBar', data);
 	},
 
-	setStatBar : function(txt){
+	setStatBar: function (txt) {
 	  if (!gbox._statbar) createStatBar();
 		gbox._statbar.innerHTML = ( txt || "&nbsp" );
 
-		function createStatBar(){
+		function createStatBar() {
 			if( !gbox._debugTool.statusBar ) return false;
 
 			var statbar = document.createElement("div");
@@ -54,13 +54,13 @@ var debug = {
 	},
 
 	// Add a new debig utility and its data
-	addDebugAction : function ( name, data ){
+	addDebugAction: function  ( name, data ) {
 			gbox._debugTool[name] = data;
 	},
 
-	run : function(data){
+	run: function (data) {
 
-		if(data.fpsCounter){
+		if(data.fpsCounter) {
 
 			var fps = data.fpsCounter,
 					thisFrame = new Date().getTime(),
@@ -82,7 +82,7 @@ var debug = {
 
 		}
 
-		if(data.statusBar){
+		if(data.statusBar) {
 			var statline = "Idle: " + gbox._framestart + "/" + gbox._mspf + (gbox._frameskip > 0 ? " (" + gbox._frameskip + "skip)" : "" ) + " | ";
 			var cnt = 0, g = 0;
 			for ( g = 0; g < gbox._groups.length; g++ )

@@ -6,7 +6,7 @@
 var topview = {
 
 	// CONSTANTS
-	NOOP: function(){ },
+	NOOP: function () { },
 	PUSH_NONE: 0,
 	PUSH_LEFT: 1,
 	PUSH_RIGHT: 2,
@@ -44,7 +44,7 @@ var topview = {
 	* </ul>
 	* @param {int} t This is the tollerance (or margin for error) on the collide function.
 	*/
-	collides: function(fr, to, t) { // Special collision. Counts also the Z
+	collides: function (fr, to, t) { // Special collision. Counts also the Z
 		if (Math.abs(fr.z, to.z) < 5) return gbox.collides({x: fr.x + fr.colx, y: fr.y + fr.coly, h: fr.colh, w: fr.colw}, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t); else return false;
 	},
 
@@ -54,7 +54,7 @@ var topview = {
 	* @param {Object} to The object (or point) which collision is being tested against.
 	* @param {int} t The tollerance of the collision algorithm.
 	*/
-	pixelcollides: function(fr, to, t) { // Special collision. Counts also the Z
+	pixelcollides: function (fr, to, t) { // Special collision. Counts also the Z
 		return gbox.pixelcollides(fr, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t);
 	},
 
@@ -96,7 +96,7 @@ var topview = {
 	* <li > noreset: (defaults to false) < /li>
 	* </ul>
 	*/
-	initialize: function(th, data) {
+	initialize: function (th, data) {
 		Akihabara.extendsFrom(
 			Akihabara.extendsFrom(
 				{
@@ -140,7 +140,7 @@ var topview = {
 	* </ul>
 	* @param {Object} data This holds variables to be merged into th's stored info.
 	*/
-	spawn: function(th, data) {
+	spawn: function (th, data) {
 		th.xpushing = topview.PUSH_NONE; // user is moving side
 		th.vpushing = topview.PUSH_NONE; // user is moving side
 		th.zpushing = topview.PUSH_NONE; // user is moving side
@@ -168,7 +168,7 @@ var topview = {
 	* @param {Object} keys These are the control keys being passed in for left, right, up, and down.
 	* //incomplete
 	*/
-	controlKeys: function(th, keys) {
+	controlKeys: function (th, keys) {
 		var cancelx = false;
 		var cancely = false;
 		var idlex = false;
@@ -223,7 +223,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	getNextX: function(th) { return th.x + help.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextX: function (th) { return th.x + help.limit(th.accx, -th.maxacc, th.maxacc); },
 
 	/**
 	* Gets the next Y position the object is going to move to.
@@ -234,7 +234,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	getNextY: function(th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
 
 	/**
 	* Gets the next Z position the object is going to move to.
@@ -245,7 +245,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	getNextZ: function(th) { return th.z + help.limit(th.accz, -th.maxacc, th.maxacc); },
+	getNextZ: function (th) { return th.z + help.limit(th.accz, -th.maxacc, th.maxacc); },
 
 	/**
 	* Sets the objects current location to its next location using the getNextX and getNextY methods.
@@ -258,7 +258,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if either acceleration is greater than this then this value is used instead for that acceleration) < /li>
 	* </ul>
 	*/
-	applyForces: function(th) {
+	applyForces: function (th) {
 		th.x = topview.getNextX(th);
 		th.y = topview.getNextY(th);
 	},
@@ -272,7 +272,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	applyGravity: function(th) {
+	applyGravity: function (th) {
 		th.z = topview.getNextZ(th);
 	},
 
@@ -286,7 +286,7 @@ var topview = {
 	* <li > accy: the object's currect acceleration in the y direction < /li>
 	* </ul>
 	*/
-	handleAccellerations: function(th) {
+	handleAccellerations: function (th) {
 		if (!th.xpushing) th.accx = help.goToZero(th.accx);
 		if (!th.ypushing) th.accy = help.goToZero(th.accy);
 
@@ -299,7 +299,7 @@ var topview = {
 	* <li > accz: the acceleration on the Z axis < /li>
 	* </ul>
 	*/
-	handleGravity: function(th) {
+	handleGravity: function (th) {
 		th.accz++;
 	},
 
@@ -323,7 +323,7 @@ var topview = {
 	* </ul>
 	* // incomplete
 	*/
-	setFrame: function(th) {
+	setFrame: function (th) {
 		var pref = "stand";
 		if (th.xpushing || th.ypushing)
 			if (th.haspushing && (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) pref = "pushing"; else pref = "moving";
@@ -344,7 +344,7 @@ var topview = {
 	* <li > approximation{Integer}: This is the amount that the checked values are incremented by until they reach the maximum value allowed. This defaults to 10. < /li>
 	* </ul>
 	*/
-	tileCollision: function(th, map, tilemap, defaulttile, data) {
+	tileCollision: function (th, map, tilemap, defaulttile, data) {
 		th.touchedup = false;
 		th.toucheddown = false;
 		th.touchedleft = false;
@@ -407,9 +407,9 @@ var topview = {
 	* <li> < /li>
 	* </ul> //incomplete
 	*/
-	spritewallCollision: function(th, data) {
+	spritewallCollision: function (th, data) {
 		var wl;
-		for (var i in gbox._objects[data.group]){
+		for (var i in gbox._objects[data.group]) {
 			if ((!gbox._objects[data.group][i].initialize) && topview.collides(th, gbox._objects[data.group][i])) {
 				wl = gbox._objects[data.group][i];
 				if (topview.pixelcollides({x: th.x + th.colx, y: th.y + th.coly + th.colhh}, wl)) {
@@ -448,7 +448,7 @@ var topview = {
 	* <li> < /li>
 	* </ul>
 	*/
-	floorCollision: function(th, data) {
+	floorCollision: function (th, data) {
 		th.touchedfloor = false;
 		if (th.z > 0) {
 			th.accz = (data == null?0:-Math.floor(th.accz/data.bounce));
@@ -458,12 +458,12 @@ var topview = {
 		}
 	},
 
-	adjustZindex: function(th) {
+	adjustZindex: function (th) {
 		gbox.setZindex(th, th.y + th.h);
 	},
 
 	// Helper: returns the ahead pixel (i.e. destination use action)
-	getAheadPixel: function(th, data) {
+	getAheadPixel: function (th, data) {
 		switch (th.facing) {
 			case topview.FACE_RIGHT:
 				return {x: th.x + th.colx + th.colw + data.distance, y: th.y + th.coly + th.colhh};
@@ -477,7 +477,7 @@ var topview = {
 	},
 
 	// Helper: trigger a method in colliding objects (i.e. "use action")
-	callInColliding: function(th, data) {
+	callInColliding: function (th, data) {
 		for (var i in gbox._objects[data.group])
 			if ((!gbox._objects[data.group][i].initialize) && topview.pixelcollides(data, gbox._objects[data.group][i]))
 				if (gbox._objects[data.group][i][data.call]) {
@@ -488,7 +488,7 @@ var topview = {
 	},
 
 	// Enemy methods
-	wander: function(th, map, tilemap, defaulttile, data) {
+	wander: function (th, map, tilemap, defaulttile, data) {
 		if ((!th.wandercounter) || (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) {
 			th.wandercounter = help.random(data.minstep, data.steprange);
 			th.wanderdirection = help.random(0, 4);
@@ -526,7 +526,7 @@ var topview = {
 	},
 
 	// generators (firebullet specific for topdown - more complex than SHMUP one)
-	fireBullet: function(gr, id, data) {
+	fireBullet: function (gr, id, data) {
 		var ts = gbox.getTiles(data.tileset);
 		var obj = gbox.addObject(
 			Akihabara.extendsFrom(
@@ -563,22 +563,22 @@ var topview = {
 					colh: (data.fullhit?ts.tileh: null),
 					colw: (data.fullhit?ts.tilew: null),
 					duration: null,
-					onWallHit: function() {
+					onWallHit: function () {
 						this.spark(this);
 						gbox.trashObject(this);
 					},
-					bulletIsAlive: function() {
+					bulletIsAlive: function () {
 						return gbox.objectIsVisible(this);
 					}
 				}, data
 			)
 		);
 
-		obj.initialize = function() {
+		obj.initialize = function () {
 			topview.initialize(this);
 		};
 
-		obj[(data.logicon == null?"first":data.logicon)] = function() {
+		obj[(data.logicon == null?"first":data.logicon)] = function () {
 			this.cnt = (this.cnt + 1)%10;
 
 			if (this.applyzgravity) topview.handleGravity(this); // z-gravity
@@ -594,8 +594,8 @@ var topview = {
 			}
 			if (!this.bulletIsAlive()) gbox.trashObject(this);
 			else if (this.toucheddown || this.touchedup || this.touchedleft || this.touchedright) this.onWallHit();
-			else if (this.collidegroup != null){
-				for (var i in gbox._objects[this.collidegroup]){
+			else if (this.collidegroup != null) {
+				for (var i in gbox._objects[this.collidegroup]) {
 					if ((!gbox._objects[this.collidegroup][i].initialize) && topview.collides(this, gbox._objects[this.collidegroup][i], gbox._objects[this.collidegroup][i].tolerance)) {
 						if (gbox._objects[this.collidegroup][i].hitByBullet != null)
 							if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
@@ -607,7 +607,7 @@ var topview = {
 			}
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function() {
+		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			if (!gbox.objectIsTrash(this))
 				gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 		};
@@ -618,7 +618,7 @@ var topview = {
 
 	},
 
-	makedoor: function(gr, id, map, data) {
+	makedoor: function (gr, id, map, data) {
 		var mts = gbox.getTiles(map.tileset);
 		var ts = gbox.getTiles(data.tileset);
 
@@ -649,13 +649,13 @@ var topview = {
 					closing: false,
 					audiobefore: null,
 					audioafter: null,
-					doOpen: function() {
+					doOpen: function () {
 						this.opening = true;
 					},
 					whenClosed: topview.NOOP,
 					whenOpened: topview.NOOP,
 					whileMoving: topview.NOOP,
-					hitByBullet: function(by) {
+					hitByBullet: function (by) {
 
 					}
 				}, data
@@ -665,12 +665,12 @@ var topview = {
 		// Closing animation
 		if (obj.closing) obj.opencounter = obj.doorheight;
 
-		obj.initialize = function() {
+		obj.initialize = function () {
 			this.ismoving = false;
 			topview.initialize(this);
 		};
 
-		obj[(data.logicon == null?"first":data.logicon)] = function() {
+		obj[(data.logicon == null?"first":data.logicon)] = function () {
 			if (this.closing) {
 				if (!this.ismoving) {
 					if (this.audiobefore) AkihabaraAudio.hitAudio(this.audiobefore);
@@ -701,7 +701,7 @@ var topview = {
 			}
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function() {
+		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			if (!gbox.objectIsTrash(this))
 				gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h-this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 		};
@@ -711,7 +711,7 @@ var topview = {
 		return obj;
 	},
 	// Set the object speed making sure that the X and Y coords are multiple of the speed. Useful on maze-based games.
-	setStaticSpeed: function(th, speed) {
+	setStaticSpeed: function (th, speed) {
 		th.staticspeed = speed;
 		th.x = Math.round(th.x/speed)*speed;
 		th.y = Math.round(th.y/speed)*speed;

@@ -8,7 +8,7 @@ var platformer = {
 	PUSH_LEFT: 1,
 	PUSH_RIGHT: 2,
 
-	initialize: function(th, data) {
+	initialize: function (th, data) {
 		Akihabara.extendsFrom(
 			Akihabara.extendsFrom(
 				{
@@ -26,7 +26,7 @@ var platformer = {
 		platformer.spawn(th);
 	},
 
-	spawn: function(th, data) {
+	spawn: function (th, data) {
 		th.curjsize = 0; // current jump size
 		th.counter = 0; // self counter
 		th.touchedfloor = false; // touched floor
@@ -38,16 +38,16 @@ var platformer = {
 		help.copyModel(th, data);
 	},
 
-	getNextX: function(th) { return th.x + th.accx; },
+	getNextX: function (th) { return th.x + th.accx; },
 
-	getNextY: function(th) { return th.y + help.limit(th.accy, -th.maxaccy, th.maxaccy); },
+	getNextY: function (th) { return th.y + help.limit(th.accy, -th.maxaccy, th.maxaccy); },
 
-	applyGravity: function(th) {
+	applyGravity: function (th) {
 		th.x = platformer.getNextX(th);
 		th.y = platformer.getNextY(th);
 	},
 
-	horizontalKeys: function(th, keys) {
+	horizontalKeys: function (th, keys) {
 		if (gbox.keyIsPressed(keys.left)) {
 			th.pushing = platformer.PUSH_LEFT;
 			th.accx = help.limit(th.accx-1, -th.maxaccx, th.maxaccx);
@@ -57,7 +57,7 @@ var platformer = {
 		} else th.pushing = platformer.PUSH_NONE;
 	},
 
-	verticalTileCollision: function(th, map, tilemap) {
+	verticalTileCollision: function (th, map, tilemap) {
 		var bottom = help.getTileInMap(th.x + (th.w/2), th.y + th.h, map, 0, tilemap);
 		var top = help.getTileInMap(th.x + (th.w/2), th.y, map, 0, tilemap);
 		th.touchedfloor = false;
@@ -75,7 +75,7 @@ var platformer = {
 		}
 	},
 
-	horizontalTileCollision: function(th, map, tilemap, precision) {
+	horizontalTileCollision: function (th, map, tilemap, precision) {
 		var left = 0;
 		var right = 0;
 		var t = 0;
@@ -105,11 +105,11 @@ var platformer = {
 	* Checks if the passed object is touching the floor and can therefore jump at present.
 	* @param th This is the object being checked for jump ability at the time of calling.
 	*/
-	canJump: function(th) {
+	canJump: function (th) {
 		return th.touchedfloor;
 	},
 
-	jumpKeys: function(th, key) {
+	jumpKeys: function (th, key) {
 		if ((platformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && gbox.keyIsHit(key.jump) && (th.curjsize == 0)) {
 			if (key.audiojump) AkihabaraAudio.hitAudio(key.audiojump);
 			th.accy = -th.jumpaccy;
@@ -123,23 +123,23 @@ var platformer = {
 		return false;
 	},
 
-	bounce: function(th, data) {
+	bounce: function (th, data) {
 		th.curjsize = 0;
 		th.accy = -data.jumpsize;
 	},
 
-	handleAccellerations: function(th) {
+	handleAccellerations: function (th) {
 		// Gravity
 		if (!th.touchedfloor) th.accy++;
 		// Attrito
 		if (th.pushing == platformer.PUSH_NONE) if (th.accx) th.accx = help.goToZero(th.accx);
 	},
 
-	setSide: function(th) {
+	setSide: function (th) {
 		if (th.accx) th.side = th.accx > 0;
 	},
 
-	setFrame: function(th) {
+	setFrame: function (th) {
 		if (th.touchedfloor)
 			if (th.pushing != platformer.PUSH_NONE)
 				th.frame = help.decideFrame(th.counter, th.frames.walking);
@@ -155,7 +155,7 @@ var platformer = {
 		// Moves on a platform. It tries to do not fall down, if specified.
 		// Args: (object, {moveWhileFalling: < moves while not touching the floor > ,speed: < movement speed > })
 		// Outs: the frame
-		goomba: function(th, data) {
+		goomba: function (th, data) {
 			if (data.moveWhileFalling || th.touchedfloor) {
 				if (th.side) {
 					th.pushing = platformer.PUSH_LEFT;
@@ -166,7 +166,7 @@ var platformer = {
 				}
 			} else th.pushing = platformer.PUSH_NONE;
 		},
-		dontFall: function(th, map, tilemap) {
+		dontFall: function (th, map, tilemap) {
 			if (th.accx && th.touchedfloor) {
 				var til;
 				if (th.accx > 0) til = help.getTileInMap(platformer.getNextX(th) + th.w-1 + th.accx, th.y + th.h, map, 0, tilemap);
@@ -177,7 +177,7 @@ var platformer = {
 				}
 			}
 		},
-		horizontalBounce: function(th) {
+		horizontalBounce: function (th) {
 			if (th.touchedleftwall || th.touchedrightwall) th.side = !th.side;
 		}
 	}

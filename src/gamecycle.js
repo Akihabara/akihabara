@@ -11,7 +11,7 @@ var gamecycle = {
 	 * @param	id		unique id of object
 	 * @param	group	name of group to store the object in
 	 */
-	createMaingame: function(id, group) {
+	createMaingame: function (id, group) {
 	return gbox.addObject({
 		id: id,
 		group: group,
@@ -28,21 +28,21 @@ var gamecycle = {
 		 * This method is called whenever you load a new map. It's meant to be
 		 * overridden when you create your game.
 		 */
-		changeLevel: function() { },
+		changeLevel: function () { },
 
 		/**
 		 * This method is called every time a player is "reborn". This method is
 		 * meant to be overridden since you have to do garbage collection.
 		 */
-		newLife: function() { },
+		newLife: function () { },
 
 		// game disclaimer animation (if needed)
-		gameDisclaimerAnimation: function(reset) {
+		gameDisclaimerAnimation: function (reset) {
 			return true;
 		 },
 
 		// game intro animation
-		gameIntroAnimation: function(reset) {
+		gameIntroAnimation: function (reset) {
 			if (reset) {
 				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
@@ -53,7 +53,7 @@ var gamecycle = {
 		 },
 
 		// level intro animation
-		levelIntroAnimation: function(reset) {
+		levelIntroAnimation: function (reset) {
 			if (reset) {
 				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
@@ -64,7 +64,7 @@ var gamecycle = {
 		 },
 
 		 // Life intro animation
-		 newlifeIntroAnimation: function(reset) {
+		 newlifeIntroAnimation: function (reset) {
 			 if (reset) {
 				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
@@ -75,7 +75,7 @@ var gamecycle = {
 		},
 
 		// gameover animation
-		gameoverIntroAnimation: function(reset) {
+		gameoverIntroAnimation: function (reset) {
 			 if (reset) {
 				AkihabaraAudio.stopChannel("bgmusic");
 				toys.resetToy(this, "default-blinker");
@@ -86,7 +86,7 @@ var gamecycle = {
 		},
 
 		// game title animation
-		gameTitleIntroAnimation: function(reset) {
+		gameTitleIntroAnimation: function (reset) {
 			if (reset)
 				AkihabaraAudio.stopChannel("bgmusic");
 			else {
@@ -96,7 +96,7 @@ var gamecycle = {
 		},
 
 		// End level animation
-		endlevelIntroAnimation: function(reset) {
+		endlevelIntroAnimation: function (reset) {
 			 if (reset) {
 				 toys.resetToy(this, "default-blinker");
 			} else {
@@ -105,7 +105,7 @@ var gamecycle = {
 		},
 
 		// Game ending
-		gameEndingIntroAnimation: function(reset) {
+		gameEndingIntroAnimation: function (reset) {
 			if (reset) {
 				toys.resetToy(this, "default-blinker");
 			} else {
@@ -115,7 +115,7 @@ var gamecycle = {
 		},
 
 		// PRESS START
-		pressStartIntroAnimation: function(reset) {
+		pressStartIntroAnimation: function (reset) {
 			if (reset) {
 				toys.resetToy(this, "default-blinker");
 			} else {
@@ -127,14 +127,14 @@ var gamecycle = {
 		/**
 		 * This method is called when the player dies.
 		 */
-		gameIsOver: function() { return true; },
+		gameIsOver: function () { return true; },
 
 		/**
 		 * Actions done during the game (i.e. stage is clear or other ending conditions)
 		 */
-		gameEvents: function() { },
+		gameEvents: function () { },
 
-		gameMenu: function(reset) {
+		gameMenu: function (reset) {
 			if (reset) {
 				toys.resetToy(this, "difficulty");
 			} else {
@@ -152,31 +152,31 @@ var gamecycle = {
 
 		// CHECK
 
-		gameIsHold: function() { // Use this clause to check collision and kill player: if true the level is changing
+		gameIsHold: function () { // Use this clause to check collision and kill player: if true the level is changing
 			return (this.state == 400) || (this.state == 401);
 		},
 
-		isCompleted: function() {
+		isCompleted: function () {
 			return (this.state == 800);
 		},
 
 		// GAME CYCLE
 
-		getNextLevel: function() {
+		getNextLevel: function () {
 			return this._nextlevel;
 		},
 
-		gotoLevel: function(level) {
+		gotoLevel: function (level) {
 			this._nextlevel = level;
 			this.setState(400);
 		},
 
-		playerDied: function(data) {
+		playerDied: function (data) {
 			this._loselife = data;
 			this.setState(500);
 		},
 
-		gameIsCompleted: function() {
+		gameIsCompleted: function () {
 			this.setState(800);
 		},
 
@@ -187,7 +187,7 @@ var gamecycle = {
 		 *
 		 * @param	st	state number
 		 */
-		setState: function(st) {
+		setState: function (st) {
 			this.state = st;
 			this.stateFirstIteration = true;
 		},
@@ -196,16 +196,16 @@ var gamecycle = {
 		 * Removes all objects in each group except the game
 		 * cycle group. Used for garbage collection when resetting the game.
 		 */
-		_resetGroups: function() {
+		_resetGroups: function () {
 			var g = gbox.getGroups();
 			for (var i = 0; i < g.length; i++)
 				if (g[i] != this.group) gbox.clearGroup(g[i]);
 			gbox.soloGroup(this.group);
 		},
 
-		stateIsReady: function() { this.stateFirstIteration = false; },
+		stateIsReady: function () { this.stateFirstIteration = false; },
 
-		blit: function() {
+		blit: function () {
 			switch (this.state) {
 
 				// Disclaimer

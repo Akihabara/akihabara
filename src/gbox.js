@@ -1,6 +1,6 @@
 var dynalist = {
 
-	create: function() {
+	create: function () {
 		return {
 			test: null,
 			first: null,
@@ -8,11 +8,11 @@ var dynalist = {
 			data: [],
 			dl: 0,
 			gar: [],
-			disconnect: function(obd) {
+			disconnect: function (obd) {
 				if (this.data[obd].__first != null)  this.data[this.data[obd].__first].__next = this.data[obd].__next; else this.first = this.data[obd].__next;
 				if (this.data[obd].__next != null)  this.data[this.data[obd].__next].__first = this.data[obd].__first; else this.last = this.data[obd].__first;
 			},
-			addObject: function(obj, prio) {
+			addObject: function (obj, prio) {
 				var nid = this.gar.pop();
 				if (nid == null) {
 					nid = this.dl;
@@ -45,7 +45,7 @@ var dynalist = {
 				this.data[nid] = obj;
 				return nid;
 			},
-			setPrio: function(obd, prio) {
+			setPrio: function (obd, prio) {
 				var i;
 				if (this.data[obd].__prio == prio) return;
 				if (this.first != this.last)
@@ -95,7 +95,7 @@ var dynalist = {
 				}
 				this.data[obd].__prio = prio;
 			},
-			remove: function(obd) {
+			remove: function (obd) {
 				this.disconnect(obd);
 				this.gar.push(this.data[obd].__id);
 				delete this.data[this.data[obd].__id];
@@ -107,7 +107,7 @@ var dynalist = {
 // A special circular queue with some features useful for the resource loader
 var cyclelist = {
 
-	create: function(size) {
+	create: function (size) {
 		return {
 			_head: 0,
 			_tail: 0,
@@ -116,19 +116,19 @@ var cyclelist = {
 			_total: 0,
 			_done: 0,
 			_current: null,
-			getTotal: function(){ return this._total; }, // Number of elements to be "poped"
-			getDone: function(){ return this._done; }, // Number of popped elements since the last empty
-			getSize: function(){ return this._size; }, // The maximum number of elements in the queue
-			isProcessing: function(){ return this._current != null; }, // The last pop was not a null (i.e. the queue returned a valid object)
-			isEnded: function(){ return(this._head == this._tail); }, // There are other elements in the queue
-			isBusy: function(){ return(this.isProcessing() || !this.isEnded()); }, // There are elements in the queue/the last one pop returned an object that is being processed
-			getCurrent: function(){ return this._current; }, // Return the last popped element
-			push: function(d) {
+			getTotal: function () { return this._total; }, // Number of elements to be "poped"
+			getDone: function () { return this._done; }, // Number of popped elements since the last empty
+			getSize: function () { return this._size; }, // The maximum number of elements in the queue
+			isProcessing: function () { return this._current != null; }, // The last pop was not a null (i.e. the queue returned a valid object)
+			isEnded: function () { return(this._head == this._tail); }, // There are other elements in the queue
+			isBusy: function () { return(this.isProcessing() || !this.isEnded()); }, // There are elements in the queue/the last one pop returned an object that is being processed
+			getCurrent: function () { return this._current; }, // Return the last popped element
+			push: function (d) {
 				this._data[this._head] = d;
 				this._head = (this._head + 1)%this._size;
 				this._total++;
 			},
-			pop: function() {
+			pop: function () {
 				if (this.isEnded()) {
 					this._total = 0;
 					this._done = 0;
@@ -140,7 +140,7 @@ var cyclelist = {
 				}
 				return this._current;
 			},
-			dump: function() {
+			dump: function () {
 				var r = "";
 				for (var i = 0; i < this._size; i++) {
 					r += i + ") " + this._data[i] + " | " + (i == this._head?"HEAD ":"") + (i == this._tail?"TAIL ":"") + "\n";
@@ -155,13 +155,13 @@ var cyclelist = {
 // A simple circular cache handler
 var cachelist = {
 
-	create: function(size) {
+	create: function (size) {
 		return {
 			_cache: {},
 			_queue: [],
 			_head: 0,
 			_size: (size?size: 10),
-			add: function(k, v) {
+			add: function (k, v) {
 				if (!this._cache[k]) {
 					if (this._queue[this._head])
 						delete this._cache[this._queue[this._head]];
@@ -170,10 +170,10 @@ var cachelist = {
 					this._head = (this._head + 1)%this._size;
 				} else this._cache[k].value = v;
 			},
-			read: function(k) {
+			read: function (k) {
 				return (this._cache[k]?this._cache[k].value: null);
 			},
-			clear: function() {
+			clear: function () {
 				this._cache = {};
 				this._queue = [];
 				this._head = 0;
@@ -231,7 +231,7 @@ var gbox = {
 	_images: {},
 	_camera: {},
 	_debugfont: "debugfont.png",
-	getDebugFont: function(){ return gbox._basepath + gbox._debugfont; },
+	getDebugFont: function () { return gbox._basepath + gbox._debugfont; },
 	_container: '',
 	_screen: 0,
 	_screenCtx: null,
@@ -262,7 +262,7 @@ var gbox = {
 	_db: false,
 	_systemcookie: "__gboxsettings",
 	_sessioncache: "",
-	_breakcacheurl: function(a) {return (this._flags.offlinecache?a: a + (a.indexOf("?") == -1?"?":"&") + "_brc = " + gbox._sessioncache); },
+	_breakcacheurl: function (a) {return (this._flags.offlinecache?a: a + (a.indexOf("?") == -1?"?":"&") + "_brc = " + gbox._sessioncache); },
 	_forcedidle: 0,
 	_gamewaiting: 0,
 	_canlog: false,
@@ -279,33 +279,33 @@ var gbox = {
 		footnotesSpacing: 1
 	},
 	_minimalexpired: 0, // 0: not triggered, 1: triggered, 2: done
-	setCanLog: function(c) { this._canlog = c && window.console; },
-	canLog: function() { return this._canlog; },
-	log: function() {}, // Overridden if console is really available
-	_safedrawimage: function(tox, img, sx, sy, sw, sh, dx, dy, dw, dh) {
+	setCanLog: function (c) { this._canlog = c && window.console; },
+	canLog: function () { return this._canlog; },
+	log: function () {}, // Overridden if console is really available
+	_safedrawimage: function (tox, img, sx, sy, sw, sh, dx, dy, dw, dh) {
 		if (!img || !tox) return;
 		if (sx < 0) { dx-=(dw/sw)*sx; sw += sx; sx = 0; }
 		if (sy < 0) { dy-=(dh/sh)*sy; sh += sy; sy = 0; }
 		if (sx + sw > img.width) { dw = (dw/sw)*(img.width-sx); sw = img.width-sx; }
 		if (sy + sh > img.height) { dh = (dh/sh)*(img.height-sy); sh = img.height-sy; }
-		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } catch(e){ }
+		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } catch(e) { }
 	},
-	pauseGame: function(){
-		if(!gbox._pauseGame){
+	pauseGame: function () {
+		if(!gbox._pauseGame) {
 			gbox._pauseGame = true;
 		}else{
 			gbox._pauseGame = false;
 			gbox._nextframe();
 		}
 	},
-	showPauseMessage: function(){
+	showPauseMessage: function () {
 			gbox.blitFade(gbox.getBufferContext(), {alpha: 0.5});
 			var ctx = gbox._screenCtx;
 			ctx.fillStyle = '#FFF';
 			ctx.font = '12px sans-serif';
 			ctx.fillText( 'PAUSE', 141, 125 );
 	},
-	_domgetabsposition: function(oElement) {
+	_domgetabsposition: function (oElement) {
 		var sizes = {x: 0, y: 0, h: 0, w: 0};
 		sizes.h = oElement.offsetHeight;
 		sizes.w = oElement.offsetWidth;
@@ -321,15 +321,15 @@ var gbox = {
 	* Sets the gbox._forcedidle property.
 	* @param {Boolean} f The value to write to gbox._forcedidle.
 	*/
-	setForcedIdle: function(f) { this._forcedidle = f; },
+	setForcedIdle: function (f) { this._forcedidle = f; },
 
 	/**
 	* Returns a gbox flag at index f.
 	* @param {Object} f The index of the flag you want returned.
 	*/
-	getFlag: function(f) { return this._flags[f]; },
+	getFlag: function (f) { return this._flags[f]; },
 
-	setScreenBorder: function(a) { this._border = a; },
+	setScreenBorder: function (a) { this._border = a; },
 
 	/**
 	* Initializes the screen to a certain width and height, applies zoom attributes, populates the
@@ -338,7 +338,7 @@ var gbox = {
 	* @param {Integer} w The width of the main canvas.
 	* @param {Integer} h The height of the main canvas.
 	*/
-	initScreen: function(w, h) {
+	initScreen: function (w, h) {
 		document.body.style.textAlign = "center";
 		document.body.style.height = "100%";
 		document.body.style.margin = "0px";
@@ -410,13 +410,13 @@ var gbox = {
 	* Sets the gbox._db property. Turns on an off double buffering.
 	* @param {Boolean} db The value to write to gbox._db. True enables double buffering, false disables.
 	*/
-	setDoubleBuffering: function(db){ this._db = db; },
+	setDoubleBuffering: function (db) { this._db = db; },
 
 	/**
 	* Set the frames per second rate.
 	* @param {Integer} f Total frames per second for the game to run at.
 	*/
-	setFps: function(f){
+	setFps: function (f) {
 		this._fps = f;
 		this._mspf = Math.floor(1000/f);
 	},
@@ -425,47 +425,47 @@ var gbox = {
 	* Get the frames per second rate (default is 25).
 	* @returns {Integer} Returns the frames per second.
 	*/
-	getFps: function() { return this._fps; },
-	setAutoskip: function(f){ this._autoskip = f; },
-	setFrameskip: function(f){ this._frameskip = f; },
+	getFps: function () { return this._fps; },
+	setAutoskip: function (f) { this._autoskip = f; },
+	setFrameskip: function (f) { this._frameskip = f; },
 
 	/**
 	* Get the screen height.
 	* @returns {Integer} Screen height in pixels.
 	*/
-	getScreenH: function(){ return this._screenh; },
+	getScreenH: function () { return this._screenh; },
 
 	/**
 	* Get the screen width.
 	* @returns {Integer} Screen width in pixels.
 	*/
-	getScreenW: function(){ return this._screenw; },
+	getScreenW: function () { return this._screenw; },
 
 	/**
 	* Get the screen half-height.
 	* @returns {Integer} Screen half-height in pixels.
 	*/
-	getScreenHH: function(){ return this._screenhh; },
+	getScreenHH: function () { return this._screenhh; },
 
 	/**
 	* Get the screen half-width.
 	* @returns {Integer} Screen half-width in pixels.
 	*/
-	getScreenHW: function(){ return this._screenhw; },
+	getScreenHW: function () { return this._screenhw; },
 
 	/**
 	* Sets the gbox._zoom parameter, only works before gbox.initScreen is called.
 	* @param {Integer} z Zoom factor.
 	*/
-	setZoom: function(z) { this._zoom = z; },
+	setZoom: function (z) { this._zoom = z; },
 
 	/**
 	* Deprecated: gbox._cb is now set by passing it directly into gbox.loadAll(). Left in for backwards compatibility.
 	* @param {String} cb The name of the function to be called once gbox.loadAll is completed.
 	*/
-	setCallback: function(cb) { this._cb = cb; },
+	setCallback: function (cb) { this._cb = cb; },
 
-	_playobject: function(g, obj, a) {
+	_playobject: function (g, obj, a) {
 		if (gbox._objects[g][obj].initialize) {
 			gbox._objects[g][obj].initialize(obj);
 			delete gbox._objects[g][obj].initialize;
@@ -473,7 +473,7 @@ var gbox = {
 		if (gbox._objects[g][obj][a]) gbox._objects[g][obj][a](obj, a);
 	},
 
-	_nextframe: function(){
+	_nextframe: function () {
 		gbox._framestart = gbox._mspf-(new Date().getTime()-gbox._framestart);
 		if (gbox._autoskip)
 			if ((gbox._framestart < gbox._autoskip.lowidle) && (gbox._frameskip < gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip + 1); else
@@ -490,7 +490,7 @@ var gbox = {
 	/**
 	* Apply FSEs to the screen. Is called each frame.
 	*/
-	_applyfse: function(){
+	_applyfse: function () {
 		switch (gbox._flags.fse) {
 			case "scanlines":
 				gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"), 0, 0);
@@ -513,14 +513,14 @@ var gbox = {
 	/**
 	* Register the code that have to be executed once the page is loaded. Usually contains game initialization, resources loading etc.
 	*/
-	onLoad: function(code) {
+	onLoad: function (code) {
 		this.addEventListener(window, 'load',code);
 	},
 
 	/**
 	* This function is called once per frame. This is where the basic rendering and processing of groups occurs.
 	*/
-	go: function() {
+	go: function () {
 
 		if (gbox._loaderqueue.isBusy()) {
 			if (gbox._gamewaiting == 1) {
@@ -592,14 +592,14 @@ var gbox = {
 		}
 	},
 
-	setZindex: function(th, z) {
+	setZindex: function (th, z) {
 		if ((th.__zt == null) || (th.zindex != z)) {
 			th.zindex = z;
 			this._zindexch.push({o: {g: th.group, o: th.id}, z: z});
 		}
 	},
 
-	_savesettings: function() {
+	_savesettings: function () {
 		var saved = "";
 		for (var k in this._keymap) saved += "keymap-" + k + ":" + this._keymap[k] + "~";
 		for (var f in this._flags) {
@@ -610,7 +610,7 @@ var gbox = {
 		}
 		this.dataSave("sys",saved);
 	},
-	_loadsettings: function() {
+	_loadsettings: function () {
 		var cfg = this.dataLoad("sys");
 		if (cfg !== null) {
 			cfg = cfg.split("~");
@@ -642,7 +642,7 @@ var gbox = {
 	* // (from Capman)
 	* gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));
 	*/
-	dataSave: function(k, v, d) {
+	dataSave: function (k, v, d) {
 		var date = new Date();
 		date.setTime(date.getTime() + ((d?d: 365*10)*24*60*60*1000));
 		document.cookie =this._systemcookie + "~" + k + " = " + v + "; expires = " + date.toGMTString() + "; path = /";
@@ -656,7 +656,7 @@ var gbox = {
 	* @example
 	* hiscore = gbox.dataLoad("hiscore");
 	*/
-	dataLoad: function(k, a) {
+	dataLoad: function (k, a) {
 		var nameeq = this._systemcookie + "~" + k + " = ";
 		var ca = document.cookie.split(";");
 		var rt;
@@ -676,13 +676,13 @@ var gbox = {
 	* Clears a value stored in a  key-value pair in a browser cookie. Sets value to "". Only works if user has cookies enabled.
 	* @param {String} k The key which identifies the value you are clearing.
 	*/
-	dataClear: function(k) { this.dataSave(k, "",-1); },
+	dataClear: function (k) { this.dataSave(k, "",-1); },
 
 	/**
 	* Gets the current camera object.
 	* @returns {Object} The camera object.
 	*/
-	getCamera: function() { return this._camera; },
+	getCamera: function () { return this._camera; },
 
 	/**
 	* Sets the y value of the current camera object.
@@ -690,7 +690,7 @@ var gbox = {
 	* @param {Object} viewdata An object containing parameters h and w, which are a bounding box that the camera is
 	* not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
 	*/
-	setCameraY: function(y, viewdata) {
+	setCameraY: function (y, viewdata) {
 		this._camera.y = y;
 		if (this._camera.y + this._camera.h > viewdata.h) this._camera.y = viewdata.h-this._screenh;
 		if (this._camera.y < 0) this._camera.y = 0;
@@ -702,7 +702,7 @@ var gbox = {
 	* @param {Object} viewdata An object containing parameters h and w, which are a bounding box that the camera is
 	* not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
 	*/
-	setCameraX: function(x, viewdata) {
+	setCameraX: function (x, viewdata) {
 		this._camera.x = x;
 		if (this._camera.x + this._camera.w > viewdata.w) this._camera.x = viewdata.w-this._screenw;
 		if (this._camera.x < 0) this._camera.x = 0;
@@ -717,7 +717,7 @@ var gbox = {
 	* // Center the camera on the player object
 	* gbox.centerCamera(gbox.getObject('player', 'player_id'), {w: map.w, h: map.h});
 	*/
-	centerCamera: function(data, viewdata) {
+	centerCamera: function (data, viewdata) {
 		this.setCameraX(data.x-this._screenhw, viewdata);
 		this.setCameraY(data.y-this._screenhh, viewdata);
 	},
@@ -729,14 +729,14 @@ var gbox = {
 	* grouplist = gbox.getGroups();
 	* grouplist; // => ["background", "player", "enemy", "game"]
 	*/
-	getGroups: function() { return this._groups; },
+	getGroups: function () { return this._groups; },
 
 	/**
 	* Defines the names of each group in the game along with their rendering order.
 	* @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
 	* g[0] will contain the first group to render, g[1] the second group to render, etc.
 	*/
-	setGroups: function(g){
+	setGroups: function (g) {
 		this._groups = g;
 		this._groupplay[gbox.ZINDEX_LAYER] = true;
 		for (var i = 0; i < g.length; i++)
@@ -755,31 +755,31 @@ var gbox = {
 	* @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
 	* g[0] will contain the first group to render, g[1] the second group to render, etc.
 	*/
-	setRenderOrder: function(g) { this._renderorder = g; },
+	setRenderOrder: function (g) { this._renderorder = g; },
 
 	/**
 	* If a group is disabled, this will enable the group.
 	* @param {String} gid The id of the group.
 	*/
-	playGroup: function(gid){ this._groupplay[gid] = true; },
+	playGroup: function (gid) { this._groupplay[gid] = true; },
 
 	/**
 	* If a group is enabled, this will disable the group.
 	* @param {String} gid The id of the group.
 	*/
-	stopGroup: function(gid){ this._groupplay[gid] = false; },
+	stopGroup: function (gid) { this._groupplay[gid] = false; },
 
 	/**
 	* Toggles a group between enabled and disabled status.
 	* @param {String} gid The id of the group.
 	*/
-	toggleGroup: function(gid){ this._groupplay[gid] = !this._groupplay[gid]; },
+	toggleGroup: function (gid) { this._groupplay[gid] = !this._groupplay[gid]; },
 
 	/**
 	* Turns off all groups except for the one specified.
 	* @param {String} gid The id of the group.
 	*/
-	soloGroup: function(gid) {
+	soloGroup: function (gid) {
 		for (var i = 0; i < this._groups.length; i++)
 			if (this._groups[i] == gid) this.playGroup(this._groups[i]); else this.stopGroup(this._groups[i]);
 	},
@@ -787,21 +787,21 @@ var gbox = {
 	/**
 	* Enables all groups, toggling any groups that are currently disabled.
 	*/
-	playAllGroups: function() { for (var i = 0; i < this._groups.length; i++) this.playGroup(this._groups[i]); },
+	playAllGroups: function () { for (var i = 0; i < this._groups.length; i++) this.playGroup(this._groups[i]); },
 
 	/**
 	* Destroys all objects in a given group.
 	* @param {String} gid The id of the group.
 	*/
-	clearGroup: function(group) {
+	clearGroup: function (group) {
 		for (var obj in this._objects[group]) {
 			if (this._objects[group][obj].__zt != null) this._zindex.remove(this._objects[group][obj].__zt);
 			delete this._objects[group][obj];
 		}
 	},
-	playGroups: function(gid){ for (var i = 0; i < gid.length; i++)this.playGroup(gid[i]); },
-	stopGroups: function(gid){ for (var i = 0; i < gid.length; i++)this.stopGroup(gid[i]); },
-	toggleGroups: function(gid){ for (var i = 0; i < gid.length; i++)this.toggleGroup(gid[i]); },
+	playGroups: function (gid) { for (var i = 0; i < gid.length; i++)this.playGroup(gid[i]); },
+	stopGroups: function (gid) { for (var i = 0; i < gid.length; i++)this.stopGroup(gid[i]); },
+	toggleGroups: function (gid) { for (var i = 0; i < gid.length; i++)this.toggleGroup(gid[i]); },
 
 	/**
 	* Given a group and an id for a particular object instance, this returns the instance requested.
@@ -815,7 +815,7 @@ var gbox = {
 	* playertemp = gbox.getObject('player','player_id');
 	* player.health = player.health/2;
 	*/
-	getObject: function(group, id) {return this._objects[group][id]; },
+	getObject: function (group, id) {return this._objects[group][id]; },
 
 	/**
 	* Creates a <font> < /font > .
@@ -831,7 +831,7 @@ var gbox = {
 	* gbox.('font', 'font.png');
 	* gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
 	*/
-	addFont: function(data) {
+	addFont: function (data) {
 		data.tilehh = Math.floor(data.tileh/2);
 		data.tilehw = Math.floor(data.tilew/2);
 		this._fonts[data.id] = data;
@@ -842,7 +842,7 @@ var gbox = {
 	* Returns a font object containing data about the font.
 	* @param {String} id The id of the font, as set in gbox.addFont.
 	*/
-	getFont: function(id) {
+	getFont: function (id) {
 		return this._fonts[id];
 	},
 
@@ -850,7 +850,7 @@ var gbox = {
 	* Deletes an object, keeping a record of its group and id in gbox._garbage.
 	* @param {Object} obj The object you wish to delete.
 	*/
-	trashObject: function(obj) {
+	trashObject: function (obj) {
 		if (!this._garbage[obj.group]) this._garbage[obj.group] = {};
 		this._garbage[obj.group][obj.id] = 1;
 		obj.__trashing = true;
@@ -859,7 +859,7 @@ var gbox = {
 	/**
 	* Clears the record held in gbox._garbage of what has been deleted. The "onpurge" method is called on the object before being deleted (for canvas deallocation etc.)
 	*/
-	purgeGarbage: function() {
+	purgeGarbage: function () {
 		for (var group in this._garbage)
 			for (var id in this._garbage[group]) {
 				if (this._objects[group][id].onpurge) this._objects[group][id].onpurge();
@@ -874,7 +874,7 @@ var gbox = {
 	* Deletes every object in a given group.
 	* @param {String} group The group id.
 	*/
-	trashGroup: function(group) {
+	trashGroup: function (group) {
 		if (!this._garbage[group]) this._garbage[group] = {};
 		for (var obj in this._objects[group])
 			this._garbage[group][obj] = 1;
@@ -886,7 +886,7 @@ var gbox = {
 	* @param {Object} o The object you're checking.
 	* @returns {Boolean} True if the object is marked as trash.
 	*/
-	objectIsTrash: function(o) { return o.__trashing; },
+	objectIsTrash: function (o) { return o.__trashing; },
 
 	/**
 	* Creates a new game object. Generally speaking you pass a fully-defined object as the parameter (including a group, id, tileset, and so on).
@@ -902,14 +902,14 @@ var gbox = {
 	*   tileset: 'player_tiles',
 	*   x: 0,
 	*   y: 0,
-	*   initialize: function() {
+	*   initialize: function () {
 	*     this.x = 10;
 	*     this.y = 10;
 	*   },
 	* };
 	* gbox.addObject(data);
 	*/
-	addObject: function(data) {
+	addObject: function (data) {
 		// Extras
 		if (!data.id) {
 			data.id = "obj-" + this._autoid;
@@ -932,7 +932,7 @@ var gbox = {
 	* @param {String} gid The group you're checking.
 	* @returns {Boolean} True if the group contains no objects.
 	*/
-	groupIsEmpty: function(gid) { for (var i in this._objects[gid]) return false; return true; },
+	groupIsEmpty: function (gid) { for (var i in this._objects[gid]) return false; return true; },
 
 	/**
 	* Creates a new canvas. By default, the width and height is the current gbox._screenw and gbox._screenh,
@@ -942,7 +942,7 @@ var gbox = {
 	* @example
 	* gbox.createCanvas('newCanvas', {w: 640, h: 480});
 	*/
-	createCanvas: function(id, data) {
+	createCanvas: function (id, data) {
 		this.deleteCanvas(id);
 		var w = (data && data.w?data.w: this._screenw);
 		var h = (data && data.h?data.h: this._screenh);
@@ -964,7 +964,7 @@ var gbox = {
 	* @example
 	* gbox.swapCanvas('canvas1','canvas2');
 	*/
-	swapCanvas: function(a, b) {
+	swapCanvas: function (a, b) {
 		var swp = this._canvas[a];
 		this._canvas[a] = this._canvas[b];
 		this._canvas[b] = swp;
@@ -974,7 +974,7 @@ var gbox = {
 	* Deletes a given canvas.
 	* @param {String} id The id of the canvas to be deleted.
 	*/
-	deleteCanvas: function(id) {
+	deleteCanvas: function (id) {
 		if (this._canvas[id]) delete this._canvas[id];
 	},
 
@@ -983,7 +983,7 @@ var gbox = {
 	* @param {String} id The id of the image.
 	* @returns {Boolean} True if the image has been loaded.
 	*/
-	imageIsLoaded: function(id){ return this._images[id] && (this._images[id].getAttribute("wasloaded")) && this._images[id].width; },
+	imageIsLoaded: function (id) { return this._images[id] && (this._images[id].getAttribute("wasloaded")) && this._images[id].width; },
 
 	/**
 	* Gets information about a loaded image.
@@ -993,26 +993,26 @@ var gbox = {
 	* image = gbox.getImage('logo');
 	* image; // => <img src = ?"logo.png?_brc = 5-7-2010-15-48-42" src_org = ?"logo.png" id = ?"logo" wasloaded = ?"true" > ?
 	*/
-	getImage: function(id){ return this._images[id]; },
+	getImage: function (id) { return this._images[id]; },
 
 	/**
 	* Gets the buffer canvas (automatically created by gbox.initScreen).
 	* @returns {Object} A DOM Canvas element, including the width and height of the canvas.
 	*/
-	getBuffer: function(){ return (gbox._fskid >= gbox._frameskip?(this._db?this.getCanvas("_buffer"):this._screen):null); },
+	getBuffer: function () { return (gbox._fskid >= gbox._frameskip?(this._db?this.getCanvas("_buffer"):this._screen):null); },
 
 	/**
 	* Gets the buffer canvas context.
 	* @returns {Object} A DOM Canvas context object.
 	*/
-	getBufferContext: function(){ return (gbox._fskid >= gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screenCtx):null); },
+	getBufferContext: function () { return (gbox._fskid >= gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screenCtx):null); },
 
 	/**
 	* Gets a given canvas.
 	* @param {Object} id The identifier of the canvas.
 	* @returns {Object} A DOM Canvas element, including the width and height of the canvas.
 	*/
-	getCanvas: function(id){ return this._canvas[id]; },
+	getCanvas: function (id) { return this._canvas[id]; },
 
 	/**
 	* Gets the two-dimensional canvas context of a given canvas. The object it returns contains all the drawing functions for the canvas.
@@ -1021,7 +1021,7 @@ var gbox = {
 	* @param {Object} id The identifier of the canvas.
 	* @returns {Object} A DOM Canvas context object.
 	*/
-	getCanvasContext: function(id){ return this.getCanvas(id).getContext("2d"); },
+	getCanvasContext: function (id) { return this.getCanvas(id).getContext("2d"); },
 
 	/**
 	* Adds an image file to the loader, assigning it to an ID. If adding an image to an existing ID, it checks to see if the file you're
@@ -1030,7 +1030,7 @@ var gbox = {
 	* @param {String} id The identifier of the image.
 	* @param {String} filename The file name of the image.
 	*/
-	addImage: function(id, filename) {
+	addImage: function (id, filename) {
 		if (this._images[id])
 			if (this._images[id].getAttribute("src_org") == filename)
 				return;
@@ -1043,7 +1043,7 @@ var gbox = {
 	* Deletes an image currently in use. Does not delete the image file, but removes it from Akihabara's image list.
 	* @param {String} id The identifier of the image.
 	*/
-	deleteImage: function(id) {
+	deleteImage: function (id) {
 		delete this._images[id];
 	},
 
@@ -1057,7 +1057,7 @@ var gbox = {
 	* <li > gapx {Integer}: x-coord gap between tile columns, in pixels < /li>
 	* <li > gapy {Integer}: y-coord gap between tile rows, in pixels < /li> < /ul>
 	*/
-	addTiles: function(t) {
+	addTiles: function (t) {
 		t.tilehh = Math.floor(t.tileh/2);
 		t.tilehw = Math.floor(t.tilew/2);
 		this._tiles[t.id] = t;
@@ -1074,14 +1074,14 @@ var gbox = {
 	* <li > gapx {Integer}: x-coord gap between tile columns, in pixels < /li>
 	* <li > gapy {Integer}: y-coord gap between tile rows, in pixels < /li> < /ul>
 	*/
-	getTiles: function(t) { return this._tiles[t]; },
+	getTiles: function (t) { return this._tiles[t]; },
 
 	/**
 	* Loads the initial splash screen and debugging font, then calls gbox._waitforloaded which adds to the game all the previously
 	* defined resources. Once gbox._waitforloaded is done, it calls the callback function cb.
 	* @params {String} cb The name of the function to be called when all assets are done loading.
 	*/
-	loadAll: function(cb) {
+	loadAll: function (cb) {
 		// Setup logger
 		if (this._canlog) this.log = console.log;
 		// Set the callback function, which is called after the resources are loaded.
@@ -1095,7 +1095,7 @@ var gbox = {
 		this._waitforloaded();
 	},
 
-	_implicitsargs: function(data) {
+	_implicitsargs: function (data) {
 		if (data.camera) {
 			data.dx-=this._camera.x;
 			data.dy-=this._camera.y;
@@ -1121,7 +1121,7 @@ var gbox = {
 	* // from capman, draws an current object's tile, called from inside its blit function
 	* gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: this.frame, dx: this.x, dy: this.y, fliph: this.fliph, flipv: this.flipv, camera: this.camera, alpha: 1});
 	*/
-	blitTile: function(tox, data) {
+	blitTile: function (tox, data) {
 		if (tox == null) return;
 		var ts = this._tiles[data.tileset];
 		var img = this.getImage(ts.image);
@@ -1147,7 +1147,7 @@ var gbox = {
 	* // draw an image at (100, 100)
 	* gbox.blitAll(gbox.getBufferContext(), gbox.getImage("image_id"), {dx: 100, dy: 100});
 	*/
-	blitAll: function(tox, image, data) {
+	blitAll: function (tox, image, data) {
 		if (tox == null) return;
 		this._implicitsargs(data);
 		tox.save();
@@ -1157,7 +1157,7 @@ var gbox = {
 		tox.restore();
 	},
 
-	blit: function(tox, image, data) {
+	blit: function (tox, image, data) {
 		if (tox == null) return;
 		this._implicitsargs(data);
 		tox.save();
@@ -1175,7 +1175,7 @@ var gbox = {
 	* <ul> < li > tileset {String}: (required) the id of the tileset the tilemap is based on < /li>
 	* <li > map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile) < /li> < /ul>
 	*/
-	blitTilemap: function(tox, data) {
+	blitTilemap: function (tox, data) {
 		if (tox == null) return;
 		var ts = this._tiles[data.tileset];
 		for (var y = 0; y < data.map.length; y++)
@@ -1197,7 +1197,7 @@ var gbox = {
 	* <li > halign {Integer}: either gbox.ALIGN_RIGHT (aligns to the right hand side of text area) or gbox.ALIGN_CENTER (horizontallly centers text in text area) < /li>
 	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
 	*/
-	blitText: function(tox, data) {
+	blitText: function (tox, data) {
 		if (tox == null) return;
 		data.text += ""; // Convert to string.
 		var fn = this._fonts[data.font];
@@ -1241,7 +1241,7 @@ var gbox = {
 	* <li > w {Integer}: the width of the box; defaults to canvas width < /li>
 	* <li > h {Integer}: the height the box; defaults to canvas height < /li> < /ul>
 	*/
-	blitClear: function(image, data) {
+	blitClear: function (image, data) {
 		if (image == null) return;
 		if (data == null) data = {x: 0, y: 0};
 		this._implicitsargs(data);
@@ -1251,7 +1251,7 @@ var gbox = {
 	/**
 	* Draws an image directly to the screen's current canvas context. Used internally in gbox.go(). Probably shouldn't be used otherwise.
 	*/
-	blitImageToScreen: function(image) {
+	blitImageToScreen: function (image) {
 		this._screenCtx.drawImage(image, 0, 0);
 	},
 
@@ -1262,7 +1262,7 @@ var gbox = {
 	* <ul> < li > alpha {Float}: the alpha value of the rectangle; defaults to 1 < /li>
 	* <li > color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black < /li> < /ul>
 	*/
-	blitFade: function(tox, data) {
+	blitFade: function (tox, data) {
 		if (tox) this.blitRect(tox, {x: 0, y: 0, w: tox.canvas.width, h: tox.canvas.height, alpha: data.alpha, color: data.color});
 	},
 
@@ -1277,7 +1277,7 @@ var gbox = {
 	* <li > alpha {Float}: the alpha value of the rectangle; defaults to 1 < /li>
 	* <li > color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black < /li> < /ul>
 	*/
-	blitRect: function(tox, data) {
+	blitRect: function (tox, data) {
 		if (tox == null) return;
 		tox.save();
 		tox.globalAlpha = (data.alpha?data.alpha: 1);
@@ -1302,7 +1302,7 @@ var gbox = {
 	* boxes could overlap by up to 2 pixels without being considered a collision.
 	* @returns True if the two collision boxes are colliding within the given tolerance.
 	*/
-	collides: function(o1, o2, t) {
+	collides: function (o1, o2, t) {
 		if (!t) t = 0;
 		return !((o1.y + o1.h-1-t < o2.y + t) || (o1.y + t> o2.y + o2.h-1-t) || (o1.x + o1.w-1-t < o2.x + t) || (o1.x + t > o2.x + o2.w-1-t));
 	},
@@ -1321,7 +1321,7 @@ var gbox = {
 	* point could exist within the outermost 2 pixels of the box without being considered a collision.
 	* @returns True if the point is colliding with the box within the given tolerance.
 	*/
-	pixelcollides: function(o1, o2, t) {
+	pixelcollides: function (o1, o2, t) {
 		if (!t) t = 0;
 		return !((o1.y < o2.y + t) || (o1.y> o2.y + o2.h-1-t) || (o1.x < o2.x + t) || (o1.x > o2.x + o2.w-1-t));
 	},
@@ -1335,15 +1335,15 @@ var gbox = {
 	* <li > h {Integer}: (required) the height the object's box < /li> < /ul>
 	* @returns True if the object's collision box is within the camera's viewport.
 	*/
-	objectIsVisible: function(obj) { return this.collides(obj, this._camera, 0); },
+	objectIsVisible: function (obj) { return this.collides(obj, this._camera, 0); },
 
-	_minimaltimeexpired: function() { gbox._minimalexpired = 2; },
-	_splashscreeniscompleted: function() { return (gbox._splash.background?gbox.imageIsLoaded("_splash"):true) && (gbox._splash.minilogo?gbox.imageIsLoaded("logo"):true) && (gbox._splash.footnotes?gbox.imageIsLoaded("_dbf"):true); },
+	_minimaltimeexpired: function () { gbox._minimalexpired = 2; },
+	_splashscreeniscompleted: function () { return (gbox._splash.background?gbox.imageIsLoaded("_splash"):true) && (gbox._splash.minilogo?gbox.imageIsLoaded("logo"):true) && (gbox._splash.footnotes?gbox.imageIsLoaded("_dbf"):true); },
 
-	setBasePath :function(a){ this._basepath = a; },
-	setSplashSettings: function(a) { for (var n in a) this._splash[n] = a[n]; },
-	setOfflineCache: function(a) { this._flags.offlinecache = a; },
-	setDebugFont: function(a) { this._debugfont = a; },
+	setBasePath :function (a) { this._basepath = a; },
+	setSplashSettings: function (a) { for (var n in a) this._splash[n] = a[n]; },
+	setOfflineCache: function (a) { this._flags.offlinecache = a; },
+	setDebugFont: function (a) { this._debugfont = a; },
 
 	// ---
 	// ---
@@ -1351,7 +1351,7 @@ var gbox = {
 	// ---
 	// ---
 
-	addScript: function(call) {
+	addScript: function (call) {
 		gbox._addtoloader({type: "script",call: call});
 	},
 
@@ -1361,11 +1361,11 @@ var gbox = {
 	// ---
 	// ---
 
-	addBundle: function(call){
+	addBundle: function (call) {
 		gbox._addtoloader({type: "bundle",call: call});
 	},
 
-	readBundleData: function(pack, call) {
+	readBundleData: function (pack, call) {
 		var i = 0;
 
 		// Local resources first
@@ -1393,14 +1393,14 @@ var gbox = {
 	_loadercache: cachelist.create(30),
 
 	// Callback for loaded image
-	_loaderimageloaded: function() {
+	_loaderimageloaded: function () {
 		this.setAttribute('wasloaded',true);
 		this.hheight = Math.floor(this.height/2);
 		this.hwidth = Math.floor(this.width/2);
 		gbox._loaderloaded();
 	},
 	// Callback for loaded bundle
-	_loaderhmlhttploading: function(){
+	_loaderhmlhttploading: function () {
 		var rs = (typeof this.readyState != "undefined" ?this.readyState: gbox._xmlhttp.readyState);
 		var st = (typeof this.status != "undefined" ?this.status: gbox._xmlhttp.status);
 		var rt = (typeof this.responseText != "undefined" ?this.responseText: gbox._xmlhttp.responseText);
@@ -1417,19 +1417,19 @@ var gbox = {
 	},
 
 	// Loader code
-	_addtoloader: function(d) { // type: xx, data: yy
+	_addtoloader: function (d) { // type: xx, data: yy
 		gbox._loaderqueue.push(d);
 		if (!gbox._loaderqueue.isProcessing())
 			gbox._loadnext();
 	},
-	_loaderloaded: function() {
+	_loaderloaded: function () {
 		setTimeout(gbox._loadnext, 10);
 	},
-	_loaderscript: function() {
+	_loaderscript: function () {
 		if (gbox._loaderqueue.getCurrent().call.onLoad) gbox._addtoloader({type: "exec-onl",func: gbox._loaderqueue.getCurrent().call.onLoad, call: gbox._loaderqueue.getCurrent().call});
 		gbox._loadnext();
 	},
-	_loadnext: function() {
+	_loadnext: function () {
 		var current = gbox._loaderqueue.pop();
 		if (gbox._loaderqueue.isProcessing()) {
 			switch (gbox._loaderqueue.getCurrent().type) {
@@ -1480,7 +1480,7 @@ var gbox = {
 			}
 		}
 	},
-	_waitforloaded: function() {
+	_waitforloaded: function () {
 		var aul;
 		if (gbox._loaderqueue.isBusy() || (gbox._minimalexpired != 2)) {
 			gbox._screenCtx.save();
@@ -1548,7 +1548,7 @@ var gbox = {
 			gbox._cb();
 		}
 	},
-	clearCache: function() { this._loadercache.clear(); },
+	clearCache: function () { this._loadercache.clear(); },
 
 	// ---
 	// ---
@@ -1556,14 +1556,14 @@ var gbox = {
 	// ---
 	// ---
 
-	checkCanvasSupport: function() {
+	checkCanvasSupport: function () {
 		return !!document.createElement('canvas').getContext;
 	},
-	addEventListener: function(to, event, code) {
+	addEventListener: function (to, event, code) {
 		if (to.addEventListener) to.addEventListener(event, code, false);
 		else to.attachEvent('on' + event, code);
 	},
-	removeEventListener: function(to, event, code) {
+	removeEventListener: function (to, event, code) {
 		if (to.removeEventListener) to.removeEventListener(event, code, false);
 		else to.detachEvent('on' + event, code);
 	},
@@ -1573,26 +1573,26 @@ var gbox = {
 		function () {return new ActiveXObject("Msxml3.XMLHTTP"); },
 		function () {return new ActiveXObject("Microsoft.XMLHTTP"); }
 	],
-	createXmlHttpRequest: function() {
+	createXmlHttpRequest: function () {
 		var xmlhttp = false;
 		/* running locally on IE5.5, IE6, IE7 */
 		/*@cc_on
-		if(location.protocol == "file: "){
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e){ xmlhttp = false; }
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e){ xmlhttp = false; }
+		if(location.protocol == "file: ") {
+			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
+			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
 		}                                                                                ; @cc_off @*/
 
 		/* IE7, Firefox, Safari, Opera...  */
-		if(!xmlhttp)try{ xmlhttp = new XMLHttpRequest(); }catch(e){ xmlhttp = false; }
+		if(!xmlhttp)try{ xmlhttp = new XMLHttpRequest(); }catch(e) { xmlhttp = false; }
 
 		/* IE6 */
-		if(typeof ActiveXObject != "undefined"){
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e){ xmlhttp = false; }
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e){ xmlhttp = false; }
+		if(typeof ActiveXObject != "undefined") {
+			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
+			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
 		}
 
 		/* IceBrowser */
-		if(!xmlhttp)try{ xmlhttp = createRequest(); }catch(e){ xmlhttp = false; }
+		if(!xmlhttp)try{ xmlhttp = createRequest(); }catch(e) { xmlhttp = false; }
 		return xmlhttp;
 	}
 };

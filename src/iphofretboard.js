@@ -12,7 +12,7 @@ var iphofretboard = {
 	_moveh: 0,
 	_gapx: 0,
 	_gapy: 0,
-	_listen: function(e) {
+	_listen: function (e) {
 		var fret, i;
 		var nc = {up: false, down: false, left: false, right: false, a: false, b: false, c: false};
 		for (i = 0; i < e.touches.length; i++) {
@@ -32,7 +32,7 @@ var iphofretboard = {
 		iphofretboard._buttons = nc;
 	},
 
-	initialize: function(data) {
+	initialize: function (data) {
 		var oElement = document.createElement("img");
 		oElement.src = data.bg;
 		oElement.style.margin = "auto";
@@ -42,9 +42,9 @@ var iphofretboard = {
 
 		gbox._box.appendChild(oElement);
 
-		oElement.ontouchstart = function(evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
-		oElement.ontouchend = function(evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
-		oElement.ontouchmove = function(evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
+		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
+		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
+		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
 
 		var sizes = gbox._domgetabsposition(oElement);
 		this._gapx = sizes.x;

@@ -6,14 +6,14 @@
 var shmup = {
 
 	// CONSTANTS
-	NOOP: function(){ },
+	NOOP: function () { },
 	PUSH_NONE: 0,
 	PUSH_LEFT: 1,
 	PUSH_RIGHT: 2,
 	PUSH_UP: 3,
 	PUSH_DOWN: 4,
 
-	initialize: function(th, data) {
+	initialize: function (th, data) {
 		Akihabara.extendsFrom(
 			Akihabara.extendsFrom(
 				{
@@ -35,7 +35,7 @@ var shmup = {
 		shmup.spawn(th);
 	},
 
-	spawn: function(th, data) {
+	spawn: function (th, data) {
 		th.xpushing = shmup.PUSH_NONE; // user is moving side
 		th.vpushing = shmup.PUSH_NONE; // user is moving side
 		th.counter = 0; // self counter
@@ -44,9 +44,9 @@ var shmup = {
 		help.copyModel(th, data);
 	},
 
-	getNextX: function(th) { return th.x + help.limit(th.accx, -th.maxacc, th.maxacc); },
-	getNextY: function(th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
-	controlKeys: function(th, keys) {
+	getNextX: function (th) { return th.x + help.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
+	controlKeys: function (th, keys) {
 
 		if (gbox.keyIsPressed(keys.left)) {
 			th.xpushing = shmup.PUSH_LEFT;
@@ -68,17 +68,17 @@ var shmup = {
 		} else th.ypushing = shmup.PUSH_NONE;
 	},
 
-	applyForces: function(th) {
+	applyForces: function (th) {
 		th.x = shmup.getNextX(th);
 		th.y = shmup.getNextY(th);
 	},
 
-	handleAccellerations: function(th) {
+	handleAccellerations: function (th) {
 		if (!th.xpushing) th.accx = help.goToZero(th.accx);
 		if (!th.ypushing) th.accy = help.goToZero(th.accy);
 	},
 
-	keepInBounds: function(th) {
+	keepInBounds: function (th) {
 		if (th.x < th.bounds.x) {
 			th.x = th.bounds.x;
 			th.accx = 0;
@@ -95,12 +95,12 @@ var shmup = {
 		}
 	},
 
-	setFrame: function(th) {
+	setFrame: function (th) {
 		if (th.hittimer) th.hittimer--;
 		th.frame = help.decideFrame(th.counter, (th.hittimer?th.frames.hit: th.frames.still));
 	},
 
-	fireBullet: function(gr, id, data) {
+	fireBullet: function (gr, id, data) {
 		var ts = gbox.getTiles(data.tileset);
 		var obj = gbox.addObject(
 			Akihabara.extendsFrom(
@@ -126,7 +126,7 @@ var shmup = {
 			)
 		);
 
-		obj[(data.logicon == null?"first":data.logicon)] = function() {
+		obj[(data.logicon == null?"first":data.logicon)] = function () {
 			this.x += this.accx;
 			this.y += this.accy;
 			this.cnt = (this.cnt + 1)%10;
@@ -142,7 +142,7 @@ var shmup = {
 					}
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function() {
+		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 		};
 
@@ -150,14 +150,14 @@ var shmup = {
 
 	},
 
-	hitByBullet: function(th, by) {
+	hitByBullet: function (th, by) {
 		if (by.power) {
 			th.health-=by.power;
 			if (th.health <= 0) th.kill(by); else  th.hittimer = th.hittime;
 		}
 	},
 
-	generateEnemy: function(gr, id, data, model) {
+	generateEnemy: function (gr, id, data, model) {
 		Akihabara.extendsFrom(model, data);
 		var obj = gbox.addObject(
 			Akihabara.extendsFrom(
@@ -197,17 +197,17 @@ var shmup = {
 					tolerance: 0,
 					initialize: null,
 					invulnerable: false,
-					hitAnimation: function(time) {
+					hitAnimation: function (time) {
 						this.hittimer = (time == null?this.hittime: time);
 						this.animationset = this.hitanimationset;
 					},
-					goTo: function(nl) { // Jump to a line
+					goTo: function (nl) { // Jump to a line
 						this.waitframes = 0;
 						this.doframes = 0;
 						this.line = {};
 						this.scriptline = nl-1;
 					},
-					hitByBullet: function(by) {
+					hitByBullet: function (by) {
 						if (!this.invulnerable && by.power) {
 							this.health-=by.power;
 							if (this.health <= 0) this.kill(this, by); else this.hitAnimation();
@@ -218,7 +218,7 @@ var shmup = {
 		);
 
 
-		obj[(data.logicon == null?"first":data.logicon)] = function() {
+		obj[(data.logicon == null?"first":data.logicon)] = function () {
 			if (this.initialize != null)  {
 				this.initialize(this);
 				this.initialize = null;
@@ -309,7 +309,7 @@ var shmup = {
 
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function() {
+		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 			if (this.dohandler && (this.dohandler.render != null)) this.dohandler.render(this);
 		};
@@ -318,7 +318,7 @@ var shmup = {
 
 	},
 
-	generateScroller: function(gr, id, data) {
+	generateScroller: function (gr, id, data) {
 		var obj = gbox.addObject(
 			Akihabara.extendsFrom(
 				help.cloneObject(data), {
@@ -338,37 +338,37 @@ var shmup = {
 					loopstart: null, loopend: null, looprounds: 0,
 					panspeed: 1, panstimer: 0, destspeed: 0,
 
-					setLoop: function(st, en) {
+					setLoop: function (st, en) {
 						this.loopstart = st;
 						this.loopend = en;
 						this.lget = 1;
 						this.looprounds = 1;
 					},
 
-					quitLoop: function() {
+					quitLoop: function () {
 						this.setLoop(null, null);
 						this.looprounds = 0;
 					},
 
-					setSpeed: function(s) {
+					setSpeed: function (s) {
 						this.speed = s;
 						this.destspeed = s;
 					},
 
-					panToSpeed: function(s, pans) {
+					panToSpeed: function (s, pans) {
 						this.destspeed = s;
 						this.panspeed = pans;
 					},
 
-					quitStop: function() {
+					quitStop: function () {
 						this.stop = null;
 					},
 
-					setStop: function(s) {
+					setStop: function (s) {
 						this.stop = s;
 					},
 
-					setX: function(x) {
+					setX: function (x) {
 						if (x < 0) this.x = 0; else
 						if (x + gbox.getScreenW() > this.maxwidth) this.x = this.maxwidth-gbox.getScreenW();
 						else this.x = x;
@@ -378,7 +378,7 @@ var shmup = {
 			)
 		);
 
-		obj[(data.logicon == null?"first":data.logicon)] = function() {
+		obj[(data.logicon == null?"first":data.logicon)] = function () {
 			if ((this.stop == null) || (this.y < this.stop)) {
 				if (this.speed != this.destspeed) {
 					if (this.panstimer) {
@@ -423,7 +423,7 @@ var shmup = {
 			}
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function() {
+		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			var dy = this.tbly-this.y;
 			var done = false;
 			do {

@@ -16,7 +16,7 @@ var tool = {
 	* This function documents that an image in an animation sequence is loaded and checks if the other images are loaded or not
 	* @param {Object} id This is the object which is used as an id for keeping track of things related to this object in this function
 	*/
-	_loaded: function(id) {
+	_loaded: function (id) {
 		this._loadedflag[id] = true;
 		tool._countloaded++;
 		document.title = tool._countloaded + "/" + tool._count;
@@ -27,7 +27,7 @@ var tool = {
 	/**
 	* This checks that everything being kept track of with _count is loaded and depending on the result calls
 	*/
-	_loadall: function() {
+	_loadall: function () {
 		if (tool._count != tool._countloaded)
 			setTimeout(tool._loadall, 1000);
 		else
@@ -38,9 +38,9 @@ var tool = {
 	* This makes the image cells for an animation and adds the load event listeners that the other stuff work to them. Calls loadall at the end.
 	* @param {Object} data This is the created animation data being passed in to be used by the function.
 	*/
-	makecels: function(data) {
+	makecels: function (data) {
 		this._data = data;
-		loaded = function(){ tool._loaded(this.id); };
+		loaded = function () { tool._loaded(this.id); };
 		var id = 0;
 		for (var r = 0; r < data.rows.length; r++) {
 			for (var i = 0; i < data.rows[r].length; i++) {
@@ -59,7 +59,7 @@ var tool = {
 	* @function
     * Creates and initializes the Canvas element. Is called from makecels. This function requires that this._data have been instantiated prior to function call.
 	*/
-	_allloaded: function() {
+	_allloaded: function () {
 		var data = this._data;
 		var wid = 0;
 		var hei = 0;

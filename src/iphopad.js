@@ -28,7 +28,7 @@ var iphopad = {
 		{up: true, down: false, left: false, right: true}
 	],
 
-	_listen: function(e) {
+	_listen: function (e) {
 		var i;
 		var nc = {up: false, down: false, left: false, right: false};
 		var nb = {a: false, b: false, c: false};
@@ -60,7 +60,7 @@ var iphopad = {
 		iphopad._buttons = nb;
 	},
 
-	_fakelisten: function(e) {
+	_fakelisten: function (e) {
 		iphopad._listen({
 			touches: [
 				{
@@ -75,7 +75,7 @@ var iphopad = {
 	* Initializes the game controls for use with an I-product or Android device.
 	* @param {Object} data passes in information about the screen and its traits such as size.
 	*/
-	initialize: function(data) {
+	initialize: function (data) {
 		var oElement = document.createElement("div");
 		oElement.style.margin = "auto";
 		oElement.style.padding = "0px";
@@ -106,9 +106,9 @@ var iphopad = {
 		oElement.appendChild(bpad);
 		gbox._box.appendChild(oElement);
 
-		oElement.ontouchstart = function(evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
-		oElement.ontouchend = function(evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
-		oElement.ontouchmove = function(evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
+		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
+		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
+		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
 		var sizes = gbox._domgetabsposition(oElement);
 		this._gapx = sizes.x;
 		this._gapy = sizes.y;

@@ -16,23 +16,23 @@ var toys = {
 
 	// Generical toys method
 
-	resetToy: function(th, id) { if (th.toys) delete th.toys[id]; },
-	getToyValue: function(th, id, v, def) { return ((th.toys == null) || (th.toys[id] == null)?def: th.toys[id][v]); },
-	getToyStatus: function(th, id) { return ((th.toys == null) || (th.toys[id] == null)?toys.TOY_BUSY: th.toys[id].__status); },
+	resetToy: function (th, id) { if (th.toys) delete th.toys[id]; },
+	getToyValue: function (th, id, v, def) { return ((th.toys == null) || (th.toys[id] == null)?def: th.toys[id][v]); },
+	getToyStatus: function (th, id) { return ((th.toys == null) || (th.toys[id] == null)?toys.TOY_BUSY: th.toys[id].__status); },
 
-	_toydone: function(th, id) {
+	_toydone: function (th, id) {
 		if (th.toys[id].__status < toys.TOY_IDLE) th.toys[id].__status++;
 		return th.toys[id].__status;
 	},
 
-	_toybusy: function(th, id) {
+	_toybusy: function (th, id) {
 		th.toys[id].__status = toys.TOY_BUSY;
 		return th.toys[id].__status;
 	},
 
-	_toyfrombool: function(th, id, b) { return (b?toys._toydone(th, id):toys._toybusy(th, id)); },
+	_toyfrombool: function (th, id, b) { return (b?toys._toydone(th, id):toys._toybusy(th, id)); },
 
-	_maketoy: function(th, id){
+	_maketoy: function (th, id) {
 		if (!th.toys) th.toys = {};
 		if (!th.toys[id]) {
 			th.toys[id] = {__status: toys.TOY_BUSY};
@@ -47,7 +47,7 @@ var toys = {
 	// Pure timers
 	timer: {
 
-		randomly: function(th, id, data) {
+		randomly: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].time = help.random(data.base, data.range);
 			}
@@ -60,7 +60,7 @@ var toys = {
 			}
 		},
 
-		real: function(th, id, data) {
+		real: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].subtimer = gbox.getFps();
 				th.toys[id].done = false;
@@ -85,7 +85,7 @@ var toys = {
 
 		},
 
-		every: function(th, id, frames){
+		every: function (th, id, frames) {
 			if (toys._maketoy(th, id)) th.toys[id].timer = 0;
 			th.toys[id].timer++;
 			if (th.toys[id].timer == frames) {
@@ -94,7 +94,7 @@ var toys = {
 			} else return toys._toybusy(th, id);
 		},
 
-		after: function(th, id, frames) {
+		after: function (th, id, frames) {
 			if (toys._maketoy(th, id)) th.toys[id].timer = 0;
 			if (th.toys[id].timer == frames) return toys._toydone(th, id); else {
 				th.toys[id].timer++;
@@ -105,7 +105,7 @@ var toys = {
 
 	// Logical helpers
 	logic: {
-		once: function(th, id, cond){
+		once: function (th, id, cond) {
 			if (toys._maketoy(th, id)) th.toys[id].done = false;
 			if (th.toys[id].done) return false; else if (cond) th.toys[id].done = true;
 			return cond;
@@ -115,7 +115,7 @@ var toys = {
 	// UI
 	ui: {
 
-		menu: function(th, id, opt) {
+		menu: function (th, id, opt) {
 			if (toys._maketoy(th, id) || opt.resetmenu) {
 				var fd = gbox.getFont(opt.font);
 				th.toys[id].selected = (opt.selected?opt.selected: 0);
@@ -157,13 +157,13 @@ var toys = {
 		},
 
 		// Returns a full customizable object for optimized huds
-		hud: function(id) {
+		hud: function (id) {
 			gbox.createCanvas(id);
 			return {
 				w: {},
 				surfaceid: id,
 
-				updateWidget: function(i){
+				updateWidget: function (i) {
 					if (!this.w[i].__hidden) {
 						var ts;
 
@@ -221,25 +221,25 @@ var toys = {
 					}
 				},
 
-				hideWidgets: function(l) {
+				hideWidgets: function (l) {
 					for (var i = 0; i < l.length; i++) this.w[l[i]].__hidden = true;
 					this.redraw();
 				},
 
-				showWidgets: function(l) {
+				showWidgets: function (l) {
 					for (var i = 0; i < l.length; i++) this.w[l[i]].__hidden = false;
 					this.redraw();
 				},
 
-				getValue: function(w, k) {
+				getValue: function (w, k) {
 					return this.w[w][k];
 				},
 
-				getNumberValue: function(w, k) {
+				getNumberValue: function (w, k) {
 					return this.w[w][k]*1;
 				},
 
-				setValue: function(w, k, v) {
+				setValue: function (w, k, v) {
 					if (this.w[w][k] != v) {
 						if (k == "value") {
 							if ((this.w[w].maxvalue != null) && (v > this.w[w].maxvalue)) v = this.w[w].maxvalue;
@@ -251,26 +251,26 @@ var toys = {
 					}
 				},
 
-				pushValue: function(w, k, v) {
+				pushValue: function (w, k, v) {
 					this.w[w][k].push(v);
 					this.updateWidget(w);
 				},
 
-				addValue: function(w, k, v) {
+				addValue: function (w, k, v) {
 					if (v) this.setValue(w, k, this.w[w][k] + v);
 				},
 
-				setWidget: function(id, w) {
+				setWidget: function (id, w) {
 					this.w[id] = w;
 					this.updateWidget(id);
 				},
 
-				redraw: function() {
+				redraw: function () {
 					gbox.blitClear(gbox.getCanvasContext(this.surfaceid));
 					for (var i in this.w) this.updateWidget(i);
 				},
 
-				blit: function() {
+				blit: function () {
 					gbox.blitAll(gbox.getBufferContext(), gbox.getCanvas(this.surfaceid), {dx: 0, dy: 0});
 				}
 			};
@@ -279,7 +279,7 @@ var toys = {
 
 	fullscreen: {
 
-		fadeout: function(th, id, tox, data) {
+		fadeout: function (th, id, tox, data) {
 			if (toys._maketoy(th, id) || data.resetfade) {
 				th.toys[id].fade = 0;
 				if (data.audiofade) th.toys[id].stv = AkihabaraAudio.getAudioVolume(data.audiofade);
@@ -298,7 +298,7 @@ var toys = {
 			return toys._toyfrombool(th, id, th.toys[id].fade == 1);
 		},
 
-		fadein: function(th, id, tox, data) {
+		fadein: function (th, id, tox, data) {
 			if (toys._maketoy(th, id) || data.resetfade) {
 				th.toys[id].fade = 1;
 				if (data.audiofade) th.toys[id].stv = AkihabaraAudio.getAudioVolume(data.audiofade);
@@ -318,7 +318,7 @@ var toys = {
 
 	text: {
 
-		blink: function(th, id, tox, data) {
+		blink: function (th, id, tox, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].texttimer = 0;
 				th.toys[id].visible = false;
@@ -334,7 +334,7 @@ var toys = {
 			return toys._toyfrombool(th, id, (data.times?data.times < th.toys[id].times: false));
 		},
 
-		fixed: function(th, id, tox, data) {
+		fixed: function (th, id, tox, data) {
 			if (toys._maketoy(th, id))
 				th.toys[id].texttimer = 0;
 			else
@@ -346,7 +346,7 @@ var toys = {
 
 	logos: {
 
-		linear: function(th, id, data) {
+		linear: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].x = data.sx;
 				th.toys[id].y = data.sy;
@@ -380,7 +380,7 @@ var toys = {
 			return toys._toyfrombool(th, id, (data.x == th.toys[id].x) && (data.y == th.toys[id].y));
 		},
 
-		crossed: function(th, id, data) {
+		crossed: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].gapx = data.gapx;
 				th.toys[id].lw = gbox.getImage(data.image).height;
@@ -402,7 +402,7 @@ var toys = {
 			}
 		},
 
-		zoomout: function(th, id, data) {
+		zoomout: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].zoom = data.zoom;
 				th.toys[id].done = false;
@@ -422,7 +422,7 @@ var toys = {
 			}
 		},
 
-		rising: function(th, id, data) {
+		rising: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].cnt = 0;
 				th.toys[id].lh = gbox.getImage(data.image).height;
@@ -445,7 +445,7 @@ var toys = {
 			}
 		},
 
-		bounce: function(th, id, data) {
+		bounce: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].accy = data.accy;
 				th.toys[id].y = data.y;
@@ -469,7 +469,7 @@ var toys = {
 
 	dialogue: {
 
-		render: function(th, id, data){
+		render: function (th, id, data) {
 			if (toys._maketoy(th, id)) {
 				th.toys[id].newscene = true;
 				th.toys[id].sceneid = -1;
@@ -652,7 +652,7 @@ var toys = {
 	generate: {
 
 		sparks: {
-			simple: function(th, group, id, data) {
+			simple: function (th, group, id, data) {
 				var ts = gbox.getTiles(data.tileset);
 				if (data.frames == null) {
 					data.frames = { speed: (data.animspeed == null?1:data.animspeed), frames: []};
@@ -682,7 +682,7 @@ var toys = {
 					)
 				);
 
-				obj[(data.logicon == null?"first":data.logicon)] = function() {
+				obj[(data.logicon == null?"first":data.logicon)] = function () {
 					this.timer++;
 					if (this.timer >= 0) {
 						this.x += this.accx;
@@ -692,7 +692,7 @@ var toys = {
 					}
 				};
 
-				obj[(data.bliton == null?"blit":data.bliton)] = function() {
+				obj[(data.bliton == null?"blit":data.bliton)] = function () {
 					if ((this.timer >= 0) && (!this.blinkspeed || (Math.floor(this.timer/this.blinkspeed)%2)))
 						gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
 				};
@@ -700,7 +700,7 @@ var toys = {
 				return obj;
 			},
 
-			popupText: function(th, group, id, data) {
+			popupText: function (th, group, id, data) {
 				data.text += "";
 				var fd = gbox.getFont(data.font);
 
@@ -721,17 +721,17 @@ var toys = {
 					)
 				);
 
-				obj.initialize = function() {
+				obj.initialize = function () {
 					var fd = gbox.getFont(this.font);
 					gbox.createCanvas("poptext-" + this.id, {w: this.text.length*fd.tilew, h: fd.tileh});
 					gbox.blitText(gbox.getCanvasContext("poptext-" + this.id), {font: this.font, text: this.text, dx: 0, dy: 0});
 				};
 
-				obj.onpurge = function() {
+				obj.onpurge = function () {
 					gbox.deleteCanvas("poptext-" + this.id);
 				};
 
-				obj[(data.logicon == null?"first":data.logicon)] = function() {
+				obj[(data.logicon == null?"first":data.logicon)] = function () {
 					if (gbox.objectIsVisible(this)) {
 						if (this.vaccy)
 							this.vaccy++;
@@ -742,14 +742,14 @@ var toys = {
 					} else gbox.trashObject(this);
 				};
 
-				obj[(data.bliton == null?"blit":data.bliton)] = function() {
+				obj[(data.bliton == null?"blit":data.bliton)] = function () {
 					gbox.blitAll(gbox.getBufferContext(), gbox.getCanvas("poptext-" + this.id), {dx: this.x, dy: this.y, camera: this.camera});
 				};
 
 				return obj;
 			},
 
-			bounceDie: function(th, group, id, data){
+			bounceDie: function (th, group, id, data) {
 				var obj = gbox.addObject(
 					Akihabara.extendsFrom(
 						{
@@ -771,7 +771,7 @@ var toys = {
 					)
 				);
 
-				obj[(data.logicon == null?"first":data.logicon)] = function() {
+				obj[(data.logicon == null?"first":data.logicon)] = function () {
 					if (gbox.objectIsVisible(this)) {
 						this.vaccy++;
 						this.y += this.vaccy;
@@ -780,7 +780,7 @@ var toys = {
 					} else gbox.trashObject(this);
 				};
 
-				obj[(data.bliton == null?"blit":data.bliton)] = function() {
+				obj[(data.bliton == null?"blit":data.bliton)] = function () {
 					if (!this.blinkspeed || (Math.floor(this.cnt/this.blinkspeed)%2))
 						gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 				};
@@ -791,7 +791,7 @@ var toys = {
 
 		audio: {
 
-			fadeOut: function(th, group, id, data){
+			fadeOut: function (th, group, id, data) {
 				var obj = gbox.addObject(
 					Akihabara.extendsFrom(
 						{
@@ -806,7 +806,7 @@ var toys = {
 					)
 				);
 
-				obj[(data.logicon == null?"first":data.logicon)] = function() {
+				obj[(data.logicon == null?"first":data.logicon)] = function () {
 					if (this.destination == null)
 						if (this.audio)
 							if (this.fadespeed > 0) this.destination = 1; else this.destination = 0;
@@ -815,7 +815,7 @@ var toys = {
 					if (this.fadespeed > 0) AkihabaraAudio.playAudio(this.audio);
 				};
 
-				obj[(data.bliton == null?"blit":data.bliton)] = function() {
+				obj[(data.bliton == null?"blit":data.bliton)] = function () {
 					if (this.audio) AkihabaraAudio.changeAudioVolume(this.audio, this.fadespeed);
 					if (this.channel) AkihabaraAudio.changeChannelVolume(this.channel, this.fadespeed);
 					if (this.audio && (
