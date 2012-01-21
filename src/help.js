@@ -504,7 +504,7 @@ var help = {
 	akihabaraInit: function(data) {
 		if ((typeof data).toLowerCase() == "string") data = {title: data};
 		var device = this.getDeviceConfig();
-		var footnotes = ["MADE WITH AKIHABARA (C)2010 - GPL2/MIT","Project: www.kesiev.com/akihabara","Sources: github.com/kesiev/akihabara"];
+		var footnotes = ["MADE WITH AKIHABARA (C)2012 - GPL2/MIT","Project: http://akihabara.github.com","Sources: http://github.com/akihabara"];
 		document.title = (data.title?data.title: "Akihabara");
 		if (data.splash) {
 			if (data.splash.footnotes)
