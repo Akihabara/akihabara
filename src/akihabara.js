@@ -1,6 +1,13 @@
-/** @namespace Akihabara */
+/**
+ * The main purpose of this module is to provide functions to integrate
+ * all akibaara modules easily.
+ * @namespace Akihabara
+ */
 var Akihabara = {
-	// Akihabara framework version
+	/**
+	* Akihabara current version
+	* @type String
+	**/
 	VERSION: "2.0.0",
 
 	/**
@@ -15,7 +22,7 @@ var Akihabara = {
 	*
 	* newTopview = Akihabara.extendsFrom(AkihabaraTopview, withNewFunctions);
 	* newTopview; // => {a: 1, b: 2, c: 3, d: "four"};
-	*/
+	**/
 	extendsFrom: function (model, data) {
 		if (data == null) { data = {}; }
 		if (model != null) {
