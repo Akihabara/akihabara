@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset=utf-8>
-        <title>Jasmine Spec Runner</title>
-        <link rel="stylesheet" href="jasmine/jasmine.css" type="text/css">
-    </head>
+	<head>
+		<meta charset=utf-8>
+		<title>Jasmine Spec Runner</title>
+		<link rel="stylesheet" href="jasmine/jasmine.css" type="text/css">
+	</head>
 
-    <body>
-        <!-- load jasmine -->
-        <script type="text/javascript" src="jasmine/jasmine.js"></script>
-        <script type="text/javascript" src="jasmine/jasmine-html.js"></script>
-        <script type="text/javascript" src="spec_helper.js"></script>
+	<body>
+		<!-- load jasmine -->
+		<script type="text/javascript" src="jasmine/jasmine.js"></script>
+		<script type="text/javascript" src="jasmine/jasmine-html.js"></script>
+		<script type="text/javascript" src="spec_helper.js"></script>
 
-        <!-- load your javascript files -->
-        <script type="text/javascript" src="../src/akihabara.js"></script>
+		<!-- load your javascript files -->
+		<script type="text/javascript" src="../src/akihabara.js"></script>
+		<script type=text/javascript src="../src/trigo.js"></script>
+		<script type=text/javascript src="../src/gbox.js"></script>
+		<script type=text/javascript src="../src/topview.js"></script>
+		<script type=text/javascript src="../src/platformer.js"></script>
+		<script type=text/javascript src="../src/shmup.js"></script>
+		<script type=text/javascript src="../src/help.js"></script>
+		<script type=text/javascript src="../src/toys.js"></script>
+		<script type=text/javascript src="../src/help.js"></script>
+		<script type=text/javascript src="../src/tool.js"></script>
 
-        <!-- load your spec files -->
-        <script type="text/javascript" src="akihabara_spec.js"></script>
+		<!-- load your spec files -->
+		<script type="text/javascript" src="akihabara_spec.js"></script>
+		<script type=text/javascript src="trigo_spec.js"></script>
+		<script type=text/javascript src="gbox_spec.js"></script>
+		<script type=text/javascript src="topview_spec.js"></script>
+		<script type=text/javascript src="platformer_spec.js"></script>
+		<script type=text/javascript src="shmup_spec.js"></script>
+		<script type=text/javascript src="help_spec.js"></script>
+		<script type=text/javascript src="toys_spec.js"></script>
+		<script type=text/javascript src="help_spec.js"></script>
+		<script type=text/javascript src="tool_spec.js"></script>
 
-        <!-- run specs -->
-        <script type="text/javascript">
-          jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-          jasmine.getEnv().execute();
-        </script>
-    </body>
+		<!-- run specs -->
+		<script type="text/javascript">
+			jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+			jasmine.getEnv().execute();
+		</script>
+	</body>
 </html>
