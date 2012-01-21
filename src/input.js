@@ -5,6 +5,15 @@
 var AkihabaraInput = {
 	_keyboard: [],
 	_keyboardpicker: 0,
+
+	/**
+	* Internal keymap to emulate old arcade buttons.
+	* <br> z key for A button
+	* <br> x key for B button
+	* <br> c key for C button
+	* <br> p key for pause
+	* <br> m key for mute
+	**/
 	_keymap: {
 		up: 38,
 		down: 40,
@@ -13,14 +22,35 @@ var AkihabaraInput = {
 		a: 90,
 		b: 88,
 		c: 67,
-		pause: 80, //p
-		mute: 77 //m
+		pause: 80,
+		mute: 77
 	},
+
+	/**
+	* Verify a keydown event
+	*
+	* This function work with the _keyboard attribute and set 1 to the
+	* keycode on it.
+	*
+	* @param {Object} e Object to test the keydown
+	**/
 	_keydown: function (e) {
 		if (e.preventDefault) { e.preventDefault(); }
 		var key = (e.fake || window.event ? e.keyCode : e.which);
 		if (!AkihabaraInput._keyboard[key]) { AkihabaraInput._keyboard[key] = 1; }
 	},
+
+	/**
+	* Verify a keyup event
+	*
+	* This function work with the _keyboard attribute and set -1 to the
+	* keycode on it.
+	*
+	* The mute and pause keys are mapped here and call the correct function
+	* for each of these actions.
+	*
+	* @param {Object} e Object to test the keyup
+	**/
 	_keyup: function (e) {
 		if (e.preventDefault) { e.preventDefault(); }
 		var key = (e.fake || window.event ? e.keyCode : e.which);
@@ -37,11 +67,16 @@ var AkihabaraInput = {
 			}
 		}
 	},
+
+	/**
+	* Resets all keys setting all of the to 1 on the onkeyup function
+	**/
 	_resetkeys: function () {
 		for (var key in AkihabaraInput._keymap) {
 			AkihabaraInput._keyup({fake: 1, keyCode: AkihabaraInput._keymap[key]});
 		}
 	},
+
 	_showkeyboardpicker: function (th) {
 		AkihabaraInput._keyboardpicker.value = "Click/Tap here to enable the keyboard";
 		AkihabaraInput._keyboardpicker.style.left = (gbox._screenposition.x + 5) + "px";
@@ -51,6 +86,7 @@ var AkihabaraInput = {
 		AkihabaraInput._keyboardpicker.style.border = "1px dashed white";
 		AkihabaraInput._keyboardpicker.readOnly = null;
 	},
+
 	_hidekeyboardpicker: function (th) {
 		AkihabaraInput._keyboardpicker.style.zIndex = 100;
 		AkihabaraInput._keyboardpicker.readOnly = "yes";
@@ -113,7 +149,7 @@ var AkihabaraInput = {
 
 	/**
 	* Add touch events to an object
-	* @param Object th The object to add touch events
+	* @param {Object} th The object to add touch events
 	*/
 	addTouchEventsTo: function (th) {
 		th.ontouchstart = function (evt) {
