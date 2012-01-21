@@ -1,5 +1,6 @@
 /**
  * Iphopad module provides a touchpad for touch-based device (for now, Android and iDevices).
+ * @namespace AkihabaraIphopad
  */
 var iphopad = {
 

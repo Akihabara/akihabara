@@ -1,7 +1,7 @@
 /**
- * @namespace
  * Gamecycle contains your basic game loop: intro, menus,
  * crossfading between stages/lifes, gameover and ending.
+ * @namespace AkihabaraGamecycle
  */
 var gamecycle = {
 

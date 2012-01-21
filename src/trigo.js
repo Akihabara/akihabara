@@ -1,6 +1,7 @@
 /**
- * @namespace Trigo module provides some math stuff for moving objects in a
+ * Trigo module provides some math stuff for moving objects in a
  * direction or following a round path.
+ * @namespace AkihabaraTrigo
  */
 var trigo = {
 

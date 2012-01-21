@@ -1,7 +1,8 @@
 /**
- * @namespace Tool module provides simple developing tools. Currently, this file only has a cel-composer:
+ * Tool module provides simple developing tools. Currently, this file only has a cel-composer:
  * it can compose an image stacking a set of frames for animating objects, applying a
  * number of filters to each frame.
+ * @namespace AkihabaraTools
  */
 var tool = {
 

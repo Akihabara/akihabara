@@ -183,10 +183,10 @@ var cachelist = {
 };
 
 /**
- * @namespace
  * Gamebox module allows multiple grouped objects to move simultaneously, it helps with collisions, #
  * rendering and moving objects. It also provides monospaced pixel-font rendering, keyboard handling,
  * audio, double buffering and FSEs. Gamebox can also store and load data from cookies!
+ * @namespace AkihabaraGamebox
  */
 var gbox = {
 

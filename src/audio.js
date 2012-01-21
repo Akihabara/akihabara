@@ -1,9 +1,4 @@
-// ---
-// ---
-// ---  AUDIO ENGINE
-// ---
-// ---
-
+/** @namespace AkihabaraAudio */
 var AkihabaraAudio = {
 	_totalMute: false,
 	_audiochannels: {},

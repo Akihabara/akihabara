@@ -1,5 +1,6 @@
 /**
- * @namespace shmup The libraries for a 2D top-down Shmup game.
+ * The libraries for a 2D top-down Shmup game.
+ * @namespace AkihabaraShmup
  */
 // Shoot'em up specifics
 var shmup = {

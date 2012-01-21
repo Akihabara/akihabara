@@ -1,3 +1,4 @@
+/** @namespace Akihabara */
 var Akihabara = {
 	// Akihabara framework version
 	VERSION: "2.0.0",

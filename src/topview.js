@@ -1,6 +1,6 @@
 /**
- * @namespace
  * Top-view RPG specific libraries.
+ * @namespace AkihabaraTopview
  */
 
 var topview = {

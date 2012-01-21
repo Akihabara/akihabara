@@ -1,6 +1,6 @@
 /**
- * @namespace
  * Keyboard and other input handling
+ * @namespace AkihabaraKeyboard
  */
 var input = {
 	//

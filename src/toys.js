@@ -1,8 +1,8 @@
 /**
- * @namespace
  * Toys module provides lots of common routines during the game developing:
  * from effects for screen titles to HUD handling to platform/SHMUP/RPG oriented routines,
  * like jumping characters, Z-Indexed objects, bullets, sparks, staff rolls, bonus screens, dialogues etc.
+ * @namespace AkihabaraToys
  */
 var toys = {
 
@@ -41,8 +41,8 @@ var toys = {
 	},
 
 	/**
-	* @namespace timer
 	* Timer functionality based methods
+	* @namespace AkihabaraTimer
 	*/
 	// Pure timers
 	timer: {

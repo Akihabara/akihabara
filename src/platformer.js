@@ -1,5 +1,6 @@
 /**
-* @namespace platformer The libraries for generating a 2D platformer game.
+* The libraries for generating a 2D platformer game.
+* @namespace AkihabaraPlatformer
 */
 var platformer = {
 	// CONSTANTS

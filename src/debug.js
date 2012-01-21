@@ -1,5 +1,6 @@
 /**
- * @namespace Debug module provides some utils for debug the Akihabara user project.
+ * Debug module provides some utils for debug the Akihabara user project.
+ * @namespace AkihabaraDebug
  */
 var debug = {
 
