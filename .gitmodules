@@ -1,0 +1,3 @@
+[submodule "doc/jsdoc"]
+	path = doc/jsdoc
+	url = git://github.com/micmath/jsdoc.git
