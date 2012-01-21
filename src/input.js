@@ -74,7 +74,7 @@ var AkihabaraInput = {
 	* @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
 	* @returns {Boolean} True if the given key is transitioning from unpressed to pressed in this frame.
 	*/
-	keyIsHit: function (id) { return this._keyboard[this._keymap[id]] == 1; },
+	keyIsHit: function (id) { return this._keyboard[this._keymap[id]] === 1; },
 
 	/**
 	* Returns true if a given key in this._keymap is being held down. Returns true as long as the key is held down.
