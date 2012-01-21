@@ -8,8 +8,8 @@ The JSDoc was added as a git submodule, to use it just execute:
 `git submodule update`
 
 The JSDoc 3 repository will be downloaded and you could generate the documentation
-executing the following command on the root of the akihabara repository:
+executing the following command on the doc folder:
 
-`./doc/jsdoc/jsdoc src`
+`./jsdoc/jsdoc ../src`
 
 The documentation will be generated on the out directory.
