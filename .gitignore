@@ -1,1 +1,2 @@
-doc/out
+doc/*.html
+doc/styles

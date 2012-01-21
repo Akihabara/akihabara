@@ -1,0 +1,18 @@
+# A simple script to handle the documentation generating
+
+# Go to doc directory
+pushd doc 1>&2 > /dev/null
+
+# Remove all previously generated docs
+rm -rf *.html styles
+
+# Generate the documentation
+./jsdoc/jsdoc ../src
+
+# Remove the out directory (ok...That sucks! JSDoc I want to change it....Please?)
+mv out/*.html out/styles .
+
+# Let's go back to our previous pushed directory
+popd 1>&2 > /dev/null
+
+echo "Documentation generated on the doc directory!"
