@@ -1,0 +1,2 @@
+describe("AkihabaraInput", function () {
+});

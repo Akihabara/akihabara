@@ -1,0 +1,2 @@
+describe("AkihabaraAudio", function () {
+});

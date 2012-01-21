@@ -1,0 +1,2 @@
+describe("AkihabaraHelp", function () {
+});

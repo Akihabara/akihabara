@@ -1,0 +1,2 @@
+describe("AkihabaraDebug", function () {
+});

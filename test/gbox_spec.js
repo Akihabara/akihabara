@@ -1,0 +1,2 @@
+describe("AkihabaraGamebox", function () {
+});

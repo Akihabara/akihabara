@@ -3,9 +3,6 @@
  * @namespace AkihabaraKeyboard
  */
 var input = {
-	//
-	// Keyboard
-	//
 	_keyboard: [],
 	_keyboardpicker: 0,
 	_keymap: {
