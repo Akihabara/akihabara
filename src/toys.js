@@ -788,48 +788,5 @@ var toys = {
 				return obj;
 			}
 		},
-
-		audio: {
-
-			fadeOut: function (th, group, id, data) {
-				var obj = gbox.addObject(
-					Akihabara.extendsFrom(
-						{
-							id: id,
-							group: group,
-							fadespeed: -0.02*(data.fadein?-1:1),
-							stoponmute: true,
-							audio: null,
-							channel: null,
-							destination: null
-						}, data
-					)
-				);
-
-				obj[(data.logicon == null?"first":data.logicon)] = function () {
-					if (this.destination == null)
-						if (this.audio)
-							if (this.fadespeed > 0) this.destination = 1; else this.destination = 0;
-						else
-							if (this.fadespeed > 0) this.destination = AkihabaraAudio.getChannelDefaultVolume(this.channel); else this.destination = 0;
-					if (this.fadespeed > 0) AkihabaraAudio.playAudio(this.audio);
-				};
-
-				obj[(data.bliton == null?"blit":data.bliton)] = function () {
-					if (this.audio) AkihabaraAudio.changeAudioVolume(this.audio, this.fadespeed);
-					if (this.channel) AkihabaraAudio.changeChannelVolume(this.channel, this.fadespeed);
-					if (this.audio && (
-							((this.fadespeed < 0) && (AkihabaraAudio.getAudioVolume(this.audio) <= this.destination)) || ((this.fadespeed > 0) && (AkihabaraAudio.getAudioVolume(this.audio) >= this.destination))
-						) || (this.channel && (
-							((this.fadespeed < 0) && (AkihabaraAudio.getChannelVolume(this.channel) <= this.destination)) || ((this.fadespeed > 0) && (AkihabaraAudio.getChannelVolume(this.channel) >= this.destination))
-						))
-					) {
-						if (this.channel && this.stoponmute && (this.fadespeed < 0)) AkihabaraAudio.stopChannel(this.channel);
-						if (this.audio && this.stoponmute && (this.fadespeed < 0)) AkihabaraAudio.stopAudio(this.audio);
-						gbox.trashObject(this);
-					}
-				};
-			}
-		}
 	}
 };
