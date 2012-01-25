@@ -410,13 +410,13 @@ var help = {
 	*/
 	geturlparameter: function ( name ) {
 		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-		var regexS = "[\\?&]" + name + " = ([^&#]*)";
-		var regex = new RegExp( regexS );
+		var regex = new RegExp("[?&]" + name + "=([^&#]*)");
 		var results = regex.exec( window.location.href );
-		if( results == null )
-			return "";
-		else
+		if (results == null) {
+			return ""
+		} else {
 			return results[1];
+		}
 	},
 
 	/**
@@ -538,7 +538,7 @@ var help = {
 			gbox.setScreenBorder(false);
 		}
 		if(data.backgroundColor) document.body.style.backgroundColor = data.backgroundColor;
-		if (help.geturlparameter("statusbar")) debug.statusBar();
+		if (help.geturlparameter("statusbar")) AkihabaraDebug.statusBar();
 		if (help.geturlparameter("db") || device.doublebuffering) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else

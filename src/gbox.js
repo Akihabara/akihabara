@@ -484,7 +484,7 @@ var gbox = {
 		else
 			gbox.showPauseMessage();
 
-		if(typeof debug != "undefined") debug.run( gbox._debugTool );
+		if(typeof AkihabaraDebug != "undefined") AkihabaraDebug.run( gbox._debugTool );
 	},
 
 	/**
@@ -536,7 +536,7 @@ var gbox = {
 				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleColor;
 				gbox._screenCtx.fillRect(0, 4 + gbox.getFont("_dbf").tileh, (bw > 0?bw: 0), 1);
 				gbox._screenCtx.restore();
-				debug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
+				AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
 			}
 			if (gbox._gamewaiting) gbox._gamewaiting--;
 			setTimeout(gbox.go, 1000);
@@ -1539,11 +1539,11 @@ var gbox = {
 					}
 			}
 			gbox._screenCtx.restore();
-			if(typeof debug != "undefined") debug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
+			if(typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
 			setTimeout(gbox._waitforloaded, 50);
 		} else {
 			gbox.deleteImage("_splash");
-			if(typeof debug != "undefined") debug.setStatBar();
+			if(typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar();
 			gbox._cb();
 		}
 	},
