@@ -19,31 +19,13 @@ Notes for developers
 * For making sure that your sub-scripts are loaded, try to add an "alert" at the end. Opera for Wii silently fail when there are syntax errors like the one explained before.
 * Opera Wii wants that canvas have to be blitted at least once before being used - or fails with a browser crash! The built-in gbox.createCanvas was already fixed. Is a good thing to use that method for spawning canvas.
 
-*Running tests*
+### Running tests
 
 Just run the runner.html on test directory.
 
-*Generating Documentation*
+### Generating Documentation
 
-We are using JSDoc 3 for documentation generating.
-The JSDoc was added as a git submodule, to use it just execute:
-
-`git submodule init`
-`git submodule update`
-
-The JSDoc 3 repository will be downloaded and you could generate the documentation
-executing the following command:
-
-`./doc/generate`
-
-The documentation will be generated on the doc directory.
-
-Todo
-----
-
-* Some way for updating the JSDoc automatically. (Darren and Darius wrapped up tutorials and docs! - BTW some scripts for generating docs form sources are needed)
-* Better embeddability keeping playability on mobile
-* Solve randomly blinking sprites on Wii (?)
+Just run `make doc` command. The documentation will be generated on the doc directory.
 
 Mailing List
 ------------
@@ -59,4 +41,12 @@ Legal informations
 ------------------
 
 The initial akihabara code was made by Fracesco Cottone (http://kesiev.com) as an open source project dual licensed by MIT and GPL.
-Thanks to Carlos Benitez form EtnasSoft (http://www.etnassoft.com/) for all patches and helping on akihabara development.
+
+Special Thanks
+--------------
+
+These guys deserves an special thanks:
+
+* Carlos Benitez form EtnasSoft (http://www.etnassoft.com/) for all patches and helping on Akihabara development.
+* Darren and Darius for the initial not finished documentation and the tutorials, it helped a lot on the for the first version.
+* Rafael Masoni for helping on Akihabara website and game assets.
