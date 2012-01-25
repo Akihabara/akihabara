@@ -666,7 +666,6 @@ var gbox = {
 			if (c.indexOf(nameeq) == 0) {
 				rt = c.substring(nameeq.length, c.length);
 				if (a && a.number) return rt*1; else return rt;
-				if (a && a.number) return rt*1; else return rt;
 			}
 		}
 		return null;

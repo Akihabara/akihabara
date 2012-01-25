@@ -787,6 +787,6 @@ var toys = {
 
 				return obj;
 			}
-		},
+		}
 	}
 };
