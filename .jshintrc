@@ -1,7 +1,9 @@
 {
     "predef": [
         "jasmine", "it", "describe", "expect",
-        "Akihabara", "AkihabaraAudio", "gbox"
+        "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer",
+        "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle",
+        "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
     ],
 
     // Browser, Frameworks and Globals
