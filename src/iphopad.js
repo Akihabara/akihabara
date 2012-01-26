@@ -35,7 +35,7 @@ var AkihabaraIphopad = {
 		for (i = 0; i < e.touches.length; i++) {
 			var rp = {x: e.touches[i].pageX - iphopad._gapx, y: e.touches[i].pageY - iphopad._gapy};
 			if (rp.x < iphopad._height) {
-				nc = iphopad._positions[Math.floor(trigo.getAngle(iphopad._center, rp, iphopad._transl) / iphopad._brad)];
+				nc = iphopad._positions[Math.floor(AkihabaraTrigo.getAngle(iphopad._center, rp, iphopad._transl) / iphopad._brad)];
 			} else {
 				if (rp.x > iphopad._width - iphopad._buttonsize) {
 					nb.a = true;

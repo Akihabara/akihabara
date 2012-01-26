@@ -115,8 +115,8 @@ var shmup = {
 					acc: 0,
 					angle: 0,
 					camera: false,
-					accx: (data.accx == null?Math.floor(trigo.translateX(0, data.angle, data.acc)):0),
-					accy: (data.accy == null?Math.floor(trigo.translateY(0, data.angle, data.acc)):0),
+					accx: (data.accx == null?Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)):0),
+					accy: (data.accy == null?Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)):0),
 					x: data.from.x + data.from.hw-ts.tilehw + (data.gapx?data.gapx: 0),
 					y: (data.upper?data.from.y-ts.tilehh + (data.gapy?data.gapy: 0):data.from.y + data.from.h-ts.tilehh-(data.gapy?data.gapy: 0)),
 					collidegroup: "",
@@ -172,8 +172,8 @@ var shmup = {
 					camera: false,
 					fliph: false,
 					flipv: false,
-					accx: (data.accx == null?Math.floor(trigo.translateX(0, data.angle, data.acc)):0),
-					accy: (data.accy == null?Math.floor(trigo.translateY(0, data.angle, data.acc)):0),
+					accx: (data.accx == null?Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)):0),
+					accy: (data.accy == null?Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)):0),
 					x: data.x,
 					y: data.y,
 					// -- spec
@@ -263,26 +263,26 @@ var shmup = {
 					if (this.line.setaccy != null) this.accy = this.line.setaccy;
 					if (this.line.setacc != null) {
 						this.acc = this.line.setacc;
-						this.accx = Math.floor(trigo.translateX(0, this.angle, this.acc));
-						this.accy = Math.floor(trigo.translateY(0, this.angle, this.acc));
+						this.accx = Math.floor(AkihabaraTrigo.translateX(0, this.angle, this.acc));
+						this.accy = Math.floor(AkihabaraTrigo.translateY(0, this.angle, this.acc));
 					}
 					if (this.line.addaccx != null) this.accx += this.line.addaccx;
 					if (this.line.addaccy != null) this.accy += this.line.addaccy;
 					if (this.line.addacc != null) {
 						this.acc += this.line.addacc;
-						this.accx = Math.floor(trigo.translateX(0, this.angle, this.acc));
-						this.accy = Math.floor(trigo.translateY(0, this.angle, this.acc));
+						this.accx = Math.floor(AkihabaraTrigo.translateX(0, this.angle, this.acc));
+						this.accy = Math.floor(AkihabaraTrigo.translateY(0, this.angle, this.acc));
 					}
 
 					if (this.line.setangle != null) {
 						this.angle = this.line.setangle;
-						this.accx = Math.floor(trigo.translateX(0, this.angle, this.acc));
-						this.accy = Math.floor(trigo.translateY(0, this.angle, this.acc));
+						this.accx = Math.floor(AkihabaraTrigo.translateX(0, this.angle, this.acc));
+						this.accy = Math.floor(AkihabaraTrigo.translateY(0, this.angle, this.acc));
 					}
 					if (this.line.addangle != null) {
 						this.angle += this.line.addangle;
-						this.accx = Math.floor(trigo.translateX(0, this.angle, this.acc));
-						this.accy = Math.floor(trigo.translateY(0, this.angle, this.acc));
+						this.accx = Math.floor(AkihabaraTrigo.translateX(0, this.angle, this.acc));
+						this.accy = Math.floor(AkihabaraTrigo.translateY(0, this.angle, this.acc));
 					}
 					if (this.line.everyframe) this.waitframes = this.line.everyframe;
 

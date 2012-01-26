@@ -3,12 +3,12 @@
  * direction or following a round path.
  * @namespace AkihabaraTrigo
  */
-var trigo = {
+var AkihabaraTrigo = {
 
 	ANGLE_RIGHT: 0,
-	ANGLE_DOWN: Math.PI*0.5,
+	ANGLE_DOWN: Math.PI * 0.5,
 	ANGLE_LEFT: Math.PI,
-	ANGLE_UP: Math.PI*1.5555555,
+	ANGLE_UP: Math.PI * 1.5555555,
 
 	/**
 	* Adds two angles together (radians).
@@ -17,8 +17,12 @@ var trigo = {
 	* @returns The resultant angle, always between 0 and 2*pi.
 	*/
 	addAngle: function (a, add) {
-		a = (a + add)%(Math.PI*2);
-		if (a < 0) return (Math.PI*2) + a; else return a;
+		a = (a + add) % (Math.PI * 2);
+		if (a < 0) {
+			return (Math.PI * 2) + a;
+		} else {
+			return a;
+		}
 	},
 
 	/**
@@ -28,7 +32,7 @@ var trigo = {
 	* @returns The distance between p1 and p2.
 	*/
 	getDistance: function (p1, p2) {
-		return Math.sqrt(Math.pow(p2.x-p1.x, 2) + Math.pow(p2.y-p1.y, 2));
+		return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 	},
 
 	/**
@@ -39,7 +43,7 @@ var trigo = {
 	* @returns The angle between points p1 and p2, plus transl.
 	*/
 	getAngle: function (p1, p2, transl) {
-		return this.addAngle(Math.atan2(p2.y-p1.y, p2.x-p1.x), (transl?transl: 0));
+		return this.addAngle(Math.atan2(p2.y - p1.y, p2.x - p1.x), (transl ? transl : 0));
 	},
 
 	/**
@@ -49,8 +53,8 @@ var trigo = {
 	* @param {Float} d The distance of translation.
 	*/
 	translate: function (p1, a, d) {
-		p1.x = p1.x + Math.cos(a)*d;
-		p1.y = p1.y + Math.sin(a)*d;
+		p1.x = p1.x + Math.cos(a) * d;
+		p1.y = p1.y + Math.sin(a) * d;
 	},
 
 	/**
@@ -60,7 +64,7 @@ var trigo = {
 	* @param {Float} d The distance of translation.
 	*/
 	translateX: function (x1, a, d) {
-		return x1 + Math.cos(a)*d;
+		return x1 + Math.cos(a) * d;
 	},
 
 	/**
@@ -70,6 +74,6 @@ var trigo = {
 	* @param {Float} d The distance of translation.
 	*/
 	translateY: function (y1, a, d) {
-		return y1 + Math.sin(a)*d;
+		return y1 + Math.sin(a) * d;
 	}
 };

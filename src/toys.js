@@ -359,7 +359,7 @@ var toys = {
 						th.toys[id].x = data.x;
 						th.toys[id].y = data.y;
 					} else
-						trigo.translate(th.toys[id], trigo.getAngle(th.toys[id], data), data.speed);
+						AkihabaraTrigo.translate(th.toys[id], AkihabaraTrigo.getAngle(th.toys[id], data), data.speed);
 				else
 					if (!th.toys[id].played) {
 						if (data.audioreach) AkihabaraAudio.hitAudio(data.audioreach);
