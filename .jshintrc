@@ -1,7 +1,7 @@
 {
     "predef": [
         "jasmine", "it", "describe", "expect",
-        "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer",
+        "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer", "trigo",
         "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle",
         "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
     ],

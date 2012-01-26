@@ -586,7 +586,7 @@ var help = {
 					case "none":
 						break;
 					default:
-						iphopad.initialize({h: 100, dpad: gbox._basepath + "dpad.png",buttons: gbox._basepath + "buttons.png",bg: gbox._basepath + "padbg.png"});
+						AkihabaraIphopad.initialize({h: 100, dpad: gbox._basepath + "dpad.png",buttons: gbox._basepath + "buttons.png",bg: gbox._basepath + "padbg.png"});
 						break;
 				}
 			}
