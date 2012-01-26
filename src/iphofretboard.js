@@ -2,11 +2,10 @@
  * Fretboard module provides a touchpad for touch-based device (for now, Android and iDevices).
  * @namespace AkihabaraFretboard
  */
-var iphofretboard = {
-
+var AkihabaraAkihabaraIphofretboard = {
 	_swap: false,
-	_frets: ["a","b","c","left","right"],
-	_move: ["up","down"],
+	_frets: ["a", "b", "c", "left", "right"],
+	_move: ["up", "down"],
 	_buttons: {up: false, down: false, left: false, right: false, a: false, b: false, c: false},
 	_fretw: 0,
 	_moveh: 0,
@@ -16,20 +15,25 @@ var iphofretboard = {
 		var fret, i;
 		var nc = {up: false, down: false, left: false, right: false, a: false, b: false, c: false};
 		for (i = 0; i < e.touches.length; i++) {
-			fret = Math.floor((e.touches[i].pageX-iphofretboard._gapx)/iphofretboard._fretw);
-			if (fret < iphofretboard._frets.length)
-				nc[iphofretboard._frets[fret]] = true;
-			else
-				nc[iphofretboard._move[Math.floor((e.touches[i].pageY-iphofretboard._gapy)/iphofretboard._moveh)]] = true;
+			fret = Math.floor((e.touches[i].pageX - AkihabaraIphofretboard._gapx) / AkihabaraIphofretboard._fretw);
+			if (fret < AkihabaraIphofretboard._frets.length) {
+				nc[AkihabaraIphofretboard._frets[fret]] = true;
+			} else {
+				nc[AkihabaraIphofretboard._move[Math.floor((e.touches[i].pageY - AkihabaraIphofretboard._gapy) / AkihabaraIphofretboard._moveh)]] = true;
+			}
 		}
 		this._swap = !this._swap;
 		for (i in nc) {
-			if (nc[i] != iphofretboard._buttons[i])
-				if (nc[i]) gbox._keydown({fake: true, keyCode: gbox._keymap[i]});
-				else gbox._keyup({fake: true, keyCode: gbox._keymap[i]});
+			if (nc[i] !== AkihabaraIphofretboard._buttons[i]) {
+				if (nc[i]) {
+					gbox._keydown({fake: true, keyCode: gbox._keymap[i]});
+				} else {
+					gbox._keyup({fake: true, keyCode: gbox._keymap[i]});
+				}
+			}
 		}
 
-		iphofretboard._buttons = nc;
+		AkihabaraIphofretboard._buttons = nc;
 	},
 
 	initialize: function (data) {
@@ -42,14 +46,14 @@ var iphofretboard = {
 
 		gbox._box.appendChild(oElement);
 
-		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
-		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
-		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphofretboard._listen(evt); };
+		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphofretboard._listen(evt); };
+		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphofretboard._listen(evt); };
+		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphofretboard._listen(evt); };
 
 		var sizes = gbox._domgetabsposition(oElement);
 		this._gapx = sizes.x;
 		this._gapy = sizes.y;
-		this._fretw = sizes.w/(this._frets.length + 1);
-		this._moveh = sizes.h/(this._move.length);
+		this._fretw = sizes.w / (this._frets.length + 1);
+		this._moveh = sizes.h / (this._move.length);
 	}
 };
