@@ -9,8 +9,16 @@ var dynalist = {
 			dl: 0,
 			gar: [],
 			disconnect: function (obd) {
-				if (this.data[obd].__first != null)  this.data[this.data[obd].__first].__next = this.data[obd].__next; else this.first = this.data[obd].__next;
-				if (this.data[obd].__next != null)  this.data[this.data[obd].__next].__first = this.data[obd].__first; else this.last = this.data[obd].__first;
+				if (this.data[obd].__first != null) {
+					this.data[this.data[obd].__first].__next = this.data[obd].__next;
+				} else {
+					this.first = this.data[obd].__next;
+				}
+				if (this.data[obd].__next != null) {
+					this.data[this.data[obd].__next].__first = this.data[obd].__first;
+				} else {
+					this.last = this.data[obd].__first;
+				}
 			},
 			addObject: function (obj, prio) {
 				var nid = this.gar.pop();
@@ -25,8 +33,13 @@ var dynalist = {
 					this.last = nid;
 				} else { // Chain next
 					var i = this.first;
-					while (i != null)
-						if (this.data[i].__prio > prio) break; else i = this.data[i].__next;
+					while (i != null) {
+						if (this.data[i].__prio > prio) {
+							break;
+						} else {
+							i = this.data[i].__next;
+						}
+					}
 					if (i == null) { // if last, chain in queue
 						obj.__next = null;
 						obj.__first = this.last;
@@ -36,7 +49,11 @@ var dynalist = {
 						obj.__first = this.data[i].__first;
 						obj.__next = i;
 						this.data[i].__first = nid;
-						if (obj.__first != null) this.data[obj.__first].__next = nid; else this.first = nid;
+						if (obj.__first != null) {
+							this.data[obj.__first].__next = nid;
+						} else {
+							this.first = nid;
+						}
 					}
 
 				}
@@ -47,52 +64,52 @@ var dynalist = {
 			},
 			setPrio: function (obd, prio) {
 				var i;
-				if (this.data[obd].__prio == prio) return;
-				if (this.first != this.last)
-				if (this.data[obd].__prio < prio) {
-					if (this.data[obd].__id != this.last) {
-						i = this.data[obd].__next;
-						while (i != null)
-							if (this.data[i].__prio >= prio) break; else i = this.data[i].__next;
-						if ((i == null) || (this.data[i].__first != this.data[obd].__id)) {
-							// disconnect
-							this.disconnect(obd);
-							// Reconnect
-							if (i == null) {
-								this.data[this.last].__next = this.data[obd].__id;
-								this.data[obd].__first = this.last;
-								this.data[obd].__next = null;
-								this.last = this.data[obd].__id;
-							} else {
-								this.data[obd].__first = this.data[i].__first;
-								this.data[obd].__next = i;
-								this.data[i].__first = this.data[obd].__id;
-								if (this.data[obd].__first != null) this.data[this.data[obd].__first].__next = this.data[obd].__id; else this.first = this.data[obd].__id;
+				if (this.data[obd].__prio === prio) { return; }
+				if (this.first !== this.last)
+					if (this.data[obd].__prio < prio) {
+						if (this.data[obd].__id != this.last) {
+							i = this.data[obd].__next;
+							while (i != null)
+								if (this.data[i].__prio >= prio) break; else i = this.data[i].__next;
+							if ((i == null) || (this.data[i].__first != this.data[obd].__id)) {
+								// disconnect
+								this.disconnect(obd);
+								// Reconnect
+								if (i == null) {
+									this.data[this.last].__next = this.data[obd].__id;
+									this.data[obd].__first = this.last;
+									this.data[obd].__next = null;
+									this.last = this.data[obd].__id;
+								} else {
+									this.data[obd].__first = this.data[i].__first;
+									this.data[obd].__next = i;
+									this.data[i].__first = this.data[obd].__id;
+									if (this.data[obd].__first != null) this.data[this.data[obd].__first].__next = this.data[obd].__id; else this.first = this.data[obd].__id;
+								}
+							}
+						}
+					} else {
+						if (this.data[obd].__id != this.first) {
+							i = this.data[obd].__first;
+							while (i != null)
+								if (this.data[i].__prio <= prio) break; else i = this.data[i].__first;
+							if ((i == null) || (this.data[i].__next != this.data[obd].__id)) {
+								// disconnect
+								this.disconnect(obd);
+								if (i == null) {
+									this.data[this.first].__first = this.data[obd].__id;
+									this.data[obd].__first = null;
+									this.data[obd].__next = this.first;
+									this.first = this.data[obd].__id;
+								} else {
+									this.data[obd].__first = i;
+									this.data[obd].__next = this.data[i].__next;
+									this.data[i].__next = this.data[obd].__id;
+									if (this.data[obd].__next != null) this.data[this.data[obd].__next].__first = this.data[obd].__id; else this.last = this.data[obd].__id;
+								}
 							}
 						}
 					}
-				} else {
-					if (this.data[obd].__id != this.first) {
-						i = this.data[obd].__first;
-						while (i != null)
-							if (this.data[i].__prio <= prio) break; else i = this.data[i].__first;
-						if ((i == null) || (this.data[i].__next != this.data[obd].__id)) {
-							// disconnect
-							this.disconnect(obd);
-							if (i == null) {
-								this.data[this.first].__first = this.data[obd].__id;
-								this.data[obd].__first = null;
-								this.data[obd].__next = this.first;
-								this.first = this.data[obd].__id;
-							} else {
-								this.data[obd].__first = i;
-								this.data[obd].__next = this.data[i].__next;
-								this.data[i].__next = this.data[obd].__id;
-								if (this.data[obd].__next != null) this.data[this.data[obd].__next].__first = this.data[obd].__id; else this.last = this.data[obd].__id;
-							}
-						}
-					}
-				}
 				this.data[obd].__prio = prio;
 			},
 			remove: function (obd) {
@@ -112,7 +129,7 @@ var cyclelist = {
 			_head: 0,
 			_tail: 0,
 			_data: [],
-			_size: (size?size: 10),
+			_size: (size ? size :  10),
 			_total: 0,
 			_done: 0,
 			_current: null,
@@ -120,12 +137,12 @@ var cyclelist = {
 			getDone: function () { return this._done; }, // Number of popped elements since the last empty
 			getSize: function () { return this._size; }, // The maximum number of elements in the queue
 			isProcessing: function () { return this._current != null; }, // The last pop was not a null (i.e. the queue returned a valid object)
-			isEnded: function () { return(this._head == this._tail); }, // There are other elements in the queue
-			isBusy: function () { return(this.isProcessing() || !this.isEnded()); }, // There are elements in the queue/the last one pop returned an object that is being processed
+			isEnded: function () { return (this._head == this._tail); }, // There are other elements in the queue
+			isBusy: function () { return (this.isProcessing() || !this.isEnded()); }, // There are elements in the queue/the last one pop returned an object that is being processed
 			getCurrent: function () { return this._current; }, // Return the last popped element
 			push: function (d) {
 				this._data[this._head] = d;
-				this._head = (this._head + 1)%this._size;
+				this._head = (this._head + 1) % this._size;
 				this._total++;
 			},
 			pop: function () {
@@ -135,7 +152,7 @@ var cyclelist = {
 					this._current = null;
 				} else {
 					this._current = this._data[this._tail];
-					this._tail = (this._tail + 1)%this._size;
+					this._tail = (this._tail + 1) % this._size;
 					this._done++;
 				}
 				return this._current;
@@ -143,7 +160,7 @@ var cyclelist = {
 			dump: function () {
 				var r = "";
 				for (var i = 0; i < this._size; i++) {
-					r += i + ") " + this._data[i] + " | " + (i == this._head?"HEAD ":"") + (i == this._tail?"TAIL ":"") + "\n";
+					r += i + ") " + this._data[i] + " | " + (i == this._head ? "HEAD " : "") + (i == this._tail ? "TAIL " : "") + "\n";
 				}
 				r += "\n\n" + this._done + "/" + this._total;
 				return r;
@@ -160,18 +177,18 @@ var cachelist = {
 			_cache: {},
 			_queue: [],
 			_head: 0,
-			_size: (size?size: 10),
+			_size: (size ? size : 10),
 			add: function (k, v) {
 				if (!this._cache[k]) {
 					if (this._queue[this._head])
 						delete this._cache[this._queue[this._head]];
 					this._queue[this._head] = k;
 					this._cache[k] = {pos: this._head, value: v};
-					this._head = (this._head + 1)%this._size;
+					this._head = (this._head + 1) % this._size;
 				} else this._cache[k].value = v;
 			},
 			read: function (k) {
-				return (this._cache[k]?this._cache[k].value: null);
+				return (this._cache[k] ? this._cache[k].value : null);
 			},
 			clear: function () {
 				this._cache = {};
@@ -199,8 +216,8 @@ var gbox = {
 	COLOR_WHITE: 'rgb(255, 255, 255)',
 	ZINDEX_LAYER: -1,
 	PALETTES: { // I think that some retrogamers will find these useful and/or inspiring
-		c64:{ // C64 palette, picked from http: //pepto.de/projects/colorvic/
-			order: ["black","white","red","cyan","purple","green","blue","yellow","orange","brown","lightred","darkgray","gray","lightgreen","lightblue","lightgray"],
+		c64: { // C64 palette, picked from http: //pepto.de/projects/colorvic/
+			order: ["black", "white", "red", "cyan", "purple", "green", "blue", "yellow", "orange", "brown", "lightred", "darkgray", "gray", "lightgreen", "lightblue", "lightgray"],
 			colors: { black: "#000000", white: "#FFFFFF", red: "#68372B", cyan: "#70A4B2", purple: "#6F3D86", green: "#588D43", blue: "#352879", yellow: "#B8C76F", orange: "#6F4F25", brown: "#433900", lightred: "#9A6759", darkgray: "#444444", gray: "#6C6C6C", lightgreen: "#9AD284", lightblue: "#6C5EB5", lightgray: "#959595"}
 		}
 	},
@@ -246,7 +263,7 @@ var gbox = {
 	_groups: [],
 	_renderorder: [],
 	_groupplay: {},
-	_actionqueue: ["first","then","blit","after"], // initialize is executed once
+	_actionqueue: ["first", "then", "blit", "after"], // initialize is executed once
 	_mspf: 0,
 	_fps: 0,
 	_gametimer: 0,
@@ -262,7 +279,7 @@ var gbox = {
 	_db: false,
 	_systemcookie: "__gboxsettings",
 	_sessioncache: "",
-	_breakcacheurl: function (a) {return (this._flags.offlinecache?a: a + (a.indexOf("?") == -1?"?":"&") + "_brc = " + gbox._sessioncache); },
+	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") == -1 ? "?" : "&") + "_brc = " + gbox._sessioncache); },
 	_forcedidle: 0,
 	_gamewaiting: 0,
 	_canlog: false,
@@ -284,32 +301,32 @@ var gbox = {
 	log: function () {}, // Overridden if console is really available
 	_safedrawimage: function (tox, img, sx, sy, sw, sh, dx, dy, dw, dh) {
 		if (!img || !tox) return;
-		if (sx < 0) { dx-=(dw/sw)*sx; sw += sx; sx = 0; }
-		if (sy < 0) { dy-=(dh/sh)*sy; sh += sy; sy = 0; }
-		if (sx + sw > img.width) { dw = (dw/sw)*(img.width-sx); sw = img.width-sx; }
-		if (sy + sh > img.height) { dh = (dh/sh)*(img.height-sy); sh = img.height-sy; }
-		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } catch(e) { }
+		if (sx < 0) { dx -= (dw / sw) * sx; sw += sx; sx = 0; }
+		if (sy < 0) { dy -= (dh / sh) * sy; sh += sy; sy = 0; }
+		if (sx + sw > img.width) { dw = (dw / sw) * (img.width - sx); sw = img.width - sx; }
+		if (sy + sh > img.height) { dh = (dh / sh) * (img.height - sy); sh = img.height - sy; }
+		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } catch (e) { }
 	},
 	pauseGame: function () {
-		if(!gbox._pauseGame) {
+		if (!gbox._pauseGame) {
 			gbox._pauseGame = true;
-		}else{
+		} else {
 			gbox._pauseGame = false;
 			gbox._nextframe();
 		}
 	},
 	showPauseMessage: function () {
-			gbox.blitFade(gbox.getBufferContext(), {alpha: 0.5});
-			var ctx = gbox._screenCtx;
-			ctx.fillStyle = '#FFF';
-			ctx.font = '12px sans-serif';
-			ctx.fillText( 'PAUSE', 141, 125 );
+		gbox.blitFade(gbox.getBufferContext(), {alpha: 0.5});
+		var ctx = gbox._screenCtx;
+		ctx.fillStyle = '#FFF';
+		ctx.font = '12px sans-serif';
+		ctx.fillText('PAUSE', 141, 125);
 	},
 	_domgetabsposition: function (oElement) {
 		var sizes = {x: 0, y: 0, h: 0, w: 0};
 		sizes.h = oElement.offsetHeight;
 		sizes.w = oElement.offsetWidth;
-		while( oElement != null) {
+		while (oElement != null) {
 			sizes.y += oElement.offsetTop;
 			sizes.x += oElement.offsetLeft;
 			oElement = oElement.offsetParent;
@@ -358,14 +375,14 @@ var gbox = {
 		this._screen = document.createElement("canvas");
 		this._screenCtx = this._screen.getContext('2d');
 		if (this._border) this._screen.style.border = "1px solid black";
-		this._screen.setAttribute('height',h);
-		this._screen.setAttribute('width',w);
-		this._screen.style.width = (w*this._zoom) + "px";
-		this._screen.style.height = (h*this._zoom) + "px";
+		this._screen.setAttribute('height', h);
+		this._screen.setAttribute('width', w);
+		this._screen.style.width = (w * this._zoom) + "px";
+		this._screen.style.height = (h * this._zoom) + "px";
 		this._screenh = h;
 		this._screenw = w;
-		this._screenhh = Math.floor(h/2);
-		this._screenhw = Math.floor(w/2);
+		this._screenhh = Math.floor(h / 2);
+		this._screenhw = Math.floor(w / 2);
 		this._camera.x = 0;
 		this._camera.y = 0;
 		this._camera.h = h;
@@ -388,21 +405,21 @@ var gbox = {
 		AkihabaraAudio.setCanAudio(true); // Tries to enable audio by default
 
 		switch (gbox._flags.fse) { // Initialize FSEs
-			case "scanlines":
-				gbox.createCanvas("-gbox-fse",{w: w, h: h});
-				gbox.getCanvasContext("-gbox-fse").save();
-				gbox.getCanvasContext("-gbox-fse").globalAlpha = 0.2;
-				gbox.getCanvasContext("-gbox-fse").fillStyle = gbox.COLOR_BLACK;
-				for (var j = 0; j < h; j += 2)
-					gbox.getCanvasContext("-gbox-fse").fillRect(0, j, w, 1);
-				gbox.getCanvasContext("-gbox-fse").restore();
-				gbox._localflags.fse = true;
-				break;
-			case "lcd":
-				gbox.createCanvas("-gbox-fse-old",{w: w, h: h});
-				gbox.createCanvas("-gbox-fse-new",{w: w, h: h});
-				gbox._localflags.fse = true;
-				break;
+		case "scanlines":
+			gbox.createCanvas("-gbox-fse", {w: w, h: h});
+			gbox.getCanvasContext("-gbox-fse").save();
+			gbox.getCanvasContext("-gbox-fse").globalAlpha = 0.2;
+			gbox.getCanvasContext("-gbox-fse").fillStyle = gbox.COLOR_BLACK;
+			for (var j = 0; j < h; j += 2)
+				gbox.getCanvasContext("-gbox-fse").fillRect(0, j, w, 1);
+			gbox.getCanvasContext("-gbox-fse").restore();
+			gbox._localflags.fse = true;
+			break;
+		case "lcd":
+			gbox.createCanvas("-gbox-fse-old", {w: w, h: h});
+			gbox.createCanvas("-gbox-fse-new", {w: w, h: h});
+			gbox._localflags.fse = true;
+			break;
 		}
 	},
 
@@ -418,7 +435,7 @@ var gbox = {
 	*/
 	setFps: function (f) {
 		this._fps = f;
-		this._mspf = Math.floor(1000/f);
+		this._mspf = Math.floor(1000 / f);
 	},
 
 	/**
@@ -474,17 +491,17 @@ var gbox = {
 	},
 
 	_nextframe: function () {
-		gbox._framestart = gbox._mspf-(new Date().getTime()-gbox._framestart);
+		gbox._framestart = gbox._mspf - (new Date().getTime() - gbox._framestart);
 		if (gbox._autoskip)
 			if ((gbox._framestart < gbox._autoskip.lowidle) && (gbox._frameskip < gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip + 1); else
-			if ((gbox._framestart > gbox._autoskip.hiidle) && (gbox._frameskip > gbox._autoskip.min)) gbox.setFrameskip(gbox._frameskip-1);
+			if ((gbox._framestart > gbox._autoskip.hiidle) && (gbox._frameskip > gbox._autoskip.min)) gbox.setFrameskip(gbox._frameskip - 1);
 
-		if(!gbox._pauseGame)
-			this._gametimer = setTimeout(gbox.go, (gbox._framestart <= 0?1:gbox._framestart));
+		if (!gbox._pauseGame)
+			this._gametimer = setTimeout(gbox.go, (gbox._framestart <= 0 ? 1 : gbox._framestart));
 		else
 			gbox.showPauseMessage();
 
-		if(typeof AkihabaraDebug != "undefined") AkihabaraDebug.run( gbox._debugTool );
+		if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.run(gbox._debugTool); }
 	},
 
 	/**
@@ -492,21 +509,21 @@ var gbox = {
 	*/
 	_applyfse: function () {
 		switch (gbox._flags.fse) {
-			case "scanlines":
-				gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"), 0, 0);
-				break;
-			case "lcd":
-				if (gbox._localflags.fselcdget && gbox.getBuffer())
-					gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(), 0, 0);
-				var gboxBufferContext = gbox.getBufferContext();
-				gboxBufferContext.save();
-				gboxBufferContext.globalAlpha = 0.5;
-				gboxBufferContext.drawImage(gbox.getCanvas("-gbox-fse-old"), 0, 0);
-				gboxBufferContext.restore();
-				if (gbox._localflags.fselcdget)
-					gbox.swapCanvas("-gbox-fse-new","-gbox-fse-old");
-				gbox._localflags.fselcdget = !gbox._localflags.fselcdget;
-				break;
+		case "scanlines":
+			gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"), 0, 0);
+			break;
+		case "lcd":
+			if (gbox._localflags.fselcdget && gbox.getBuffer())
+				gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(), 0, 0);
+			var gboxBufferContext = gbox.getBufferContext();
+			gboxBufferContext.save();
+			gboxBufferContext.globalAlpha = 0.5;
+			gboxBufferContext.drawImage(gbox.getCanvas("-gbox-fse-old"), 0, 0);
+			gboxBufferContext.restore();
+			if (gbox._localflags.fselcdget)
+				gbox.swapCanvas("-gbox-fse-new", "-gbox-fse-old");
+			gbox._localflags.fselcdget = !gbox._localflags.fselcdget;
+			break;
 		}
 	},
 
@@ -514,7 +531,7 @@ var gbox = {
 	* Register the code that have to be executed once the page is loaded. Usually contains game initialization, resources loading etc.
 	*/
 	onLoad: function (code) {
-		this.addEventListener(window, 'load',code);
+		this.addEventListener(window, 'load', code);
 	},
 
 	/**
@@ -525,16 +542,16 @@ var gbox = {
 		if (gbox._loaderqueue.isBusy()) {
 			if (gbox._gamewaiting == 1) {
 				gbox.blitFade(gbox._screenCtx, {alpha: 0.5});
-				gbox.blitText(gbox._screenCtx, {font: "_dbf",dx: 2, dy: 2, text: "LOADING..."});
+				gbox.blitText(gbox._screenCtx, {font: "_dbf", dx: 2, dy: 2, text: "LOADING..."});
 				gbox._gamewaiting = true;
 			}
 			if (gbox._gamewaiting <= 1) {
-				var bw = Math.floor(((gbox.getScreenW()-4)*gbox._loaderqueue.getDone())/gbox._loaderqueue.getSize());
+				var bw = Math.floor(((gbox.getScreenW() - 4) * gbox._loaderqueue.getDone()) / gbox._loaderqueue.getSize());
 				gbox._screenCtx.globalAlpha = 1;
 				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleBackColor;
 				gbox._screenCtx.fillRect(0, 4 + gbox.getFont("_dbf").tileh, gbox.getScreenW(), 1);
 				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleColor;
-				gbox._screenCtx.fillRect(0, 4 + gbox.getFont("_dbf").tileh, (bw > 0?bw: 0), 1);
+				gbox._screenCtx.fillRect(0, 4 + gbox.getFont("_dbf").tileh, (bw > 0 ? bw : 0), 1);
 				gbox._screenCtx.restore();
 				AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
 			}
@@ -604,11 +621,15 @@ var gbox = {
 		for (var k in this._keymap) saved += "keymap-" + k + ":" + this._keymap[k] + "~";
 		for (var f in this._flags) {
 			switch (this._flagstype[f]) {
-				case "check": saved += "flag-" + f + ":" + (this._flags[f]?1:0) + "~"; break;
-				case "list":  saved += "flag-" + f + ":" + this._flags[f] + "~"; break;
+			case "check":
+				saved += "flag-" + f + ":" + (this._flags[f] ? 1 : 0) + "~";
+				break;
+			case "list":
+				saved += "flag-" + f + ":" + this._flags[f] + "~";
+				break;
 			}
 		}
-		this.dataSave("sys",saved);
+		this.dataSave("sys", saved);
 	},
 	_loadsettings: function () {
 		var cfg = this.dataLoad("sys");
@@ -620,13 +641,19 @@ var gbox = {
 				kv = cfg[i].split(":");
 				mk = kv[0].split("-");
 				switch (mk[0]) {
-					case "keymap": this._keymap[mk[1]] = kv[1]*1; break;
-					case "flag":
-						switch (this._flagstype[mk[1]]) {
-							case "check": this._flags[mk[1]] = kv[1]*1; break;
-							case "list":  this._flags[mk[1]] = kv[1]; break;
-						}
+				case "keymap":
+					this._keymap[mk[1]] = kv[1] * 1;
+					break;
+				case "flag":
+					switch (this._flagstype[mk[1]]) {
+					case "check":
+						this._flags[mk[1]] = kv[1] * 1;
 						break;
+					case "list":
+						this._flags[mk[1]] = kv[1];
+						break;
+					}
+					break;
 				}
 			}
 		}
@@ -644,8 +671,8 @@ var gbox = {
 	*/
 	dataSave: function (k, v, d) {
 		var date = new Date();
-		date.setTime(date.getTime() + ((d?d: 365*10)*24*60*60*1000));
-		document.cookie =this._systemcookie + "~" + k + " = " + v + "; expires = " + date.toGMTString() + "; path = /";
+		date.setTime(date.getTime() + ((d ? d : 365 * 10) * 24 * 60 * 60 * 1000));
+		document.cookie = this._systemcookie + "~" + k + " = " + v + "; expires = " + date.toGMTString() + "; path = /";
 	},
 
 	/**
@@ -665,7 +692,7 @@ var gbox = {
 			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
 			if (c.indexOf(nameeq) == 0) {
 				rt = c.substring(nameeq.length, c.length);
-				if (a && a.number) return rt*1; else return rt;
+				if (a && a.number) return rt * 1; else return rt;
 			}
 		}
 		return null;
@@ -675,7 +702,7 @@ var gbox = {
 	* Clears a value stored in a  key-value pair in a browser cookie. Sets value to "". Only works if user has cookies enabled.
 	* @param {String} k The key which identifies the value you are clearing.
 	*/
-	dataClear: function (k) { this.dataSave(k, "",-1); },
+	dataClear: function (k) { this.dataSave(k, "", -1); },
 
 	/**
 	* Gets the current camera object.
@@ -691,7 +718,7 @@ var gbox = {
 	*/
 	setCameraY: function (y, viewdata) {
 		this._camera.y = y;
-		if (this._camera.y + this._camera.h > viewdata.h) this._camera.y = viewdata.h-this._screenh;
+		if (this._camera.y + this._camera.h > viewdata.h) this._camera.y = viewdata.h - this._screenh;
 		if (this._camera.y < 0) this._camera.y = 0;
 	},
 
@@ -703,7 +730,7 @@ var gbox = {
 	*/
 	setCameraX: function (x, viewdata) {
 		this._camera.x = x;
-		if (this._camera.x + this._camera.w > viewdata.w) this._camera.x = viewdata.w-this._screenw;
+		if (this._camera.x + this._camera.w > viewdata.w) this._camera.x = viewdata.w - this._screenw;
 		if (this._camera.x < 0) this._camera.x = 0;
 	},
 
@@ -717,8 +744,8 @@ var gbox = {
 	* gbox.centerCamera(gbox.getObject('player', 'player_id'), {w: map.w, h: map.h});
 	*/
 	centerCamera: function (data, viewdata) {
-		this.setCameraX(data.x-this._screenhw, viewdata);
-		this.setCameraY(data.y-this._screenhh, viewdata);
+		this.setCameraX(data.x - this._screenhw, viewdata);
+		this.setCameraY(data.y - this._screenhh, viewdata);
 	},
 
 	/**
@@ -798,9 +825,9 @@ var gbox = {
 			delete this._objects[group][obj];
 		}
 	},
-	playGroups: function (gid) { for (var i = 0; i < gid.length; i++)this.playGroup(gid[i]); },
-	stopGroups: function (gid) { for (var i = 0; i < gid.length; i++)this.stopGroup(gid[i]); },
-	toggleGroups: function (gid) { for (var i = 0; i < gid.length; i++)this.toggleGroup(gid[i]); },
+	playGroups: function (gid) { for (var i = 0; i < gid.length; i++) { this.playGroup(gid[i]); }},
+	stopGroups: function (gid) { for (var i = 0; i < gid.length; i++) { this.stopGroup(gid[i]); }},
+	toggleGroups: function (gid) { for (var i = 0; i < gid.length; i++) { this.toggleGroup(gid[i]); }},
 
 	/**
 	* Given a group and an id for a particular object instance, this returns the instance requested.
@@ -831,8 +858,8 @@ var gbox = {
 	* gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
 	*/
 	addFont: function (data) {
-		data.tilehh = Math.floor(data.tileh/2);
-		data.tilehw = Math.floor(data.tilew/2);
+		data.tilehh = Math.floor(data.tileh / 2);
+		data.tilehw = Math.floor(data.tilew / 2);
 		this._fonts[data.id] = data;
 		this._fonts[data.id].firstascii = data.firstletter.charCodeAt(0);
 	},
@@ -912,7 +939,7 @@ var gbox = {
 		// Extras
 		if (!data.id) {
 			data.id = "obj-" + this._autoid;
-			this._autoid = (this._autoid + 1)%1000;
+			this._autoid = (this._autoid + 1) % 1000;
 		}
 		if (data.tileset) {
 			if (data.h == null) data.h = this._tiles[data.tileset].tileh;
@@ -943,11 +970,11 @@ var gbox = {
 	*/
 	createCanvas: function (id, data) {
 		this.deleteCanvas(id);
-		var w = (data && data.w?data.w: this._screenw);
-		var h = (data && data.h?data.h: this._screenh);
+		var w = (data && data.w ? data.w : this._screenw);
+		var h = (data && data.h ? data.h : this._screenh);
 		this._canvas[id] = document.createElement("canvas");
-		this._canvas[id].setAttribute('height',h);
-		this._canvas[id].setAttribute('width',w);
+		this._canvas[id].setAttribute('height', h);
+		this._canvas[id].setAttribute('width', w);
 		var canvasCtx = this._canvas[id].getContext("2d");
 		canvasCtx.save();
 		canvasCtx.globalAlpha = 0;
@@ -998,13 +1025,13 @@ var gbox = {
 	* Gets the buffer canvas (automatically created by gbox.initScreen).
 	* @returns {Object} A DOM Canvas element, including the width and height of the canvas.
 	*/
-	getBuffer: function () { return (gbox._fskid >= gbox._frameskip?(this._db?this.getCanvas("_buffer"):this._screen):null); },
+	getBuffer: function () { return (gbox._fskid >= gbox._frameskip ? (this._db ? this.getCanvas("_buffer") : this._screen) : null); },
 
 	/**
 	* Gets the buffer canvas context.
 	* @returns {Object} A DOM Canvas context object.
 	*/
-	getBufferContext: function () { return (gbox._fskid >= gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screenCtx):null); },
+	getBufferContext: function () { return (gbox._fskid >= gbox._frameskip ? (this._db ? this.getCanvasContext("_buffer") : this._screenCtx) : null); },
 
 	/**
 	* Gets a given canvas.
@@ -1035,7 +1062,7 @@ var gbox = {
 				return;
 			else
 				delete this._images[id];
-		this._addtoloader({type: "image",id: id, filename: filename});
+		this._addtoloader({type: "image", id: id, filename: filename});
 	},
 
 	/**
@@ -1057,8 +1084,8 @@ var gbox = {
 	* <li > gapy {Integer}: y-coord gap between tile rows, in pixels < /li> < /ul>
 	*/
 	addTiles: function (t) {
-		t.tilehh = Math.floor(t.tileh/2);
-		t.tilehw = Math.floor(t.tilew/2);
+		t.tilehh = Math.floor(t.tileh / 2);
+		t.tilehw = Math.floor(t.tilew / 2);
 		this._tiles[t.id] = t;
 	},
 
@@ -1086,22 +1113,21 @@ var gbox = {
 		// Set the callback function, which is called after the resources are loaded.
 		if (!this._cb) this._cb = cb;
 		// Default stuff
-		this.addImage("_dbf",this.getDebugFont() );
-		if (this._splash.background) this.addImage("_splash",this._splash.background);
-		gbox.addFont({id: "_dbf",image: "_dbf",firstletter: " ",tileh: 5, tilew: 4, tilerow: 16, gapx: 0, gapy: 0});
-		if (!gbox._splash.minimalTime)
-		gbox._minimalexpired = 2;
+		this.addImage("_dbf", this.getDebugFont());
+		if (this._splash.background) this.addImage("_splash", this._splash.background);
+		gbox.addFont({id: "_dbf", image: "_dbf", firstletter: " ", tileh: 5, tilew: 4, tilerow: 16, gapx: 0, gapy: 0});
+		if (!gbox._splash.minimalTime) { gbox._minimalexpired = 2; }
 		this._waitforloaded();
 	},
 
 	_implicitsargs: function (data) {
 		if (data.camera) {
-			data.dx-=this._camera.x;
-			data.dy-=this._camera.y;
+			data.dx -= this._camera.x;
+			data.dy -= this._camera.y;
 		}
 		if (data.sourcecamera) {
-		data.x = this._camera.x*(data.parallaxx?data.parallaxx: 1);
-		data.y = this._camera.y*(data.parallaxy?data.parallaxy: 1);
+			data.x = this._camera.x * (data.parallaxx ? data.parallaxx : 1);
+			data.y = this._camera.y * (data.parallaxy ? data.parallaxy : 1);
 		}
 	},
 
@@ -1126,9 +1152,10 @@ var gbox = {
 		var img = this.getImage(ts.image);
 		this._implicitsargs(data);
 		tox.save();
-		tox.globalAlpha = (data.alpha?data.alpha: 1);
-		tox.translate((data.fliph?ts.tilew: 0), (data.flipv?ts.tileh: 0)); tox.scale((data.fliph?-1:1), (data.flipv?-1:1));
-		this._safedrawimage(tox, img, ts.gapx + (ts.tilew*(data.tile%ts.tilerow)), ts.gapy + (ts.tileh*Math.floor(data.tile/ts.tilerow)), (data.w == null?ts.tilew: data.w), (data.h == null?ts.tileh: data.h), data.dx*(data.fliph?-1:1), data.dy*(data.flipv?-1:1), (data.w?data.w: ts.tilew), (data.h?data.h: ts.tileh));
+		tox.globalAlpha = (data.alpha ? data.alpha : 1);
+		tox.translate((data.fliph ? ts.tilew : 0), (data.flipv ? ts.tileh : 0));
+		tox.scale((data.fliph ? -1 : 1), (data.flipv ? -1 : 1));
+		this._safedrawimage(tox, img, ts.gapx + (ts.tilew * (data.tile % ts.tilerow)), ts.gapy + (ts.tileh * Math.floor(data.tile / ts.tilerow)), (data.w == null ? ts.tilew : data.w), (data.h == null ? ts.tileh : data.h), data.dx * (data.fliph ? -1 : 1), data.dy * (data.flipv ? -1 : 1), (data.w ? data.w : ts.tilew), (data.h ? data.h : ts.tileh));
 		tox.restore();
 	},
 
@@ -1150,9 +1177,10 @@ var gbox = {
 		if (tox == null) return;
 		this._implicitsargs(data);
 		tox.save();
-		tox.globalAlpha = (data.alpha?data.alpha: 1);
-		tox.translate((data.fliph?image.width: 0), (data.flipv?image.height: 0)); tox.scale((data.fliph?-1:1), (data.flipv?-1:1));
-		this._safedrawimage(tox, image, 0, 0, image.width, image.height, data.dx*(data.fliph?-1:1), data.dy*(data.flipv?-1:1), image.width, image.height);
+		tox.globalAlpha = (data.alpha ? data.alpha : 1);
+		tox.translate((data.fliph ? image.width : 0), (data.flipv ? image.height : 0));
+		tox.scale((data.fliph ? -1 : 1), (data.flipv ? -1 : 1));
+		this._safedrawimage(tox, image, 0, 0, image.width, image.height, data.dx * (data.fliph ? -1 : 1), data.dy * (data.flipv ? -1 : 1), image.width, image.height);
 		tox.restore();
 	},
 
@@ -1160,9 +1188,10 @@ var gbox = {
 		if (tox == null) return;
 		this._implicitsargs(data);
 		tox.save();
-		tox.globalAlpha = (data.alpha?data.alpha: 1);
-		tox.translate((data.fliph?data.dw: 0), (data.flipv?data.dh: 0)); tox.scale((data.fliph?-1:1), (data.flipv?-1:1));
-		this._safedrawimage(tox, image, (data.x?data.x: 0), (data.y?data.y: 0), (data.w?data.w: data.dw), (data.h?data.h: data.dh), data.dx*(data.fliph?-1:1), data.dy*(data.flipv?-1:1), data.dw, data.dh);
+		tox.globalAlpha = (data.alpha ? data.alpha : 1);
+		tox.translate((data.fliph ? data.dw : 0), (data.flipv ? data.dh : 0));
+		tox.scale((data.fliph ? -1 : 1), (data.flipv ? -1 : 1));
+		this._safedrawimage(tox, image, (data.x ? data.x : 0), (data.y ? data.y : 0), (data.w ? data.w : data.dw), (data.h ? data.h : data.dh), data.dx * (data.fliph ? -1 : 1), data.dy * (data.flipv ? -1 : 1), data.dw, data.dh);
 		tox.restore();
 	},
 
@@ -1179,7 +1208,7 @@ var gbox = {
 		var ts = this._tiles[data.tileset];
 		for (var y = 0; y < data.map.length; y++)
 			for (var x = 0; x < data.map[y].length; x++)
-				if (data.map[y][x] != null) this.blitTile(tox, {tileset: data.tileset, tile: data.map[y][x], dx: x*ts.tilew, dy: y*ts.tilew});
+				if (data.map[y][x] != null) this.blitTile(tox, {tileset: data.tileset, tile: data.map[y][x], dx: x * ts.tilew, dy: y * ts.tilew});
 	},
 
 	/**
@@ -1204,27 +1233,27 @@ var gbox = {
 		this._implicitsargs(data);
 		var dx = data.dx;
 		var dy = data.dy;
-		if (data.valign == gbox.ALIGN_BOTTOM) dy = dy + data.dh-fn.tileh;
-		else if (data.valign == gbox.ALIGN_MIDDLE) dy = dy + Math.floor(data.dh/2)-fn.tileh;
-		if (data.halign == gbox.ALIGN_RIGHT) dx = dx + data.dw-(data.text.length*fn.tilew);
-		else if (data.halign == gbox.ALIGN_CENTER) dx = dx + Math.floor((data.dw-(data.text.length*fn.tilew))/2);
+		if (data.valign == gbox.ALIGN_BOTTOM) dy = dy + data.dh - fn.tileh;
+		else if (data.valign == gbox.ALIGN_MIDDLE) dy = dy + Math.floor(data.dh / 2) - fn.tileh;
+		if (data.halign == gbox.ALIGN_RIGHT) dx = dx + data.dw - (data.text.length * fn.tilew);
+		else if (data.halign == gbox.ALIGN_CENTER) dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2);
 		tox.save();
-		tox.globalAlpha = (data.alpha?data.alpha: 1);
+		tox.globalAlpha = (data.alpha ? data.alpha : 1);
 		for (var y = 0; y < data.text.length; y++) {
-			tile = data.text.charCodeAt(y)-fn.firstascii;
+			tile = data.text.charCodeAt(y) - fn.firstascii;
 			if (tile >= 0) {
-				if (data.clear) tox.clearRect(dx + (y*fn.tilew), dy, (data.w?data.w: fn.tilew), (data.h?data.h: fn.tileh));
+				if (data.clear) tox.clearRect(dx + (y * fn.tilew), dy, (data.w ? data.w : fn.tilew), (data.h ? data.h : fn.tileh));
 				this._safedrawimage(
 					tox,
 					this.getImage(fn.image),
-					fn.gapx + ( fn.tilew * ( tile % fn.tilerow ) ),
-					fn.gapy + ( fn.tileh * Math.floor( tile / fn.tilerow ) ),
+					fn.gapx + (fn.tilew * (tile % fn.tilerow)),
+					fn.gapy + (fn.tileh * Math.floor(tile / fn.tilerow)),
 					fn.tilew,
 					fn.tileh,
-					dx + ( y * fn.tilew ),
+					dx + (y * fn.tilew),
 					dy,
-					( data.w ? data.w : fn.tilew ),
-					( data.h ? data.h : fn.tileh )
+					(data.w ? data.w : fn.tilew),
+					(data.h ? data.h : fn.tileh)
 				);
 			}
 		}
@@ -1244,7 +1273,7 @@ var gbox = {
 		if (image == null) return;
 		if (data == null) data = {x: 0, y: 0};
 		this._implicitsargs(data);
-		image.clearRect(data.x, data.y, (data.w == null?image.canvas.width: data.w), (data.h == null?image.canvas.height: data.h));
+		image.clearRect(data.x, data.y, (data.w == null ? image.canvas.width : data.w), (data.h == null ? image.canvas.height : data.h));
 	},
 
 	/**
@@ -1279,8 +1308,8 @@ var gbox = {
 	blitRect: function (tox, data) {
 		if (tox == null) return;
 		tox.save();
-		tox.globalAlpha = (data.alpha?data.alpha: 1);
-		tox.fillStyle = (data.color?data.color: gbox.COLOR_BLACK);
+		tox.globalAlpha = (data.alpha ? data.alpha : 1);
+		tox.fillStyle = (data.color ? data.color: gbox.COLOR_BLACK);
 		tox.fillRect(data.x, data.y, data.w, data.h);
 		tox.restore();
 	},
@@ -1303,7 +1332,7 @@ var gbox = {
 	*/
 	collides: function (o1, o2, t) {
 		if (!t) t = 0;
-		return !((o1.y + o1.h-1-t < o2.y + t) || (o1.y + t> o2.y + o2.h-1-t) || (o1.x + o1.w-1-t < o2.x + t) || (o1.x + t > o2.x + o2.w-1-t));
+		return !((o1.y + o1.h - 1 - t < o2.y + t) || (o1.y + t > o2.y + o2.h - 1 - t) || (o1.x + o1.w - 1 - t < o2.x + t) || (o1.x + t > o2.x + o2.w - 1 - t));
 	},
 
 	/**
@@ -1322,7 +1351,7 @@ var gbox = {
 	*/
 	pixelcollides: function (o1, o2, t) {
 		if (!t) t = 0;
-		return !((o1.y < o2.y + t) || (o1.y> o2.y + o2.h-1-t) || (o1.x < o2.x + t) || (o1.x > o2.x + o2.w-1-t));
+		return !((o1.y < o2.y + t) || (o1.y > o2.y + o2.h - 1 - t) || (o1.x < o2.x + t) || (o1.x > o2.x + o2.w - 1 - t));
 	},
 
 	/**
@@ -1337,9 +1366,9 @@ var gbox = {
 	objectIsVisible: function (obj) { return this.collides(obj, this._camera, 0); },
 
 	_minimaltimeexpired: function () { gbox._minimalexpired = 2; },
-	_splashscreeniscompleted: function () { return (gbox._splash.background?gbox.imageIsLoaded("_splash"):true) && (gbox._splash.minilogo?gbox.imageIsLoaded("logo"):true) && (gbox._splash.footnotes?gbox.imageIsLoaded("_dbf"):true); },
+	_splashscreeniscompleted: function () { return (gbox._splash.background ? gbox.imageIsLoaded("_splash") : true) && (gbox._splash.minilogo ? gbox.imageIsLoaded("logo") : true) && (gbox._splash.footnotes ? gbox.imageIsLoaded("_dbf") : true); },
 
-	setBasePath :function (a) { this._basepath = a; },
+	setBasePath: function (a) { this._basepath = a; },
 	setSplashSettings: function (a) { for (var n in a) this._splash[n] = a[n]; },
 	setOfflineCache: function (a) { this._flags.offlinecache = a; },
 	setDebugFont: function (a) { this._debugfont = a; },
@@ -1351,7 +1380,7 @@ var gbox = {
 	// ---
 
 	addScript: function (call) {
-		gbox._addtoloader({type: "script",call: call});
+		gbox._addtoloader({type: "script", call: call});
 	},
 
 	// ---
@@ -1361,7 +1390,7 @@ var gbox = {
 	// ---
 
 	addBundle: function (call) {
-		gbox._addtoloader({type: "bundle",call: call});
+		gbox._addtoloader({type: "bundle", call: call});
 	},
 
 	readBundleData: function (pack, call) {
@@ -1377,8 +1406,8 @@ var gbox = {
 		if (pack.addBundle) for (i = 0; i < pack.addBundle.length; i++) gbox.addBundle(pack.addBundle[i]);
 		if (pack.addScript) for (i = 0; i < pack.addScript.length; i++) gbox.addScript(pack.addScript[i]);
 		// Trigger the onLoad events in resource and loader
-		if (pack.onLoad) gbox._addtoloader({type: "exec-onl",func: pack.onLoad, call: call, pack: pack});
-		if (call.onLoad) gbox._addtoloader({type: "exec-onl",func: call.onLoad, call: call, pack: pack});
+		if (pack.onLoad) gbox._addtoloader({type: "exec-onl", func: pack.onLoad, call: call, pack: pack});
+		if (call.onLoad) gbox._addtoloader({type: "exec-onl", func: call.onLoad, call: call, pack: pack});
 	},
 
 	// ---
@@ -1393,17 +1422,17 @@ var gbox = {
 
 	// Callback for loaded image
 	_loaderimageloaded: function () {
-		this.setAttribute('wasloaded',true);
-		this.hheight = Math.floor(this.height/2);
-		this.hwidth = Math.floor(this.width/2);
+		this.setAttribute('wasloaded', true);
+		this.hheight = Math.floor(this.height / 2);
+		this.hwidth = Math.floor(this.width / 2);
 		gbox._loaderloaded();
 	},
 	// Callback for loaded bundle
 	_loaderhmlhttploading: function () {
-		var rs = (typeof this.readyState != "undefined" ?this.readyState: gbox._xmlhttp.readyState);
-		var st = (typeof this.status != "undefined" ?this.status: gbox._xmlhttp.status);
-		var rt = (typeof this.responseText != "undefined" ?this.responseText: gbox._xmlhttp.responseText);
-		if(rs == 4 && (!st ||st == 200)) {
+		var rs = (typeof this.readyState != "undefined" ? this.readyState : gbox._xmlhttp.readyState);
+		var st = (typeof this.status != "undefined" ? this.status : gbox._xmlhttp.status);
+		var rt = (typeof this.responseText != "undefined" ? this.responseText : gbox._xmlhttp.responseText);
+		if (rs == 4 && (!st || st == 200)) {
 			if (rt) {
 				if (!gbox._loaderqueue.getCurrent().call.skipCacheSave)
 					gbox._loadercache.add(gbox._loaderqueue.getCurrent().call.file, rt);
@@ -1425,57 +1454,57 @@ var gbox = {
 		setTimeout(gbox._loadnext, 10);
 	},
 	_loaderscript: function () {
-		if (gbox._loaderqueue.getCurrent().call.onLoad) gbox._addtoloader({type: "exec-onl",func: gbox._loaderqueue.getCurrent().call.onLoad, call: gbox._loaderqueue.getCurrent().call});
+		if (gbox._loaderqueue.getCurrent().call.onLoad) gbox._addtoloader({type: "exec-onl", func: gbox._loaderqueue.getCurrent().call.onLoad, call: gbox._loaderqueue.getCurrent().call});
 		gbox._loadnext();
 	},
 	_loadnext: function () {
 		var current = gbox._loaderqueue.pop();
 		if (gbox._loaderqueue.isProcessing()) {
 			switch (gbox._loaderqueue.getCurrent().type) {
-				case "image":
-					gbox._images[current.id] = new Image();
-					gbox.addEventListener(gbox._images[current.id], 'load', gbox._loaderimageloaded);
-					gbox._images[current.id].src = gbox._breakcacheurl(current.filename);
-					gbox._images[current.id].setAttribute('src_org',current.filename);
-					gbox._images[current.id].setAttribute('id',current.id);
-					gbox._images[current.id].setAttribute('wasloaded',false);
-					break;
-				case "bundle":
-					var done = false;
-					if (!current.call.skipCacheLoad) {
-						var data = gbox._loadercache.read(current.call.file);
-						if (data) {
-							var pack = eval("(" + data + ")");
-							gbox.readBundleData(pack, current.call);
-							// Keep loading the other resources.
-							gbox._loaderloaded();
-							done = true;
-						}
+			case "image":
+				gbox._images[current.id] = new Image();
+				gbox.addEventListener(gbox._images[current.id], 'load', gbox._loaderimageloaded);
+				gbox._images[current.id].src = gbox._breakcacheurl(current.filename);
+				gbox._images[current.id].setAttribute('src_org', current.filename);
+				gbox._images[current.id].setAttribute('id', current.id);
+				gbox._images[current.id].setAttribute('wasloaded', false);
+				break;
+			case "bundle":
+				var done = false;
+				if (!current.call.skipCacheLoad) {
+					var data = gbox._loadercache.read(current.call.file);
+					if (data) {
+						var pack = eval("(" + data + ")");
+						gbox.readBundleData(pack, current.call);
+						// Keep loading the other resources.
+						gbox._loaderloaded();
+						done = true;
 					}
-					if (!done) {
-						gbox._xmlhttp = gbox.createXmlHttpRequest();
-						gbox._xmlhttp.open((current.call.data?"POST":"GET"), gbox._breakcacheurl(current.call.file), true);
-						gbox._xmlhttp.onreadystatechange = gbox._loaderhmlhttploading;
-						if (current.call.data) {
-							gbox._xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-							gbox._xmlhttp.send(current.call.data);
-						} else gbox._xmlhttp.send();
-					}
-					break;
-				case "audio":
-					AkihabaraAudio._createnextaudio(current.data);
-					break;
-				case "exec-onl":
-					current.func(current.call, current.pack);
-					gbox._loaderloaded();
-					break;
-				case "script":
-					var script= document.createElement('script');
-					script.type = "text/javascript";
-					script.onload = gbox._loaderscript;
-					script.src = current.call.file;
-					document.getElementsByTagName('body')[0].appendChild(script);
-					break;
+				}
+				if (!done) {
+					gbox._xmlhttp = gbox.createXmlHttpRequest();
+					gbox._xmlhttp.open((current.call.data ? "POST" : "GET"), gbox._breakcacheurl(current.call.file), true);
+					gbox._xmlhttp.onreadystatechange = gbox._loaderhmlhttploading;
+					if (current.call.data) {
+						gbox._xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						gbox._xmlhttp.send(current.call.data);
+					} else gbox._xmlhttp.send();
+				}
+				break;
+			case "audio":
+				AkihabaraAudio._createnextaudio(current.data);
+				break;
+			case "exec-onl":
+				current.func(current.call, current.pack);
+				gbox._loaderloaded();
+				break;
+			case "script":
+				var script = document.createElement('script');
+				script.type = "text/javascript";
+				script.onload = gbox._loaderscript;
+				script.src = current.call.file;
+				document.getElementsByTagName('body')[0].appendChild(script);
+				break;
 			}
 		}
 	},
@@ -1490,60 +1519,60 @@ var gbox = {
 			}
 			if (gbox._splash.loading) gbox._splash.loading(gbox._screenCtx, gbox._loaderqueue.getDone(), gbox._loaderqueue.getTotal());
 			if (gbox._flags.loadscreen == "c64") {
-					var p = 0, l = 0;
-					while (p != gbox.getScreenH()) {
-						l = 10 + Math.floor(Math.random()*gbox.getScreenH()/4);
-						if (p + l > gbox.getScreenH()) l = gbox.getScreenH()-p;
-						gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random()*gbox.PALETTES.c64.order.length)]];
-						gbox._screenCtx.fillRect(0, p, gbox.getScreenW(), l);
-						p += l;
-					}
-					gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors.lightblue;
-					gbox._screenCtx.fillRect(Math.floor(gbox.getScreenW()/10), Math.floor(gbox.getScreenH()/10), gbox.getScreenW()-Math.floor(gbox.getScreenW()/5), gbox.getScreenH()-Math.floor(gbox.getScreenH()/5));
-					if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
-						var dw = gbox.getScreenW()/4;
-						var dh = (gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
-						gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: (gbox.getScreenW()-dw)/2, dy: (gbox.getScreenH()-dh)/2, dw: dw, dh: dh});
-					}
+				var p = 0, l = 0;
+				while (p != gbox.getScreenH()) {
+					l = 10 + Math.floor(Math.random() * gbox.getScreenH() / 4);
+					if (p + l > gbox.getScreenH()) { l = gbox.getScreenH() - p; }
+					gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random() * gbox.PALETTES.c64.order.length)]];
+					gbox._screenCtx.fillRect(0, p, gbox.getScreenW(), l);
+					p += l;
+				}
+				gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors.lightblue;
+				gbox._screenCtx.fillRect(Math.floor(gbox.getScreenW() / 10), Math.floor(gbox.getScreenH() / 10), gbox.getScreenW() - Math.floor(gbox.getScreenW() / 5), gbox.getScreenH() - Math.floor(gbox.getScreenH() / 5));
+				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
+					var dw = gbox.getScreenW() / 4;
+					var dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
+					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: (gbox.getScreenW() - dw) / 2, dy: (gbox.getScreenH() - dh) / 2, dw: dw, dh: dh});
+				}
 			} else {
-					if (gbox._splash.background && gbox.imageIsLoaded("_splash"))
-						gbox.blit(gbox._screenCtx, gbox.getImage("_splash"), {w: gbox.getImage("_splash").width, h: gbox.getImage("_splash").height, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()});
-					if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
-						var dw = gbox.getScreenW()/4;
-						var dh = (gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
-						gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: gbox.getScreenW()-dw-5, dy: gbox.getScreenH()-dh-5, dw: dw, dh: dh});
+				if (gbox._splash.background && gbox.imageIsLoaded("_splash"))
+					gbox.blit(gbox._screenCtx, gbox.getImage("_splash"), {w: gbox.getImage("_splash").width, h: gbox.getImage("_splash").height, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()});
+				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
+					var dw = gbox.getScreenW() / 4;
+					var dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
+					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: gbox.getScreenW() - dw - 5, dy: gbox.getScreenH() - dh - 5, dw: dw, dh: dh});
+				}
+				if (gbox._splash.footnotes && gbox.imageIsLoaded("_dbf")) {
+					if (!gbox.getCanvas("_footnotes")) {
+						var fd = gbox.getFont("_dbf");
+						gbox.createCanvas("_footnotes", {w: gbox.getScreenW() - 5, h: (gbox._splash.footnotes.length) * (fd.tileh + gbox._splash.footnotesSpacing)});
+						for (var i = 0; i < gbox._splash.footnotes.length; i++)
+							gbox.blitText(gbox.getCanvasContext("_footnotes"), {
+								font: "_dbf",
+								dx: 0,
+								dy: i * (fd.tileh + gbox._splash.footnotesSpacing),
+								text: gbox._splash.footnotes[i]
+							});
 					}
-					if (gbox._splash.footnotes && gbox.imageIsLoaded("_dbf")) {
-						if (!gbox.getCanvas("_footnotes")) {
-							var fd = gbox.getFont("_dbf");
-							gbox.createCanvas("_footnotes",{w: gbox.getScreenW()-5, h: (gbox._splash.footnotes.length)*(fd.tileh + gbox._splash.footnotesSpacing)});
-							for (var i = 0; i < gbox._splash.footnotes.length; i++)
-								gbox.blitText(gbox.getCanvasContext("_footnotes"), {
-												font: "_dbf",
-												dx: 0,
-												dy: i*(fd.tileh + gbox._splash.footnotesSpacing),
-												text: gbox._splash.footnotes[i]
-											});
-						}
-						gbox.blitAll(gbox._screenCtx, gbox.getCanvas("_footnotes"), {dx: 5, dy: gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
-					}
-					if (gbox._loaderqueue.isBusy()) {
-						var bw = Math.floor(((gbox.getScreenW()-4)*gbox._loaderqueue.getDone())/gbox._loaderqueue.getTotal());
-						gbox._screenCtx.globalAlpha = 1;
-						gbox._screenCtx.fillStyle = gbox._splash.gaugeBorderColor;
-						gbox._screenCtx.fillRect(0, Math.floor((gbox.getScreenH()-gbox._splash.gaugeHeight)/2), gbox.getScreenW(), gbox._splash.gaugeHeight);
-						gbox._screenCtx.fillStyle = gbox._splash.gaugeBackColor;
-						gbox._screenCtx.fillRect(1, Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2) + 1), gbox.getScreenW()-4, gbox._splash.gaugeHeight-2);
-						gbox._screenCtx.fillStyle = gbox._splash.gaugeColor;
-						gbox._screenCtx.fillRect(1, Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2) + 1), (bw > 0?bw: 0), gbox._splash.gaugeHeight-2);
-					}
+					gbox.blitAll(gbox._screenCtx, gbox.getCanvas("_footnotes"), {dx: 5, dy: gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
+				}
+				if (gbox._loaderqueue.isBusy()) {
+					var bw = Math.floor(((gbox.getScreenW() - 4)*gbox._loaderqueue.getDone()) / gbox._loaderqueue.getTotal());
+					gbox._screenCtx.globalAlpha = 1;
+					gbox._screenCtx.fillStyle = gbox._splash.gaugeBorderColor;
+					gbox._screenCtx.fillRect(0, Math.floor((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2), gbox.getScreenW(), gbox._splash.gaugeHeight);
+					gbox._screenCtx.fillStyle = gbox._splash.gaugeBackColor;
+					gbox._screenCtx.fillRect(1, Math.floor(((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2) + 1), gbox.getScreenW() - 4, gbox._splash.gaugeHeight - 2);
+					gbox._screenCtx.fillStyle = gbox._splash.gaugeColor;
+					gbox._screenCtx.fillRect(1, Math.floor(((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2) + 1), (bw > 0 ? bw : 0), gbox._splash.gaugeHeight - 2);
+				}
 			}
 			gbox._screenCtx.restore();
-			if(typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
+			if (typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
 			setTimeout(gbox._waitforloaded, 50);
 		} else {
 			gbox.deleteImage("_splash");
-			if(typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar();
+			if (typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar();
 			gbox._cb();
 		}
 	},
@@ -1576,22 +1605,22 @@ var gbox = {
 		var xmlhttp = false;
 		/* running locally on IE5.5, IE6, IE7 */
 		/*@cc_on
-		if(location.protocol == "file: ") {
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
+		if (location.protocol == "file: ") {
+			if (!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
+			if (!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
 		}                                                                                ; @cc_off @*/
 
 		/* IE7, Firefox, Safari, Opera...  */
-		if(!xmlhttp)try{ xmlhttp = new XMLHttpRequest(); }catch(e) { xmlhttp = false; }
+		if (!xmlhttp)try{ xmlhttp = new XMLHttpRequest(); }catch(e) { xmlhttp = false; }
 
 		/* IE6 */
-		if(typeof ActiveXObject != "undefined") {
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
-			if(!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
+		if (typeof ActiveXObject != "undefined") {
+			if (!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
+			if (!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
 		}
 
 		/* IceBrowser */
-		if(!xmlhttp)try{ xmlhttp = createRequest(); }catch(e) { xmlhttp = false; }
+		if (!xmlhttp) try { xmlhttp = createRequest(); } catch (e) { xmlhttp = false; }
 		return xmlhttp;
 	}
 };
