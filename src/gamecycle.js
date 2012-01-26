@@ -1,284 +1,284 @@
 /**
- * Gamecycle contains your basic game loop: intro, menus,
+ * AkihabaraGamecycle contains your basic game loop: intro, menus,
  * crossfading between stages/lifes, gameover and ending.
  * @namespace AkihabaraGamecycle
  */
-var gamecycle = {
+var AkihabaraGamecycle = {
 
 	/**
-	 * Gamecycle constructor - initializes a new game object
+	 * AkihabaraGamecycle constructor - initializes a new game object
 	 *
 	 * @param	id		unique id of object
 	 * @param	group	name of group to store the object in
 	 */
 	createMaingame: function (id, group) {
-	return gbox.addObject({
-		id: id,
-		group: group,
-		counter: 0,
-		difficulty: 0,
+		return gbox.addObject({
+			id: id,
+			group: group,
+			counter: 0,
+			difficulty: 0,
 
-		// state transition
-		state: 50,
-		stateFirstIteration: true,
+			// state transition
+			state: 50,
+			stateFirstIteration: true,
 
-		hud: {},
+			hud: {},
 
-		/**
-		 * This method is called whenever you load a new map. It's meant to be
-		 * overridden when you create your game.
-		 */
-		changeLevel: function () { },
+			/**
+			 * This method is called whenever you load a new map. It's meant to be
+			 * overridden when you create your game.
+			 */
+			changeLevel: function () { },
 
-		/**
-		 * This method is called every time a player is "reborn". This method is
-		 * meant to be overridden since you have to do garbage collection.
-		 */
-		newLife: function () { },
+			/**
+			 * This method is called every time a player is "reborn". This method is
+			 * meant to be overridden since you have to do garbage collection.
+			 */
+			newLife: function () { },
 
-		// game disclaimer animation (if needed)
-		gameDisclaimerAnimation: function (reset) {
-			return true;
-		 },
+			// game disclaimer animation (if needed)
+			gameDisclaimerAnimation: function (reset) {
+				return true;
+			 },
 
-		// game intro animation
-		gameIntroAnimation: function (reset) {
-			if (reset) {
-				AkihabaraAudio.stopChannel("bgmusic");
-				toys.resetToy(this, "default-blinker");
-			} else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-				return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "LETS BEGIN!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 6});
-			}
-		 },
-
-		// level intro animation
-		levelIntroAnimation: function (reset) {
-			if (reset) {
-				AkihabaraAudio.stopChannel("bgmusic");
-				toys.resetToy(this, "default-blinker");
-			} else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-				return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "GET READY!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 6});
-			}
-		 },
-
-		 // Life intro animation
-		 newlifeIntroAnimation: function (reset) {
-			 if (reset) {
-				AkihabaraAudio.stopChannel("bgmusic");
-				toys.resetToy(this, "default-blinker");
-			} else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-				return toys.text.fixed(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "GET READY!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), time: 30});
-			}
-		},
-
-		// gameover animation
-		gameoverIntroAnimation: function (reset) {
-			 if (reset) {
-				AkihabaraAudio.stopChannel("bgmusic");
-				toys.resetToy(this, "default-blinker");
-			} else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-				return toys.text.fixed(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "GAME OVER",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), time: 50});
-			}
-		},
-
-		// game title animation
-		gameTitleIntroAnimation: function (reset) {
-			if (reset)
-				AkihabaraAudio.stopChannel("bgmusic");
-			else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-				gbox.blitText(gbox.getBufferContext(), {font: "small",text: "GAME TITLE",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()-100});
-			}
-		},
-
-		// End level animation
-		endlevelIntroAnimation: function (reset) {
-			 if (reset) {
-				 toys.resetToy(this, "default-blinker");
-			} else {
-				return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "WELL DONE!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 10});
-			}
-		},
-
-		// Game ending
-		gameEndingIntroAnimation: function (reset) {
-			if (reset) {
-				toys.resetToy(this, "default-blinker");
-			} else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-				return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "CONGRATULATIONS!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 10});
-			}
-		},
-
-		// PRESS START
-		pressStartIntroAnimation: function (reset) {
-			if (reset) {
-				toys.resetToy(this, "default-blinker");
-			} else {
-				toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "PRESS A TO START",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: Math.floor(gbox.getScreenH()/3), dw: gbox.getScreenW(), dh: Math.floor(gbox.getScreenH()/3)*2, blinkspeed: 10});
-				return AkihabaraInput.keyIsHit("a");
-			}
-		},
-
-		/**
-		 * This method is called when the player dies.
-		 */
-		gameIsOver: function () { return true; },
-
-		/**
-		 * Actions done during the game (i.e. stage is clear or other ending conditions)
-		 */
-		gameEvents: function () { },
-
-		gameMenu: function (reset) {
-			if (reset) {
-				toys.resetToy(this, "difficulty");
-			} else {
-				gbox.blitFade(gbox.getBufferContext(), {alpha: 0.5});
-				if (toys.ui.menu(this, "difficulty",{audiooption: "default-menu-option",audioconfirm: "default-menu-confirm",font: "small",keys: {up: "up",down: "down",ok: "a",cancel: "b"}, selector: " > ",items: ["EASY","NORMAL","HARD"], x: 10, y: 10})) {
-					if (toys.getToyValue(this, "difficulty","ok") == -1) return -1;
-					else {
-						this.difficulty = toys.getToyValue(this, "difficulty","selected");
-						return true;
-					}
+			// game intro animation
+			gameIntroAnimation: function (reset) {
+				if (reset) {
+					AkihabaraAudio.stopChannel("bgmusic");
+					toys.resetToy(this, "default-blinker");
+				} else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
+					return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "LETS BEGIN!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 6});
 				}
-				return false;
-			}
-		},
+			 },
 
-		// CHECK
+			// level intro animation
+			levelIntroAnimation: function (reset) {
+				if (reset) {
+					AkihabaraAudio.stopChannel("bgmusic");
+					toys.resetToy(this, "default-blinker");
+				} else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
+					return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "GET READY!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 6});
+				}
+			 },
 
-		gameIsHold: function () { // Use this clause to check collision and kill player: if true the level is changing
-			return (this.state == 400) || (this.state == 401);
-		},
+			 // Life intro animation
+			 newlifeIntroAnimation: function (reset) {
+				 if (reset) {
+					AkihabaraAudio.stopChannel("bgmusic");
+					toys.resetToy(this, "default-blinker");
+				} else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
+					return toys.text.fixed(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "GET READY!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), time: 30});
+				}
+			},
 
-		isCompleted: function () {
-			return (this.state == 800);
-		},
+			// gameover animation
+			gameoverIntroAnimation: function (reset) {
+				 if (reset) {
+					AkihabaraAudio.stopChannel("bgmusic");
+					toys.resetToy(this, "default-blinker");
+				} else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
+					return toys.text.fixed(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "GAME OVER",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), time: 50});
+				}
+			},
 
-		// GAME CYCLE
+			// game title animation
+			gameTitleIntroAnimation: function (reset) {
+				if (reset)
+					AkihabaraAudio.stopChannel("bgmusic");
+				else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
+					gbox.blitText(gbox.getBufferContext(), {font: "small",text: "GAME TITLE",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()-100});
+				}
+			},
 
-		getNextLevel: function () {
-			return this._nextlevel;
-		},
+			// End level animation
+			endlevelIntroAnimation: function (reset) {
+				 if (reset) {
+					 toys.resetToy(this, "default-blinker");
+				} else {
+					return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "WELL DONE!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 10});
+				}
+			},
 
-		gotoLevel: function (level) {
-			this._nextlevel = level;
-			this.setState(400);
-		},
+			// Game ending
+			gameEndingIntroAnimation: function (reset) {
+				if (reset) {
+					toys.resetToy(this, "default-blinker");
+				} else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
+					return toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "CONGRATULATIONS!",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH(), blinkspeed: 5, times: 10});
+				}
+			},
 
-		playerDied: function (data) {
-			this._loselife = data;
-			this.setState(500);
-		},
+			// PRESS START
+			pressStartIntroAnimation: function (reset) {
+				if (reset) {
+					toys.resetToy(this, "default-blinker");
+				} else {
+					toys.text.blink(this, "default-blinker",gbox.getBufferContext(), {font: "small",text: "PRESS A TO START",valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: Math.floor(gbox.getScreenH()/3), dw: gbox.getScreenW(), dh: Math.floor(gbox.getScreenH()/3)*2, blinkspeed: 10});
+					return AkihabaraInput.keyIsHit("a");
+				}
+			},
 
-		gameIsCompleted: function () {
-			this.setState(800);
-		},
+			/**
+			 * This method is called when the player dies.
+			 */
+			gameIsOver: function () { return true; },
 
-		// private methods
+			/**
+			 * Actions done during the game (i.e. stage is clear or other ending conditions)
+			 */
+			gameEvents: function () { },
 
-		/**
-		 * Changes the current game state
-		 *
-		 * @param	st	state number
-		 */
-		setState: function (st) {
-			this.state = st;
-			this.stateFirstIteration = true;
-		},
-
-		/*
-		 * Removes all objects in each group except the game
-		 * cycle group. Used for garbage collection when resetting the game.
-		 */
-		_resetGroups: function () {
-			var g = gbox.getGroups();
-			for (var i = 0; i < g.length; i++)
-				if (g[i] != this.group) gbox.clearGroup(g[i]);
-			gbox.soloGroup(this.group);
-		},
-
-		stateIsReady: function () { this.stateFirstIteration = false; },
-
-		blit: function () {
-			switch (this.state) {
-
-				// Disclaimer
-				case 50:
-					if (this.stateFirstIteration) {
-						this._resetGroups();
-						this.gameDisclaimerAnimation(true);
-						this.stateIsReady();
+			gameMenu: function (reset) {
+				if (reset) {
+					toys.resetToy(this, "difficulty");
+				} else {
+					gbox.blitFade(gbox.getBufferContext(), {alpha: 0.5});
+					if (toys.ui.menu(this, "difficulty",{audiooption: "default-menu-option",audioconfirm: "default-menu-confirm",font: "small",keys: {up: "up",down: "down",ok: "a",cancel: "b"}, selector: " > ",items: ["EASY","NORMAL","HARD"], x: 10, y: 10})) {
+						if (toys.getToyValue(this, "difficulty","ok") == -1) return -1;
+						else {
+							this.difficulty = toys.getToyValue(this, "difficulty","selected");
+							return true;
+						}
 					}
-					if (this.gameDisclaimerAnimation(false))
-						this.setState(100);
-					break;
-				// main menu
-				case 100:
-				case 101:
-				case 102: // Press Start / Menu
-					if (this.stateFirstIteration && (this.state == 100)) {
-						this._resetGroups();
-						this.gameTitleIntroAnimation(true);
-					}
-					this.gameTitleIntroAnimation(false);
-					switch (this.state) {
-						case 100: // Press to start
-							if (this.stateFirstIteration) {
-								AkihabaraAudio.resetChannel("bgmusic");
-								this.pressStartIntroAnimation(true);
-								this.stateIsReady();
-							}
-							if (this.pressStartIntroAnimation(false)) this.setState(101);
-							break;
-						case 101: // Game menu
-							if (this.stateFirstIteration) {
-								AkihabaraAudio.setChannelVolume("bgmusic",0.5);
-								this.gameMenu(true);
-								this.stateIsReady();
-							}
+					return false;
+				}
+			},
 
-							var menu = this.gameMenu(false);
-							if (menu)
-								if (menu == -1) this.setState(100); else this.setState(102);
-							break;
-						case 102: // Fader
-							if (this.stateFirstIteration) {
-								this._resetGroups();
-								toys.resetToy(this, "fadeout");
-								this.stateIsReady();
-							}
-							if (toys.fullscreen.fadeout(this, "fadeout",gbox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"}))
-								this.setState(200);
-							break;
-					}
-					break;
-				case 200:// Game intro animation
+			// CHECK
 
-				case 300:// Start game
-				case 301:// Game is going
+			gameIsHold: function () { // Use this clause to check collision and kill player: if true the level is changing
+				return (this.state == 400) || (this.state == 401);
+			},
 
-				case 400:// Fade out to change level
-				case 401:// Level animation (levelIntroAnimation)
-				case 402:// Fade in to next level
+			isCompleted: function () {
+				return (this.state == 800);
+			},
 
-				case 500:// Wait after dead
-				case 501:// Dead fadeout
+			// GAME CYCLE
 
-				case 600:// Next life intro
-				case 601:// New life fadein
+			getNextLevel: function () {
+				return this._nextlevel;
+			},
 
-				case 700:// Gameover animation
+			gotoLevel: function (level) {
+				this._nextlevel = level;
+				this.setState(400);
+			},
 
-				case 800:// Fade out game ending
-				case 801:// Game ending
+			playerDied: function (data) {
+				this._loselife = data;
+				this.setState(500);
+			},
 
-				    // Game playing
+			gameIsCompleted: function () {
+				this.setState(800);
+			},
+
+			// private methods
+
+			/**
+			 * Changes the current game state
+			 *
+			 * @param	st	state number
+			 */
+			setState: function (st) {
+				this.state = st;
+				this.stateFirstIteration = true;
+			},
+
+			/*
+			 * Removes all objects in each group except the game
+			 * cycle group. Used for garbage collection when resetting the game.
+			 */
+			_resetGroups: function () {
+				var g = gbox.getGroups();
+				for (var i = 0; i < g.length; i++)
+					if (g[i] != this.group) gbox.clearGroup(g[i]);
+				gbox.soloGroup(this.group);
+			},
+
+			stateIsReady: function () { this.stateFirstIteration = false; },
+
+			blit: function () {
+				switch (this.state) {
+
+					// Disclaimer
+					case 50:
+						if (this.stateFirstIteration) {
+							this._resetGroups();
+							this.gameDisclaimerAnimation(true);
+							this.stateIsReady();
+						}
+						if (this.gameDisclaimerAnimation(false))
+							this.setState(100);
+						break;
+					// main menu
+					case 100:
+					case 101:
+					case 102: // Press Start / Menu
+						if (this.stateFirstIteration && (this.state == 100)) {
+							this._resetGroups();
+							this.gameTitleIntroAnimation(true);
+						}
+						this.gameTitleIntroAnimation(false);
+						switch (this.state) {
+							case 100: // Press to start
+								if (this.stateFirstIteration) {
+									AkihabaraAudio.resetChannel("bgmusic");
+									this.pressStartIntroAnimation(true);
+									this.stateIsReady();
+								}
+								if (this.pressStartIntroAnimation(false)) this.setState(101);
+								break;
+							case 101: // Game menu
+								if (this.stateFirstIteration) {
+									AkihabaraAudio.setChannelVolume("bgmusic",0.5);
+									this.gameMenu(true);
+									this.stateIsReady();
+								}
+
+								var menu = this.gameMenu(false);
+								if (menu)
+									if (menu == -1) this.setState(100); else this.setState(102);
+								break;
+							case 102: // Fader
+								if (this.stateFirstIteration) {
+									this._resetGroups();
+									toys.resetToy(this, "fadeout");
+									this.stateIsReady();
+								}
+								if (toys.fullscreen.fadeout(this, "fadeout",gbox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"}))
+									this.setState(200);
+								break;
+						}
+						break;
+					case 200:// Game intro animation
+
+					case 300:// Start game
+					case 301:// Game is going
+
+					case 400:// Fade out to change level
+					case 401:// Level animation (levelIntroAnimation)
+					case 402:// Fade in to next level
+
+					case 500:// Wait after dead
+					case 501:// Dead fadeout
+
+					case 600:// Next life intro
+					case 601:// New life fadein
+
+					case 700:// Gameover animation
+
+					case 800:// Fade out game ending
+					case 801:// Game ending
+
+					// Game playing
 					if (this.stateFirstIteration) {
 						switch (this.state) {
 							case 200: // Game intro
@@ -386,6 +386,7 @@ var gamecycle = {
 							}
 							break;
 					}
+
 					this.hud.blit();
 					break;
 				}

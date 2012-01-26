@@ -7,7 +7,7 @@
 var AkihabaraInterface = {
 	Audio: AkihabaraAudio,
 	Input: AkihabaraInput,
-	Gamecycle: gamecycle,
+	Gamecycle: AkihabaraGamecycle,
 	plugins: {
 		"Topview": topview,
 		"Platformer": platformer,
