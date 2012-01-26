@@ -4,7 +4,7 @@
  * number of filters to each frame.
  * @namespace AkihabaraTools
  */
-var tool = {
+var AkihabaraTools = {
 
 	_images: [],
 	_loadedflag: [],
@@ -18,20 +18,22 @@ var tool = {
 	*/
 	_loaded: function (id) {
 		this._loadedflag[id] = true;
-		tool._countloaded++;
-		document.title = tool._countloaded + "/" + tool._count;
-		for (var i = 0; i < this._images.length; i++)
-			if (!this._loadedflag[i]) document.title += this._images[i].src + ", ";
+		AkihabaraTools._countloaded++;
+		document.title = AkihabaraTools._countloaded + "/" + AkihabaraTools._count;
+		for (var i = 0; i < this._images.length; i++) {
+			if (!this._loadedflag[i]) { document.title += this._images[i].src + ", "; }
+		}
 	},
 
 	/**
 	* This checks that everything being kept track of with _count is loaded and depending on the result calls
 	*/
 	_loadall: function () {
-		if (tool._count != tool._countloaded)
-			setTimeout(tool._loadall, 1000);
-		else
-			tool._allloaded();
+		if (AkihabaraTools._count !== AkihabaraTools._countloaded) {
+			setTimeout(AkihabaraTools._loadall, 1000);
+		} else {
+			AkihabaraTools._allloaded();
+		}
 	},
 
 	/**
@@ -40,13 +42,13 @@ var tool = {
 	*/
 	makecels: function (data) {
 		this._data = data;
-		loaded = function () { tool._loaded(this.id); };
+		var loaded = function () { AkihabaraTools._loaded(this.id); };
 		var id = 0;
 		for (var r = 0; r < data.rows.length; r++) {
 			for (var i = 0; i < data.rows[r].length; i++) {
 				this._images[id] = new Image();
 				gbox.addEventListener(this._images[id], 'load', loaded);
-				this._images[id].setAttribute("id",id);
+				this._images[id].setAttribute("id", id);
 				this._images[id].src = data.rows[r][i].img;
 				this._count++;
 				id++;
@@ -68,16 +70,16 @@ var tool = {
 		var r, i;
 
 		for (r = 0; r < data.rows.length; r++) {
-			hei += this._images[id].height*1;
+			hei += this._images[id].height * 1;
 			curwid = 0;
-			for (i = 0; i < data.rows[r].length; i++) { curwid += this._images[id].width*1; id++; }
-			if (wid < curwid) wid = curwid;
+			for (i = 0; i < data.rows[r].length; i++) { curwid += this._images[id].width * 1; id++; }
+			if (wid < curwid) { wid = curwid; }
 		}
 
 		var cels = document.createElement("canvas");
 		cels.style.border = "1px solid red";
-		cels.setAttribute('height',hei);
-		cels.setAttribute('width',wid);
+		cels.setAttribute('height', hei);
+		cels.setAttribute('width', wid);
 		document.body.appendChild(cels);
 		var ctx = cels.getContext("2d");
 
@@ -97,21 +99,21 @@ var tool = {
 						for (var z = 0, n = pix.length; z < n; z += 4) {
 							if (data.rows[r][i].filter.replace) {
 								for (var w = 0; w < data.rows[r][i].filter.replace.length; w++) {
-									repl = data.rows[r][i].filter.replace[w].from;
-									to = data.rows[r][i].filter.replace[w].to;
-									if ((pix[z] == repl.r) && (pix[z + 1] == repl.g) && (pix[z + 2] == repl.b) && (pix[z + 3] == repl.a)) {
-										pix[z  ] = to.r;
+									var repl = data.rows[r][i].filter.replace[w].from;
+									var to = data.rows[r][i].filter.replace[w].to;
+									if ((pix[z] === repl.r) && (pix[z + 1] === repl.g) && (pix[z + 2] === repl.b) && (pix[z + 3] === repl.a)) {
+										pix[z] = to.r;
 										pix[z + 1] = to.g;
-										pix[z + 2] =to.b;
-										pix[z + 3] =to.a;
+										pix[z + 2] = to.b;
+										pix[z + 3] = to.a;
 									}
 								}
 							}
-							if (data.rows[r][i].filter.color && (pix[z + 3] != 0)) {
-								pix[z  ] = data.rows[r][i].filter.color.r;
+							if (data.rows[r][i].filter.color && (pix[z + 3] !== 0)) {
+								pix[z] = data.rows[r][i].filter.color.r;
 								pix[z + 1] = data.rows[r][i].filter.color.g;
-								pix[z + 2] =data.rows[r][i].filter.color.b;
-								pix[z + 3] =data.rows[r][i].filter.color.a;
+								pix[z + 2] = data.rows[r][i].filter.color.b;
+								pix[z + 3] = data.rows[r][i].filter.color.a;
 							}
 
 							// i + 3 is alpha (the fourth element)
@@ -119,10 +121,10 @@ var tool = {
 						ctx.putImageData(imgd, curx, cury);
 					}
 				}
-				curx += this._images[id].width*1;
+				curx += this._images[id].width * 1;
 				id++;
 			}
-			cury += this._images[id-1].height*1;
+			cury += this._images[id - 1].height * 1;
 		}
 	}
 };

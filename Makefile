@@ -27,7 +27,7 @@ FILES = $(SRCDIR)/akihabara.js \
 	$(SRCDIR)/iphopad.js \
 	$(SRCDIR)/platformer.js \
 	$(SRCDIR)/shmup.js \
-	$(SRCDIR)/tool.js \
+	$(SRCDIR)/tools.js \
 	$(SRCDIR)/topview.js \
 	$(SRCDIR)/toys.js \
 	$(SRCDIR)/trigo.js
