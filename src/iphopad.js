@@ -33,17 +33,17 @@ var AkihabaraIphopad = {
 		var nc = {up: false, down: false, left: false, right: false};
 		var nb = {a: false, b: false, c: false};
 		for (i = 0; i < e.touches.length; i++) {
-			var rp = {x: e.touches[i].pageX - iphopad._gapx, y: e.touches[i].pageY - iphopad._gapy};
-			if (rp.x < iphopad._height) {
-				nc = iphopad._positions[Math.floor(AkihabaraTrigo.getAngle(iphopad._center, rp, iphopad._transl) / iphopad._brad)];
+			var rp = {x: e.touches[i].pageX - AkihabaraIphopad._gapx, y: e.touches[i].pageY - AkihabaraIphopad._gapy};
+			if (rp.x < AkihabaraIphopad._height) {
+				nc = AkihabaraIphopad._positions[Math.floor(AkihabaraTrigo.getAngle(AkihabaraIphopad._center, rp, AkihabaraIphopad._transl) / AkihabaraIphopad._brad)];
 			} else {
-				if (rp.x > iphopad._width - iphopad._buttonsize) {
+				if (rp.x > AkihabaraIphopad._width - AkihabaraIphopad._buttonsize) {
 					nb.a = true;
 				} else {
-					if (rp.x > iphopad._width - iphopad._buttonsize2) {
+					if (rp.x > AkihabaraIphopad._width - AkihabaraIphopad._buttonsize2) {
 						nb.b = true;
 					} else {
-						if (rp.x > iphopad._width - iphopad._buttonsize3) { nb.c = true; }
+						if (rp.x > AkihabaraIphopad._width - AkihabaraIphopad._buttonsize3) { nb.c = true; }
 					}
 				}
 			}
@@ -52,7 +52,7 @@ var AkihabaraIphopad = {
 		this._swap = !this._swap;
 		for (i in this._cross) {
 			// Using true or 1? Using triple equals for now. Need to check.
-			if (nc[i] !== iphopad._cross[i]) {
+			if (nc[i] !== AkihabaraIphopad._cross[i]) {
 				if (nc[i]) {
 					AkihabaraInput._keydown({fake: true, keyCode: AkihabaraInput._keymap[i]});
 				} else {
@@ -62,7 +62,7 @@ var AkihabaraIphopad = {
 		}
 		for (i in this._buttons) {
 			// Using true or 1? Using triple equals for now. Need to check.
-			if (nb[i] !== iphopad._buttons[i]) {
+			if (nb[i] !== AkihabaraIphopad._buttons[i]) {
 				if (nb[i]) {
 					AkihabaraInput._keydown({fake: true, keyCode: AkihabaraInput._keymap[i]});
 				} else {
@@ -71,12 +71,12 @@ var AkihabaraIphopad = {
 			}
 		}
 
-		iphopad._cross = nc;
-		iphopad._buttons = nb;
+		AkihabaraIphopad._cross = nc;
+		AkihabaraIphopad._buttons = nb;
 	},
 
 	_fakelisten: function (e) {
-		iphopad._listen({
+		AkihabaraIphopad._listen({
 			touches: [
 				{
 					pageX: e.clientX,
@@ -113,7 +113,7 @@ var AkihabaraIphopad = {
 		bpad.style.padding = "0px";
 		bpad.style.margin = "0px";
 		bpad.style.height = data.h + "px";
-		bpad.style.width = iphopad._buttonsize3 + "px";
+		bpad.style.width = AkihabaraIphopad._buttonsize3 + "px";
 		bpad.style.backgroundImage = "url(" + data.buttons + ")";
 		bpad.style.backgroundRepeat = "no-repeat";
 
@@ -121,9 +121,9 @@ var AkihabaraIphopad = {
 		oElement.appendChild(bpad);
 		gbox._box.appendChild(oElement);
 
-		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
-		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
-		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); iphopad._listen(evt); };
+		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphopad._listen(evt); };
+		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphopad._listen(evt); };
+		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphopad._listen(evt); };
 		var sizes = gbox._domgetabsposition(oElement);
 		this._gapx = sizes.x;
 		this._gapy = sizes.y;

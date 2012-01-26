@@ -2,7 +2,7 @@
  * Fretboard module provides a touchpad for touch-based device (for now, Android and iDevices).
  * @namespace AkihabaraFretboard
  */
-var AkihabaraAkihabaraIphofretboard = {
+var AkihabaraIphofretboard = {
 	_swap: false,
 	_frets: ["a", "b", "c", "left", "right"],
 	_move: ["up", "down"],
