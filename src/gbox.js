@@ -65,12 +65,17 @@ var dynalist = {
 			setPrio: function (obd, prio) {
 				var i;
 				if (this.data[obd].__prio === prio) { return; }
-				if (this.first !== this.last)
+				if (this.first !== this.last) {
 					if (this.data[obd].__prio < prio) {
 						if (this.data[obd].__id != this.last) {
 							i = this.data[obd].__next;
-							while (i != null)
-								if (this.data[i].__prio >= prio) break; else i = this.data[i].__next;
+							while (i != null) {
+								if (this.data[i].__prio >= prio) {
+									break;
+								} else {
+									i = this.data[i].__next;
+								}
+							}
 							if ((i == null) || (this.data[i].__first != this.data[obd].__id)) {
 								// disconnect
 								this.disconnect(obd);
@@ -84,15 +89,24 @@ var dynalist = {
 									this.data[obd].__first = this.data[i].__first;
 									this.data[obd].__next = i;
 									this.data[i].__first = this.data[obd].__id;
-									if (this.data[obd].__first != null) this.data[this.data[obd].__first].__next = this.data[obd].__id; else this.first = this.data[obd].__id;
+									if (this.data[obd].__first != null) {
+										this.data[this.data[obd].__first].__next = this.data[obd].__id;
+									} else {
+										this.first = this.data[obd].__id;
+									}
 								}
 							}
 						}
 					} else {
 						if (this.data[obd].__id != this.first) {
 							i = this.data[obd].__first;
-							while (i != null)
-								if (this.data[i].__prio <= prio) break; else i = this.data[i].__first;
+							while (i != null) {
+								if (this.data[i].__prio <= prio) {
+									break;
+								} else {
+									i = this.data[i].__first;
+								}
+							}
 							if ((i == null) || (this.data[i].__next != this.data[obd].__id)) {
 								// disconnect
 								this.disconnect(obd);
@@ -105,11 +119,16 @@ var dynalist = {
 									this.data[obd].__first = i;
 									this.data[obd].__next = this.data[i].__next;
 									this.data[i].__next = this.data[obd].__id;
-									if (this.data[obd].__next != null) this.data[this.data[obd].__next].__first = this.data[obd].__id; else this.last = this.data[obd].__id;
+									if (this.data[obd].__next != null) {
+										this.data[this.data[obd].__next].__first = this.data[obd].__id;
+									} else {
+										this.last = this.data[obd].__id;
+									}
 								}
 							}
 						}
 					}
+				}
 				this.data[obd].__prio = prio;
 			},
 			remove: function (obd) {
@@ -180,12 +199,13 @@ var cachelist = {
 			_size: (size ? size : 10),
 			add: function (k, v) {
 				if (!this._cache[k]) {
-					if (this._queue[this._head])
+					if (this._queue[this._head]) {
 						delete this._cache[this._queue[this._head]];
+					}
 					this._queue[this._head] = k;
 					this._cache[k] = {pos: this._head, value: v};
 					this._head = (this._head + 1) % this._size;
-				} else this._cache[k].value = v;
+				} else { this._cache[k].value = v; }
 			},
 			read: function (k) {
 				return (this._cache[k] ? this._cache[k].value : null);
@@ -300,12 +320,12 @@ var gbox = {
 	canLog: function () { return this._canlog; },
 	log: function () {}, // Overridden if console is really available
 	_safedrawimage: function (tox, img, sx, sy, sw, sh, dx, dy, dw, dh) {
-		if (!img || !tox) return;
+		if (!img || !tox) { return; }
 		if (sx < 0) { dx -= (dw / sw) * sx; sw += sx; sx = 0; }
 		if (sy < 0) { dy -= (dh / sh) * sy; sh += sy; sy = 0; }
 		if (sx + sw > img.width) { dw = (dw / sw) * (img.width - sx); sw = img.width - sx; }
 		if (sy + sh > img.height) { dh = (dh / sh) * (img.height - sy); sh = img.height - sy; }
-		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } catch (e) { }
+		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) { tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } } catch (e) { }
 	},
 	pauseGame: function () {
 		if (!gbox._pauseGame) {
@@ -374,7 +394,7 @@ var gbox = {
 
 		this._screen = document.createElement("canvas");
 		this._screenCtx = this._screen.getContext('2d');
-		if (this._border) this._screen.style.border = "1px solid black";
+		if (this._border) { this._screen.style.border = "1px solid black"; }
 		this._screen.setAttribute('height', h);
 		this._screen.setAttribute('width', w);
 		this._screen.style.width = (w * this._zoom) + "px";
@@ -410,8 +430,9 @@ var gbox = {
 			gbox.getCanvasContext("-gbox-fse").save();
 			gbox.getCanvasContext("-gbox-fse").globalAlpha = 0.2;
 			gbox.getCanvasContext("-gbox-fse").fillStyle = gbox.COLOR_BLACK;
-			for (var j = 0; j < h; j += 2)
+			for (var j = 0; j < h; j += 2) {
 				gbox.getCanvasContext("-gbox-fse").fillRect(0, j, w, 1);
+			}
 			gbox.getCanvasContext("-gbox-fse").restore();
 			gbox._localflags.fse = true;
 			break;
@@ -487,19 +508,26 @@ var gbox = {
 			gbox._objects[g][obj].initialize(obj);
 			delete gbox._objects[g][obj].initialize;
 		}
-		if (gbox._objects[g][obj][a]) gbox._objects[g][obj][a](obj, a);
+		if (gbox._objects[g][obj][a]) { gbox._objects[g][obj][a](obj, a); }
 	},
 
 	_nextframe: function () {
 		gbox._framestart = gbox._mspf - (new Date().getTime() - gbox._framestart);
-		if (gbox._autoskip)
-			if ((gbox._framestart < gbox._autoskip.lowidle) && (gbox._frameskip < gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip + 1); else
-			if ((gbox._framestart > gbox._autoskip.hiidle) && (gbox._frameskip > gbox._autoskip.min)) gbox.setFrameskip(gbox._frameskip - 1);
+		if (gbox._autoskip) {
+			if ((gbox._framestart < gbox._autoskip.lowidle) && (gbox._frameskip < gbox._autoskip.max)) {
+				gbox.setFrameskip(gbox._frameskip + 1);
+			} else {
+				if ((gbox._framestart > gbox._autoskip.hiidle) && (gbox._frameskip > gbox._autoskip.min)) {
+					gbox.setFrameskip(gbox._frameskip - 1);
+				}
+			}
+		}
 
-		if (!gbox._pauseGame)
+		if (!gbox._pauseGame) {
 			this._gametimer = setTimeout(gbox.go, (gbox._framestart <= 0 ? 1 : gbox._framestart));
-		else
+		} else {
 			gbox.showPauseMessage();
+		}
 
 		if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.run(gbox._debugTool); }
 	},
@@ -513,15 +541,17 @@ var gbox = {
 			gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"), 0, 0);
 			break;
 		case "lcd":
-			if (gbox._localflags.fselcdget && gbox.getBuffer())
+			if (gbox._localflags.fselcdget && gbox.getBuffer()) {
 				gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(), 0, 0);
+			}
 			var gboxBufferContext = gbox.getBufferContext();
 			gboxBufferContext.save();
 			gboxBufferContext.globalAlpha = 0.5;
 			gboxBufferContext.drawImage(gbox.getCanvas("-gbox-fse-old"), 0, 0);
 			gboxBufferContext.restore();
-			if (gbox._localflags.fselcdget)
+			if (gbox._localflags.fselcdget) {
 				gbox.swapCanvas("-gbox-fse-new", "-gbox-fse-old");
+			}
 			gbox._localflags.fselcdget = !gbox._localflags.fselcdget;
 			break;
 		}
@@ -555,57 +585,72 @@ var gbox = {
 				gbox._screenCtx.restore();
 				AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
 			}
-			if (gbox._gamewaiting) gbox._gamewaiting--;
+			if (gbox._gamewaiting) { gbox._gamewaiting--; }
 			setTimeout(gbox.go, 1000);
 		} else {
 			gbox._gamewaiting = 3;
 			gbox._framestart = new Date().getTime();
 			var i, gr = "";
-			for (var g = 0; g < gbox._renderorder.length; g++)
-				if (gbox._groupplay[gbox._renderorder[g]])
+			for (var g = 0; g < gbox._renderorder.length; g++) {
+				if (gbox._groupplay[gbox._renderorder[g]]) {
 					if (gbox._renderorder[g] == gbox.ZINDEX_LAYER) {
 						var id;
 						for (i = 0; i < gbox._actionqueue.length; i++) {
 							id = gbox._zindex.first;
 							while (id != null) {
-								if (gbox._groupplay[gbox._zindex.data[id].g])
+								if (gbox._groupplay[gbox._zindex.data[id].g]) {
 									gbox._playobject(gbox._zindex.data[id].g, gbox._zindex.data[id].o, gbox._actionqueue[i]);
+								}
 								id = gbox._zindex.data[id].__next;
 							}
 						}
-					} else
-						for (i = 0; i < gbox._actionqueue.length; i++)
-							for (var obj in gbox._objects[gbox._renderorder[g]])
+					} else {
+						for (i = 0; i < gbox._actionqueue.length; i++) {
+							for (var obj in gbox._objects[gbox._renderorder[g]]) {
 								gbox._playobject(gbox._renderorder[g], obj, gbox._actionqueue[i]);
+							}
+						}
+					}
+				}
+			}
 			if (gbox._fskid >= gbox._frameskip) {
-				if (gbox._localflags.fse) gbox._applyfse();
-				if (gbox._db) gbox.blitImageToScreen(gbox.getBuffer());
+				if (gbox._localflags.fse) { gbox._applyfse(); }
+				if (gbox._db) { gbox.blitImageToScreen(gbox.getBuffer()); }
 				gbox._fskid = 0;
-			} else gbox._fskid++;
+			} else { gbox._fskid++; }
 
 			gbox.purgeGarbage();
 
 			if (gbox._zindexch.length) {
 
 				for (i = 0; i < gbox._zindexch.length; i++) {
-					if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o])
-						if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt == null)
+					if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o]) {
+						if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt == null) {
 							gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt = gbox._zindex.addObject(gbox._zindexch[i].o, gbox._zindexch[i].z);
-						else
+						} else {
 							gbox._zindex.setPrio(gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt, gbox._zindexch[i].z);
+						}
+					}
 				}
 				gbox._zindexch = [];
 			}
 
 
 			// Handle holding
-			for (var key in AkihabaraInput._keymap)
-				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] == -1) AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] = 0; else
-				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] && (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] < 100)) AkihabaraInput._keyboard[AkihabaraInput._keymap[key]]++;
-			if (gbox._forcedidle)
+			for (var key in AkihabaraInput._keymap) {
+				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] == -1) {
+					AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] = 0;
+				} else {
+					if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] && (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] < 100)) {
+						AkihabaraInput._keyboard[AkihabaraInput._keymap[key]]++;
+					}
+				}
+			}
+			if (gbox._forcedidle) {
 				this._gametimer = setTimeout(gbox._nextframe, gbox._forcedidle); // Wait for the browser
-			else
+			} else {
 				gbox._nextframe();
+			}
 		}
 	},
 
@@ -618,7 +663,7 @@ var gbox = {
 
 	_savesettings: function () {
 		var saved = "";
-		for (var k in this._keymap) saved += "keymap-" + k + ":" + this._keymap[k] + "~";
+		for (var k in this._keymap) { saved += "keymap-" + k + ":" + this._keymap[k] + "~"; }
 		for (var f in this._flags) {
 			switch (this._flagstype[f]) {
 			case "check":
@@ -689,10 +734,14 @@ var gbox = {
 		var rt;
 		for (var i = 0; i < ca.length; i++) {
 			var c = ca[i];
-			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			while (c.charAt(0) == ' ') { c = c.substring(1, c.length); }
 			if (c.indexOf(nameeq) == 0) {
 				rt = c.substring(nameeq.length, c.length);
-				if (a && a.number) return rt * 1; else return rt;
+				if (a && a.number) {
+					return rt * 1;
+				} else {
+					return rt;
+				}
 			}
 		}
 		return null;
@@ -718,8 +767,8 @@ var gbox = {
 	*/
 	setCameraY: function (y, viewdata) {
 		this._camera.y = y;
-		if (this._camera.y + this._camera.h > viewdata.h) this._camera.y = viewdata.h - this._screenh;
-		if (this._camera.y < 0) this._camera.y = 0;
+		if (this._camera.y + this._camera.h > viewdata.h) { this._camera.y = viewdata.h - this._screenh; }
+		if (this._camera.y < 0) { this._camera.y = 0; }
 	},
 
 	/**
@@ -730,8 +779,8 @@ var gbox = {
 	*/
 	setCameraX: function (x, viewdata) {
 		this._camera.x = x;
-		if (this._camera.x + this._camera.w > viewdata.w) this._camera.x = viewdata.w - this._screenw;
-		if (this._camera.x < 0) this._camera.x = 0;
+		if (this._camera.x + this._camera.w > viewdata.w) { this._camera.x = viewdata.w - this._screenw; }
+		if (this._camera.x < 0) { this._camera.x = 0; }
 	},
 
 	/**
@@ -765,12 +814,13 @@ var gbox = {
 	setGroups: function (g) {
 		this._groups = g;
 		this._groupplay[gbox.ZINDEX_LAYER] = true;
-		for (var i = 0; i < g.length; i++)
+		for (var i = 0; i < g.length; i++) {
 			if (!this._objects[g[i]]) {
 				this._objects[g[i]] = {};
 				this._groupplay[g[i]] = true;
 				this._renderorder[i] = g[i];
 			}
+		}
 	},
 
 	/**
@@ -806,14 +856,23 @@ var gbox = {
 	* @param {String} gid The id of the group.
 	*/
 	soloGroup: function (gid) {
-		for (var i = 0; i < this._groups.length; i++)
-			if (this._groups[i] == gid) this.playGroup(this._groups[i]); else this.stopGroup(this._groups[i]);
+		for (var i = 0; i < this._groups.length; i++) {
+			if (this._groups[i] == gid) {
+				this.playGroup(this._groups[i]);
+			} else {
+				this.stopGroup(this._groups[i]);
+			}
+		}
 	},
 
 	/**
 	* Enables all groups, toggling any groups that are currently disabled.
 	*/
-	playAllGroups: function () { for (var i = 0; i < this._groups.length; i++) this.playGroup(this._groups[i]); },
+	playAllGroups: function () {
+		for (var i = 0; i < this._groups.length; i++) {
+			this.playGroup(this._groups[i]);
+		}
+	},
 
 	/**
 	* Destroys all objects in a given group.
@@ -821,7 +880,9 @@ var gbox = {
 	*/
 	clearGroup: function (group) {
 		for (var obj in this._objects[group]) {
-			if (this._objects[group][obj].__zt != null) this._zindex.remove(this._objects[group][obj].__zt);
+			if (this._objects[group][obj].__zt != null) {
+				this._zindex.remove(this._objects[group][obj].__zt);
+			}
 			delete this._objects[group][obj];
 		}
 	},
@@ -877,7 +938,9 @@ var gbox = {
 	* @param {Object} obj The object you wish to delete.
 	*/
 	trashObject: function (obj) {
-		if (!this._garbage[obj.group]) this._garbage[obj.group] = {};
+		if (!this._garbage[obj.group]) {
+			this._garbage[obj.group] = {};
+		}
 		this._garbage[obj.group][obj.id] = 1;
 		obj.__trashing = true;
 	},
@@ -886,13 +949,13 @@ var gbox = {
 	* Clears the record held in gbox._garbage of what has been deleted. The "onpurge" method is called on the object before being deleted (for canvas deallocation etc.)
 	*/
 	purgeGarbage: function () {
-		for (var group in this._garbage)
+		for (var group in this._garbage) {
 			for (var id in this._garbage[group]) {
-				if (this._objects[group][id].onpurge) this._objects[group][id].onpurge();
-				if (this._objects[group][id].__zt != null)
-					this._zindex.remove(this._objects[group][id].__zt);
+				if (this._objects[group][id].onpurge) { this._objects[group][id].onpurge(); }
+				if (this._objects[group][id].__zt != null) { this._zindex.remove(this._objects[group][id].__zt); }
 				delete this._objects[group][id];
 			}
+		}
 		gbox._garbage = {};
 	},
 
@@ -901,9 +964,10 @@ var gbox = {
 	* @param {String} group The group id.
 	*/
 	trashGroup: function (group) {
-		if (!this._garbage[group]) this._garbage[group] = {};
-		for (var obj in this._objects[group])
+		if (!this._garbage[group]) { this._garbage[group] = {}; }
+		for (var obj in this._objects[group]) {
 			this._garbage[group][obj] = 1;
+		}
 	},
 
 	/**
@@ -942,14 +1006,15 @@ var gbox = {
 			this._autoid = (this._autoid + 1) % 1000;
 		}
 		if (data.tileset) {
-			if (data.h == null) data.h = this._tiles[data.tileset].tileh;
-			if (data.w == null) data.w = this._tiles[data.tileset].tilew;
-			if (data.hw == null) data.hw = this._tiles[data.tileset].tilehw;
-			if (data.hh == null) data.hh = this._tiles[data.tileset].tilehh;
+			if (data.h == null) { data.h = this._tiles[data.tileset].tileh; }
+			if (data.w == null) { data.w = this._tiles[data.tileset].tilew; }
+			if (data.hw == null) { data.hw = this._tiles[data.tileset].tilehw; }
+			if (data.hh == null) { data.hh = this._tiles[data.tileset].tilehh; }
 		}
 		this._objects[data.group][data.id] = data;
-		if (data.zindex != null)
+		if (data.zindex != null) {
 			this.setZindex(this._objects[data.group][data.id], data.zindex);
+		}
 		return this._objects[data.group][data.id];
 	},
 
@@ -958,7 +1023,12 @@ var gbox = {
 	* @param {String} gid The group you're checking.
 	* @returns {Boolean} True if the group contains no objects.
 	*/
-	groupIsEmpty: function (gid) { for (var i in this._objects[gid]) return false; return true; },
+	groupIsEmpty: function (gid) {
+		for (var i in this._objects[gid]) {
+			return false;
+		}
+		return true;
+	},
 
 	/**
 	* Creates a new canvas. By default, the width and height is the current gbox._screenw and gbox._screenh,
@@ -1001,7 +1071,7 @@ var gbox = {
 	* @param {String} id The id of the canvas to be deleted.
 	*/
 	deleteCanvas: function (id) {
-		if (this._canvas[id]) delete this._canvas[id];
+		if (this._canvas[id]) { delete this._canvas[id]; }
 	},
 
 	/**
@@ -1057,11 +1127,13 @@ var gbox = {
 	* @param {String} filename The file name of the image.
 	*/
 	addImage: function (id, filename) {
-		if (this._images[id])
-			if (this._images[id].getAttribute("src_org") == filename)
+		if (this._images[id]) {
+			if (this._images[id].getAttribute("src_org") == filename) {
 				return;
-			else
+			} else {
 				delete this._images[id];
+			}
+		}
 		this._addtoloader({type: "image", id: id, filename: filename});
 	},
 
@@ -1109,12 +1181,12 @@ var gbox = {
 	*/
 	loadAll: function (cb) {
 		// Setup logger
-		if (this._canlog) this.log = console.log;
+		if (this._canlog) { this.log = console.log; }
 		// Set the callback function, which is called after the resources are loaded.
-		if (!this._cb) this._cb = cb;
+		if (!this._cb) { this._cb = cb; }
 		// Default stuff
 		this.addImage("_dbf", this.getDebugFont());
-		if (this._splash.background) this.addImage("_splash", this._splash.background);
+		if (this._splash.background) { this.addImage("_splash", this._splash.background); }
 		gbox.addFont({id: "_dbf", image: "_dbf", firstletter: " ", tileh: 5, tilew: 4, tilerow: 16, gapx: 0, gapy: 0});
 		if (!gbox._splash.minimalTime) { gbox._minimalexpired = 2; }
 		this._waitforloaded();
@@ -1147,7 +1219,7 @@ var gbox = {
 	* gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: this.frame, dx: this.x, dy: this.y, fliph: this.fliph, flipv: this.flipv, camera: this.camera, alpha: 1});
 	*/
 	blitTile: function (tox, data) {
-		if (tox == null) return;
+		if (tox == null) { return; }
 		var ts = this._tiles[data.tileset];
 		var img = this.getImage(ts.image);
 		this._implicitsargs(data);
@@ -1174,7 +1246,7 @@ var gbox = {
 	* gbox.blitAll(gbox.getBufferContext(), gbox.getImage("image_id"), {dx: 100, dy: 100});
 	*/
 	blitAll: function (tox, image, data) {
-		if (tox == null) return;
+		if (tox == null) { return; }
 		this._implicitsargs(data);
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
@@ -1185,7 +1257,7 @@ var gbox = {
 	},
 
 	blit: function (tox, image, data) {
-		if (tox == null) return;
+		if (tox == null) { return; }
 		this._implicitsargs(data);
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
@@ -1204,11 +1276,15 @@ var gbox = {
 	* <li > map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile) < /li> < /ul>
 	*/
 	blitTilemap: function (tox, data) {
-		if (tox == null) return;
+		if (tox == null) { return; }
 		var ts = this._tiles[data.tileset];
-		for (var y = 0; y < data.map.length; y++)
-			for (var x = 0; x < data.map[y].length; x++)
-				if (data.map[y][x] != null) this.blitTile(tox, {tileset: data.tileset, tile: data.map[y][x], dx: x * ts.tilew, dy: y * ts.tilew});
+		for (var y = 0; y < data.map.length; y++) {
+			for (var x = 0; x < data.map[y].length; x++) {
+				if (data.map[y][x] != null) {
+					this.blitTile(tox, {tileset: data.tileset, tile: data.map[y][x], dx: x * ts.tilew, dy: y * ts.tilew});
+				}
+			}
+		}
 	},
 
 	/**
@@ -1226,23 +1302,29 @@ var gbox = {
 	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
 	*/
 	blitText: function (tox, data) {
-		if (tox == null) return;
+		if (tox == null) { return; }
 		data.text += ""; // Convert to string.
 		var fn = this._fonts[data.font];
 		var tile = 0;
 		this._implicitsargs(data);
 		var dx = data.dx;
 		var dy = data.dy;
-		if (data.valign == gbox.ALIGN_BOTTOM) dy = dy + data.dh - fn.tileh;
-		else if (data.valign == gbox.ALIGN_MIDDLE) dy = dy + Math.floor(data.dh / 2) - fn.tileh;
-		if (data.halign == gbox.ALIGN_RIGHT) dx = dx + data.dw - (data.text.length * fn.tilew);
-		else if (data.halign == gbox.ALIGN_CENTER) dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2);
+		if (data.valign == gbox.ALIGN_BOTTOM) {
+			dy = dy + data.dh - fn.tileh;
+		} else {
+			if (data.valign == gbox.ALIGN_MIDDLE) { dy = dy + Math.floor(data.dh / 2) - fn.tileh; }
+		}
+		if (data.halign == gbox.ALIGN_RIGHT) {
+			dx = dx + data.dw - (data.text.length * fn.tilew);
+		} else {
+			if (data.halign == gbox.ALIGN_CENTER) { dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2); }
+		}
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
 		for (var y = 0; y < data.text.length; y++) {
 			tile = data.text.charCodeAt(y) - fn.firstascii;
 			if (tile >= 0) {
-				if (data.clear) tox.clearRect(dx + (y * fn.tilew), dy, (data.w ? data.w : fn.tilew), (data.h ? data.h : fn.tileh));
+				if (data.clear) { tox.clearRect(dx + (y * fn.tilew), dy, (data.w ? data.w : fn.tilew), (data.h ? data.h : fn.tileh)); }
 				this._safedrawimage(
 					tox,
 					this.getImage(fn.image),
@@ -1270,8 +1352,8 @@ var gbox = {
 	* <li > h {Integer}: the height the box; defaults to canvas height < /li> < /ul>
 	*/
 	blitClear: function (image, data) {
-		if (image == null) return;
-		if (data == null) data = {x: 0, y: 0};
+		if (image == null) { return; }
+		if (data == null) { data = {x: 0, y: 0}; }
 		this._implicitsargs(data);
 		image.clearRect(data.x, data.y, (data.w == null ? image.canvas.width : data.w), (data.h == null ? image.canvas.height : data.h));
 	},
@@ -1291,7 +1373,7 @@ var gbox = {
 	* <li > color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black < /li> < /ul>
 	*/
 	blitFade: function (tox, data) {
-		if (tox) this.blitRect(tox, {x: 0, y: 0, w: tox.canvas.width, h: tox.canvas.height, alpha: data.alpha, color: data.color});
+		if (tox) { this.blitRect(tox, {x: 0, y: 0, w: tox.canvas.width, h: tox.canvas.height, alpha: data.alpha, color: data.color}); }
 	},
 
 	/**
@@ -1306,7 +1388,7 @@ var gbox = {
 	* <li > color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black < /li> < /ul>
 	*/
 	blitRect: function (tox, data) {
-		if (tox == null) return;
+		if (tox == null) { return; }
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
 		tox.fillStyle = (data.color ? data.color: gbox.COLOR_BLACK);
@@ -1331,7 +1413,7 @@ var gbox = {
 	* @returns True if the two collision boxes are colliding within the given tolerance.
 	*/
 	collides: function (o1, o2, t) {
-		if (!t) t = 0;
+		if (!t) { t = 0; }
 		return !((o1.y + o1.h - 1 - t < o2.y + t) || (o1.y + t > o2.y + o2.h - 1 - t) || (o1.x + o1.w - 1 - t < o2.x + t) || (o1.x + t > o2.x + o2.w - 1 - t));
 	},
 
@@ -1350,7 +1432,7 @@ var gbox = {
 	* @returns True if the point is colliding with the box within the given tolerance.
 	*/
 	pixelcollides: function (o1, o2, t) {
-		if (!t) t = 0;
+		if (!t) { t = 0; }
 		return !((o1.y < o2.y + t) || (o1.y > o2.y + o2.h - 1 - t) || (o1.x < o2.x + t) || (o1.x > o2.x + o2.w - 1 - t));
 	},
 
@@ -1369,7 +1451,7 @@ var gbox = {
 	_splashscreeniscompleted: function () { return (gbox._splash.background ? gbox.imageIsLoaded("_splash") : true) && (gbox._splash.minilogo ? gbox.imageIsLoaded("logo") : true) && (gbox._splash.footnotes ? gbox.imageIsLoaded("_dbf") : true); },
 
 	setBasePath: function (a) { this._basepath = a; },
-	setSplashSettings: function (a) { for (var n in a) this._splash[n] = a[n]; },
+	setSplashSettings: function (a) { for (var n in a) { this._splash[n] = a[n]; } },
 	setOfflineCache: function (a) { this._flags.offlinecache = a; },
 	setDebugFont: function (a) { this._debugfont = a; },
 
@@ -1397,17 +1479,37 @@ var gbox = {
 		var i = 0;
 
 		// Local resources first
-		if (pack.setObject) for (i = 0; i < pack.setObject.length; i++) eval("(" + pack.setObject[i].object + ")")[pack.setObject[i].property] = pack.setObject[i].value;
-		if (pack.addFont) for (i = 0; i < pack.addFont.length; i++) gbox.addFont(pack.addFont[i]);
-		if (pack.addTiles) for (i = 0; i < pack.addTiles.length; i++) gbox.addTiles(pack.addTiles[i]);
+		if (pack.setObject) {
+			for (i = 0; i < pack.setObject.length; i++) {
+				eval("(" + pack.setObject[i].object + ")")[pack.setObject[i].property] = pack.setObject[i].value;
+			}
+		}
+		if (pack.addFont) {
+			for (i = 0; i < pack.addFont.length; i++) { gbox.addFont(pack.addFont[i]); }
+		}
+		if (pack.addTiles) {
+			for (i = 0; i < pack.addTiles.length; i++) { gbox.addTiles(pack.addTiles[i]); }
+		}
 		// Remote resources for last
-		if (pack.addImage) for (i = 0; i < pack.addImage.length; i++) gbox.addImage(pack.addImage[i][0], pack.addImage[i][1]);
-		if (pack.addAudio) for (i = 0; i < pack.addAudio.length; i++) AkihabaraAudio.addAudio(pack.addAudio[i][0], pack.addAudio[i][1], pack.addAudio[i][2]);
-		if (pack.addBundle) for (i = 0; i < pack.addBundle.length; i++) gbox.addBundle(pack.addBundle[i]);
-		if (pack.addScript) for (i = 0; i < pack.addScript.length; i++) gbox.addScript(pack.addScript[i]);
+		if (pack.addImage) {
+			for (i = 0; i < pack.addImage.length; i++) { gbox.addImage(pack.addImage[i][0], pack.addImage[i][1]); }
+		}
+		if (pack.addAudio) {
+			for (i = 0; i < pack.addAudio.length; i++) { AkihabaraAudio.addAudio(pack.addAudio[i][0], pack.addAudio[i][1], pack.addAudio[i][2]); }
+		}
+		if (pack.addBundle) {
+			for (i = 0; i < pack.addBundle.length; i++) { gbox.addBundle(pack.addBundle[i]); }
+		}
+		if (pack.addScript) {
+			for (i = 0; i < pack.addScript.length; i++) { gbox.addScript(pack.addScript[i]); }
+		}
 		// Trigger the onLoad events in resource and loader
-		if (pack.onLoad) gbox._addtoloader({type: "exec-onl", func: pack.onLoad, call: call, pack: pack});
-		if (call.onLoad) gbox._addtoloader({type: "exec-onl", func: call.onLoad, call: call, pack: pack});
+		if (pack.onLoad) {
+			gbox._addtoloader({type: "exec-onl", func: pack.onLoad, call: call, pack: pack});
+		}
+		if (call.onLoad) {
+			gbox._addtoloader({type: "exec-onl", func: call.onLoad, call: call, pack: pack});
+		}
 	},
 
 	// ---
@@ -1434,8 +1536,9 @@ var gbox = {
 		var rt = (typeof this.responseText != "undefined" ? this.responseText : gbox._xmlhttp.responseText);
 		if (rs == 4 && (!st || st == 200)) {
 			if (rt) {
-				if (!gbox._loaderqueue.getCurrent().call.skipCacheSave)
+				if (!gbox._loaderqueue.getCurrent().call.skipCacheSave) {
 					gbox._loadercache.add(gbox._loaderqueue.getCurrent().call.file, rt);
+				}
 				var pack = eval("(" + rt + ")");
 				gbox.readBundleData(pack, gbox._loaderqueue.getCurrent().call);
 				// Keep loading the other resources.
@@ -1447,14 +1550,15 @@ var gbox = {
 	// Loader code
 	_addtoloader: function (d) { // type: xx, data: yy
 		gbox._loaderqueue.push(d);
-		if (!gbox._loaderqueue.isProcessing())
-			gbox._loadnext();
+		if (!gbox._loaderqueue.isProcessing()) { gbox._loadnext(); }
 	},
 	_loaderloaded: function () {
 		setTimeout(gbox._loadnext, 10);
 	},
 	_loaderscript: function () {
-		if (gbox._loaderqueue.getCurrent().call.onLoad) gbox._addtoloader({type: "exec-onl", func: gbox._loaderqueue.getCurrent().call.onLoad, call: gbox._loaderqueue.getCurrent().call});
+		if (gbox._loaderqueue.getCurrent().call.onLoad) {
+			gbox._addtoloader({type: "exec-onl", func: gbox._loaderqueue.getCurrent().call.onLoad, call: gbox._loaderqueue.getCurrent().call});
+		}
 		gbox._loadnext();
 	},
 	_loadnext: function () {
@@ -1488,7 +1592,7 @@ var gbox = {
 					if (current.call.data) {
 						gbox._xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 						gbox._xmlhttp.send(current.call.data);
-					} else gbox._xmlhttp.send();
+					} else { gbox._xmlhttp.send(); }
 				}
 				break;
 			case "audio":
@@ -1517,7 +1621,7 @@ var gbox = {
 				gbox._minimalexpired = 1;
 				setTimeout(gbox._minimaltimeexpired, gbox._splash.minimalTime);
 			}
-			if (gbox._splash.loading) gbox._splash.loading(gbox._screenCtx, gbox._loaderqueue.getDone(), gbox._loaderqueue.getTotal());
+			if (gbox._splash.loading) { gbox._splash.loading(gbox._screenCtx, gbox._loaderqueue.getDone(), gbox._loaderqueue.getTotal()); }
 			if (gbox._flags.loadscreen == "c64") {
 				var p = 0, l = 0;
 				while (p != gbox.getScreenH()) {
@@ -1535,8 +1639,9 @@ var gbox = {
 					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: (gbox.getScreenW() - dw) / 2, dy: (gbox.getScreenH() - dh) / 2, dw: dw, dh: dh});
 				}
 			} else {
-				if (gbox._splash.background && gbox.imageIsLoaded("_splash"))
+				if (gbox._splash.background && gbox.imageIsLoaded("_splash")) {
 					gbox.blit(gbox._screenCtx, gbox.getImage("_splash"), {w: gbox.getImage("_splash").width, h: gbox.getImage("_splash").height, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()});
+				}
 				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
 					var dw = gbox.getScreenW() / 4;
 					var dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
@@ -1546,18 +1651,19 @@ var gbox = {
 					if (!gbox.getCanvas("_footnotes")) {
 						var fd = gbox.getFont("_dbf");
 						gbox.createCanvas("_footnotes", {w: gbox.getScreenW() - 5, h: (gbox._splash.footnotes.length) * (fd.tileh + gbox._splash.footnotesSpacing)});
-						for (var i = 0; i < gbox._splash.footnotes.length; i++)
+						for (var i = 0; i < gbox._splash.footnotes.length; i++) {
 							gbox.blitText(gbox.getCanvasContext("_footnotes"), {
 								font: "_dbf",
 								dx: 0,
 								dy: i * (fd.tileh + gbox._splash.footnotesSpacing),
 								text: gbox._splash.footnotes[i]
 							});
+						}
 					}
-					gbox.blitAll(gbox._screenCtx, gbox.getCanvas("_footnotes"), {dx: 5, dy: gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
+					gbox.blitAll(gbox._screenCtx, gbox.getCanvas("_footnotes"), {dx: 5, dy: gbox.getScreenH() - gbox.getCanvas("_footnotes").height - 5});
 				}
 				if (gbox._loaderqueue.isBusy()) {
-					var bw = Math.floor(((gbox.getScreenW() - 4)*gbox._loaderqueue.getDone()) / gbox._loaderqueue.getTotal());
+					var bw = Math.floor(((gbox.getScreenW() - 4) * gbox._loaderqueue.getDone()) / gbox._loaderqueue.getTotal());
 					gbox._screenCtx.globalAlpha = 1;
 					gbox._screenCtx.fillStyle = gbox._splash.gaugeBorderColor;
 					gbox._screenCtx.fillRect(0, Math.floor((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2), gbox.getScreenW(), gbox._splash.gaugeHeight);
@@ -1568,11 +1674,11 @@ var gbox = {
 				}
 			}
 			gbox._screenCtx.restore();
-			if (typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
+			if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")"); }
 			setTimeout(gbox._waitforloaded, 50);
 		} else {
 			gbox.deleteImage("_splash");
-			if (typeof AkihabaraDebug != "undefined") AkihabaraDebug.setStatBar();
+			if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.setStatBar(); }
 			gbox._cb();
 		}
 	},
@@ -1588,12 +1694,18 @@ var gbox = {
 		return !!document.createElement('canvas').getContext;
 	},
 	addEventListener: function (to, event, code) {
-		if (to.addEventListener) to.addEventListener(event, code, false);
-		else to.attachEvent('on' + event, code);
+		if (to.addEventListener) {
+			to.addEventListener(event, code, false);
+		} else {
+			to.attachEvent('on' + event, code);
+		}
 	},
 	removeEventListener: function (to, event, code) {
-		if (to.removeEventListener) to.removeEventListener(event, code, false);
-		else to.detachEvent('on' + event, code);
+		if (to.removeEventListener) {
+			to.removeEventListener(event, code, false);
+		} else {
+			to.detachEvent('on' + event, code);
+		}
 	},
 	XMLHttpFactories: [
 		function () {return new XMLHttpRequest(); },
@@ -1611,16 +1723,16 @@ var gbox = {
 		}                                                                                ; @cc_off @*/
 
 		/* IE7, Firefox, Safari, Opera...  */
-		if (!xmlhttp)try{ xmlhttp = new XMLHttpRequest(); }catch(e) { xmlhttp = false; }
+		if (!xmlhttp) { try { xmlhttp = new XMLHttpRequest(); } catch (e) { xmlhttp = false; } }
 
 		/* IE6 */
 		if (typeof ActiveXObject != "undefined") {
-			if (!xmlhttp)try{ xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); }catch(e) { xmlhttp = false; }
-			if (!xmlhttp)try{ xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }catch(e) { xmlhttp = false; }
+			if (!xmlhttp) { try { xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); } catch (e) { xmlhttp = false; } }
+			if (!xmlhttp) { try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { xmlhttp = false; } }
 		}
 
 		/* IceBrowser */
-		if (!xmlhttp) try { xmlhttp = createRequest(); } catch (e) { xmlhttp = false; }
+		if (!xmlhttp) { try { xmlhttp = createRequest(); } catch (e) { xmlhttp = false; } }
 		return xmlhttp;
 	}
 };
