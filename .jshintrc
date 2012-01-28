@@ -3,7 +3,7 @@
         "jasmine", "it", "describe", "expect",
         "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer", "trigo",
         "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle",
-        "AkihabaraTrigo", "AkihabaraIphofretboard",
+        "AkihabaraTrigo", "AkihabaraIphofretboard", "AkihabaraIphopad",
         "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
     ],
 

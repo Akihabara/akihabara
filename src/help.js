@@ -13,8 +13,13 @@ var help = {
 	* @returns The found object, otherwise null.
 	*/
 	searchObject: function (a, field, value) {
-		if (!a) return null; else
-		for (var i = 0; i < a.length; a++) if (a[i][field] == value) return a[i];
+		if (!a) {
+			return null;
+		} else {
+			for (var i = 0; i < a.length; a++) {
+				if (a[i][field] == value) { return a[i]; }
+			}
+		}
 		return null;
 	},
 
@@ -27,7 +32,7 @@ var help = {
 	*/
 	seq: function (st, ed, skip) {
 		var ret = [];
-		for (var i = st; i < ed; i += (skip == null?1:skip)) ret.push(i);
+		for (var i = st; i < ed; i += (skip == null ? 1 : skip)) { ret.push(i); }
 		return ret;
 	},
 
@@ -38,7 +43,7 @@ var help = {
 	* @returns An integer, v*mul, unless v < 2 in which case it returns 1.
 	*/
 	multiplier: function (v, mul) { // Handle a multiplier like counter. that means, 0=1 / 1=1 / 2=2*mul etc...
-		return (!v || (v < 2)?1:v*(!mul?1:mul));
+		return (!v || (v < 2) ? 1 : v * (!mul ? 1 : mul));
 	},
 
 	/**
@@ -50,7 +55,9 @@ var help = {
 	*/
 	prepad: function (str, len, pad) {
 		str += "";
-		while (str.length < len) str = pad + str;
+		while (str.length < len) {
+			str = pad + str;
+		}
 		return str;
 	},
 
@@ -63,7 +70,9 @@ var help = {
 	*/
 	postpad: function (str, len, pad) {
 		str += "";
-		while (str.length < len) str += pad;
+		while (str.length < len) {
+			str += pad;
+		}
 		return str;
 	},
 
@@ -74,7 +83,7 @@ var help = {
 	* @returns True if the two objects are overlapping enough and by.accy > 0.
 	*/
 	isSquished: function (th, by) {
-		return ((by.accy > 0) && gbox.collides(th, by) && (Math.abs(th.y-(by.y + by.h)) < (th.h/2)));
+		return ((by.accy > 0) && gbox.collides(th, by) && (Math.abs(th.y - (by.y + by.h)) < (th.h / 2)));
 	},
 
 	/**
@@ -84,17 +93,17 @@ var help = {
 	* @returns An integer between min (includive) and min + range (noninclusive).
 	*/
 	random: function (min, range) {
-		return min + Math.floor(Math.random()*range);
+		return min + Math.floor(Math.random() * range);
 	},
 
-	 /**
+	/**
 	* Determines which frame of a given animation to display. Will loop an animation.
 	* @param {Integer} cnt A global frame counter.
 	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
 	* @returns The particular animation frame to display during this step.
 	*/
 	decideFrame: function (cnt, anim) {
-		return anim.frames[Math.floor(cnt/anim.speed)%anim.frames.length];
+		return anim.frames[Math.floor(cnt / anim.speed) % anim.frames.length];
 	},
 
 	/**
@@ -104,7 +113,7 @@ var help = {
 	* @returns The particular animation frame to display during this step.
 	*/
 	decideFrameOnce: function (cnt, anim) {
-		return anim.frames[(cnt >= anim.frames.length*anim.speed?anim.frames.length-1:Math.floor(cnt/anim.speed))];
+		return anim.frames[(cnt >= anim.frames.length * anim.speed ? anim.frames.length - 1 : Math.floor(cnt / anim.speed))];
 	},
 
 	/**
@@ -114,7 +123,7 @@ var help = {
 	* @returns A boolean, true if the animation has been played at least once.
 	*/
 	isLastFrameOnce: function (cnt, anim) {
-		return (cnt >= anim.frames.length*anim.speed);
+		return (cnt >= anim.frames.length * anim.speed);
 	},
 
 	/**
@@ -124,7 +133,11 @@ var help = {
 	* @returns An integer.
 	*/
 	upAndDown: function (counter, max) {
-		if ((counter%max) > (max/2)) return max-(counter%max); else return (counter%max);
+		if ((counter % max) > (max / 2)) {
+			return max - (counter % max);
+		} else {
+			return (counter % max);
+		}
 	},
 
 	/**
@@ -137,13 +150,19 @@ var help = {
 	* @returns An integer representing the value of the tile in the map array at that x, y coordinate. If there is no tile, null is returned.
 	*/
 	getTileInMap: function (x, y, map, ifout, mapid) {
-		if (!mapid) mapid = "map";
+		if (!mapid) { mapid = "map"; }
 		var ts = gbox._tiles[map.tileset];
-		var tx = Math.floor(x/ts.tilew);
-		var ty = Math.floor(y/ts.tileh);
-		if ((ty < 0) || (ty >= map[mapid].length)) return ifout; else
-		if ((tx < 0) || (tx >= map[mapid][ty].length)) return ifout; else
-		return map[mapid][ty][tx];
+		var tx = Math.floor(x / ts.tilew);
+		var ty = Math.floor(y / ts.tileh);
+		if ((ty < 0) || (ty >= map[mapid].length)) {
+			return ifout;
+		} else {
+			if ((tx < 0) || (tx >= map[mapid][ty].length)) {
+				return ifout;
+			} else {
+				return map[mapid][ty][tx];
+			}
+		}
 	},
 
 	/**
@@ -155,14 +174,16 @@ var help = {
 	asciiArtToMap: function (map, tra) {
 		if (tra instanceof Array) { //backwards compatibility
 			var otra = {};
-			for (var i in tra) otra[tra[i][1]] = tra[i][0];
+			for (var i in tra) { otra[tra[i][1]] = tra[i][0]; }
 			tra = otra;
 		}
 		var sz, ret = [];
 		for (var key in tra) { sz = key.length; break; }
 		for (var y = 0; y < map.length; y++) {
 			var row = [], mapy = map[y];
-			for (var c = 0; c < mapy.length; c += sz) row.push(tra[mapy.substr(c, sz)]);
+			for (var c = 0; c < mapy.length; c += sz) {
+				row.push(tra[mapy.substr(c, sz)]);
+			}
 			ret.push(row);
 		}
 		return ret;
@@ -178,10 +199,10 @@ var help = {
 	// Outs: finalized map
 	finalizeTilemap: function (map) {
 		var ts = gbox._tiles[map.tileset];
-		map.h = map.map.length*ts.tileh;
-		map.w = map.map[0].length*ts.tilew;
-		map.hw = Math.floor(map.w/2);
-		map.hh = Math.floor(map.h/2);
+		map.h = map.map.length * ts.tileh;
+		map.w = map.map[0].length * ts.tilew;
+		map.hw = Math.floor(map.w / 2);
+		map.hh = Math.floor(map.h / 2);
 		return map;
 	},
 
@@ -194,7 +215,7 @@ var help = {
 	*/
 	xPixelToTileX: function (map, x, gap) {
 		var ts = gbox._tiles[map.tileset];
-		return Math.floor(x/ts.tilew);
+		return Math.floor(x / ts.tilew);
 	},
 
 	/**
@@ -206,7 +227,7 @@ var help = {
 	*/
 	yPixelToTileY: function (map, y, gap) {
 		var ts = gbox._tiles[map.tileset];
-		return Math.floor(y/ts.tileh);
+		return Math.floor(y / ts.tileh);
 	},
 
 	/**
@@ -218,7 +239,7 @@ var help = {
 	*/
 	xPixelToTile: function (map, x, gap) {
 		var ts = gbox._tiles[map.tileset];
-		return (Math.floor(x/ts.tilew) + (gap?gap: 0))*ts.tilew;
+		return (Math.floor(x / ts.tilew) + (gap ? gap : 0)) * ts.tilew;
 	},
 
 	/**
@@ -230,18 +251,26 @@ var help = {
 	*/
 	yPixelToTile: function (map, y, gap) {
 		var ts = gbox._tiles[map.tileset];
-		return (Math.floor(y/ts.tileh) + (gap?gap: 0))*ts.tileh;
+		return (Math.floor(y / ts.tileh) + (gap ? gap : 0)) * ts.tileh;
 	},
 
-	 /**
-	 * Limits a number to a certain range. If the number is below the minimum, the minimum is returned. If the number is above the maximum, the maximum is returned.
-	 * @param {Float} v A value.
-	 * @param {Float} min The minimum limit.
-	 * @param {Float} max The maximum limit.
-	 * @returns A value equal to v if min < v < max. Returns min if v < min, max if v > max.
-	 */
+	/**
+	* Limits a number to a certain range. If the number is below the minimum, the minimum is returned. If the number is above the maximum, the maximum is returned.
+	* @param {Float} v A value.
+	* @param {Float} min The minimum limit.
+	* @param {Float} max The maximum limit.
+	* @returns A value equal to v if min < v < max. Returns min if v < min, max if v > max.
+	*/
 	limit: function (v, min, max) {
-		if (v < min) return min; else if (v > max) return max; else return v;
+		if (v < min) {
+			return min;
+		} else {
+			if (v > max) {
+				return max;
+			} else {
+				return v;
+			}
+		}
 	},
 
 	/**
@@ -249,7 +278,7 @@ var help = {
 	* @param {Integer} v A value.
 	* @returns A value that is one closer to 0 on the number line than v.
 	*/
-	goToZero: function (v) { return (v?v-(v/Math.abs(v)):0); },
+	goToZero: function (v) { return (v ? v - (v / Math.abs(v)) : 0); },
 
 	/**
 	* Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
@@ -263,10 +292,12 @@ var help = {
 	* merged; // => {a: 1, b: 2, c: 3, d: "four"};
 	*/
 	mergeWithModel: function (data, model) {
-		if (data == null) data = {};
-		if (model != null)
-			for (var i in model)
-				if (data[i] == null) data[i] = model[i];
+		if (data == null) { data = {}; }
+		if (model != null) {
+			for (var i in model) {
+				if (data[i] == null) { data[i] = model[i]; }
+			}
+		}
 		return data;
 	},
 
@@ -282,9 +313,10 @@ var help = {
 	* merged; // => {a: 1, b: 2, c: "three", d: "four"}
 	*/
 	copyModel: function (data, model) {
-		if (data == null) data = {};
-		if (model != null)
-			for (var i in model) data[i] = model[i];
+		if (data == null) { data = {}; }
+		if (model != null) {
+			for (var i in model) { data[i] = model[i]; }
+		}
 		return data;
 	},
 
@@ -300,7 +332,9 @@ var help = {
 	*/
 	createModel: function (obj, attrs) {
 		var ret = {};
-		for (var i = 0; i < attrs.length; i++) ret[attrs[i]] = obj[attrs[i]];
+		for (var i = 0; i < attrs.length; i++) {
+			ret[attrs[i]] = obj[attrs[i]];
+		}
 		return ret;
 	},
 
@@ -314,9 +348,9 @@ var help = {
 	* newdata; // => {a: 1, b: 2, c: "three"}
 	*/
 	cloneObject: function (model) {
-		if (!model) return model;
+		if (!model) { return model; }
 		var data = {};
-		for (var i in model) data[i] = model[i];
+		for (var i in model) { data[i] = model[i]; }
 		return data;
 	},
 
@@ -334,11 +368,12 @@ var help = {
 	*/
 	setTileInMap: function (ctx, tilemap, x, y, tile, map) {
 		var ts = gbox.getTiles(tilemap.tileset);
-		tilemap[(map == null?"map":map)][y][x] = tile;
-		if (tile == null)
-			gbox.blitClear(ctx, {x: x*ts.tilew, y: y*ts.tilew, h: ts.tileh, w: ts.tilew});
-		else
-			gbox.blitTile(ctx, {tileset: tilemap.tileset, tile: tile, dx: x*ts.tilew, dy: y*ts.tilew});
+		tilemap[(map == null ? "map" : map)][y][x] = tile;
+		if (tile == null) {
+			gbox.blitClear(ctx, {x: x * ts.tilew, y: y * ts.tilew, h: ts.tileh, w: ts.tilew});
+		} else {
+			gbox.blitTile(ctx, {tileset: tilemap.tileset, tile: tile, dx: x * ts.tilew, dy: y * ts.tilew});
+		}
 	},
 
 	/**
@@ -352,8 +387,8 @@ var help = {
 	*/
 	setTileInMapAtPixel: function (ctx, tilemap, x, y, tile, map) {
 		var ts = gbox.getTiles(tilemap.tileset);
-		x = Math.floor(x/ts.tilew);
-		y = Math.floor(y/ts.tileh);
+		x = Math.floor(x / ts.tilew);
+		y = Math.floor(y / ts.tileh);
 		help.setTileInMap(ctx, tilemap, x, y, tile, map);
 	},
 
@@ -365,7 +400,11 @@ var help = {
 	* @returns If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].
 	*/
 	getArrayCapped: function (a, id) {
-		if (id >= a.length) return a[a.length-1]; else return a[id];
+		if (id >= a.length) {
+			return a[a.length - 1];
+		} else {
+			return a[id];
+		}
 	},
 
 	/**
@@ -376,9 +415,9 @@ var help = {
 	* @returns The object with the highest target value, otherwise the first element of the array.
 	*/
 	getArrayIndexed: function (a, value, field) {
-		if (a[0][field] == null) return a[0];
+		if (a[0][field] == null) { return a[0]; }
 		var i = 0;
-		while ((value > a[i][field]) && (i != a.length-1)) i++;
+		while ((value > a[i][field]) && (i != a.length - 1)) { i++; }
 		return a[i];
 	},
 
@@ -395,8 +434,8 @@ var help = {
 	* timestamp; // => '01:00:00';
 	*/
 	framestotime: function (frames) {
-		var csec = Math.ceil(frames/gbox.getFps()*100);
-			return this.prepad((Math.floor(csec/6000)%60), 2, "0") + ":" + this.prepad((Math.floor(csec/100)%60), 2, "0") + ":" + this.prepad(csec%100, 2, "0");
+		var csec = Math.ceil(frames / gbox.getFps() * 100);
+		return this.prepad((Math.floor(csec / 6000) % 60), 2, "0") + ":" + this.prepad((Math.floor(csec / 100) % 60), 2, "0") + ":" + this.prepad(csec % 100, 2, "0");
 	},
 
 	/**
@@ -408,12 +447,12 @@ var help = {
 	* player.lives = help.geturlparameter("lives");
 	* player.lives; // => 3
 	*/
-	geturlparameter: function ( name ) {
-		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	geturlparameter: function (name) {
+		name = name.replace(/[\[]/, "[").replace(/[\]]/, "]");
 		var regex = new RegExp("[?&]" + name + "=([^&#]*)");
-		var results = regex.exec( window.location.href );
+		var results = regex.exec(window.location.href);
 		if (results == null) {
-			return ""
+			return "";
 		} else {
 			return results[1];
 		}
@@ -426,7 +465,7 @@ var help = {
 	*/
 	objToStr: function (o) {
 		var ret = "";
-		for (var n in o) ret += n + ":[" + o[n] + "] ";
+		for (var n in o) { ret += n + ":[" + o[n] + "] "; }
 		return ret;
 	},
 
@@ -448,14 +487,19 @@ var help = {
 	*/
 	getDeviceConfig: function () {
 		var cap;
-		if (navigator.userAgent.match(/nintendo wii/i))
+		if (navigator.userAgent.match(/nintendo wii/i)) {
 			cap = {iswii: true, height: window.innerHeight, doublebuffering: true}; // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
-		else if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
-			cap = {touch: true, width: 320};
-		else if (navigator.userAgent.match(/iPad/i))
-			cap = {touch: true, width: 768, forcedidle: 10}; // Forced idle time is needed for correct framerate calculation.
-		else
-			cap = {zoom: 2};
+		} else {
+			if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i)) {
+				cap = {touch: true, width: 320};
+			} else {
+				if (navigator.userAgent.match(/iPad/i)) {
+					cap = {touch: true, width: 768, forcedidle: 10}; // Forced idle time is needed for correct framerate calculation.
+				} else {
+					cap = {zoom: 2};
+				}
+			}
+		}
 
 		cap.canaudio = !!(document.createElement('audio').canPlayType);
 		if (cap.canaudio) {
@@ -486,12 +530,13 @@ var help = {
 			} else if (navigator.userAgent.match(/Opera/i)) {
 				cap.audioteam = 1; // Testing smaller audioteam
 				cap.audiocreatemode = 1; // Do not like audio object cloning very much
-			} else if (navigator.userAgent.match(/MSIE 9.0/i) || navigator.userAgent.match(/MSIE 7.0/i)) {
+			} else if (navigator.userAgent.match(/MSIE 9\.0/i) || navigator.userAgent.match(/MSIE 7\.0/i)) {
 				cap.audioteam = 2;
 				cap.audiocompatmode = 1; // Audio loading mode.
-				cap.audioisexperimental = navigator.userAgent.match(/MSIE 7.0/i); // Audio is experimental, on IE7 (for compat mode)
-			} else
+				cap.audioisexperimental = navigator.userAgent.match(/MSIE 7\.0/i); // Audio is experimental, on IE7 (for compat mode)
+			} else {
 				cap.audioisexperimental = true; // Audio is just experimental on all other devices.
+			}
 		}
 		return cap;
 	},
@@ -502,17 +547,20 @@ var help = {
 	* @param {Object} data An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.
 	*/
 	akihabaraInit: function (data) {
-		if ((typeof data).toLowerCase() == "string") data = {title: data};
+		if ((typeof data).toLowerCase() == "string") { data = {title: data}; }
 		var device = this.getDeviceConfig();
-		var footnotes = ["MADE WITH AKIHABARA (C)2012 - GPL2/MIT","Project: http://akihabara.github.com","Sources: http://github.com/akihabara"];
-		document.title = (data.title?data.title: "Akihabara");
+		var footnotes = ["MADE WITH AKIHABARA (C)2012 - GPL2/MIT", "Project: http://akihabara.github.com", "Sources: http://github.com/akihabara"];
+		document.title = (data.title ? data.title : "Akihabara");
 		if (data.splash) {
-			if (data.splash.footnotes)
-				for (var i = 0; i < footnotes.length; i++) data.splash.footnotes.push(footnotes[i]);
+			if (data.splash.footnotes) {
+				for (var i = 0; i < footnotes.length; i++) {
+					data.splash.footnotes.push(footnotes[i]);
+				}
+			}
 			gbox.setSplashSettings(data.splash);
 		}
-		var screenwidth = (data.width?data.width: (data.portrait?240:320));
-		var screenheight = (data.height?data.height: (data.portrait?320:240));
+		var screenwidth = (data.width ? data.width : (data.portrait ? 240 : 320));
+		var screenheight = (data.height ? data.height : (data.portrait ? 320 : 240));
 		if (device.iswii) {
 			AkihabaraInput._keymap = {
 				left: 175,
@@ -523,34 +571,41 @@ var help = {
 				b: 172,
 				c: 13
 			};
-			document.onkeypress = function (e) { if (e.preventDefault) e.preventDefault(); return false; };
+			document.onkeypress = function (e) {
+				if (e.preventDefault) {
+					e.preventDefault();
+					return false;
+				}
+			};
 		}
 
-		if (typeof data.basepath == 'string') gbox.setBasePath(data.basepath);
-		if (data.debugfont) gbox.setDebugFont(data.debugfont);
-		if (data.offlinecache) gbox.setOfflineCache(data.offlinecache);
-		if (!data.splash || (data.splash.minilogo == null)) gbox.setSplashSettings({minilogo: "logo"});
-		if (!data.splash || (data.splash.background == null)) gbox.setSplashSettings({background: gbox._basepath + "splash.png"});
-		if (!data.splash || (data.splash.minimalTime == null)) gbox.setSplashSettings({minimalTime: 3000});
-		if (!data.splash || (data.splash.footnotes == null)) gbox.setSplashSettings({footnotes: footnotes});
+		if (typeof data.basepath == 'string') {
+			gbox.setBasePath(data.basepath);
+		}
+		if (data.debugfont) { gbox.setDebugFont(data.debugfont); }
+		if (data.offlinecache) { gbox.setOfflineCache(data.offlinecache); }
+		if (!data.splash || (data.splash.minilogo == null)) { gbox.setSplashSettings({minilogo: "logo"}); }
+		if (!data.splash || (data.splash.background == null)) { gbox.setSplashSettings({background: gbox._basepath + "splash.png"}); }
+		if (!data.splash || (data.splash.minimalTime == null)) { gbox.setSplashSettings({minimalTime: 3000}); }
+		if (!data.splash || (data.splash.footnotes == null)) { gbox.setSplashSettings({footnotes: footnotes}); }
 		if (!data || !data.hardwareonly) {
 			document.body.style.backgroundColor = "#000000";
 			gbox.setScreenBorder(false);
 		}
-		if(data.backgroundColor) document.body.style.backgroundColor = data.backgroundColor;
-		if (help.geturlparameter("statusbar")) AkihabaraDebug.statusBar();
-		if (help.geturlparameter("db") || device.doublebuffering) gbox.setDoubleBuffering(true);
-		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
+		if (data.backgroundColor) { document.body.style.backgroundColor = data.backgroundColor; }
+		if (help.geturlparameter("statusbar")) { AkihabaraDebug.statusBar(); }
+		if (help.geturlparameter("db") || device.doublebuffering) { gbox.setDoubleBuffering(true); }
+		if (help.geturlparameter("noautoskip")) { gbox.setAutoskip(null); }
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
 				if (help.isDefined(data.zoom)) gbox.setZoom(data.zoom); else
 			if (help.isDefined(device.zoom)) gbox.setZoom(device.zoom); else
-			if (help.isDefined(device.width)) gbox.setZoom(device.width/screenwidth); else
-			if (help.isDefined(device.height)) gbox.setZoom(device.height/screenheight);
+			if (help.isDefined(device.width)) gbox.setZoom(device.width / screenwidth); else
+			if (help.isDefined(device.height)) gbox.setZoom(device.height / screenheight);
 
-		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps")*1);
-			else gbox.setFps((data.fps?data.fps: 25));
+		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps") * 1);
+			else gbox.setFps((data.fps ? data.fps : 25));
 		if (help.geturlparameter("fskip")) gbox.setFrameskip(help.geturlparameter("fskip"));
-		if (help.geturlparameter("forcedidle")) gbox.setForcedIdle(help.geturlparameter("forcedidle")*1);
+		if (help.geturlparameter("forcedidle")) gbox.setForcedIdle(help.geturlparameter("forcedidle") * 1);
 			else if (help.isDefined(device.forcedidle)) gbox.setForcedIdle(device.forcedidle);
 		if (help.geturlparameter("canlog")) gbox.setCanLog(true);
 
@@ -559,35 +614,34 @@ var help = {
 		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers") == "yes");
 		if (help.geturlparameter("canaudio")) AkihabaraAudio.setCanAudio(help.geturlparameter("canaudio") == "yes"); else
 			AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || gbox.getFlag("experimental")));
-		if (help.geturlparameter("audiocompatmode")) AkihabaraAudio.setAudioCompatMode(help.geturlparameter("audiocompatmode")*1); else
+		if (help.geturlparameter("audiocompatmode")) AkihabaraAudio.setAudioCompatMode(help.geturlparameter("audiocompatmode") * 1); else
 			if (help.isDefined(device.audiocompatmode)) AkihabaraAudio.setAudioCompatMode(device.audiocompatmode);
-		if (help.geturlparameter("audioteam")) AkihabaraAudio.setAudioTeam(help.geturlparameter("audioteam")*1); else
+		if (help.geturlparameter("audioteam")) AkihabaraAudio.setAudioTeam(help.geturlparameter("audioteam") * 1); else
 			if (help.isDefined(device.audioteam)) AkihabaraAudio.setAudioTeam(device.audioteam);
-		if (help.geturlparameter("loweraudioteam")) AkihabaraAudio.setLowerAudioTeam(help.geturlparameter("loweraudioteam")*1); else
+		if (help.geturlparameter("loweraudioteam")) AkihabaraAudio.setLowerAudioTeam(help.geturlparameter("loweraudioteam") * 1); else
 			if (help.isDefined(device.loweraudioteam)) AkihabaraAudio.setLowerAudioTeam(device.loweraudioteam);
-		if (help.geturlparameter("audiocreatemode")) AkihabaraAudio.setAudioCreateMode(help.geturlparameter("audiocreatemode")*1); else
+		if (help.geturlparameter("audiocreatemode")) AkihabaraAudio.setAudioCreateMode(help.geturlparameter("audiocreatemode") * 1); else
 			if (help.isDefined(device.audiocreatemode)) AkihabaraAudio.setAudioCreateMode(device.audiocreatemode);
-		if (help.geturlparameter("audiodequeuetime")) AkihabaraAudio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime")*1); else
+		if (help.geturlparameter("audiodequeuetime")) AkihabaraAudio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime") * 1); else
 			if (help.isDefined(device.audiodequeuetime)) AkihabaraAudio.setAudioDequeueTime(device.audiodequeuetime);
-		if (help.geturlparameter("audiopositiondelay")) AkihabaraAudio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay")*1); else
+		if (help.geturlparameter("audiopositiondelay")) AkihabaraAudio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay") * 1); else
 			if (help.isDefined(device.audiopositiondelay)) AkihabaraAudio.setAudioPositionDelay(device.audiopositiondelay);
 		if (help.geturlparameter("forcedmimeaudio")) AkihabaraAudio.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio")); else
 			if (help.isDefined(device.forcedmimeaudio)) AkihabaraAudio.setForcedMimeAudio(device.forcedmimeaudio);
 		if (help.geturlparameter("audioissinglechannel")) AkihabaraAudio.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel") == "yes"); else
 			if (help.isDefined(device.audioissinglechannel)) AkihabaraAudio.setAudioIsSingleChannel(device.audioissinglechannel);
 
-
 		if (!data || !data.hardwareonly) {
 			if (help.geturlparameter("touch") != "no" && (help.geturlparameter("touch") == "yes" || device.touch)) {
 				switch (data.padmode) {
-					case "fretboard":
-						iphofretboard.initialize({h: 100, bg: gbox._basepath + "fretboard.png"});
-						break;
-					case "none":
-						break;
-					default:
-						AkihabaraIphopad.initialize({h: 100, dpad: gbox._basepath + "dpad.png",buttons: gbox._basepath + "buttons.png",bg: gbox._basepath + "padbg.png"});
-						break;
+				case "fretboard":
+					iphofretboard.initialize({h: 100, bg: gbox._basepath + "fretboard.png"});
+					break;
+				case "none":
+					break;
+				default:
+					AkihabaraIphopad.initialize({h: 100, dpad: gbox._basepath + "dpad.png", buttons: gbox._basepath + "buttons.png", bg: gbox._basepath + "padbg.png"});
+					break;
 				}
 			}
 		}
