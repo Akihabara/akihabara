@@ -1,6 +1,6 @@
 {
     "predef": [
-        "jasmine", "it", "describe", "expect",
+        "jasmine", "it", "describe", "expect", "ActiveXObject",
         "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer", "trigo", "help",
         "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle",
         "AkihabaraTrigo", "AkihabaraIphofretboard", "AkihabaraIphopad",

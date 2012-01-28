@@ -92,7 +92,7 @@ var toys = {
 		every: function (th, id, frames) {
 			if (toys._maketoy(th, id)) { th.toys[id].timer = 0; }
 			th.toys[id].timer++;
-			if (th.toys[id].timer == frames) {
+			if (th.toys[id].timer === frames) {
 				th.toys[id].timer = 0;
 				return toys._toydone(th, id);
 			} else {
@@ -102,7 +102,7 @@ var toys = {
 
 		after: function (th, id, frames) {
 			if (toys._maketoy(th, id)) { th.toys[id].timer = 0; }
-			if (th.toys[id].timer == frames) {
+			if (th.toys[id].timer === frames) {
 				return toys._toydone(th, id);
 			} else {
 				th.toys[id].timer++;
@@ -227,9 +227,9 @@ var toys = {
 							ts = gbox.getTiles(this.w[i].tileset);
 							var bw = ((this.w[i].maxshown - 1) * this.w[i].gapx) + ts.tilew;
 							gbox.blitClear(gbox.getCanvasContext(this.surfaceid), {x: this.w[i].dx - (this.w[i].rightalign ? bw : 0), y: this.w[i].dy, w: bw, h: ((this.w[i].maxshown - 1) * this.w[i].gapy) + ts.tileh});
-							for (var x = 0; x < this.w[i].maxshown; x++) {
-								if (x < this.w[i].value.length) {
-									gbox.blitTile(gbox.getCanvasContext(this.surfaceid), {tileset: this.w[i].tileset, tile: this.w[i].value[x], dx: (this.w[i].rightalign ? this.w[i].dx - ts.tileh - (this.w[i].gapx * x) : this.w[i].dx + (x * this.w[i].gapx)), dy: this.w[i].dy + (x * this.w[i].gapy), fliph: this.w[i].fliph, flipv: this.w[i].flipv});
+							for (var ii = 0; ii < this.w[i].maxshown; ii++) {
+								if (ii < this.w[i].value.length) {
+									gbox.blitTile(gbox.getCanvasContext(this.surfaceid), {tileset: this.w[i].tileset, tile: this.w[i].value[ii], dx: (this.w[i].rightalign ? this.w[i].dx - ts.tileh - (this.w[i].gapx * ii) : this.w[i].dx + (ii * this.w[i].gapx)), dy: this.w[i].dy + (ii * this.w[i].gapy), fliph: this.w[i].fliph, flipv: this.w[i].flipv});
 								}
 							}
 						}
@@ -282,11 +282,11 @@ var toys = {
 				},
 
 				setValue: function (w, k, v) {
-					if (this.w[w][k] != v) {
-						if (k == "value") {
+					if (this.w[w][k] !== v) {
+						if (k === "value") {
 							if ((this.w[w].maxvalue != null) && (v > this.w[w].maxvalue)) { v = this.w[w].maxvalue; }
 							if ((this.w[w].minvalue != null) && (v < this.w[w].minvalue)) { v = this.w[w].minvalue; }
-							if (this.w[w].widget == "radio") { v = (v % this.w[w].frames.length); }
+							if (this.w[w].widget === "radio") { v = (v % this.w[w].frames.length); }
 						}
 						this.w[w][k] = v;
 						this.updateWidget(w);
@@ -333,13 +333,13 @@ var toys = {
 			gbox.blitFade(tox, data);
 			if (data.audiofade) { AkihabaraAudio.setAudioVolume(data.audiofade, th.toys[id].stv * (1 - data.alpha)); }
 			if (data.audiochannelfade) {
-				if (data.alpha == 1) {
+				if (data.alpha === 1) {
 					AkihabaraAudio.stopChannel(data.audiochannelfade);
 				} else {
 					AkihabaraAudio.setChannelVolume(data.audiochannelfade, th.toys[id].chv * (1 - data.alpha));
 				}
 			}
-			return toys._toyfrombool(th, id, th.toys[id].fade == 1);
+			return toys._toyfrombool(th, id, th.toys[id].fade === 1);
 		},
 
 		fadein: function (th, id, tox, data) {
@@ -356,7 +356,7 @@ var toys = {
 				if (data.audiochannelfade) { AkihabaraAudio.setChannelVolume(data.audiochannelfade, th.toys[id].chv * (1 - data.alpha)); }
 				gbox.blitFade(tox, data);
 			}
-			return toys._toyfrombool(th, id, th.toys[id].fade == 0);
+			return toys._toyfrombool(th, id, th.toys[id].fade === 0);
 		}
 	},
 
@@ -402,7 +402,7 @@ var toys = {
 				th.toys[id].played = false;
 			}
 			if (!th.toys[id].every) {
-				if ((data.x != th.toys[id].x) || (data.y != th.toys[id].y)) {
+				if ((data.x !== th.toys[id].x) || (data.y !== th.toys[id].y)) {
 					if ((Math.abs(data.x - th.toys[id].x) <= data.speed) && (Math.abs(data.y - th.toys[id].y) <= data.speed)) {
 						th.toys[id].x = data.x;
 						th.toys[id].y = data.y;
@@ -434,7 +434,7 @@ var toys = {
 					gbox.blitAll(gbox.getBufferContext(), gbox.getImage(data.image), {dx: th.toys[id].x, dy: th.toys[id].y, alpha: data.alpha});
 				}
 			}
-			return toys._toyfrombool(th, id, (data.x == th.toys[id].x) && (data.y == th.toys[id].y));
+			return toys._toyfrombool(th, id, (data.x === th.toys[id].x) && (data.y === th.toys[id].y));
 		},
 
 		crossed: function (th, id, data) {
@@ -465,7 +465,7 @@ var toys = {
 				th.toys[id].done = false;
 				th.toys[id].img = gbox.getImage(data.image);
 			}
-			if (th.toys[id].zoom != 1) {
+			if (th.toys[id].zoom !== 1) {
 				th.toys[id].zoom -= data.speed;
 				if (th.toys[id].zoom <= 1) {
 					th.toys[id].zoom = 1;
@@ -519,7 +519,7 @@ var toys = {
 					if (data.audiobounce) { AkihabaraAudio.hitAudio(data.audiobounce); }
 					th.toys[id].y = data.floory - th.toys[id].h;
 					th.toys[id].accy = -Math.ceil(th.toys[id].accy / (data.heavy ? data.heavy : 2));
-					th.toys[id].done = (th.toys[id].accy == 0);
+					th.toys[id].done = (th.toys[id].accy === 0);
 				} else {
 					th.toys[id].accy--;
 				}
@@ -550,7 +550,7 @@ var toys = {
 					th.toys[id].timer = 0;
 					th.toys[id].newscene = false;
 					th.toys[id].sceneid++;
-					th.toys[id].ended = (th.toys[id].sceneid == data.scenes.length);
+					th.toys[id].ended = (th.toys[id].sceneid === data.scenes.length);
 					if (!th.toys[id].ended) {
 						th.toys[id].letter = 0;
 						th.toys[id].wait = false;
@@ -608,7 +608,7 @@ var toys = {
 						// MOVING
 
 						if (th.toys[id].scene.talk) { // DIALOGUES
-							if (th.toys[id].counter == th.toys[id].scene.speed) {
+							if (th.toys[id].counter === th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter = 0;
 								if (th.toys[id].scene.audio && !(th.toys[id].letter % 3)) { AkihabaraAudio.hitAudio(th.toys[id].scene.audio); }
@@ -617,7 +617,7 @@ var toys = {
 								while (tmp > th.toys[id].scene.talk[row].length) {
 									tmp -= th.toys[id].scene.talk[row].length;
 									row++;
-									if (row == th.toys[id].scene.talk.length) {
+									if (row === th.toys[id].scene.talk.length) {
 										row = -1;
 										break;
 									}
@@ -635,32 +635,32 @@ var toys = {
 							}
 						} else if (th.toys[id].scene.scroller) { // SCROLLER (i.e. credits)
 
-							if (th.toys[id].counter == th.toys[id].scene.speed) {
+							if (th.toys[id].counter === th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter = 0;
-								if (th.toys[id].letter == (gbox.getCanvas("scroller-" + id).height + th.toys[id].scene.push)) {
+								if (th.toys[id].letter === (gbox.getCanvas("scroller-" + id).height + th.toys[id].scene.push)) {
 									th.toys[id].wait = true;
 								}
 							}
 
 						} else if (th.toys[id].scene.bonus) { // BONUS (classic bonus award screen)
-							for (var row = 0; row <= th.toys[id].letter; row++) {
-								if (th.toys[id].scene.bonus[row].text) {
+							for (var roww = 0; roww <= th.toys[id].letter; roww++) {
+								if (th.toys[id].scene.bonus[roww].text) {
 									gbox.blitText(gbox.getCanvasContext("bonus-" + id), {
 										font: data.font,
 										dx: 0,
-										dy: (row * (th.toys[id].fd.tileh + th.toys[id].scene.spacing)),
-										text: th.toys[id].scene.bonus[row].text
+										dy: (roww * (th.toys[id].fd.tileh + th.toys[id].scene.spacing)),
+										text: th.toys[id].scene.bonus[roww].text
 									});
-								} else if (th.toys[id].scene.bonus[row].mul) {
+								} else if (th.toys[id].scene.bonus[roww].mul) {
 									// Mask is %VAL%e%MUL% = %TOT%
-									th.toys[id].scene.bonus[row].tmptext = th.toys[id].scene.bonus[row].mask.replace(/%VAL%/, th.toys[id].timer).replace(/%MUL%/, th.toys[id].scene.bonus[row].mul).replace(/%TOT%/, (th.toys[id].timer * th.toys[id].scene.bonus[row].mul));
+									th.toys[id].scene.bonus[roww].tmptext = th.toys[id].scene.bonus[roww].mask.replace(/%VAL%/, th.toys[id].timer).replace(/%MUL%/, th.toys[id].scene.bonus[roww].mul).replace(/%TOT%/, (th.toys[id].timer * th.toys[id].scene.bonus[roww].mul));
 									gbox.blitText(gbox.getCanvasContext("bonus-" + id), {
 										clear: true,
 										font: data.font,
 										dx: 0,
-										dy: (row * (th.toys[id].fd.tileh + th.toys[id].scene.spacing)),
-										text: th.toys[id].scene.bonus[row].tmptext
+										dy: (roww * (th.toys[id].fd.tileh + th.toys[id].scene.spacing)),
+										text: th.toys[id].scene.bonus[roww].tmptext
 									});
 								}
 							}
@@ -684,7 +684,7 @@ var toys = {
 								} else if (th.toys[id].counter >= th.toys[id].scene.speed) { next = true; }
 
 								if (next) {
-									if (th.toys[id].letter == th.toys[id].scene.bonus.length - 1) {
+									if (th.toys[id].letter === th.toys[id].scene.bonus.length - 1) {
 										th.toys[id].wait = true;
 									} else {
 										th.toys[id].letter++;
@@ -764,7 +764,7 @@ var toys = {
 						this.x += this.accx;
 						this.y += this.accy;
 						if (this.gravity) { this.accy++; }
-						if ((this.timer == this.toptimer) || (this.trashoffscreen && (!gbox.objectIsVisible(this)))) {
+						if ((this.timer === this.toptimer) || (this.trashoffscreen && (!gbox.objectIsVisible(this)))) {
 							gbox.trashObject(this);
 						}
 					}
