@@ -41,30 +41,30 @@ var shmup = {
 		th.counter = 0; // self counter
 		th.hittimer = 0;
 		th.killed = false;
-		help.copyModel(th, data);
+		AkihabaraHelp.copyModel(th, data);
 	},
 
-	getNextX: function (th) { return th.x + help.limit(th.accx, -th.maxacc, th.maxacc); },
-	getNextY: function (th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
+	getNextX: function (th) { return th.x + AkihabaraHelp.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxacc, th.maxacc); },
 	controlKeys: function (th, keys) {
 
 		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
 			th.xpushing = shmup.PUSH_LEFT;
 			if (th.accx > th.responsive) th.accx = th.responsive;
-			th.accx = help.limit(th.accx-1, -th.controlmaxacc, th.controlmaxacc);
+			th.accx = AkihabaraHelp.limit(th.accx-1, -th.controlmaxacc, th.controlmaxacc);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
 			th.xpushing = shmup.PUSH_RIGHT;
 			if (th.accx < -th.responsive) th.accx = -th.responsive;
-			th.accx = help.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+			th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else th.xpushing = shmup.PUSH_NONE;
 		if (AkihabaraGamebox.keyIsPressed(keys.up)) {
 			th.ypushing = shmup.PUSH_UP;
 			if (th.accy > th.responsive) th.accy = th.responsive;
-			th.accy = help.limit(th.accy-1, -th.controlmaxacc, th.controlmaxacc);
+			th.accy = AkihabaraHelp.limit(th.accy-1, -th.controlmaxacc, th.controlmaxacc);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.down)) {
 			th.ypushing = shmup.PUSH_DOWN;
 			if (th.accy < -th.responsive) th.accy = -th.responsive;
-			th.accy = help.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+			th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else th.ypushing = shmup.PUSH_NONE;
 	},
 
@@ -74,8 +74,8 @@ var shmup = {
 	},
 
 	handleAccellerations: function (th) {
-		if (!th.xpushing) th.accx = help.goToZero(th.accx);
-		if (!th.ypushing) th.accy = help.goToZero(th.accy);
+		if (!th.xpushing) th.accx = AkihabaraHelp.goToZero(th.accx);
+		if (!th.ypushing) th.accy = AkihabaraHelp.goToZero(th.accy);
 	},
 
 	keepInBounds: function (th) {
@@ -97,7 +97,7 @@ var shmup = {
 
 	setFrame: function (th) {
 		if (th.hittimer) th.hittimer--;
-		th.frame = help.decideFrame(th.counter, (th.hittimer?th.frames.hit: th.frames.still));
+		th.frame = AkihabaraHelp.decideFrame(th.counter, (th.hittimer?th.frames.hit: th.frames.still));
 	},
 
 	fireBullet: function (gr, id, data) {
@@ -143,7 +143,7 @@ var shmup = {
 		};
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 		};
 
 		return obj;
@@ -310,7 +310,7 @@ var shmup = {
 		};
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 			if (this.dohandler && (this.dohandler.render != null)) this.dohandler.render(this);
 		};
 
@@ -321,7 +321,7 @@ var shmup = {
 	generateScroller: function (gr, id, data) {
 		var obj = AkihabaraGamebox.addObject(
 			Akihabara.extendsFrom(
-				help.cloneObject(data), {
+				AkihabaraHelp.cloneObject(data), {
 					id: id, group: gr,
 					y: 0, x: 0,
 					stage: {},

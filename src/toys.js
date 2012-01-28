@@ -17,24 +17,24 @@ var AkihabaraToys = {
 
 	resetToy: function (th, id) { if (th.toys) { delete th.toys[id]; } },
 	getToyValue: function (th, id, v, def) { return ((th.toys == null) || (th.toys[id] == null) ? def : th.toys[id][v]); },
-	getToyStatus: function (th, id) { return ((th.toys == null) || (th.toys[id] == null) ? toys.TOY_BUSY : th.toys[id].__status); },
+	getToyStatus: function (th, id) { return ((th.toys == null) || (th.toys[id] == null) ? AkihabaraToys.TOY_BUSY : th.toys[id].__status); },
 
 	_toydone: function (th, id) {
-		if (th.toys[id].__status < toys.TOY_IDLE) { th.toys[id].__status++; }
+		if (th.toys[id].__status < AkihabaraToys.TOY_IDLE) { th.toys[id].__status++; }
 		return th.toys[id].__status;
 	},
 
 	_toybusy: function (th, id) {
-		th.toys[id].__status = toys.TOY_BUSY;
+		th.toys[id].__status = AkihabaraToys.TOY_BUSY;
 		return th.toys[id].__status;
 	},
 
-	_toyfrombool: function (th, id, b) { return (b ? toys._toydone(th, id) : toys._toybusy(th, id)); },
+	_toyfrombool: function (th, id, b) { return (b ? AkihabaraToys._toydone(th, id) : AkihabaraToys._toybusy(th, id)); },
 
 	_maketoy: function (th, id) {
 		if (!th.toys) { th.toys = {}; }
 		if (!th.toys[id]) {
-			th.toys[id] = {__status: toys.TOY_BUSY};
+			th.toys[id] = {__status: AkihabaraToys.TOY_BUSY};
 			return true;
 		} else { return false; }
 	},
@@ -47,20 +47,20 @@ var AkihabaraToys = {
 	timer: {
 
 		randomly: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
-				th.toys[id].time = help.random(data.base, data.range);
+			if (AkihabaraToys._maketoy(th, id)) {
+				th.toys[id].time = AkihabaraHelp.random(data.base, data.range);
 			}
 			if (th.toys[id].time) {
 				th.toys[id].time--;
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			} else {
-				th.toys[id].time = help.random(data.base, data.range);
-				return toys._toydone(th, id);
+				th.toys[id].time = AkihabaraHelp.random(data.base, data.range);
+				return AkihabaraToys._toydone(th, id);
 			}
 		},
 
 		real: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].subtimer = AkihabaraGamebox.getFps();
 				th.toys[id].done = false;
 				if (data.countdown) {
@@ -85,28 +85,28 @@ var AkihabaraToys = {
 					th.toys[id].time++;
 				}
 			}
-			return toys._toyfrombool(th, id, th.toys[id].done);
+			return AkihabaraToys._toyfrombool(th, id, th.toys[id].done);
 
 		},
 
 		every: function (th, id, frames) {
-			if (toys._maketoy(th, id)) { th.toys[id].timer = 0; }
+			if (AkihabaraToys._maketoy(th, id)) { th.toys[id].timer = 0; }
 			th.toys[id].timer++;
 			if (th.toys[id].timer === frames) {
 				th.toys[id].timer = 0;
-				return toys._toydone(th, id);
+				return AkihabaraToys._toydone(th, id);
 			} else {
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			}
 		},
 
 		after: function (th, id, frames) {
-			if (toys._maketoy(th, id)) { th.toys[id].timer = 0; }
+			if (AkihabaraToys._maketoy(th, id)) { th.toys[id].timer = 0; }
 			if (th.toys[id].timer === frames) {
-				return toys._toydone(th, id);
+				return AkihabaraToys._toydone(th, id);
 			} else {
 				th.toys[id].timer++;
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			}
 		}
 	},
@@ -114,7 +114,7 @@ var AkihabaraToys = {
 	// Logical helpers
 	logic: {
 		once: function (th, id, cond) {
-			if (toys._maketoy(th, id)) { th.toys[id].done = false; }
+			if (AkihabaraToys._maketoy(th, id)) { th.toys[id].done = false; }
 			if (th.toys[id].done) {
 				return false;
 			} else {
@@ -130,7 +130,7 @@ var AkihabaraToys = {
 	ui: {
 
 		menu: function (th, id, opt) {
-			if (toys._maketoy(th, id) || opt.resetmenu) {
+			if (AkihabaraToys._maketoy(th, id) || opt.resetmenu) {
 				var fd = AkihabaraGamebox.getFont(opt.font);
 				th.toys[id].selected = (opt.selected ? opt.selected : 0);
 				th.toys[id].ok = 0;
@@ -171,15 +171,15 @@ var AkihabaraToys = {
 				if (th.toys[id].ok > 0) {
 					if (th.toys[id].ok < 10) {
 						th.toys[id].ok++;
-						toys._toybusy(th, id);
+						AkihabaraToys._toybusy(th, id);
 					} else {
-						return toys._toydone(th, id); // selected > 0
+						return AkihabaraToys._toydone(th, id); // selected > 0
 					}
 				} else {
-					return toys._toydone(th, id); // selected == -1
+					return AkihabaraToys._toydone(th, id); // selected == -1
 				}
 			} else {
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			}
 		},
 
@@ -196,10 +196,10 @@ var AkihabaraToys = {
 
 						if (this.w[i].widget === "label") {
 							if (this.w[i].prepad != null) {
-								this.w[i].text = help.prepad(this.w[i].value, this.w[i].prepad, this.w[i].padwith);
+								this.w[i].text = AkihabaraHelp.prepad(this.w[i].value, this.w[i].prepad, this.w[i].padwith);
 							} else {
 								if (this.w[i].postpad != null) {
-									this.w[i].text = help.postpad(this.w[i].value, this.w[i].postpad, this.w[i].padwith);
+									this.w[i].text = AkihabaraHelp.postpad(this.w[i].value, this.w[i].postpad, this.w[i].padwith);
 								} else {
 									this.w[i].text = this.w[i].value + "";
 								}
@@ -322,7 +322,7 @@ var AkihabaraToys = {
 	fullscreen: {
 
 		fadeout: function (th, id, tox, data) {
-			if (toys._maketoy(th, id) || data.resetfade) {
+			if (AkihabaraToys._maketoy(th, id) || data.resetfade) {
 				th.toys[id].fade = 0;
 				if (data.audiofade) { th.toys[id].stv = AkihabaraAudio.getAudioVolume(data.audiofade); }
 				if (data.audiochannelfade) { th.toys[id].chv = AkihabaraAudio.getChannelVolume(data.audiochannelfade); }
@@ -339,11 +339,11 @@ var AkihabaraToys = {
 					AkihabaraAudio.setChannelVolume(data.audiochannelfade, th.toys[id].chv * (1 - data.alpha));
 				}
 			}
-			return toys._toyfrombool(th, id, th.toys[id].fade === 1);
+			return AkihabaraToys._toyfrombool(th, id, th.toys[id].fade === 1);
 		},
 
 		fadein: function (th, id, tox, data) {
-			if (toys._maketoy(th, id) || data.resetfade) {
+			if (AkihabaraToys._maketoy(th, id) || data.resetfade) {
 				th.toys[id].fade = 1;
 				if (data.audiofade) { th.toys[id].stv = AkihabaraAudio.getAudioVolume(data.audiofade); }
 				if (data.audiochannelfade) { th.toys[id].chv = AkihabaraAudio.getChannelDefaultVolume(data.audiochannelfade); }
@@ -356,14 +356,14 @@ var AkihabaraToys = {
 				if (data.audiochannelfade) { AkihabaraAudio.setChannelVolume(data.audiochannelfade, th.toys[id].chv * (1 - data.alpha)); }
 				AkihabaraGamebox.blitFade(tox, data);
 			}
-			return toys._toyfrombool(th, id, th.toys[id].fade === 0);
+			return AkihabaraToys._toyfrombool(th, id, th.toys[id].fade === 0);
 		}
 	},
 
 	text: {
 
 		blink: function (th, id, tox, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].texttimer = 0;
 				th.toys[id].visible = false;
 				th.toys[id].times = 0;
@@ -378,24 +378,24 @@ var AkihabaraToys = {
 			if (th.toys[id].visible) {
 				AkihabaraGamebox.blitText(tox, data);
 			}
-			return toys._toyfrombool(th, id, (data.times ? data.times < th.toys[id].times : false));
+			return AkihabaraToys._toyfrombool(th, id, (data.times ? data.times < th.toys[id].times : false));
 		},
 
 		fixed: function (th, id, tox, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].texttimer = 0;
 			} else {
 				th.toys[id].texttimer++;
 			}
 			AkihabaraGamebox.blitText(tox, data);
-			return toys._toyfrombool(th, id, data.time < th.toys[id].texttimer);
+			return AkihabaraToys._toyfrombool(th, id, data.time < th.toys[id].texttimer);
 		}
 	},
 
 	logos: {
 
 		linear: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].x = data.sx;
 				th.toys[id].y = data.sy;
 				th.toys[id].every = data.every;
@@ -434,11 +434,11 @@ var AkihabaraToys = {
 					AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: th.toys[id].x, dy: th.toys[id].y, alpha: data.alpha});
 				}
 			}
-			return toys._toyfrombool(th, id, (data.x === th.toys[id].x) && (data.y === th.toys[id].y));
+			return AkihabaraToys._toyfrombool(th, id, (data.x === th.toys[id].x) && (data.y === th.toys[id].y));
 		},
 
 		crossed: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].gapx = data.gapx;
 				th.toys[id].lw = AkihabaraGamebox.getImage(data.image).height;
 				th.toys[id].done = false;
@@ -448,19 +448,19 @@ var AkihabaraToys = {
 				if (th.toys[id].gapx < 0) { th.toys[id].gapx = 0; }
 				AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x - th.toys[id].gapx, dy: data.y, alpha: data.alpha});
 				AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x + th.toys[id].gapx, dy: data.y, alpha: data.alpha});
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			} else {
 				if (!th.toys[id].done) {
 					th.toys[id].done = true;
 					if (data.audioreach) { AkihabaraAudio.hitAudio(data.audioreach); }
 				}
 				AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x, dy: data.y});
-				return toys._toydone(th, id);
+				return AkihabaraToys._toydone(th, id);
 			}
 		},
 
 		zoomout: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].zoom = data.zoom;
 				th.toys[id].done = false;
 				th.toys[id].img = AkihabaraGamebox.getImage(data.image);
@@ -472,15 +472,15 @@ var AkihabaraToys = {
 					if (data.audioreach) { AkihabaraAudio.hitAudio(data.audioreach); }
 				}
 				AkihabaraGamebox.blit(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {h: th.toys[id].img.height, w: th.toys[id].img.width, dx: data.x - Math.floor(th.toys[id].img.width * (th.toys[id].zoom - 1) / 2), dy: data.y - Math.floor(th.toys[id].img.height * (th.toys[id].zoom - 1) / 2), dh: Math.floor(th.toys[id].img.height * th.toys[id].zoom), dw: Math.floor(th.toys[id].img.width * th.toys[id].zoom), alpha: 1 / th.toys[id].zoom});
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			} else {
 				AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x, dy: data.y});
-				return toys._toydone(th, id);
+				return AkihabaraToys._toydone(th, id);
 			}
 		},
 
 		rising: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].cnt = 0;
 				th.toys[id].lh = AkihabaraGamebox.getImage(data.image).height;
 				th.toys[id].lw = AkihabaraGamebox.getImage(data.image).width;
@@ -496,19 +496,19 @@ var AkihabaraToys = {
 				if (th.toys[id].cnt >= th.toys[id].lh) {
 					if (data.audioreach) { AkihabaraAudio.hitAudio(data.audioreach); }
 				}
-				return toys._toybusy(th, id);
+				return AkihabaraToys._toybusy(th, id);
 			} else {
 				AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x, dy: data.y});
 				if (data.reflex) {
 					AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x, dy: data.y + th.toys[id].lh, alpha: data.reflex, flipv: true});
 				}
 
-				return toys._toydone(th, id);
+				return AkihabaraToys._toydone(th, id);
 			}
 		},
 
 		bounce: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].accy = data.accy;
 				th.toys[id].y = data.y;
 				th.toys[id].h = AkihabaraGamebox.getImage(data.image).height;
@@ -527,14 +527,14 @@ var AkihabaraToys = {
 			}
 			AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(data.image), {dx: data.x, dy: th.toys[id].y});
 
-			return toys._toyfrombool(th, id, th.toys[id].done);
+			return AkihabaraToys._toyfrombool(th, id, th.toys[id].done);
 		}
 	},
 
 	dialogue: {
 
 		render: function (th, id, data) {
-			if (toys._maketoy(th, id)) {
+			if (AkihabaraToys._maketoy(th, id)) {
 				th.toys[id].newscene = true;
 				th.toys[id].sceneid = -1;
 				th.toys[id].ended = false;
@@ -709,7 +709,7 @@ var AkihabaraToys = {
 					}
 					if (data.who[th.toys[id].scene.who].tileset) {
 						th.toys[id].anim = (th.toys[id].anim + 1) % 20;
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: data.who[th.toys[id].scene.who].tileset, tile: help.decideFrame(th.toys[id].anim, data.who[th.toys[id].scene.who].frames), dx: data.who[th.toys[id].scene.who].portraitx, dy: data.who[th.toys[id].scene.who].portraity, camera: false, fliph: data.who[th.toys[id].scene.who].fliph, flipv: data.who[th.toys[id].scene.who].flipv});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: data.who[th.toys[id].scene.who].tileset, tile: AkihabaraHelp.decideFrame(th.toys[id].anim, data.who[th.toys[id].scene.who].frames), dx: data.who[th.toys[id].scene.who].portraitx, dy: data.who[th.toys[id].scene.who].portraity, camera: false, fliph: data.who[th.toys[id].scene.who].fliph, flipv: data.who[th.toys[id].scene.who].flipv});
 					}
 					AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getCanvas("dialogue-" + id), {dx: 0, dy: 0});
 				} else if (th.toys[id].scene.scroller) { // SCROLLER (i.e. credits)
@@ -718,7 +718,7 @@ var AkihabaraToys = {
 					AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getCanvas("bonus-" + id), {dx: th.toys[id].sceneX, dy: th.toys[id].sceneY});
 				}
 			}
-			return toys._toyfrombool(th, id, th.toys[id].ended);
+			return AkihabaraToys._toyfrombool(th, id, th.toys[id].ended);
 		}
 	},
 
@@ -772,7 +772,7 @@ var AkihabaraToys = {
 
 				obj[(data.bliton == null ? "blit":data.bliton)] = function () {
 					if ((this.timer >= 0) && (!this.blinkspeed || (Math.floor(this.timer / this.blinkspeed) % 2))) {
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
 					}
 				};
 
@@ -862,7 +862,7 @@ var AkihabaraToys = {
 
 				obj[(data.bliton == null ? "blit":data.bliton)] = function () {
 					if (!this.blinkspeed || (Math.floor(this.cnt / this.blinkspeed) % 2)) {
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 					}
 				};
 

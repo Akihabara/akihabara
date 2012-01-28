@@ -45,10 +45,10 @@ var AkihabaraGamecycle = {
 			gameIntroAnimation: function (reset) {
 				if (reset) {
 					AkihabaraAudio.stopChannel("bgmusic");
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
 					AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 1});
-					return toys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "LETS BEGIN!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 6});
+					return AkihabaraToys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "LETS BEGIN!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 6});
 				}
 			},
 
@@ -56,10 +56,10 @@ var AkihabaraGamecycle = {
 			levelIntroAnimation: function (reset) {
 				if (reset) {
 					AkihabaraAudio.stopChannel("bgmusic");
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
 					AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 1});
-					return toys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "GET READY!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 6});
+					return AkihabaraToys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "GET READY!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 6});
 				}
 			},
 
@@ -67,10 +67,10 @@ var AkihabaraGamecycle = {
 			newlifeIntroAnimation: function (reset) {
 				if (reset) {
 					AkihabaraAudio.stopChannel("bgmusic");
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
 					AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 1});
-					return toys.text.fixed(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "GET READY!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), time: 30});
+					return AkihabaraToys.text.fixed(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "GET READY!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), time: 30});
 				}
 			},
 
@@ -78,10 +78,10 @@ var AkihabaraGamecycle = {
 			gameoverIntroAnimation: function (reset) {
 				if (reset) {
 					AkihabaraAudio.stopChannel("bgmusic");
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
 					AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 1});
-					return toys.text.fixed(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "GAME OVER", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), time: 50});
+					return AkihabaraToys.text.fixed(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "GAME OVER", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), time: 50});
 				}
 			},
 
@@ -98,28 +98,28 @@ var AkihabaraGamecycle = {
 			// End level animation
 			endlevelIntroAnimation: function (reset) {
 				if (reset) {
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
-					return toys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "WELL DONE!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 10});
+					return AkihabaraToys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "WELL DONE!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 10});
 				}
 			},
 
 			// Game ending
 			gameEndingIntroAnimation: function (reset) {
 				if (reset) {
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
 					AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 1});
-					return toys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "CONGRATULATIONS!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 10});
+					return AkihabaraToys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "CONGRATULATIONS!", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH(), blinkspeed: 5, times: 10});
 				}
 			},
 
 			// PRESS START
 			pressStartIntroAnimation: function (reset) {
 				if (reset) {
-					toys.resetToy(this, "default-blinker");
+					AkihabaraToys.resetToy(this, "default-blinker");
 				} else {
-					toys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "PRESS A TO START", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: Math.floor(AkihabaraGamebox.getScreenH() / 3), dw: AkihabaraGamebox.getScreenW(), dh: Math.floor(AkihabaraGamebox.getScreenH() / 3) * 2, blinkspeed: 10});
+					AkihabaraToys.text.blink(this, "default-blinker", AkihabaraGamebox.getBufferContext(), {font: "small", text: "PRESS A TO START", valign: AkihabaraGamebox.ALIGN_MIDDLE, halign: AkihabaraGamebox.ALIGN_CENTER, dx: 0, dy: Math.floor(AkihabaraGamebox.getScreenH() / 3), dw: AkihabaraGamebox.getScreenW(), dh: Math.floor(AkihabaraGamebox.getScreenH() / 3) * 2, blinkspeed: 10});
 					return AkihabaraInput.keyIsHit("a");
 				}
 			},
@@ -136,14 +136,14 @@ var AkihabaraGamecycle = {
 
 			gameMenu: function (reset) {
 				if (reset) {
-					toys.resetToy(this, "difficulty");
+					AkihabaraToys.resetToy(this, "difficulty");
 				} else {
 					AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 0.5});
-					if (toys.ui.menu(this, "difficulty", {audiooption: "default-menu-option", audioconfirm: "default-menu-confirm", font: "small", keys: {up: "up", down: "down", ok: "a", cancel: "b"}, selector: " > ", items: ["EASY", "NORMAL", "HARD"], x: 10, y: 10})) {
-						if (toys.getToyValue(this, "difficulty", "ok") === -1) {
+					if (AkihabaraToys.ui.menu(this, "difficulty", {audiooption: "default-menu-option", audioconfirm: "default-menu-confirm", font: "small", keys: {up: "up", down: "down", ok: "a", cancel: "b"}, selector: " > ", items: ["EASY", "NORMAL", "HARD"], x: 10, y: 10})) {
+						if (AkihabaraToys.getToyValue(this, "difficulty", "ok") === -1) {
 							return -1;
 						} else {
-							this.difficulty = toys.getToyValue(this, "difficulty", "selected");
+							this.difficulty = AkihabaraToys.getToyValue(this, "difficulty", "selected");
 							return true;
 						}
 					}
@@ -256,10 +256,10 @@ var AkihabaraGamecycle = {
 					case 102: // Fader
 						if (this.stateFirstIteration) {
 							this._resetGroups();
-							toys.resetToy(this, "fadeout");
+							AkihabaraToys.resetToy(this, "fadeout");
 							this.stateIsReady();
 						}
-						if (toys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) {
+						if (AkihabaraToys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) {
 							this.setState(200);
 						}
 						break;
@@ -290,10 +290,10 @@ var AkihabaraGamecycle = {
 					if (this.stateFirstIteration) {
 						switch (this.state) {
 						case 200: // Game intro
-							toys.resetToy(this, "fadein");
+							AkihabaraToys.resetToy(this, "fadein");
 							this.level = null;
 							this._nextlevel = null;
-							this.hud = toys.ui.hud("maingamehud");
+							this.hud = AkihabaraToys.ui.hud("maingamehud");
 							this.initializeGame();
 							this.gameIntroAnimation(true);
 							break;
@@ -306,17 +306,17 @@ var AkihabaraGamecycle = {
 						case 800:
 						case 400:
 							this.endlevelIntroAnimation(true);
-							toys.resetToy(this, "fadeout");
+							AkihabaraToys.resetToy(this, "fadeout");
 							break;
 						case 501:
-							toys.resetToy(this, "fadeout");
+							AkihabaraToys.resetToy(this, "fadeout");
 							break;
 						case 401:
 							AkihabaraGamebox.soloGroup(this.group);
 							this.levelIntroAnimation(true);
 							break;
 						case 402:
-							toys.resetToy(this, "fadein");
+							AkihabaraToys.resetToy(this, "fadein");
 							this.level = this._nextlevel;
 							AkihabaraGamebox.playAllGroups();
 							this.changeLevel(this._nextlevel);
@@ -329,7 +329,7 @@ var AkihabaraGamecycle = {
 							this._loselife.counter = 0;
 							break;
 						case 601:
-							toys.resetToy(this, "fadein");
+							AkihabaraToys.resetToy(this, "fadein");
 							this.newLife();
 							AkihabaraGamebox.playAllGroups();
 							break;
@@ -354,23 +354,23 @@ var AkihabaraGamecycle = {
 					case 601: // Fade in with new life
 					case 402: // Fade in after level change
 					case 300: // Fade in at the beginning of the game
-						if (toys.fullscreen.fadein(this, "fadein", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) { this.setState(301); }
+						if (AkihabaraToys.fullscreen.fadein(this, "fadein", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) { this.setState(301); }
 						break;
 					case 301: // Ingame stuff
 						this.gameEvents();
 						break;
 					case 400: // Fade out before changing the level
 						if (this.endlevelIntroAnimation(false)) {
-							if (toys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) { this.setState(401); }
+							if (AkihabaraToys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) { this.setState(401); }
 						}
 						break;
 					case 800: // Fade out before game ending
 						if (this.endlevelIntroAnimation(false)) {
-							if (toys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) { this.setState(801); }
+							if (AkihabaraToys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) { this.setState(801); }
 						}
 						break;
 					case 501: // Fade out after dead
-						if (toys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) {
+						if (AkihabaraToys.fullscreen.fadeout(this, "fadeout", AkihabaraGamebox.getBufferContext(), {fadespeed: 0.05, audiochannelfade: "bgmusic"})) {
 							if (this.gameIsOver()) {
 								this.setState(700); // GAME OVER
 							} else {

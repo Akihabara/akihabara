@@ -87,7 +87,7 @@ var AkihabaraHelp = {
 	},
 
 	/**
-	* Generates uniformly distributed random integers between min and min + range, non-inclusive. So help.random(0, 2) will only return 0 and 1, etc.
+	* Generates uniformly distributed random integers between min and min + range, non-inclusive. So AkihabaraHelp.random(0, 2) will only return 0 and 1, etc.
 	* @param {Integer} min The minimum random value to be returned by the function.
 	* @param {Integer} range The number of different values returned by the function.
 	* @returns An integer between min (includive) and min + range (noninclusive).
@@ -288,7 +288,7 @@ var AkihabaraHelp = {
 	* @example
 	* dst = {a: 1, b: 2, c: "three"};
 	* src = {c: "three", d: "four"};
-	* merged = help.mergeWithModel(dst, src);
+	* merged = AkihabaraHelp.mergeWithModel(dst, src);
 	* merged; // => {a: 1, b: 2, c: 3, d: "four"};
 	*/
 	mergeWithModel: function (data, model) {
@@ -309,7 +309,7 @@ var AkihabaraHelp = {
 	* @example
 	* dst = {a: 1, b: 2, c: "three"};
 	* src = {c: "three", d: "four"};
-	* merged = help.mergeWithModel(dst, src);
+	* merged = AkihabaraHelp.mergeWithModel(dst, src);
 	* merged; // => {a: 1, b: 2, c: "three", d: "four"}
 	*/
 	copyModel: function (data, model) {
@@ -327,7 +327,7 @@ var AkihabaraHelp = {
 	* @returns A new set of parameters based on the subset specified.
 	* @example
 	* data = {a: 1, b: 2, c: "three"};
-	* newdata = help.createModel(data, ["a", "c"]);
+	* newdata = AkihabaraHelp.createModel(data, ["a", "c"]);
 	* newdata; // => {a: 1, c: "three"}
 	*/
 	createModel: function (obj, attrs) {
@@ -344,7 +344,7 @@ var AkihabaraHelp = {
 	* @returns A new object, equivalent to 'model'.
 	* @example
 	* data = {a: 1, b: 2, c: "three"};
-	* newdata = help.cloneObject(data);
+	* newdata = AkihabaraHelp.cloneObject(data);
 	* newdata; // => {a: 1, b: 2, c: "three"}
 	*/
 	cloneObject: function (model) {
@@ -364,7 +364,7 @@ var AkihabaraHelp = {
 	* @param {String} The ID of the map. Defaults to 'map'.
 	* @example
 	* // Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.
-	* help.setTileInMap(AkihabaraGamebox.getCanvasContext("map_canvas"), map, 1, 1, null, "map");
+	* AkihabaraHelp.setTileInMap(AkihabaraGamebox.getCanvasContext("map_canvas"), map, 1, 1, null, "map");
 	*/
 	setTileInMap: function (ctx, tilemap, x, y, tile, map) {
 		var ts = AkihabaraGamebox.getTiles(tilemap.tileset);
@@ -389,7 +389,7 @@ var AkihabaraHelp = {
 		var ts = AkihabaraGamebox.getTiles(tilemap.tileset);
 		x = Math.floor(x / ts.tilew);
 		y = Math.floor(y / ts.tileh);
-		help.setTileInMap(ctx, tilemap, x, y, tile, map);
+		AkihabaraHelp.setTileInMap(ctx, tilemap, x, y, tile, map);
 	},
 
 
@@ -428,9 +428,9 @@ var AkihabaraHelp = {
 	* @returns A string containing a timestamp formatted "mm: ss: cs", representing the length of time it would take to render that many frames.
 	* @example
 	* // Assuming 25 frames per second, Akihabara's default.
-	* timestamp = help.framestotime(25);
+	* timestamp = AkihabaraHelp.framestotime(25);
 	* timestamp; // => '00:01:00';
-	* timestamp = help.framestotime(25 * 60);
+	* timestamp = AkihabaraHelp.framestotime(25 * 60);
 	* timestamp; // => '01:00:00';
 	*/
 	framestotime: function (frames) {
@@ -444,7 +444,7 @@ var AkihabaraHelp = {
 	* @returns The value of the URL parameter, as a string.
 	* @example
 	* // If the URL is http: //example.com/game.html?lives = 3
-	* player.lives = help.geturlparameter("lives");
+	* player.lives = AkihabaraHelp.geturlparameter("lives");
 	* player.lives; // => 3
 	*/
 	geturlparameter: function (name) {
@@ -475,8 +475,8 @@ var AkihabaraHelp = {
 	* @returns True if the object contains that parameter, false if it does not.
 	* @example
 	* foo = {a: 1, b: 2};
-	* help.isDefined(foo.a); // => true
-	* help.isDefined(foo.c); // => false
+	* AkihabaraHelp.isDefined(foo.a); // => true
+	* AkihabaraHelp.isDefined(foo.c); // => false
 	*/
 	isDefined: function (v) {
 		return ((typeof(v) !== 'undefined') || (v === null));
@@ -593,98 +593,98 @@ var AkihabaraHelp = {
 			AkihabaraGamebox.setScreenBorder(false);
 		}
 		if (data.backgroundColor) { document.body.style.backgroundColor = data.backgroundColor; }
-		if (help.geturlparameter("statusbar")) { AkihabaraDebug.statusBar(); }
-		if (help.geturlparameter("db") || device.doublebuffering) { AkihabaraGamebox.setDoubleBuffering(true); }
-		if (help.geturlparameter("noautoskip")) { AkihabaraGamebox.setAutoskip(null); }
+		if (AkihabaraHelp.geturlparameter("statusbar")) { AkihabaraDebug.statusBar(); }
+		if (AkihabaraHelp.geturlparameter("db") || device.doublebuffering) { AkihabaraGamebox.setDoubleBuffering(true); }
+		if (AkihabaraHelp.geturlparameter("noautoskip")) { AkihabaraGamebox.setAutoskip(null); }
 
-		if (help.geturlparameter("zoom")) {
-			AkihabaraGamebox.setZoom(help.geturlparameter("zoom"));
-		} else if (help.isDefined(data.zoom)) {
+		if (AkihabaraHelp.geturlparameter("zoom")) {
+			AkihabaraGamebox.setZoom(AkihabaraHelp.geturlparameter("zoom"));
+		} else if (AkihabaraHelp.isDefined(data.zoom)) {
 			AkihabaraGamebox.setZoom(data.zoom);
-		} else if (help.isDefined(device.zoom)) {
+		} else if (AkihabaraHelp.isDefined(device.zoom)) {
 			AkihabaraGamebox.setZoom(device.zoom);
-		} else if (help.isDefined(device.width)) {
+		} else if (AkihabaraHelp.isDefined(device.width)) {
 			AkihabaraGamebox.setZoom(device.width / screenwidth);
-		} else if (help.isDefined(device.height)) {
+		} else if (AkihabaraHelp.isDefined(device.height)) {
 			AkihabaraGamebox.setZoom(device.height / screenheight);
 		}
 
-		if (help.geturlparameter("fps")) {
-			AkihabaraGamebox.setFps(help.geturlparameter("fps") * 1);
+		if (AkihabaraHelp.geturlparameter("fps")) {
+			AkihabaraGamebox.setFps(AkihabaraHelp.geturlparameter("fps") * 1);
 		} else {
 			AkihabaraGamebox.setFps((data.fps ? data.fps : 25));
 		}
 
-		if (help.geturlparameter("fskip")) { AkihabaraGamebox.setFrameskip(help.geturlparameter("fskip")); }
+		if (AkihabaraHelp.geturlparameter("fskip")) { AkihabaraGamebox.setFrameskip(AkihabaraHelp.geturlparameter("fskip")); }
 
-		if (help.geturlparameter("forcedidle")) {
-			AkihabaraGamebox.setForcedIdle(help.geturlparameter("forcedidle") * 1);
-		} else if (help.isDefined(device.forcedidle)) {
+		if (AkihabaraHelp.geturlparameter("forcedidle")) {
+			AkihabaraGamebox.setForcedIdle(AkihabaraHelp.geturlparameter("forcedidle") * 1);
+		} else if (AkihabaraHelp.isDefined(device.forcedidle)) {
 			AkihabaraGamebox.setForcedIdle(device.forcedidle);
 		}
 
-		if (help.geturlparameter("canlog")) { AkihabaraGamebox.setCanLog(true); }
+		if (AkihabaraHelp.geturlparameter("canlog")) { AkihabaraGamebox.setCanLog(true); }
 
 		if (!data || !data.hardwareonly) { AkihabaraGamebox.initScreen(screenwidth, screenheight); }
 
-		if (help.geturlparameter("showplayers")) { AkihabaraGamebox.setShowPlayers(help.geturlparameter("showplayers") === "yes"); }
+		if (AkihabaraHelp.geturlparameter("showplayers")) { AkihabaraGamebox.setShowPlayers(AkihabaraHelp.geturlparameter("showplayers") === "yes"); }
 
-		if (help.geturlparameter("canaudio")) {
-			AkihabaraAudio.setCanAudio(help.geturlparameter("canaudio") === "yes");
+		if (AkihabaraHelp.geturlparameter("canaudio")) {
+			AkihabaraAudio.setCanAudio(AkihabaraHelp.geturlparameter("canaudio") === "yes");
 		} else {
 			AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || AkihabaraGamebox.getFlag("experimental")));
 		}
 
-		if (help.geturlparameter("audiocompatmode")) {
-			AkihabaraAudio.setAudioCompatMode(help.geturlparameter("audiocompatmode") * 1);
-		} else if (help.isDefined(device.audiocompatmode)) {
+		if (AkihabaraHelp.geturlparameter("audiocompatmode")) {
+			AkihabaraAudio.setAudioCompatMode(AkihabaraHelp.geturlparameter("audiocompatmode") * 1);
+		} else if (AkihabaraHelp.isDefined(device.audiocompatmode)) {
 			AkihabaraAudio.setAudioCompatMode(device.audiocompatmode);
 		}
 
-		if (help.geturlparameter("audioteam")) {
-			AkihabaraAudio.setAudioTeam(help.geturlparameter("audioteam") * 1);
-		} else if (help.isDefined(device.audioteam)) {
+		if (AkihabaraHelp.geturlparameter("audioteam")) {
+			AkihabaraAudio.setAudioTeam(AkihabaraHelp.geturlparameter("audioteam") * 1);
+		} else if (AkihabaraHelp.isDefined(device.audioteam)) {
 			AkihabaraAudio.setAudioTeam(device.audioteam);
 		}
 
-		if (help.geturlparameter("loweraudioteam")) {
-			AkihabaraAudio.setLowerAudioTeam(help.geturlparameter("loweraudioteam") * 1);
-		} else if (help.isDefined(device.loweraudioteam)) {
+		if (AkihabaraHelp.geturlparameter("loweraudioteam")) {
+			AkihabaraAudio.setLowerAudioTeam(AkihabaraHelp.geturlparameter("loweraudioteam") * 1);
+		} else if (AkihabaraHelp.isDefined(device.loweraudioteam)) {
 			AkihabaraAudio.setLowerAudioTeam(device.loweraudioteam);
 		}
 
-		if (help.geturlparameter("audiocreatemode")) {
-			AkihabaraAudio.setAudioCreateMode(help.geturlparameter("audiocreatemode") * 1);
-		} else if (help.isDefined(device.audiocreatemode)) {
+		if (AkihabaraHelp.geturlparameter("audiocreatemode")) {
+			AkihabaraAudio.setAudioCreateMode(AkihabaraHelp.geturlparameter("audiocreatemode") * 1);
+		} else if (AkihabaraHelp.isDefined(device.audiocreatemode)) {
 			AkihabaraAudio.setAudioCreateMode(device.audiocreatemode);
 		}
 
-		if (help.geturlparameter("audiodequeuetime")) {
-			AkihabaraAudio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime") * 1);
-		} else if (help.isDefined(device.audiodequeuetime)) {
+		if (AkihabaraHelp.geturlparameter("audiodequeuetime")) {
+			AkihabaraAudio.setAudioDequeueTime(AkihabaraHelp.geturlparameter("audiodequeuetime") * 1);
+		} else if (AkihabaraHelp.isDefined(device.audiodequeuetime)) {
 			AkihabaraAudio.setAudioDequeueTime(device.audiodequeuetime);
 		}
 
-		if (help.geturlparameter("audiopositiondelay")) {
-			AkihabaraAudio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay") * 1);
-		} else if (help.isDefined(device.audiopositiondelay)) {
+		if (AkihabaraHelp.geturlparameter("audiopositiondelay")) {
+			AkihabaraAudio.setAudioPositionDelay(AkihabaraHelp.geturlparameter("audiopositiondelay") * 1);
+		} else if (AkihabaraHelp.isDefined(device.audiopositiondelay)) {
 			AkihabaraAudio.setAudioPositionDelay(device.audiopositiondelay);
 		}
 
-		if (help.geturlparameter("forcedmimeaudio")) {
-			AkihabaraAudio.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio"));
-		} else if (help.isDefined(device.forcedmimeaudio)) {
+		if (AkihabaraHelp.geturlparameter("forcedmimeaudio")) {
+			AkihabaraAudio.setForcedMimeAudio(AkihabaraHelp.geturlparameter("forcedmimeaudio"));
+		} else if (AkihabaraHelp.isDefined(device.forcedmimeaudio)) {
 			AkihabaraAudio.setForcedMimeAudio(device.forcedmimeaudio);
 		}
 
-		if (help.geturlparameter("audioissinglechannel")) {
-			AkihabaraAudio.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel") === "yes");
-		} else if (help.isDefined(device.audioissinglechannel)) {
+		if (AkihabaraHelp.geturlparameter("audioissinglechannel")) {
+			AkihabaraAudio.setAudioIsSingleChannel(AkihabaraHelp.geturlparameter("audioissinglechannel") === "yes");
+		} else if (AkihabaraHelp.isDefined(device.audioissinglechannel)) {
 			AkihabaraAudio.setAudioIsSingleChannel(device.audioissinglechannel);
 		}
 
 		if (!data || !data.hardwareonly) {
-			if (help.geturlparameter("touch") !== "no" && (help.geturlparameter("touch") === "yes" || device.touch)) {
+			if (AkihabaraHelp.geturlparameter("touch") !== "no" && (AkihabaraHelp.geturlparameter("touch") === "yes" || device.touch)) {
 				switch (data.padmode) {
 				case "fretboard":
 					AkihabaraIphofretboard.initialize({h: 100, bg: AkihabaraGamebox._basepath + "fretboard.png"});

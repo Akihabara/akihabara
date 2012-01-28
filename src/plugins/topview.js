@@ -131,7 +131,7 @@ var topview = {
 	},
 
 	/**
-	* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using help.copyModel.
+	* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using AkihabaraHelp.copyModel.
 	* This initializes some basic basic variables for the object and sets the Z index.
 	* @param {Object} th References 'this' which is the object that called the method (generally).
 	* <ul>
@@ -147,7 +147,7 @@ var topview = {
 		th.counter = 0; // self counter
 		th.hittimer = 0;
 		th.killed = false;
-		help.copyModel(th, data);
+		AkihabaraHelp.copyModel(th, data);
 		AkihabaraGamebox.setZindex(th, th.y + th.h); // these object follows the z-index and uses ZINDEX_LAYER
 	},
 
@@ -178,13 +178,13 @@ var topview = {
 			th.xpushing = topview.PUSH_LEFT;
 			th.facing = topview.FACE_LEFT;
 			if (th.accx > th.responsive) th.accx = th.responsive;
-			if (th.staticspeed) th.accx = -th.staticspeed; else th.accx = help.limit(th.accx-1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.staticspeed) th.accx = -th.staticspeed; else th.accx = AkihabaraHelp.limit(th.accx-1, -th.controlmaxacc, th.controlmaxacc);
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else if (AkihabaraInput.keyIsPressed(keys.right) || keys.pressright) {
 			th.xpushing = topview.PUSH_RIGHT;
 			th.facing = topview.FACE_RIGHT;
 			if (th.accx < -th.responsive) th.accx = -th.responsive;
-			if (th.staticspeed) th.accx = th.staticspeed; else th.accx = help.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.staticspeed) th.accx = th.staticspeed; else th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else idlex = true;
 
@@ -192,13 +192,13 @@ var topview = {
 			th.ypushing = topview.PUSH_UP;
 			th.facing = topview.FACE_UP;
 			if (th.accy > th.responsive) th.accy = th.responsive;
-			if (th.staticspeed) th.accy = -th.staticspeed; else th.accy = help.limit(th.accy-1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.staticspeed) th.accy = -th.staticspeed; else th.accy = AkihabaraHelp.limit(th.accy-1, -th.controlmaxacc, th.controlmaxacc);
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else if (!cancely && (AkihabaraInput.keyIsPressed(keys.down) || keys.pressdown)) {
 			th.ypushing = topview.PUSH_DOWN;
 			th.facing = topview.FACE_DOWN;
 			if (th.accy < -th.responsive) th.accy = -th.responsive;
-			if (th.staticspeed) th.accy = th.staticspeed; else th.accy = help.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.staticspeed) th.accy = th.staticspeed; else th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else idley = true;
 
@@ -223,7 +223,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	getNextX: function (th) { return th.x + help.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextX: function (th) { return th.x + AkihabaraHelp.limit(th.accx, -th.maxacc, th.maxacc); },
 
 	/**
 	* Gets the next Y position the object is going to move to.
@@ -234,7 +234,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	getNextY: function (th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxacc, th.maxacc); },
 
 	/**
 	* Gets the next Z position the object is going to move to.
@@ -245,7 +245,7 @@ var topview = {
 	* <li > maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) < /li>
 	* </ul>
 	*/
-	getNextZ: function (th) { return th.z + help.limit(th.accz, -th.maxacc, th.maxacc); },
+	getNextZ: function (th) { return th.z + AkihabaraHelp.limit(th.accz, -th.maxacc, th.maxacc); },
 
 	/**
 	* Sets the objects current location to its next location using the getNextX and getNextY methods.
@@ -287,8 +287,8 @@ var topview = {
 	* </ul>
 	*/
 	handleAccellerations: function (th) {
-		if (!th.xpushing) th.accx = help.goToZero(th.accx);
-		if (!th.ypushing) th.accy = help.goToZero(th.accy);
+		if (!th.xpushing) th.accx = AkihabaraHelp.goToZero(th.accx);
+		if (!th.ypushing) th.accy = AkihabaraHelp.goToZero(th.accy);
 
 	},
 
@@ -329,7 +329,7 @@ var topview = {
 			if (th.haspushing && (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) pref = "pushing"; else pref = "moving";
 		if (th.flipside)
 			th.fliph = (th.facing == topview.FACE_RIGHT);
-		th.frame = help.decideFrame(th.counter, th.frames[pref + topview.FACES[th.facing]]);
+		th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames[pref + topview.FACES[th.facing]]);
 	},
 
 	/**
@@ -356,8 +356,8 @@ var topview = {
 		do {
 			t += approximation;
 			if (t > th.colw-tolerance-1) t = th.colw-tolerance-1;
-			var bottom = help.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh-1, map, defaulttile, tilemap);
-			var top = help.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
+			var bottom = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh-1, map, defaulttile, tilemap);
+			var top = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
 			if (map.tileIsSolid(th, top)) th.touchedup = true;
 			if (map.tileIsSolid(th, bottom)) th.toucheddown = true;
 		} while (t != th.colw-tolerance-1);
@@ -366,27 +366,27 @@ var topview = {
 		do {
 			t += approximation;
 			if (t > th.colh-tolerance-1) t = th.colh-tolerance-1;
-			var left = help.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
-			var right = help.getTileInMap(th.x + th.colx + th.colw-1, th.y + th.coly + t, map, defaulttile, tilemap);
+			var left = AkihabaraHelp.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
+			var right = AkihabaraHelp.getTileInMap(th.x + th.colx + th.colw-1, th.y + th.coly + t, map, defaulttile, tilemap);
 			if (map.tileIsSolid(th, left)) th.touchedleft = true;
 			if (map.tileIsSolid(th, right)) th.touchedright = true;
 		} while (t != th.colh-tolerance-1);
 
 		if (th.touchedup) {
 			th.accy = 0;
-			th.y = help.yPixelToTile(map, th.y + th.coly, 1)-th.coly;
+			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly, 1)-th.coly;
 		}
 		if (th.toucheddown) {
 			th.accy = 0;
-			th.y = help.yPixelToTile(map, th.y + th.coly + th.colh-1)-th.coly-th.colh;
+			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly + th.colh-1)-th.coly-th.colh;
 		}
 		if (th.touchedleft) {
 			th.accx = 0;
-			th.x = help.xPixelToTile(map, th.x + th.colx, 1)-th.colx;
+			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx, 1)-th.colx;
 		}
 		if (th.touchedright) {
 			th.accx = 0;
-			th.x = help.xPixelToTile(map, th.x + th.colx + th.colw-1)-th.colx-th.colw;
+			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx + th.colw-1)-th.colx-th.colw;
 		}
 	},
 
@@ -490,8 +490,8 @@ var topview = {
 	// Enemy methods
 	wander: function (th, map, tilemap, defaulttile, data) {
 		if ((!th.wandercounter) || (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) {
-			th.wandercounter = help.random(data.minstep, data.steprange);
-			th.wanderdirection = help.random(0, 4);
+			th.wandercounter = AkihabaraHelp.random(data.minstep, data.steprange);
+			th.wanderdirection = AkihabaraHelp.random(0, 4);
 		} else th.wandercounter--;
 		switch (th.wanderdirection) {
 			case topview.FACE_LEFT:
@@ -609,7 +609,7 @@ var topview = {
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			if (!AkihabaraGamebox.objectIsTrash(this))
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 		};
 
 		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
@@ -703,7 +703,7 @@ var topview = {
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
 			if (!AkihabaraGamebox.objectIsTrash(this))
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h-this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h-this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 		};
 
 		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
