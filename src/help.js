@@ -17,7 +17,7 @@ var help = {
 			return null;
 		} else {
 			for (var i = 0; i < a.length; a++) {
-				if (a[i][field] == value) { return a[i]; }
+				if (a[i][field] === value) { return a[i]; }
 			}
 		}
 		return null;
@@ -417,7 +417,7 @@ var help = {
 	getArrayIndexed: function (a, value, field) {
 		if (a[0][field] == null) { return a[0]; }
 		var i = 0;
-		while ((value > a[i][field]) && (i != a.length - 1)) { i++; }
+		while ((value > a[i][field]) && (i !== a.length - 1)) { i++; }
 		return a[i];
 	},
 
@@ -547,7 +547,7 @@ var help = {
 	* @param {Object} data An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.
 	*/
 	akihabaraInit: function (data) {
-		if ((typeof data).toLowerCase() == "string") { data = {title: data}; }
+		if ((typeof data).toLowerCase() === "string") { data = {title: data}; }
 		var device = this.getDeviceConfig();
 		var footnotes = ["MADE WITH AKIHABARA (C)2012 - GPL2/MIT", "Project: http://akihabara.github.com", "Sources: http://github.com/akihabara"];
 		document.title = (data.title ? data.title : "Akihabara");
@@ -579,7 +579,7 @@ var help = {
 			};
 		}
 
-		if (typeof data.basepath == 'string') {
+		if (typeof data.basepath === 'string') {
 			gbox.setBasePath(data.basepath);
 		}
 		if (data.debugfont) { gbox.setDebugFont(data.debugfont); }
@@ -596,46 +596,98 @@ var help = {
 		if (help.geturlparameter("statusbar")) { AkihabaraDebug.statusBar(); }
 		if (help.geturlparameter("db") || device.doublebuffering) { gbox.setDoubleBuffering(true); }
 		if (help.geturlparameter("noautoskip")) { gbox.setAutoskip(null); }
-		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
-				if (help.isDefined(data.zoom)) gbox.setZoom(data.zoom); else
-			if (help.isDefined(device.zoom)) gbox.setZoom(device.zoom); else
-			if (help.isDefined(device.width)) gbox.setZoom(device.width / screenwidth); else
-			if (help.isDefined(device.height)) gbox.setZoom(device.height / screenheight);
 
-		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps") * 1);
-			else gbox.setFps((data.fps ? data.fps : 25));
-		if (help.geturlparameter("fskip")) gbox.setFrameskip(help.geturlparameter("fskip"));
-		if (help.geturlparameter("forcedidle")) gbox.setForcedIdle(help.geturlparameter("forcedidle") * 1);
-			else if (help.isDefined(device.forcedidle)) gbox.setForcedIdle(device.forcedidle);
-		if (help.geturlparameter("canlog")) gbox.setCanLog(true);
+		if (help.geturlparameter("zoom")) {
+			gbox.setZoom(help.geturlparameter("zoom"));
+		} else if (help.isDefined(data.zoom)) {
+			gbox.setZoom(data.zoom);
+		} else if (help.isDefined(device.zoom)) {
+			gbox.setZoom(device.zoom);
+		} else if (help.isDefined(device.width)) {
+			gbox.setZoom(device.width / screenwidth);
+		} else if (help.isDefined(device.height)) {
+			gbox.setZoom(device.height / screenheight);
+		}
 
-		if (!data || !data.hardwareonly) gbox.initScreen(screenwidth, screenheight);
+		if (help.geturlparameter("fps")) {
+			gbox.setFps(help.geturlparameter("fps") * 1);
+		} else {
+			gbox.setFps((data.fps ? data.fps : 25));
+		}
 
-		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers") == "yes");
-		if (help.geturlparameter("canaudio")) AkihabaraAudio.setCanAudio(help.geturlparameter("canaudio") == "yes"); else
+		if (help.geturlparameter("fskip")) { gbox.setFrameskip(help.geturlparameter("fskip")); }
+
+		if (help.geturlparameter("forcedidle")) {
+			gbox.setForcedIdle(help.geturlparameter("forcedidle") * 1);
+		} else if (help.isDefined(device.forcedidle)) {
+			gbox.setForcedIdle(device.forcedidle);
+		}
+
+		if (help.geturlparameter("canlog")) { gbox.setCanLog(true); }
+
+		if (!data || !data.hardwareonly) { gbox.initScreen(screenwidth, screenheight); }
+
+		if (help.geturlparameter("showplayers")) { gbox.setShowPlayers(help.geturlparameter("showplayers") === "yes"); }
+
+		if (help.geturlparameter("canaudio")) {
+			AkihabaraAudio.setCanAudio(help.geturlparameter("canaudio") === "yes");
+		} else {
 			AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || gbox.getFlag("experimental")));
-		if (help.geturlparameter("audiocompatmode")) AkihabaraAudio.setAudioCompatMode(help.geturlparameter("audiocompatmode") * 1); else
-			if (help.isDefined(device.audiocompatmode)) AkihabaraAudio.setAudioCompatMode(device.audiocompatmode);
-		if (help.geturlparameter("audioteam")) AkihabaraAudio.setAudioTeam(help.geturlparameter("audioteam") * 1); else
-			if (help.isDefined(device.audioteam)) AkihabaraAudio.setAudioTeam(device.audioteam);
-		if (help.geturlparameter("loweraudioteam")) AkihabaraAudio.setLowerAudioTeam(help.geturlparameter("loweraudioteam") * 1); else
-			if (help.isDefined(device.loweraudioteam)) AkihabaraAudio.setLowerAudioTeam(device.loweraudioteam);
-		if (help.geturlparameter("audiocreatemode")) AkihabaraAudio.setAudioCreateMode(help.geturlparameter("audiocreatemode") * 1); else
-			if (help.isDefined(device.audiocreatemode)) AkihabaraAudio.setAudioCreateMode(device.audiocreatemode);
-		if (help.geturlparameter("audiodequeuetime")) AkihabaraAudio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime") * 1); else
-			if (help.isDefined(device.audiodequeuetime)) AkihabaraAudio.setAudioDequeueTime(device.audiodequeuetime);
-		if (help.geturlparameter("audiopositiondelay")) AkihabaraAudio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay") * 1); else
-			if (help.isDefined(device.audiopositiondelay)) AkihabaraAudio.setAudioPositionDelay(device.audiopositiondelay);
-		if (help.geturlparameter("forcedmimeaudio")) AkihabaraAudio.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio")); else
-			if (help.isDefined(device.forcedmimeaudio)) AkihabaraAudio.setForcedMimeAudio(device.forcedmimeaudio);
-		if (help.geturlparameter("audioissinglechannel")) AkihabaraAudio.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel") == "yes"); else
-			if (help.isDefined(device.audioissinglechannel)) AkihabaraAudio.setAudioIsSingleChannel(device.audioissinglechannel);
+		}
+
+		if (help.geturlparameter("audiocompatmode")) {
+			AkihabaraAudio.setAudioCompatMode(help.geturlparameter("audiocompatmode") * 1);
+		} else if (help.isDefined(device.audiocompatmode)) {
+			AkihabaraAudio.setAudioCompatMode(device.audiocompatmode);
+		}
+
+		if (help.geturlparameter("audioteam")) {
+			AkihabaraAudio.setAudioTeam(help.geturlparameter("audioteam") * 1);
+		} else if (help.isDefined(device.audioteam)) {
+			AkihabaraAudio.setAudioTeam(device.audioteam);
+		}
+
+		if (help.geturlparameter("loweraudioteam")) {
+			AkihabaraAudio.setLowerAudioTeam(help.geturlparameter("loweraudioteam") * 1);
+		} else if (help.isDefined(device.loweraudioteam)) {
+			AkihabaraAudio.setLowerAudioTeam(device.loweraudioteam);
+		}
+
+		if (help.geturlparameter("audiocreatemode")) {
+			AkihabaraAudio.setAudioCreateMode(help.geturlparameter("audiocreatemode") * 1);
+		} else if (help.isDefined(device.audiocreatemode)) {
+			AkihabaraAudio.setAudioCreateMode(device.audiocreatemode);
+		}
+
+		if (help.geturlparameter("audiodequeuetime")) {
+			AkihabaraAudio.setAudioDequeueTime(help.geturlparameter("audiodequeuetime") * 1);
+		} else if (help.isDefined(device.audiodequeuetime)) {
+			AkihabaraAudio.setAudioDequeueTime(device.audiodequeuetime);
+		}
+
+		if (help.geturlparameter("audiopositiondelay")) {
+			AkihabaraAudio.setAudioPositionDelay(help.geturlparameter("audiopositiondelay") * 1);
+		} else if (help.isDefined(device.audiopositiondelay)) {
+			AkihabaraAudio.setAudioPositionDelay(device.audiopositiondelay);
+		}
+
+		if (help.geturlparameter("forcedmimeaudio")) {
+			AkihabaraAudio.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio"));
+		} else if (help.isDefined(device.forcedmimeaudio)) {
+			AkihabaraAudio.setForcedMimeAudio(device.forcedmimeaudio);
+		}
+
+		if (help.geturlparameter("audioissinglechannel")) {
+			AkihabaraAudio.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel") === "yes");
+		} else if (help.isDefined(device.audioissinglechannel)) {
+			AkihabaraAudio.setAudioIsSingleChannel(device.audioissinglechannel);
+		}
 
 		if (!data || !data.hardwareonly) {
-			if (help.geturlparameter("touch") != "no" && (help.geturlparameter("touch") == "yes" || device.touch)) {
+			if (help.geturlparameter("touch") !== "no" && (help.geturlparameter("touch") === "yes" || device.touch)) {
 				switch (data.padmode) {
 				case "fretboard":
-					iphofretboard.initialize({h: 100, bg: gbox._basepath + "fretboard.png"});
+					AkihabaraIphofretboard.initialize({h: 100, bg: gbox._basepath + "fretboard.png"});
 					break;
 				case "none":
 					break;
