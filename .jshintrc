@@ -1,7 +1,7 @@
 {
     "predef": [
         "jasmine", "it", "describe", "expect", "ActiveXObject",
-        "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer", "trigo", "help",
+        "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer", "trigo", "help", "toys",
         "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle",
         "AkihabaraTrigo", "AkihabaraIphofretboard", "AkihabaraIphopad",
         "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
