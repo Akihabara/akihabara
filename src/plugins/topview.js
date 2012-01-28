@@ -21,7 +21,7 @@ var topview = {
 	FACE_LEFT: 3,
 
 	/**
-	* Checks if an object checks that both objects are on the same Z plane and if so it calls gbox.collides.
+	* Checks if an object checks that both objects are on the same Z plane and if so it calls AkihabaraGamebox.collides.
 	* @param {Object} fr The object which collision is being checked for.
 	* <ul>
 	* <li > x{Integer}: (required)Objects x position < /li>
@@ -45,7 +45,7 @@ var topview = {
 	* @param {int} t This is the tollerance (or margin for error) on the collide function.
 	*/
 	collides: function (fr, to, t) { // Special collision. Counts also the Z
-		if (Math.abs(fr.z, to.z) < 5) return gbox.collides({x: fr.x + fr.colx, y: fr.y + fr.coly, h: fr.colh, w: fr.colw}, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t); else return false;
+		if (Math.abs(fr.z, to.z) < 5) return AkihabaraGamebox.collides({x: fr.x + fr.colx, y: fr.y + fr.coly, h: fr.colh, w: fr.colw}, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t); else return false;
 	},
 
 	/**
@@ -55,7 +55,7 @@ var topview = {
 	* @param {int} t The tollerance of the collision algorithm.
 	*/
 	pixelcollides: function (fr, to, t) { // Special collision. Counts also the Z
-		return gbox.pixelcollides(fr, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t);
+		return AkihabaraGamebox.pixelcollides(fr, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t);
 	},
 
 	/**
@@ -88,8 +88,8 @@ var topview = {
 	* <li > flipside{Boolean}: (defaults to true) < /li>
 	* <li > haspushing{Boolean}: (defaults to false) < /li>
 	* <li > frame: (default to 0) < /li>
-	* <li > colh{Integer}: (defaults to gbox.getTiles(th.tileset).tilehh) < /li>
-	* <li > colw{Integer}: (defaults to gbox.getTiles(th.tileset).tilew) < /li>
+	* <li > colh{Integer}: (defaults to AkihabaraGamebox.getTiles(th.tileset).tilehh) < /li>
+	* <li > colw{Integer}: (defaults to AkihabaraGamebox.getTiles(th.tileset).tilew) < /li>
 	* <li > colx{Integer}: (defaults to 0) < /li>
 	* <li > staticspeed{Integer}: (defaults to 0) < /li>
 	* <li > nodiagonals{Boolean}: (defaults to false) < /li>
@@ -114,8 +114,8 @@ var topview = {
 					flipside: true,
 					haspushing: false,
 					frame: 0,
-					colh: gbox.getTiles(th.tileset).tilehh,
-					colw: gbox.getTiles(th.tileset).tilew,
+					colh: AkihabaraGamebox.getTiles(th.tileset).tilehh,
+					colw: AkihabaraGamebox.getTiles(th.tileset).tilew,
 					colx: 0,
 					staticspeed: 0,
 					nodiagonals: false,
@@ -123,7 +123,7 @@ var topview = {
 				}, data
 			), th
 		);
-		if (th.coly == null) th.coly = gbox.getTiles(th.tileset).tileh-th.colh;
+		if (th.coly == null) th.coly = AkihabaraGamebox.getTiles(th.tileset).tileh-th.colh;
 		th.colhh = Math.floor(th.colh/2);
 		th.colhw = Math.floor(th.colw/2);
 
@@ -148,7 +148,7 @@ var topview = {
 		th.hittimer = 0;
 		th.killed = false;
 		help.copyModel(th, data);
-		gbox.setZindex(th, th.y + th.h); // these object follows the z-index and uses ZINDEX_LAYER
+		AkihabaraGamebox.setZindex(th, th.y + th.h); // these object follows the z-index and uses ZINDEX_LAYER
 	},
 
 	/**
@@ -409,9 +409,9 @@ var topview = {
 	*/
 	spritewallCollision: function (th, data) {
 		var wl;
-		for (var i in gbox._objects[data.group]) {
-			if ((!gbox._objects[data.group][i].initialize) && topview.collides(th, gbox._objects[data.group][i])) {
-				wl = gbox._objects[data.group][i];
+		for (var i in AkihabaraGamebox._objects[data.group]) {
+			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && topview.collides(th, AkihabaraGamebox._objects[data.group][i])) {
+				wl = AkihabaraGamebox._objects[data.group][i];
 				if (topview.pixelcollides({x: th.x + th.colx, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedleft = true;
 					th.accx = 0;
@@ -459,7 +459,7 @@ var topview = {
 	},
 
 	adjustZindex: function (th) {
-		gbox.setZindex(th, th.y + th.h);
+		AkihabaraGamebox.setZindex(th, th.y + th.h);
 	},
 
 	// Helper: returns the ahead pixel (i.e. destination use action)
@@ -478,10 +478,10 @@ var topview = {
 
 	// Helper: trigger a method in colliding objects (i.e. "use action")
 	callInColliding: function (th, data) {
-		for (var i in gbox._objects[data.group])
-			if ((!gbox._objects[data.group][i].initialize) && topview.pixelcollides(data, gbox._objects[data.group][i]))
-				if (gbox._objects[data.group][i][data.call]) {
-					gbox._objects[data.group][i][data.call](th);
+		for (var i in AkihabaraGamebox._objects[data.group])
+			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && topview.pixelcollides(data, AkihabaraGamebox._objects[data.group][i]))
+				if (AkihabaraGamebox._objects[data.group][i][data.call]) {
+					AkihabaraGamebox._objects[data.group][i][data.call](th);
 					return i;
 				}
 		return false;
@@ -527,8 +527,8 @@ var topview = {
 
 	// generators (firebullet specific for topdown - more complex than SHMUP one)
 	fireBullet: function (gr, id, data) {
-		var ts = gbox.getTiles(data.tileset);
-		var obj = gbox.addObject(
+		var ts = AkihabaraGamebox.getTiles(data.tileset);
+		var obj = AkihabaraGamebox.addObject(
 			Akihabara.extendsFrom(
 				{
 					_bullet: true,
@@ -565,10 +565,10 @@ var topview = {
 					duration: null,
 					onWallHit: function () {
 						this.spark(this);
-						gbox.trashObject(this);
+						AkihabaraGamebox.trashObject(this);
 					},
 					bulletIsAlive: function () {
-						return gbox.objectIsVisible(this);
+						return AkihabaraGamebox.objectIsVisible(this);
 					}
 				}, data
 			)
@@ -590,17 +590,17 @@ var topview = {
 			topview.adjustZindex(this);
 			if (this.duration != null) {
 				this.duration--;
-				if (this.duration == 0) gbox.trashObject(this);
+				if (this.duration == 0) AkihabaraGamebox.trashObject(this);
 			}
-			if (!this.bulletIsAlive()) gbox.trashObject(this);
+			if (!this.bulletIsAlive()) AkihabaraGamebox.trashObject(this);
 			else if (this.toucheddown || this.touchedup || this.touchedleft || this.touchedright) this.onWallHit();
 			else if (this.collidegroup != null) {
-				for (var i in gbox._objects[this.collidegroup]) {
-					if ((!gbox._objects[this.collidegroup][i].initialize) && topview.collides(this, gbox._objects[this.collidegroup][i], gbox._objects[this.collidegroup][i].tolerance)) {
-						if (gbox._objects[this.collidegroup][i].hitByBullet != null)
-							if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
+				for (var i in AkihabaraGamebox._objects[this.collidegroup]) {
+					if ((!AkihabaraGamebox._objects[this.collidegroup][i].initialize) && topview.collides(this, AkihabaraGamebox._objects[this.collidegroup][i], AkihabaraGamebox._objects[this.collidegroup][i].tolerance)) {
+						if (AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet != null)
+							if (!AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet(this)) {
 								this.spark(this);
-								gbox.trashObject(this);
+								AkihabaraGamebox.trashObject(this);
 							}
 					}
 				}
@@ -608,21 +608,21 @@ var topview = {
 		};
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			if (!gbox.objectIsTrash(this))
-				gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+			if (!AkihabaraGamebox.objectIsTrash(this))
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 		};
 
-		gbox.setZindex(obj, obj.y + obj.h);
+		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
 
 		return obj;
 
 	},
 
 	makedoor: function (gr, id, map, data) {
-		var mts = gbox.getTiles(map.tileset);
-		var ts = gbox.getTiles(data.tileset);
+		var mts = AkihabaraGamebox.getTiles(map.tileset);
+		var ts = AkihabaraGamebox.getTiles(data.tileset);
 
-		var obj = gbox.addObject(
+		var obj = AkihabaraGamebox.addObject(
 			Akihabara.extendsFrom(
 				{
 					zindex: 0,
@@ -696,17 +696,17 @@ var topview = {
 				if (this.opencounter >= this.doorheight) {
 					if (this.audioafter) AkihabaraAudio.hitAudio(this.audioafter);
 					this.ismoving = false;
-					if (!this.whenOpened()) gbox.trashObject(this);
+					if (!this.whenOpened()) AkihabaraGamebox.trashObject(this);
 				}
 			}
 		};
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			if (!gbox.objectIsTrash(this))
-				gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h-this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+			if (!AkihabaraGamebox.objectIsTrash(this))
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h-this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 		};
 
-		gbox.setZindex(obj, obj.y + obj.h);
+		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
 
 		return obj;
 	},

@@ -119,12 +119,12 @@ var AkihabaraIphopad = {
 
 		oElement.appendChild(tpad);
 		oElement.appendChild(bpad);
-		gbox._box.appendChild(oElement);
+		AkihabaraGamebox._box.appendChild(oElement);
 
 		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphopad._listen(evt); };
 		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphopad._listen(evt); };
 		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphopad._listen(evt); };
-		var sizes = gbox._domgetabsposition(oElement);
+		var sizes = AkihabaraGamebox._domgetabsposition(oElement);
 		this._gapx = sizes.x;
 		this._gapy = sizes.y;
 		this._width = sizes.w;

@@ -22,7 +22,7 @@ var shmup = {
 					frames: {},
 					maxacc: 5, controlmaxacc: 5,
 					responsive: 0, // Responsiveness
-					bounds: {x: 0, y: 0, w: gbox.getScreenW(), h: gbox.getScreenH()}, // Bounds box (ship cannot exit from there)
+					bounds: {x: 0, y: 0, w: AkihabaraGamebox.getScreenW(), h: AkihabaraGamebox.getScreenH()}, // Bounds box (ship cannot exit from there)
 					weapon: 0, // Weapon
 					hittime: 5,
 					camera: false,
@@ -48,20 +48,20 @@ var shmup = {
 	getNextY: function (th) { return th.y + help.limit(th.accy, -th.maxacc, th.maxacc); },
 	controlKeys: function (th, keys) {
 
-		if (gbox.keyIsPressed(keys.left)) {
+		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
 			th.xpushing = shmup.PUSH_LEFT;
 			if (th.accx > th.responsive) th.accx = th.responsive;
 			th.accx = help.limit(th.accx-1, -th.controlmaxacc, th.controlmaxacc);
-		} else if (gbox.keyIsPressed(keys.right)) {
+		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
 			th.xpushing = shmup.PUSH_RIGHT;
 			if (th.accx < -th.responsive) th.accx = -th.responsive;
 			th.accx = help.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else th.xpushing = shmup.PUSH_NONE;
-		if (gbox.keyIsPressed(keys.up)) {
+		if (AkihabaraGamebox.keyIsPressed(keys.up)) {
 			th.ypushing = shmup.PUSH_UP;
 			if (th.accy > th.responsive) th.accy = th.responsive;
 			th.accy = help.limit(th.accy-1, -th.controlmaxacc, th.controlmaxacc);
-		} else if (gbox.keyIsPressed(keys.down)) {
+		} else if (AkihabaraGamebox.keyIsPressed(keys.down)) {
 			th.ypushing = shmup.PUSH_DOWN;
 			if (th.accy < -th.responsive) th.accy = -th.responsive;
 			th.accy = help.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
@@ -101,8 +101,8 @@ var shmup = {
 	},
 
 	fireBullet: function (gr, id, data) {
-		var ts = gbox.getTiles(data.tileset);
-		var obj = gbox.addObject(
+		var ts = AkihabaraGamebox.getTiles(data.tileset);
+		var obj = AkihabaraGamebox.addObject(
 			Akihabara.extendsFrom(
 				{
 					_bullet: true,
@@ -130,20 +130,20 @@ var shmup = {
 			this.x += this.accx;
 			this.y += this.accy;
 			this.cnt = (this.cnt + 1)%10;
-			if (!gbox.objectIsVisible(this)) gbox.trashObject(this);
+			if (!AkihabaraGamebox.objectIsVisible(this)) AkihabaraGamebox.trashObject(this);
 			else if (this.collidegroup != null)
-				for (var i in gbox._objects[this.collidegroup])
-					if ((!gbox._objects[this.collidegroup][i].initialize) && gbox.collides(this, gbox._objects[this.collidegroup][i], gbox._objects[this.collidegroup][i].tolerance)) {
-						if (gbox._objects[this.collidegroup][i].hitByBullet != null)
-							if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
+				for (var i in AkihabaraGamebox._objects[this.collidegroup])
+					if ((!AkihabaraGamebox._objects[this.collidegroup][i].initialize) && AkihabaraGamebox.collides(this, AkihabaraGamebox._objects[this.collidegroup][i], AkihabaraGamebox._objects[this.collidegroup][i].tolerance)) {
+						if (AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet != null)
+							if (!AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet(this)) {
 								this.spark(this);
-								gbox.trashObject(this);
+								AkihabaraGamebox.trashObject(this);
 							}
 					}
 		};
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 		};
 
 		return obj;
@@ -159,7 +159,7 @@ var shmup = {
 
 	generateEnemy: function (gr, id, data, model) {
 		Akihabara.extendsFrom(model, data);
-		var obj = gbox.addObject(
+		var obj = AkihabaraGamebox.addObject(
 			Akihabara.extendsFrom(
 				{
 					id: id,
@@ -310,7 +310,7 @@ var shmup = {
 		};
 
 		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: help.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 			if (this.dohandler && (this.dohandler.render != null)) this.dohandler.render(this);
 		};
 
@@ -319,7 +319,7 @@ var shmup = {
 	},
 
 	generateScroller: function (gr, id, data) {
-		var obj = gbox.addObject(
+		var obj = AkihabaraGamebox.addObject(
 			Akihabara.extendsFrom(
 				help.cloneObject(data), {
 					id: id, group: gr,
@@ -370,7 +370,7 @@ var shmup = {
 
 					setX: function (x) {
 						if (x < 0) this.x = 0; else
-						if (x + gbox.getScreenW() > this.maxwidth) this.x = this.maxwidth-gbox.getScreenW();
+						if (x + AkihabaraGamebox.getScreenW() > this.maxwidth) this.x = this.maxwidth-AkihabaraGamebox.getScreenW();
 						else this.x = x;
 					}
 
@@ -410,11 +410,11 @@ var shmup = {
 			this.tbly = this.bly;
 			do {
 				this.trb++;
-				this.tbly += gbox.getImage(this.stage[this.trb].image).height;
+				this.tbly += AkihabaraGamebox.getImage(this.stage[this.trb].image).height;
 			} while (this.tbly < this.y);
 
 			this.block = this.trb-1;
-			this.bly = this.tbly-gbox.getImage(this.stage[this.trb].image).height;
+			this.bly = this.tbly-AkihabaraGamebox.getImage(this.stage[this.trb].image).height;
 
 			if (this.lget == 2) {
 				this.lblock = this.block;
@@ -427,10 +427,10 @@ var shmup = {
 			var dy = this.tbly-this.y;
 			var done = false;
 			do {
-				if (dy > gbox.getScreenH()) done = true;
-				gbox.blitAll(gbox.getBufferContext(), gbox.getImage(this.stage[this.trb].image), {dx: -this.x, dy: gbox.getScreenH()-dy});
+				if (dy > AkihabaraGamebox.getScreenH()) done = true;
+				AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage(this.stage[this.trb].image), {dx: -this.x, dy: AkihabaraGamebox.getScreenH()-dy});
 				this.trb++;
-				dy += gbox.getImage(this.stage[this.trb].image).height;
+				dy += AkihabaraGamebox.getImage(this.stage[this.trb].image).height;
 			} while (!done);
 		};
 

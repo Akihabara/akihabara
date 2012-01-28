@@ -26,9 +26,9 @@ var AkihabaraIphofretboard = {
 		for (i in nc) {
 			if (nc[i] !== AkihabaraIphofretboard._buttons[i]) {
 				if (nc[i]) {
-					gbox._keydown({fake: true, keyCode: gbox._keymap[i]});
+					AkihabaraGamebox._keydown({fake: true, keyCode: AkihabaraGamebox._keymap[i]});
 				} else {
-					gbox._keyup({fake: true, keyCode: gbox._keymap[i]});
+					AkihabaraGamebox._keyup({fake: true, keyCode: AkihabaraGamebox._keymap[i]});
 				}
 			}
 		}
@@ -44,13 +44,13 @@ var AkihabaraIphofretboard = {
 		oElement.style.height = data.h + "px";
 		oElement.style.width = "100%";
 
-		gbox._box.appendChild(oElement);
+		AkihabaraGamebox._box.appendChild(oElement);
 
 		oElement.ontouchstart = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphofretboard._listen(evt); };
 		oElement.ontouchend = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphofretboard._listen(evt); };
 		oElement.ontouchmove = function (evt) { evt.preventDefault(); evt.stopPropagation(); AkihabaraIphofretboard._listen(evt); };
 
-		var sizes = gbox._domgetabsposition(oElement);
+		var sizes = AkihabaraGamebox._domgetabsposition(oElement);
 		this._gapx = sizes.x;
 		this._gapy = sizes.y;
 		this._fretw = sizes.w / (this._frets.length + 1);

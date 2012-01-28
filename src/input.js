@@ -56,7 +56,7 @@ var AkihabaraInput = {
 		var key = (e.fake || window.event ? e.keyCode : e.which);
 		AkihabaraInput._keyboard[key] = -1;
 		//Check for global action keys
-		if (e.keyCode === AkihabaraInput._keymap.pause) { gbox.pauseGame(); }
+		if (e.keyCode === AkihabaraInput._keymap.pause) { AkihabaraGamebox.pauseGame(); }
 		if (e.keyCode === AkihabaraInput._keymap.mute) {
 			if (!AkihabaraAudio._totalAudioMute) {
 				AkihabaraAudio.totalAudioMute();
@@ -79,9 +79,9 @@ var AkihabaraInput = {
 
 	_showkeyboardpicker: function (th) {
 		AkihabaraInput._keyboardpicker.value = "Click/Tap here to enable the keyboard";
-		AkihabaraInput._keyboardpicker.style.left = (gbox._screenposition.x + 5) + "px";
-		AkihabaraInput._keyboardpicker.style.top = (gbox._screenposition.y + 5) + "px";
-		AkihabaraInput._keyboardpicker.style.width = (gbox._screenposition.w - 10) + "px";
+		AkihabaraInput._keyboardpicker.style.left = (AkihabaraGamebox._screenposition.x + 5) + "px";
+		AkihabaraInput._keyboardpicker.style.top = (AkihabaraGamebox._screenposition.y + 5) + "px";
+		AkihabaraInput._keyboardpicker.style.width = (AkihabaraGamebox._screenposition.w - 10) + "px";
 		AkihabaraInput._keyboardpicker.style.height = "30px";
 		AkihabaraInput._keyboardpicker.style.border = "1px dashed white";
 		AkihabaraInput._keyboardpicker.readOnly = null;
@@ -153,8 +153,8 @@ var AkihabaraInput = {
 	*/
 	addTouchEventsTo: function (th) {
 		th.ontouchstart = function (evt) {
-			gbox._screenposition = gbox._domgetabsposition(gbox._screen);
-			if (evt.touches[0].pageY - gbox._screenposition.y < 30) {
+			AkihabaraGamebox._screenposition = AkihabaraGamebox._domgetabsposition(AkihabaraGamebox._screen);
+			if (evt.touches[0].pageY - AkihabaraGamebox._screenposition.y < 30) {
 				AkihabaraInput._showkeyboardpicker(gbox);
 			} else {
 				AkihabaraInput._hidekeyboardpicker(gbox);
@@ -164,8 +164,8 @@ var AkihabaraInput = {
 		};
 
 		th.onmousedown = function (evt) {
-			gbox._screenposition = gbox._domgetabsposition(gbox._screen);
-			if (evt.pageY - gbox._screenposition.y < 30) {
+			AkihabaraGamebox._screenposition = AkihabaraGamebox._domgetabsposition(AkihabaraGamebox._screen);
+			if (evt.pageY - AkihabaraGamebox._screenposition.y < 30) {
 				AkihabaraInput._showkeyboardpicker(gbox);
 			} else {
 				AkihabaraInput._hidekeyboardpicker(gbox);

@@ -225,7 +225,7 @@ var cachelist = {
  * audio, double buffering and FSEs. Gamebox can also store and load data from cookies!
  * @namespace AkihabaraGamebox
  */
-var gbox = {
+var AkihabaraGamebox = {
 
 	// CONSTANTS
 	ALIGN_CENTER: 0,
@@ -268,7 +268,7 @@ var gbox = {
 	_images: {},
 	_camera: {},
 	_debugfont: "debugfont.png",
-	getDebugFont: function () { return gbox._basepath + gbox._debugfont; },
+	getDebugFont: function () { return AkihabaraGamebox._basepath + AkihabaraGamebox._debugfont; },
 	_container: '',
 	_screen: 0,
 	_screenCtx: null,
@@ -299,7 +299,7 @@ var gbox = {
 	_db: false,
 	_systemcookie: "__gboxsettings",
 	_sessioncache: "",
-	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") === -1 ? "?" : "&") + "_brc = " + gbox._sessioncache); },
+	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") === -1 ? "?" : "&") + "_brc = " + AkihabaraGamebox._sessioncache); },
 	_forcedidle: 0,
 	_gamewaiting: 0,
 	_canlog: false,
@@ -328,16 +328,16 @@ var gbox = {
 		try { if ((sh > 0) && (sw > 0) && (sx < img.width) && (sy < img.height)) { tox.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); } } catch (e) { }
 	},
 	pauseGame: function () {
-		if (!gbox._pauseGame) {
-			gbox._pauseGame = true;
+		if (!AkihabaraGamebox._pauseGame) {
+			AkihabaraGamebox._pauseGame = true;
 		} else {
-			gbox._pauseGame = false;
-			gbox._nextframe();
+			AkihabaraGamebox._pauseGame = false;
+			AkihabaraGamebox._nextframe();
 		}
 	},
 	showPauseMessage: function () {
-		gbox.blitFade(gbox.getBufferContext(), {alpha: 0.5});
-		var ctx = gbox._screenCtx;
+		AkihabaraGamebox.blitFade(AkihabaraGamebox.getBufferContext(), {alpha: 0.5});
+		var ctx = AkihabaraGamebox._screenCtx;
 		ctx.fillStyle = '#FFF';
 		ctx.font = '12px sans-serif';
 		ctx.fillText('PAUSE', 141, 125);
@@ -355,13 +355,13 @@ var gbox = {
 	},
 
 	/**
-	* Sets the gbox._forcedidle property.
-	* @param {Boolean} f The value to write to gbox._forcedidle.
+	* Sets the AkihabaraGamebox._forcedidle property.
+	* @param {Boolean} f The value to write to AkihabaraGamebox._forcedidle.
 	*/
 	setForcedIdle: function (f) { this._forcedidle = f; },
 
 	/**
-	* Returns a gbox flag at index f.
+	* Returns a AkihabaraGamebox flag at index f.
 	* @param {Object} f The index of the flag you want returned.
 	*/
 	getFlag: function (f) { return this._flags[f]; },
@@ -407,46 +407,46 @@ var gbox = {
 		this._camera.y = 0;
 		this._camera.h = h;
 		this._camera.w = w;
-		gbox._container = this._box;
+		AkihabaraGamebox._container = this._box;
 		this._box.appendChild(this._screen);
 		container.appendChild(this._box);
 		document.body.appendChild(container);
 
 		this.createCanvas("_buffer");
-		AkihabaraInput.addKeyListernerTo(gbox);
-		AkihabaraInput.focusDrivenKeyboardSuport(gbox);
+		AkihabaraInput.addKeyListernerTo(AkihabaraGamebox);
+		AkihabaraInput.focusDrivenKeyboardSuport(AkihabaraGamebox);
 
-		AkihabaraInput.addTouchEventsTo(gbox._screen);
+		AkihabaraInput.addTouchEventsTo(AkihabaraGamebox._screen);
 
 		var d = new Date();
-		gbox._sessioncache = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "-" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();
+		AkihabaraGamebox._sessioncache = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "-" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();
 
-		gbox._loadsettings(); // Load default configuration
+		AkihabaraGamebox._loadsettings(); // Load default configuration
 		AkihabaraAudio.setCanAudio(true); // Tries to enable audio by default
 
-		switch (gbox._flags.fse) { // Initialize FSEs
+		switch (AkihabaraGamebox._flags.fse) { // Initialize FSEs
 		case "scanlines":
-			gbox.createCanvas("-gbox-fse", {w: w, h: h});
-			gbox.getCanvasContext("-gbox-fse").save();
-			gbox.getCanvasContext("-gbox-fse").globalAlpha = 0.2;
-			gbox.getCanvasContext("-gbox-fse").fillStyle = gbox.COLOR_BLACK;
+			AkihabaraGamebox.createCanvas("-gbox-fse", {w: w, h: h});
+			AkihabaraGamebox.getCanvasContext("-gbox-fse").save();
+			AkihabaraGamebox.getCanvasContext("-gbox-fse").globalAlpha = 0.2;
+			AkihabaraGamebox.getCanvasContext("-gbox-fse").fillStyle = AkihabaraGamebox.COLOR_BLACK;
 			for (var j = 0; j < h; j += 2) {
-				gbox.getCanvasContext("-gbox-fse").fillRect(0, j, w, 1);
+				AkihabaraGamebox.getCanvasContext("-gbox-fse").fillRect(0, j, w, 1);
 			}
-			gbox.getCanvasContext("-gbox-fse").restore();
-			gbox._localflags.fse = true;
+			AkihabaraGamebox.getCanvasContext("-gbox-fse").restore();
+			AkihabaraGamebox._localflags.fse = true;
 			break;
 		case "lcd":
-			gbox.createCanvas("-gbox-fse-old", {w: w, h: h});
-			gbox.createCanvas("-gbox-fse-new", {w: w, h: h});
-			gbox._localflags.fse = true;
+			AkihabaraGamebox.createCanvas("-gbox-fse-old", {w: w, h: h});
+			AkihabaraGamebox.createCanvas("-gbox-fse-new", {w: w, h: h});
+			AkihabaraGamebox._localflags.fse = true;
 			break;
 		}
 	},
 
 	/**
-	* Sets the gbox._db property. Turns on an off double buffering.
-	* @param {Boolean} db The value to write to gbox._db. True enables double buffering, false disables.
+	* Sets the AkihabaraGamebox._db property. Turns on an off double buffering.
+	* @param {Boolean} db The value to write to AkihabaraGamebox._db. True enables double buffering, false disables.
 	*/
 	setDoubleBuffering: function (db) { this._db = db; },
 
@@ -492,67 +492,67 @@ var gbox = {
 	getScreenHW: function () { return this._screenhw; },
 
 	/**
-	* Sets the gbox._zoom parameter, only works before gbox.initScreen is called.
+	* Sets the AkihabaraGamebox._zoom parameter, only works before AkihabaraGamebox.initScreen is called.
 	* @param {Integer} z Zoom factor.
 	*/
 	setZoom: function (z) { this._zoom = z; },
 
 	/**
-	* Deprecated: gbox._cb is now set by passing it directly into gbox.loadAll(). Left in for backwards compatibility.
-	* @param {String} cb The name of the function to be called once gbox.loadAll is completed.
+	* Deprecated: AkihabaraGamebox._cb is now set by passing it directly into AkihabaraGamebox.loadAll(). Left in for backwards compatibility.
+	* @param {String} cb The name of the function to be called once AkihabaraGamebox.loadAll is completed.
 	*/
 	setCallback: function (cb) { this._cb = cb; },
 
 	_playobject: function (g, obj, a) {
-		if (gbox._objects[g][obj].initialize) {
-			gbox._objects[g][obj].initialize(obj);
-			delete gbox._objects[g][obj].initialize;
+		if (AkihabaraGamebox._objects[g][obj].initialize) {
+			AkihabaraGamebox._objects[g][obj].initialize(obj);
+			delete AkihabaraGamebox._objects[g][obj].initialize;
 		}
-		if (gbox._objects[g][obj][a]) { gbox._objects[g][obj][a](obj, a); }
+		if (AkihabaraGamebox._objects[g][obj][a]) { AkihabaraGamebox._objects[g][obj][a](obj, a); }
 	},
 
 	_nextframe: function () {
-		gbox._framestart = gbox._mspf - (new Date().getTime() - gbox._framestart);
-		if (gbox._autoskip) {
-			if ((gbox._framestart < gbox._autoskip.lowidle) && (gbox._frameskip < gbox._autoskip.max)) {
-				gbox.setFrameskip(gbox._frameskip + 1);
+		AkihabaraGamebox._framestart = AkihabaraGamebox._mspf - (new Date().getTime() - AkihabaraGamebox._framestart);
+		if (AkihabaraGamebox._autoskip) {
+			if ((AkihabaraGamebox._framestart < AkihabaraGamebox._autoskip.lowidle) && (AkihabaraGamebox._frameskip < AkihabaraGamebox._autoskip.max)) {
+				AkihabaraGamebox.setFrameskip(AkihabaraGamebox._frameskip + 1);
 			} else {
-				if ((gbox._framestart > gbox._autoskip.hiidle) && (gbox._frameskip > gbox._autoskip.min)) {
-					gbox.setFrameskip(gbox._frameskip - 1);
+				if ((AkihabaraGamebox._framestart > AkihabaraGamebox._autoskip.hiidle) && (AkihabaraGamebox._frameskip > AkihabaraGamebox._autoskip.min)) {
+					AkihabaraGamebox.setFrameskip(AkihabaraGamebox._frameskip - 1);
 				}
 			}
 		}
 
-		if (!gbox._pauseGame) {
-			this._gametimer = setTimeout(gbox.go, (gbox._framestart <= 0 ? 1 : gbox._framestart));
+		if (!AkihabaraGamebox._pauseGame) {
+			this._gametimer = setTimeout(AkihabaraGamebox.go, (AkihabaraGamebox._framestart <= 0 ? 1 : AkihabaraGamebox._framestart));
 		} else {
-			gbox.showPauseMessage();
+			AkihabaraGamebox.showPauseMessage();
 		}
 
-		if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.run(gbox._debugTool); }
+		if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.run(AkihabaraGamebox._debugTool); }
 	},
 
 	/**
 	* Apply FSEs to the screen. Is called each frame.
 	*/
 	_applyfse: function () {
-		switch (gbox._flags.fse) {
+		switch (AkihabaraGamebox._flags.fse) {
 		case "scanlines":
-			gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"), 0, 0);
+			AkihabaraGamebox.getBufferContext().drawImage(AkihabaraGamebox.getCanvas("-gbox-fse"), 0, 0);
 			break;
 		case "lcd":
-			if (gbox._localflags.fselcdget && gbox.getBuffer()) {
-				gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(), 0, 0);
+			if (AkihabaraGamebox._localflags.fselcdget && AkihabaraGamebox.getBuffer()) {
+				AkihabaraGamebox.getCanvasContext("-gbox-fse-new").drawImage(AkihabaraGamebox.getBuffer(), 0, 0);
 			}
-			var gboxBufferContext = gbox.getBufferContext();
-			gboxBufferContext.save();
-			gboxBufferContext.globalAlpha = 0.5;
-			gboxBufferContext.drawImage(gbox.getCanvas("-gbox-fse-old"), 0, 0);
-			gboxBufferContext.restore();
-			if (gbox._localflags.fselcdget) {
-				gbox.swapCanvas("-gbox-fse-new", "-gbox-fse-old");
+			var AkihabaraGameboxBufferContext = AkihabaraGamebox.getBufferContext();
+			AkihabaraGameboxBufferContext.save();
+			AkihabaraGameboxBufferContext.globalAlpha = 0.5;
+			AkihabaraGameboxBufferContext.drawImage(AkihabaraGamebox.getCanvas("-gbox-fse-old"), 0, 0);
+			AkihabaraGameboxBufferContext.restore();
+			if (AkihabaraGamebox._localflags.fselcdget) {
+				AkihabaraGamebox.swapCanvas("-gbox-fse-new", "-gbox-fse-old");
 			}
-			gbox._localflags.fselcdget = !gbox._localflags.fselcdget;
+			AkihabaraGamebox._localflags.fselcdget = !AkihabaraGamebox._localflags.fselcdget;
 			break;
 		}
 	},
@@ -569,70 +569,70 @@ var gbox = {
 	*/
 	go: function () {
 
-		if (gbox._loaderqueue.isBusy()) {
-			if (gbox._gamewaiting === 1) {
-				gbox.blitFade(gbox._screenCtx, {alpha: 0.5});
-				gbox.blitText(gbox._screenCtx, {font: "_dbf", dx: 2, dy: 2, text: "LOADING..."});
-				gbox._gamewaiting = true;
+		if (AkihabaraGamebox._loaderqueue.isBusy()) {
+			if (AkihabaraGamebox._gamewaiting === 1) {
+				AkihabaraGamebox.blitFade(AkihabaraGamebox._screenCtx, {alpha: 0.5});
+				AkihabaraGamebox.blitText(AkihabaraGamebox._screenCtx, {font: "_dbf", dx: 2, dy: 2, text: "LOADING..."});
+				AkihabaraGamebox._gamewaiting = true;
 			}
-			if (gbox._gamewaiting <= 1) {
-				var bw = Math.floor(((gbox.getScreenW() - 4) * gbox._loaderqueue.getDone()) / gbox._loaderqueue.getSize());
-				gbox._screenCtx.globalAlpha = 1;
-				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleBackColor;
-				gbox._screenCtx.fillRect(0, 4 + gbox.getFont("_dbf").tileh, gbox.getScreenW(), 1);
-				gbox._screenCtx.fillStyle = gbox._splash.gaugeLittleColor;
-				gbox._screenCtx.fillRect(0, 4 + gbox.getFont("_dbf").tileh, (bw > 0 ? bw : 0), 1);
-				gbox._screenCtx.restore();
-				AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")");
+			if (AkihabaraGamebox._gamewaiting <= 1) {
+				var bw = Math.floor(((AkihabaraGamebox.getScreenW() - 4) * AkihabaraGamebox._loaderqueue.getDone()) / AkihabaraGamebox._loaderqueue.getSize());
+				AkihabaraGamebox._screenCtx.globalAlpha = 1;
+				AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox._splash.gaugeLittleBackColor;
+				AkihabaraGamebox._screenCtx.fillRect(0, 4 + AkihabaraGamebox.getFont("_dbf").tileh, AkihabaraGamebox.getScreenW(), 1);
+				AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox._splash.gaugeLittleColor;
+				AkihabaraGamebox._screenCtx.fillRect(0, 4 + AkihabaraGamebox.getFont("_dbf").tileh, (bw > 0 ? bw : 0), 1);
+				AkihabaraGamebox._screenCtx.restore();
+				AkihabaraDebug.setStatBar("Loading... (" + AkihabaraGamebox._loaderqueue.getDone() + "/" + AkihabaraGamebox._loaderqueue.getTotal() + ")");
 			}
-			if (gbox._gamewaiting) { gbox._gamewaiting--; }
-			setTimeout(gbox.go, 1000);
+			if (AkihabaraGamebox._gamewaiting) { AkihabaraGamebox._gamewaiting--; }
+			setTimeout(AkihabaraGamebox.go, 1000);
 		} else {
-			gbox._gamewaiting = 3;
-			gbox._framestart = new Date().getTime();
+			AkihabaraGamebox._gamewaiting = 3;
+			AkihabaraGamebox._framestart = new Date().getTime();
 			var i, gr = "";
-			for (var g = 0; g < gbox._renderorder.length; g++) {
-				if (gbox._groupplay[gbox._renderorder[g]]) {
-					if (gbox._renderorder[g] === gbox.ZINDEX_LAYER) {
+			for (var g = 0; g < AkihabaraGamebox._renderorder.length; g++) {
+				if (AkihabaraGamebox._groupplay[AkihabaraGamebox._renderorder[g]]) {
+					if (AkihabaraGamebox._renderorder[g] === AkihabaraGamebox.ZINDEX_LAYER) {
 						var id;
-						for (i = 0; i < gbox._actionqueue.length; i++) {
-							id = gbox._zindex.first;
+						for (i = 0; i < AkihabaraGamebox._actionqueue.length; i++) {
+							id = AkihabaraGamebox._zindex.first;
 							while (id != null) {
-								if (gbox._groupplay[gbox._zindex.data[id].g]) {
-									gbox._playobject(gbox._zindex.data[id].g, gbox._zindex.data[id].o, gbox._actionqueue[i]);
+								if (AkihabaraGamebox._groupplay[AkihabaraGamebox._zindex.data[id].g]) {
+									AkihabaraGamebox._playobject(AkihabaraGamebox._zindex.data[id].g, AkihabaraGamebox._zindex.data[id].o, AkihabaraGamebox._actionqueue[i]);
 								}
-								id = gbox._zindex.data[id].__next;
+								id = AkihabaraGamebox._zindex.data[id].__next;
 							}
 						}
 					} else {
-						for (i = 0; i < gbox._actionqueue.length; i++) {
-							for (var obj in gbox._objects[gbox._renderorder[g]]) {
-								gbox._playobject(gbox._renderorder[g], obj, gbox._actionqueue[i]);
+						for (i = 0; i < AkihabaraGamebox._actionqueue.length; i++) {
+							for (var obj in AkihabaraGamebox._objects[AkihabaraGamebox._renderorder[g]]) {
+								AkihabaraGamebox._playobject(AkihabaraGamebox._renderorder[g], obj, AkihabaraGamebox._actionqueue[i]);
 							}
 						}
 					}
 				}
 			}
-			if (gbox._fskid >= gbox._frameskip) {
-				if (gbox._localflags.fse) { gbox._applyfse(); }
-				if (gbox._db) { gbox.blitImageToScreen(gbox.getBuffer()); }
-				gbox._fskid = 0;
-			} else { gbox._fskid++; }
+			if (AkihabaraGamebox._fskid >= AkihabaraGamebox._frameskip) {
+				if (AkihabaraGamebox._localflags.fse) { AkihabaraGamebox._applyfse(); }
+				if (AkihabaraGamebox._db) { AkihabaraGamebox.blitImageToScreen(AkihabaraGamebox.getBuffer()); }
+				AkihabaraGamebox._fskid = 0;
+			} else { AkihabaraGamebox._fskid++; }
 
-			gbox.purgeGarbage();
+			AkihabaraGamebox.purgeGarbage();
 
-			if (gbox._zindexch.length) {
+			if (AkihabaraGamebox._zindexch.length) {
 
-				for (i = 0; i < gbox._zindexch.length; i++) {
-					if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o]) {
-						if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt == null) {
-							gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt = gbox._zindex.addObject(gbox._zindexch[i].o, gbox._zindexch[i].z);
+				for (i = 0; i < AkihabaraGamebox._zindexch.length; i++) {
+					if (AkihabaraGamebox._objects[AkihabaraGamebox._zindexch[i].o.g][AkihabaraGamebox._zindexch[i].o.o]) {
+						if (AkihabaraGamebox._objects[AkihabaraGamebox._zindexch[i].o.g][AkihabaraGamebox._zindexch[i].o.o].__zt == null) {
+							AkihabaraGamebox._objects[AkihabaraGamebox._zindexch[i].o.g][AkihabaraGamebox._zindexch[i].o.o].__zt = AkihabaraGamebox._zindex.addObject(AkihabaraGamebox._zindexch[i].o, AkihabaraGamebox._zindexch[i].z);
 						} else {
-							gbox._zindex.setPrio(gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt, gbox._zindexch[i].z);
+							AkihabaraGamebox._zindex.setPrio(AkihabaraGamebox._objects[AkihabaraGamebox._zindexch[i].o.g][AkihabaraGamebox._zindexch[i].o.o].__zt, AkihabaraGamebox._zindexch[i].z);
 						}
 					}
 				}
-				gbox._zindexch = [];
+				AkihabaraGamebox._zindexch = [];
 			}
 
 
@@ -646,10 +646,10 @@ var gbox = {
 					}
 				}
 			}
-			if (gbox._forcedidle) {
-				this._gametimer = setTimeout(gbox._nextframe, gbox._forcedidle); // Wait for the browser
+			if (AkihabaraGamebox._forcedidle) {
+				this._gametimer = setTimeout(AkihabaraGamebox._nextframe, AkihabaraGamebox._forcedidle); // Wait for the browser
 			} else {
-				gbox._nextframe();
+				AkihabaraGamebox._nextframe();
 			}
 		}
 	},
@@ -705,14 +705,14 @@ var gbox = {
 	},
 
 	/**
-	* Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only
+	* Saves data to a browser cookie as a key-value pair, which can be restored later using AkihabaraGamebox.dataLoad. Only
 	* works if user has cookies enabled.
 	* @param {String} k The key which identifies the value you are storing.
 	* @param {String} v The value you wish to store. Needs to be a string!
 	* @param {String} d A date offset, to be added to the current date. Defines the cookie's expiration date. By default this is set to 10 years.
 	* @example
 	* // (from Capman)
-	* gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));
+	* AkihabaraGamebox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));
 	*/
 	dataSave: function (k, v, d) {
 		var date = new Date();
@@ -726,7 +726,7 @@ var gbox = {
 	* @param {String} a A switch to determine whether a string or a number is returned. By default a string is returned.
 	* @returns {Object} A string or a number loaded from the cookie.
 	* @example
-	* hiscore = gbox.dataLoad("hiscore");
+	* hiscore = AkihabaraGamebox.dataLoad("hiscore");
 	*/
 	dataLoad: function (k, a) {
 		var nameeq = this._systemcookie + "~" + k + " = ";
@@ -790,7 +790,7 @@ var gbox = {
 	* not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
 	* @example
 	* // Center the camera on the player object
-	* gbox.centerCamera(gbox.getObject('player', 'player_id'), {w: map.w, h: map.h});
+	* AkihabaraGamebox.centerCamera(AkihabaraGamebox.getObject('player', 'player_id'), {w: map.w, h: map.h});
 	*/
 	centerCamera: function (data, viewdata) {
 		this.setCameraX(data.x - this._screenhw, viewdata);
@@ -801,7 +801,7 @@ var gbox = {
 	* Get an array containing the names of each group in the game, in order of rendering.
 	* @returns {Array} An array of group names.
 	* @example
-	* grouplist = gbox.getGroups();
+	* grouplist = AkihabaraGamebox.getGroups();
 	* grouplist; // => ["background", "player", "enemy", "game"]
 	*/
 	getGroups: function () { return this._groups; },
@@ -813,7 +813,7 @@ var gbox = {
 	*/
 	setGroups: function (g) {
 		this._groups = g;
-		this._groupplay[gbox.ZINDEX_LAYER] = true;
+		this._groupplay[AkihabaraGamebox.ZINDEX_LAYER] = true;
 		for (var i = 0; i < g.length; i++) {
 			if (!this._objects[g[i]]) {
 				this._objects[g[i]] = {};
@@ -824,8 +824,8 @@ var gbox = {
 	},
 
 	/**
-	* A method of setting the render order of groups independently of gbox.setGroups. Sets gbox._renderorder,
-	* which by default is equivalent to gbox._groups. However, gbox._renderorder is what ultimately determines
+	* A method of setting the render order of groups independently of AkihabaraGamebox.setGroups. Sets AkihabaraGamebox._renderorder,
+	* which by default is equivalent to AkihabaraGamebox._groups. However, AkihabaraGamebox._renderorder is what ultimately determines
 	* the rendering order of groups. If you need to change your rendering order on the fly, use this function
 	* by passing it a reordered array of group names.
 	* @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
@@ -899,7 +899,7 @@ var gbox = {
 	* @returns {Object} The object requested.
 	* @example
 	* // Find the player and reduce health by half.
-	* playertemp = gbox.getObject('player','player_id');
+	* playertemp = AkihabaraGamebox.getObject('player','player_id');
 	* player.health = player.health/2;
 	*/
 	getObject: function (group, id) {return this._objects[group][id]; },
@@ -915,8 +915,8 @@ var gbox = {
 	* <li > gapx: x-coord gap between tile columns, in pixels < /li>
 	* <li > gapy: y-coord gap between tile rows, in pixels < /li> < /ul>
 	* @example
-	* gbox.('font', 'font.png');
-	* gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
+	* AkihabaraGamebox.('font', 'font.png');
+	* AkihabaraGamebox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
 	*/
 	addFont: function (data) {
 		data.tilehh = Math.floor(data.tileh / 2);
@@ -927,14 +927,14 @@ var gbox = {
 
 	/**
 	* Returns a font object containing data about the font.
-	* @param {String} id The id of the font, as set in gbox.addFont.
+	* @param {String} id The id of the font, as set in AkihabaraGamebox.addFont.
 	*/
 	getFont: function (id) {
 		return this._fonts[id];
 	},
 
 	/**
-	* Deletes an object, keeping a record of its group and id in gbox._garbage.
+	* Deletes an object, keeping a record of its group and id in AkihabaraGamebox._garbage.
 	* @param {Object} obj The object you wish to delete.
 	*/
 	trashObject: function (obj) {
@@ -946,7 +946,7 @@ var gbox = {
 	},
 
 	/**
-	* Clears the record held in gbox._garbage of what has been deleted. The "onpurge" method is called on the object before being deleted (for canvas deallocation etc.)
+	* Clears the record held in AkihabaraGamebox._garbage of what has been deleted. The "onpurge" method is called on the object before being deleted (for canvas deallocation etc.)
 	*/
 	purgeGarbage: function () {
 		for (var group in this._garbage) {
@@ -956,7 +956,7 @@ var gbox = {
 				delete this._objects[group][id];
 			}
 		}
-		gbox._garbage = {};
+		AkihabaraGamebox._garbage = {};
 	},
 
 	/**
@@ -997,7 +997,7 @@ var gbox = {
 	*     this.y = 10;
 	*   },
 	* };
-	* gbox.addObject(data);
+	* AkihabaraGamebox.addObject(data);
 	*/
 	addObject: function (data) {
 		// Extras
@@ -1031,12 +1031,12 @@ var gbox = {
 	},
 
 	/**
-	* Creates a new canvas. By default, the width and height is the current gbox._screenw and gbox._screenh,
+	* Creates a new canvas. By default, the width and height is the current AkihabaraGamebox._screenw and AkihabaraGamebox._screenh,
 	* but it can also be set by passing in a data object with the appropriate parameters.
 	* @param {String} id The id of the new canvas.
 	* @param {Object} data (Optional) The height and width of the new canvas, contained in data.h and data.w parameters.
 	* @example
-	* gbox.createCanvas('newCanvas', {w: 640, h: 480});
+	* AkihabaraGamebox.createCanvas('newCanvas', {w: 640, h: 480});
 	*/
 	createCanvas: function (id, data) {
 		this.deleteCanvas(id);
@@ -1048,7 +1048,7 @@ var gbox = {
 		var canvasCtx = this._canvas[id].getContext("2d");
 		canvasCtx.save();
 		canvasCtx.globalAlpha = 0;
-		canvasCtx.fillStyle = gbox.COLOR_BLACK;
+		canvasCtx.fillStyle = AkihabaraGamebox.COLOR_BLACK;
 		canvasCtx.fillRect(0, 0, w, h);
 		canvasCtx.restore();
 	},
@@ -1058,7 +1058,7 @@ var gbox = {
 	* @param {String} id The id of the first canvas.
 	* @param {String} id The id of the second canvas.
 	* @example
-	* gbox.swapCanvas('canvas1','canvas2');
+	* AkihabaraGamebox.swapCanvas('canvas1','canvas2');
 	*/
 	swapCanvas: function (a, b) {
 		var swp = this._canvas[a];
@@ -1086,22 +1086,22 @@ var gbox = {
 	* @param {String} id The id of the image.
 	* @returns {Object} A DOM Image element, including the URL and last modified date of the image, its ID, and whether it was loaded successfully.
 	* @example
-	* image = gbox.getImage('logo');
+	* image = AkihabaraGamebox.getImage('logo');
 	* image; // => <img src = ?"logo.png?_brc = 5-7-2010-15-48-42" src_org = ?"logo.png" id = ?"logo" wasloaded = ?"true" > ?
 	*/
 	getImage: function (id) { return this._images[id]; },
 
 	/**
-	* Gets the buffer canvas (automatically created by gbox.initScreen).
+	* Gets the buffer canvas (automatically created by AkihabaraGamebox.initScreen).
 	* @returns {Object} A DOM Canvas element, including the width and height of the canvas.
 	*/
-	getBuffer: function () { return (gbox._fskid >= gbox._frameskip ? (this._db ? this.getCanvas("_buffer") : this._screen) : null); },
+	getBuffer: function () { return (AkihabaraGamebox._fskid >= AkihabaraGamebox._frameskip ? (this._db ? this.getCanvas("_buffer") : this._screen) : null); },
 
 	/**
 	* Gets the buffer canvas context.
 	* @returns {Object} A DOM Canvas context object.
 	*/
-	getBufferContext: function () { return (gbox._fskid >= gbox._frameskip ? (this._db ? this.getCanvasContext("_buffer") : this._screenCtx) : null); },
+	getBufferContext: function () { return (AkihabaraGamebox._fskid >= AkihabaraGamebox._frameskip ? (this._db ? this.getCanvasContext("_buffer") : this._screenCtx) : null); },
 
 	/**
 	* Gets a given canvas.
@@ -1175,8 +1175,8 @@ var gbox = {
 	getTiles: function (t) { return this._tiles[t]; },
 
 	/**
-	* Loads the initial splash screen and debugging font, then calls gbox._waitforloaded which adds to the game all the previously
-	* defined resources. Once gbox._waitforloaded is done, it calls the callback function cb.
+	* Loads the initial splash screen and debugging font, then calls AkihabaraGamebox._waitforloaded which adds to the game all the previously
+	* defined resources. Once AkihabaraGamebox._waitforloaded is done, it calls the callback function cb.
 	* @params {String} cb The name of the function to be called when all assets are done loading.
 	*/
 	loadAll: function (cb) {
@@ -1187,8 +1187,8 @@ var gbox = {
 		// Default stuff
 		this.addImage("_dbf", this.getDebugFont());
 		if (this._splash.background) { this.addImage("_splash", this._splash.background); }
-		gbox.addFont({id: "_dbf", image: "_dbf", firstletter: " ", tileh: 5, tilew: 4, tilerow: 16, gapx: 0, gapy: 0});
-		if (!gbox._splash.minimalTime) { gbox._minimalexpired = 2; }
+		AkihabaraGamebox.addFont({id: "_dbf", image: "_dbf", firstletter: " ", tileh: 5, tilew: 4, tilerow: 16, gapx: 0, gapy: 0});
+		if (!AkihabaraGamebox._splash.minimalTime) { AkihabaraGamebox._minimalexpired = 2; }
 		this._waitforloaded();
 	},
 
@@ -1216,7 +1216,7 @@ var gbox = {
 	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
 	* @example
 	* // from capman, draws an current object's tile, called from inside its blit function
-	* gbox.blitTile(gbox.getBufferContext(), {tileset: this.tileset, tile: this.frame, dx: this.x, dy: this.y, fliph: this.fliph, flipv: this.flipv, camera: this.camera, alpha: 1});
+	* AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: this.frame, dx: this.x, dy: this.y, fliph: this.fliph, flipv: this.flipv, camera: this.camera, alpha: 1});
 	*/
 	blitTile: function (tox, data) {
 		if (tox == null) { return; }
@@ -1234,7 +1234,7 @@ var gbox = {
 	/**
 	* Draws an image to a canvas context
 	* @param {Object} tox The canvas context to be drawn on.
-	* @param {Object} image The image to draw. Must be a DOM Image element, typicallly accessed via gbox.getImage
+	* @param {Object} image The image to draw. Must be a DOM Image element, typicallly accessed via AkihabaraGamebox.getImage
 	* @param {Object} data An object containing data about the tile to be drawn, including:
 	* <ul> < li > dx {Integer}: (required) x coordinate to draw the image at < /li>
 	* <li > dy {Integer}: (required) y coordinate to draw the image at < /li>
@@ -1243,7 +1243,7 @@ var gbox = {
 	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
 	* @example
 	* // draw an image at (100, 100)
-	* gbox.blitAll(gbox.getBufferContext(), gbox.getImage("image_id"), {dx: 100, dy: 100});
+	* AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage("image_id"), {dx: 100, dy: 100});
 	*/
 	blitAll: function (tox, image, data) {
 		if (tox == null) { return; }
@@ -1297,8 +1297,8 @@ var gbox = {
 	* <li > dy {Integer}: (required) the y coordinate to draw the text at < /li>
 	* <li > dw {Integer}: the width of the text area -- required if you define data.halign < /li>
 	* <li > dh {Integer}: the height of the text area -- required if you define data.valign < /li>
-	* <li > valign {Integer}: either gbox.ALIGN_BOTTOM (aligns from the bottom of the text area) or gbox.ALIGN_MIDDLE (vertically centers text in text area) < /li>
-	* <li > halign {Integer}: either gbox.ALIGN_RIGHT (aligns to the right hand side of text area) or gbox.ALIGN_CENTER (horizontallly centers text in text area) < /li>
+	* <li > valign {Integer}: either AkihabaraGamebox.ALIGN_BOTTOM (aligns from the bottom of the text area) or AkihabaraGamebox.ALIGN_MIDDLE (vertically centers text in text area) < /li>
+	* <li > halign {Integer}: either AkihabaraGamebox.ALIGN_RIGHT (aligns to the right hand side of text area) or AkihabaraGamebox.ALIGN_CENTER (horizontallly centers text in text area) < /li>
 	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
 	*/
 	blitText: function (tox, data) {
@@ -1309,15 +1309,15 @@ var gbox = {
 		this._implicitsargs(data);
 		var dx = data.dx;
 		var dy = data.dy;
-		if (data.valign === gbox.ALIGN_BOTTOM) {
+		if (data.valign === AkihabaraGamebox.ALIGN_BOTTOM) {
 			dy = dy + data.dh - fn.tileh;
 		} else {
-			if (data.valign === gbox.ALIGN_MIDDLE) { dy = dy + Math.floor(data.dh / 2) - fn.tileh; }
+			if (data.valign === AkihabaraGamebox.ALIGN_MIDDLE) { dy = dy + Math.floor(data.dh / 2) - fn.tileh; }
 		}
-		if (data.halign === gbox.ALIGN_RIGHT) {
+		if (data.halign === AkihabaraGamebox.ALIGN_RIGHT) {
 			dx = dx + data.dw - (data.text.length * fn.tilew);
 		} else {
-			if (data.halign === gbox.ALIGN_CENTER) { dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2); }
+			if (data.halign === AkihabaraGamebox.ALIGN_CENTER) { dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2); }
 		}
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
@@ -1359,7 +1359,7 @@ var gbox = {
 	},
 
 	/**
-	* Draws an image directly to the screen's current canvas context. Used internally in gbox.go(). Probably shouldn't be used otherwise.
+	* Draws an image directly to the screen's current canvas context. Used internally in AkihabaraGamebox.go(). Probably shouldn't be used otherwise.
 	*/
 	blitImageToScreen: function (image) {
 		this._screenCtx.drawImage(image, 0, 0);
@@ -1391,7 +1391,7 @@ var gbox = {
 		if (tox == null) { return; }
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
-		tox.fillStyle = (data.color ? data.color: gbox.COLOR_BLACK);
+		tox.fillStyle = (data.color ? data.color: AkihabaraGamebox.COLOR_BLACK);
 		tox.fillRect(data.x, data.y, data.w, data.h);
 		tox.restore();
 	},
@@ -1447,8 +1447,8 @@ var gbox = {
 	*/
 	objectIsVisible: function (obj) { return this.collides(obj, this._camera, 0); },
 
-	_minimaltimeexpired: function () { gbox._minimalexpired = 2; },
-	_splashscreeniscompleted: function () { return (gbox._splash.background ? gbox.imageIsLoaded("_splash") : true) && (gbox._splash.minilogo ? gbox.imageIsLoaded("logo") : true) && (gbox._splash.footnotes ? gbox.imageIsLoaded("_dbf") : true); },
+	_minimaltimeexpired: function () { AkihabaraGamebox._minimalexpired = 2; },
+	_splashscreeniscompleted: function () { return (AkihabaraGamebox._splash.background ? AkihabaraGamebox.imageIsLoaded("_splash") : true) && (AkihabaraGamebox._splash.minilogo ? AkihabaraGamebox.imageIsLoaded("logo") : true) && (AkihabaraGamebox._splash.footnotes ? AkihabaraGamebox.imageIsLoaded("_dbf") : true); },
 
 	setBasePath: function (a) { this._basepath = a; },
 	setSplashSettings: function (a) { for (var n in a) { this._splash[n] = a[n]; } },
@@ -1462,7 +1462,7 @@ var gbox = {
 	// ---
 
 	addScript: function (call) {
-		gbox._addtoloader({type: "script", call: call});
+		AkihabaraGamebox._addtoloader({type: "script", call: call});
 	},
 
 	// ---
@@ -1472,7 +1472,7 @@ var gbox = {
 	// ---
 
 	addBundle: function (call) {
-		gbox._addtoloader({type: "bundle", call: call});
+		AkihabaraGamebox._addtoloader({type: "bundle", call: call});
 	},
 
 	readBundleData: function (pack, call) {
@@ -1485,30 +1485,30 @@ var gbox = {
 			}
 		}
 		if (pack.addFont) {
-			for (i = 0; i < pack.addFont.length; i++) { gbox.addFont(pack.addFont[i]); }
+			for (i = 0; i < pack.addFont.length; i++) { AkihabaraGamebox.addFont(pack.addFont[i]); }
 		}
 		if (pack.addTiles) {
-			for (i = 0; i < pack.addTiles.length; i++) { gbox.addTiles(pack.addTiles[i]); }
+			for (i = 0; i < pack.addTiles.length; i++) { AkihabaraGamebox.addTiles(pack.addTiles[i]); }
 		}
 		// Remote resources for last
 		if (pack.addImage) {
-			for (i = 0; i < pack.addImage.length; i++) { gbox.addImage(pack.addImage[i][0], pack.addImage[i][1]); }
+			for (i = 0; i < pack.addImage.length; i++) { AkihabaraGamebox.addImage(pack.addImage[i][0], pack.addImage[i][1]); }
 		}
 		if (pack.addAudio) {
 			for (i = 0; i < pack.addAudio.length; i++) { AkihabaraAudio.addAudio(pack.addAudio[i][0], pack.addAudio[i][1], pack.addAudio[i][2]); }
 		}
 		if (pack.addBundle) {
-			for (i = 0; i < pack.addBundle.length; i++) { gbox.addBundle(pack.addBundle[i]); }
+			for (i = 0; i < pack.addBundle.length; i++) { AkihabaraGamebox.addBundle(pack.addBundle[i]); }
 		}
 		if (pack.addScript) {
-			for (i = 0; i < pack.addScript.length; i++) { gbox.addScript(pack.addScript[i]); }
+			for (i = 0; i < pack.addScript.length; i++) { AkihabaraGamebox.addScript(pack.addScript[i]); }
 		}
 		// Trigger the onLoad events in resource and loader
 		if (pack.onLoad) {
-			gbox._addtoloader({type: "exec-onl", func: pack.onLoad, call: call, pack: pack});
+			AkihabaraGamebox._addtoloader({type: "exec-onl", func: pack.onLoad, call: call, pack: pack});
 		}
 		if (call.onLoad) {
-			gbox._addtoloader({type: "exec-onl", func: call.onLoad, call: call, pack: pack});
+			AkihabaraGamebox._addtoloader({type: "exec-onl", func: call.onLoad, call: call, pack: pack});
 		}
 	},
 
@@ -1527,72 +1527,72 @@ var gbox = {
 		this.setAttribute('wasloaded', true);
 		this.hheight = Math.floor(this.height / 2);
 		this.hwidth = Math.floor(this.width / 2);
-		gbox._loaderloaded();
+		AkihabaraGamebox._loaderloaded();
 	},
 	// Callback for loaded bundle
 	_loaderhmlhttploading: function () {
-		var rs = (typeof this.readyState !== "undefined" ? this.readyState : gbox._xmlhttp.readyState);
-		var st = (typeof this.status !== "undefined" ? this.status : gbox._xmlhttp.status);
-		var rt = (typeof this.responseText !== "undefined" ? this.responseText : gbox._xmlhttp.responseText);
+		var rs = (typeof this.readyState !== "undefined" ? this.readyState : AkihabaraGamebox._xmlhttp.readyState);
+		var st = (typeof this.status !== "undefined" ? this.status : AkihabaraGamebox._xmlhttp.status);
+		var rt = (typeof this.responseText !== "undefined" ? this.responseText : AkihabaraGamebox._xmlhttp.responseText);
 		if (rs === 4 && (!st || st === 200)) {
 			if (rt) {
-				if (!gbox._loaderqueue.getCurrent().call.skipCacheSave) {
-					gbox._loadercache.add(gbox._loaderqueue.getCurrent().call.file, rt);
+				if (!AkihabaraGamebox._loaderqueue.getCurrent().call.skipCacheSave) {
+					AkihabaraGamebox._loadercache.add(AkihabaraGamebox._loaderqueue.getCurrent().call.file, rt);
 				}
 				var pack = eval("(" + rt + ")");
-				gbox.readBundleData(pack, gbox._loaderqueue.getCurrent().call);
+				AkihabaraGamebox.readBundleData(pack, AkihabaraGamebox._loaderqueue.getCurrent().call);
 				// Keep loading the other resources.
-				gbox._loaderloaded();
+				AkihabaraGamebox._loaderloaded();
 			}
 		}
 	},
 
 	// Loader code
 	_addtoloader: function (d) { // type: xx, data: yy
-		gbox._loaderqueue.push(d);
-		if (!gbox._loaderqueue.isProcessing()) { gbox._loadnext(); }
+		AkihabaraGamebox._loaderqueue.push(d);
+		if (!AkihabaraGamebox._loaderqueue.isProcessing()) { AkihabaraGamebox._loadnext(); }
 	},
 	_loaderloaded: function () {
-		setTimeout(gbox._loadnext, 10);
+		setTimeout(AkihabaraGamebox._loadnext, 10);
 	},
 	_loaderscript: function () {
-		if (gbox._loaderqueue.getCurrent().call.onLoad) {
-			gbox._addtoloader({type: "exec-onl", func: gbox._loaderqueue.getCurrent().call.onLoad, call: gbox._loaderqueue.getCurrent().call});
+		if (AkihabaraGamebox._loaderqueue.getCurrent().call.onLoad) {
+			AkihabaraGamebox._addtoloader({type: "exec-onl", func: AkihabaraGamebox._loaderqueue.getCurrent().call.onLoad, call: AkihabaraGamebox._loaderqueue.getCurrent().call});
 		}
-		gbox._loadnext();
+		AkihabaraGamebox._loadnext();
 	},
 	_loadnext: function () {
-		var current = gbox._loaderqueue.pop();
-		if (gbox._loaderqueue.isProcessing()) {
-			switch (gbox._loaderqueue.getCurrent().type) {
+		var current = AkihabaraGamebox._loaderqueue.pop();
+		if (AkihabaraGamebox._loaderqueue.isProcessing()) {
+			switch (AkihabaraGamebox._loaderqueue.getCurrent().type) {
 			case "image":
-				gbox._images[current.id] = new Image();
-				gbox.addEventListener(gbox._images[current.id], 'load', gbox._loaderimageloaded);
-				gbox._images[current.id].src = gbox._breakcacheurl(current.filename);
-				gbox._images[current.id].setAttribute('src_org', current.filename);
-				gbox._images[current.id].setAttribute('id', current.id);
-				gbox._images[current.id].setAttribute('wasloaded', false);
+				AkihabaraGamebox._images[current.id] = new Image();
+				AkihabaraGamebox.addEventListener(AkihabaraGamebox._images[current.id], 'load', AkihabaraGamebox._loaderimageloaded);
+				AkihabaraGamebox._images[current.id].src = AkihabaraGamebox._breakcacheurl(current.filename);
+				AkihabaraGamebox._images[current.id].setAttribute('src_org', current.filename);
+				AkihabaraGamebox._images[current.id].setAttribute('id', current.id);
+				AkihabaraGamebox._images[current.id].setAttribute('wasloaded', false);
 				break;
 			case "bundle":
 				var done = false;
 				if (!current.call.skipCacheLoad) {
-					var data = gbox._loadercache.read(current.call.file);
+					var data = AkihabaraGamebox._loadercache.read(current.call.file);
 					if (data) {
 						var pack = eval("(" + data + ")");
-						gbox.readBundleData(pack, current.call);
+						AkihabaraGamebox.readBundleData(pack, current.call);
 						// Keep loading the other resources.
-						gbox._loaderloaded();
+						AkihabaraGamebox._loaderloaded();
 						done = true;
 					}
 				}
 				if (!done) {
-					gbox._xmlhttp = gbox.createXmlHttpRequest();
-					gbox._xmlhttp.open((current.call.data ? "POST" : "GET"), gbox._breakcacheurl(current.call.file), true);
-					gbox._xmlhttp.onreadystatechange = gbox._loaderhmlhttploading;
+					AkihabaraGamebox._xmlhttp = AkihabaraGamebox.createXmlHttpRequest();
+					AkihabaraGamebox._xmlhttp.open((current.call.data ? "POST" : "GET"), AkihabaraGamebox._breakcacheurl(current.call.file), true);
+					AkihabaraGamebox._xmlhttp.onreadystatechange = AkihabaraGamebox._loaderhmlhttploading;
 					if (current.call.data) {
-						gbox._xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-						gbox._xmlhttp.send(current.call.data);
-					} else { gbox._xmlhttp.send(); }
+						AkihabaraGamebox._xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						AkihabaraGamebox._xmlhttp.send(current.call.data);
+					} else { AkihabaraGamebox._xmlhttp.send(); }
 				}
 				break;
 			case "audio":
@@ -1600,12 +1600,12 @@ var gbox = {
 				break;
 			case "exec-onl":
 				current.func(current.call, current.pack);
-				gbox._loaderloaded();
+				AkihabaraGamebox._loaderloaded();
 				break;
 			case "script":
 				var script = document.createElement('script');
 				script.type = "text/javascript";
-				script.onload = gbox._loaderscript;
+				script.onload = AkihabaraGamebox._loaderscript;
 				script.src = current.call.file;
 				document.getElementsByTagName('body')[0].appendChild(script);
 				break;
@@ -1615,72 +1615,72 @@ var gbox = {
 	_waitforloaded: function () {
 		var aul;
 		var dw = 0, dh = 0;
-		if (gbox._loaderqueue.isBusy() || (gbox._minimalexpired !== 2)) {
-			gbox._screenCtx.save();
-			gbox.blitFade(gbox._screenCtx, {alpha: 1});
-			if (!gbox._minimalexpired && gbox._splashscreeniscompleted()) {
-				gbox._minimalexpired = 1;
-				setTimeout(gbox._minimaltimeexpired, gbox._splash.minimalTime);
+		if (AkihabaraGamebox._loaderqueue.isBusy() || (AkihabaraGamebox._minimalexpired !== 2)) {
+			AkihabaraGamebox._screenCtx.save();
+			AkihabaraGamebox.blitFade(AkihabaraGamebox._screenCtx, {alpha: 1});
+			if (!AkihabaraGamebox._minimalexpired && AkihabaraGamebox._splashscreeniscompleted()) {
+				AkihabaraGamebox._minimalexpired = 1;
+				setTimeout(AkihabaraGamebox._minimaltimeexpired, AkihabaraGamebox._splash.minimalTime);
 			}
-			if (gbox._splash.loading) { gbox._splash.loading(gbox._screenCtx, gbox._loaderqueue.getDone(), gbox._loaderqueue.getTotal()); }
-			if (gbox._flags.loadscreen === "c64") {
+			if (AkihabaraGamebox._splash.loading) { AkihabaraGamebox._splash.loading(AkihabaraGamebox._screenCtx, AkihabaraGamebox._loaderqueue.getDone(), AkihabaraGamebox._loaderqueue.getTotal()); }
+			if (AkihabaraGamebox._flags.loadscreen === "c64") {
 				var p = 0, l = 0;
-				while (p !== gbox.getScreenH()) {
-					l = 10 + Math.floor(Math.random() * gbox.getScreenH() / 4);
-					if (p + l > gbox.getScreenH()) { l = gbox.getScreenH() - p; }
-					gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random() * gbox.PALETTES.c64.order.length)]];
-					gbox._screenCtx.fillRect(0, p, gbox.getScreenW(), l);
+				while (p !== AkihabaraGamebox.getScreenH()) {
+					l = 10 + Math.floor(Math.random() * AkihabaraGamebox.getScreenH() / 4);
+					if (p + l > AkihabaraGamebox.getScreenH()) { l = AkihabaraGamebox.getScreenH() - p; }
+					AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox.PALETTES.c64.colors[AkihabaraGamebox.PALETTES.c64.order[Math.floor(Math.random() * AkihabaraGamebox.PALETTES.c64.order.length)]];
+					AkihabaraGamebox._screenCtx.fillRect(0, p, AkihabaraGamebox.getScreenW(), l);
 					p += l;
 				}
-				gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors.lightblue;
-				gbox._screenCtx.fillRect(Math.floor(gbox.getScreenW() / 10), Math.floor(gbox.getScreenH() / 10), gbox.getScreenW() - Math.floor(gbox.getScreenW() / 5), gbox.getScreenH() - Math.floor(gbox.getScreenH() / 5));
-				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
-					dw = gbox.getScreenW() / 4;
-					dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
-					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: (gbox.getScreenW() - dw) / 2, dy: (gbox.getScreenH() - dh) / 2, dw: dw, dh: dh});
+				AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox.PALETTES.c64.colors.lightblue;
+				AkihabaraGamebox._screenCtx.fillRect(Math.floor(AkihabaraGamebox.getScreenW() / 10), Math.floor(AkihabaraGamebox.getScreenH() / 10), AkihabaraGamebox.getScreenW() - Math.floor(AkihabaraGamebox.getScreenW() / 5), AkihabaraGamebox.getScreenH() - Math.floor(AkihabaraGamebox.getScreenH() / 5));
+				if (AkihabaraGamebox._splash.minilogo && AkihabaraGamebox.imageIsLoaded("logo")) {
+					dw = AkihabaraGamebox.getScreenW() / 4;
+					dh = (AkihabaraGamebox.getImage("logo").height * dw) / AkihabaraGamebox.getImage("logo").width;
+					AkihabaraGamebox.blit(AkihabaraGamebox._screenCtx, AkihabaraGamebox.getImage(AkihabaraGamebox._splash.minilogo), {w: AkihabaraGamebox.getImage("logo").width, h: AkihabaraGamebox.getImage("logo").height, dx: (AkihabaraGamebox.getScreenW() - dw) / 2, dy: (AkihabaraGamebox.getScreenH() - dh) / 2, dw: dw, dh: dh});
 				}
 			} else {
-				if (gbox._splash.background && gbox.imageIsLoaded("_splash")) {
-					gbox.blit(gbox._screenCtx, gbox.getImage("_splash"), {w: gbox.getImage("_splash").width, h: gbox.getImage("_splash").height, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()});
+				if (AkihabaraGamebox._splash.background && AkihabaraGamebox.imageIsLoaded("_splash")) {
+					AkihabaraGamebox.blit(AkihabaraGamebox._screenCtx, AkihabaraGamebox.getImage("_splash"), {w: AkihabaraGamebox.getImage("_splash").width, h: AkihabaraGamebox.getImage("_splash").height, dx: 0, dy: 0, dw: AkihabaraGamebox.getScreenW(), dh: AkihabaraGamebox.getScreenH()});
 				}
-				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
-					dw = gbox.getScreenW() / 4;
-					dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
-					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: gbox.getScreenW() - dw - 5, dy: gbox.getScreenH() - dh - 5, dw: dw, dh: dh});
+				if (AkihabaraGamebox._splash.minilogo && AkihabaraGamebox.imageIsLoaded("logo")) {
+					dw = AkihabaraGamebox.getScreenW() / 4;
+					dh = (AkihabaraGamebox.getImage("logo").height * dw) / AkihabaraGamebox.getImage("logo").width;
+					AkihabaraGamebox.blit(AkihabaraGamebox._screenCtx, AkihabaraGamebox.getImage(AkihabaraGamebox._splash.minilogo), {w: AkihabaraGamebox.getImage("logo").width, h: AkihabaraGamebox.getImage("logo").height, dx: AkihabaraGamebox.getScreenW() - dw - 5, dy: AkihabaraGamebox.getScreenH() - dh - 5, dw: dw, dh: dh});
 				}
-				if (gbox._splash.footnotes && gbox.imageIsLoaded("_dbf")) {
-					if (!gbox.getCanvas("_footnotes")) {
-						var fd = gbox.getFont("_dbf");
-						gbox.createCanvas("_footnotes", {w: gbox.getScreenW() - 5, h: (gbox._splash.footnotes.length) * (fd.tileh + gbox._splash.footnotesSpacing)});
-						for (var i = 0; i < gbox._splash.footnotes.length; i++) {
-							gbox.blitText(gbox.getCanvasContext("_footnotes"), {
+				if (AkihabaraGamebox._splash.footnotes && AkihabaraGamebox.imageIsLoaded("_dbf")) {
+					if (!AkihabaraGamebox.getCanvas("_footnotes")) {
+						var fd = AkihabaraGamebox.getFont("_dbf");
+						AkihabaraGamebox.createCanvas("_footnotes", {w: AkihabaraGamebox.getScreenW() - 5, h: (AkihabaraGamebox._splash.footnotes.length) * (fd.tileh + AkihabaraGamebox._splash.footnotesSpacing)});
+						for (var i = 0; i < AkihabaraGamebox._splash.footnotes.length; i++) {
+							AkihabaraGamebox.blitText(AkihabaraGamebox.getCanvasContext("_footnotes"), {
 								font: "_dbf",
 								dx: 0,
-								dy: i * (fd.tileh + gbox._splash.footnotesSpacing),
-								text: gbox._splash.footnotes[i]
+								dy: i * (fd.tileh + AkihabaraGamebox._splash.footnotesSpacing),
+								text: AkihabaraGamebox._splash.footnotes[i]
 							});
 						}
 					}
-					gbox.blitAll(gbox._screenCtx, gbox.getCanvas("_footnotes"), {dx: 5, dy: gbox.getScreenH() - gbox.getCanvas("_footnotes").height - 5});
+					AkihabaraGamebox.blitAll(AkihabaraGamebox._screenCtx, AkihabaraGamebox.getCanvas("_footnotes"), {dx: 5, dy: AkihabaraGamebox.getScreenH() - AkihabaraGamebox.getCanvas("_footnotes").height - 5});
 				}
-				if (gbox._loaderqueue.isBusy()) {
-					var bw = Math.floor(((gbox.getScreenW() - 4) * gbox._loaderqueue.getDone()) / gbox._loaderqueue.getTotal());
-					gbox._screenCtx.globalAlpha = 1;
-					gbox._screenCtx.fillStyle = gbox._splash.gaugeBorderColor;
-					gbox._screenCtx.fillRect(0, Math.floor((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2), gbox.getScreenW(), gbox._splash.gaugeHeight);
-					gbox._screenCtx.fillStyle = gbox._splash.gaugeBackColor;
-					gbox._screenCtx.fillRect(1, Math.floor(((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2) + 1), gbox.getScreenW() - 4, gbox._splash.gaugeHeight - 2);
-					gbox._screenCtx.fillStyle = gbox._splash.gaugeColor;
-					gbox._screenCtx.fillRect(1, Math.floor(((gbox.getScreenH() - gbox._splash.gaugeHeight) / 2) + 1), (bw > 0 ? bw : 0), gbox._splash.gaugeHeight - 2);
+				if (AkihabaraGamebox._loaderqueue.isBusy()) {
+					var bw = Math.floor(((AkihabaraGamebox.getScreenW() - 4) * AkihabaraGamebox._loaderqueue.getDone()) / AkihabaraGamebox._loaderqueue.getTotal());
+					AkihabaraGamebox._screenCtx.globalAlpha = 1;
+					AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox._splash.gaugeBorderColor;
+					AkihabaraGamebox._screenCtx.fillRect(0, Math.floor((AkihabaraGamebox.getScreenH() - AkihabaraGamebox._splash.gaugeHeight) / 2), AkihabaraGamebox.getScreenW(), AkihabaraGamebox._splash.gaugeHeight);
+					AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox._splash.gaugeBackColor;
+					AkihabaraGamebox._screenCtx.fillRect(1, Math.floor(((AkihabaraGamebox.getScreenH() - AkihabaraGamebox._splash.gaugeHeight) / 2) + 1), AkihabaraGamebox.getScreenW() - 4, AkihabaraGamebox._splash.gaugeHeight - 2);
+					AkihabaraGamebox._screenCtx.fillStyle = AkihabaraGamebox._splash.gaugeColor;
+					AkihabaraGamebox._screenCtx.fillRect(1, Math.floor(((AkihabaraGamebox.getScreenH() - AkihabaraGamebox._splash.gaugeHeight) / 2) + 1), (bw > 0 ? bw : 0), AkihabaraGamebox._splash.gaugeHeight - 2);
 				}
 			}
-			gbox._screenCtx.restore();
-			if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")"); }
-			setTimeout(gbox._waitforloaded, 50);
+			AkihabaraGamebox._screenCtx.restore();
+			if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.setStatBar("Loading... (" + AkihabaraGamebox._loaderqueue.getDone() + "/" + AkihabaraGamebox._loaderqueue.getTotal() + ")"); }
+			setTimeout(AkihabaraGamebox._waitforloaded, 50);
 		} else {
-			gbox.deleteImage("_splash");
+			AkihabaraGamebox.deleteImage("_splash");
 			if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.setStatBar(); }
-			gbox._cb();
+			AkihabaraGamebox._cb();
 		}
 	},
 	clearCache: function () { this._loadercache.clear(); },

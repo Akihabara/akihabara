@@ -57,12 +57,12 @@ var AkihabaraAudio = {
 
 	_finalizeaudio: function (ob, who, donext) {
 		var cur = (who ? who : this);
-		gbox.removeEventListener(cur, 'ended', AkihabaraAudio._finalizeaudio);
-		gbox.removeEventListener(cur, 'timeupdate', AkihabaraAudio._checkprogress);
+		AkihabaraGamebox.removeEventListener(cur, 'ended', AkihabaraAudio._finalizeaudio);
+		AkihabaraGamebox.removeEventListener(cur, 'timeupdate', AkihabaraAudio._checkprogress);
 
-		gbox.addEventListener(cur, 'ended', AkihabaraAudio._playbackended);
+		AkihabaraGamebox.addEventListener(cur, 'ended', AkihabaraAudio._playbackended);
 		if (donext) {
-			gbox._loaderloaded();
+			AkihabaraGamebox._loaderloaded();
 		}
 	},
 
@@ -144,12 +144,12 @@ var AkihabaraAudio = {
 		ael.setAttribute('controls', AkihabaraAudio._showplayers);
 		ael.setAttribute('aki_id', cau.id);
 		ael.setAttribute('aki_cnt', cau.team);
-		gbox.addEventListener(ael, 'loadedmetadata', AkihabaraAudio._pushaudio); // Push locked audio in safari
+		AkihabaraGamebox.addEventListener(ael, 'loadedmetadata', AkihabaraAudio._pushaudio); // Push locked audio in safari
 		if (((AkihabaraAudio._createmode === 0) && (cau.team === 0)) || (AkihabaraAudio._createmode === 1)) {
 			if (AkihabaraAudio._forcedmimeaudio) {
 				for (i = 0; i < cau.filename.length; i++) {
 					if (AkihabaraAudio._audiofiletomime(cau.filename[i]).indexOf(AkihabaraAudio._forcedmimeaudio) !== -1) {
-						ael.src = gbox._breakcacheurl(cau.filename[i]);
+						ael.src = AkihabaraGamebox._breakcacheurl(cau.filename[i]);
 						break;
 					}
 				}
@@ -158,22 +158,22 @@ var AkihabaraAudio = {
 				for (i = 0; i < cau.filename.length; i++) {
 					cmime = AkihabaraAudio._audiofiletomime(cau.filename[i]);
 					if (("no" !== ael.canPlayType(cmime)) && ("" !== ael.canPlayType(cmime))) {
-						ael.src = gbox._breakcacheurl(cau.filename[i]);
+						ael.src = AkihabaraGamebox._breakcacheurl(cau.filename[i]);
 						break;
 					}
 				}
 			} else {
 				for (i = 0; i < cau.filename.length; i++) {
 					var src = document.createElement('source');
-					src.setAttribute('src', gbox._breakcacheurl(cau.filename[i]));
+					src.setAttribute('src', AkihabaraGamebox._breakcacheurl(cau.filename[i]));
 					ael.appendChild(src);
 				}
 			}
-			gbox.addEventListener(ael, 'ended', AkihabaraAudio._finalizeaudio);
+			AkihabaraGamebox.addEventListener(ael, 'ended', AkihabaraAudio._finalizeaudio);
 			if (AkihabaraAudio._audiocompatmode === 1) {
 				setTimeout(AkihabaraAudio._fakecheckprogress, AkihabaraAudio._fakecheckprogressspeed);
 			} else {
-				gbox.addEventListener(ael, 'timeupdate', AkihabaraAudio._checkprogress);
+				AkihabaraGamebox.addEventListener(ael, 'timeupdate', AkihabaraAudio._checkprogress);
 			}
 			ael.setAttribute('buffering', "auto");
 			ael.volume = 0;
@@ -184,7 +184,7 @@ var AkihabaraAudio = {
 		} else {
 			AkihabaraAudio._audio.aud[cau.id].push(ael);
 			document.body.appendChild(ael);
-			gbox._loaderloaded();
+			AkihabaraGamebox._loaderloaded();
 		}
 	},
 
@@ -267,7 +267,7 @@ var AkihabaraAudio = {
 			if (!AkihabaraAudio._singlechannelaudio || (def.channel === AkihabaraAudio._singlechannelname)) {
 				var grsize = (def.channel === AkihabaraAudio._singlechannelname ? AkihabaraAudio._loweraudioteam : (def.background ? AkihabaraAudio._loweraudioteam : AkihabaraAudio._audioteam));
 				for (var i = 0; i < grsize; i++) {
-					gbox._addtoloader({type: "audio", data: {id: id, filename: filename, def: (i === 0 ? def : null), team: i}});
+					AkihabaraGamebox._addtoloader({type: "audio", data: {id: id, filename: filename, def: (i === 0 ? def : null), team: i}});
 				}
 			}
 		}
@@ -454,7 +454,7 @@ var AkihabaraAudio = {
 		}
 	},
 
-	setCanAudio: function (a) { AkihabaraAudio._canaudio = !gbox._flags.noaudio && a; },
+	setCanAudio: function (a) { AkihabaraAudio._canaudio = !AkihabaraGamebox._flags.noaudio && a; },
 	setForcedMimeAudio: function (a) { AkihabaraAudio._forcedmimeaudio = a; },
 
 	setAudioChannels: function (a) {
@@ -493,7 +493,7 @@ var AkihabaraAudio = {
 			destination: null
 		};
 
-		var obj = gbox.addObject(Akihabara.extendsFrom(audio_fade_model, data));
+		var obj = AkihabaraGamebox.addObject(Akihabara.extendsFrom(audio_fade_model, data));
 
 		obj[(data.logicon == null ? "first" : data.logicon)] = function () {
 			if (this.destination == null) {
@@ -525,7 +525,7 @@ var AkihabaraAudio = {
 			) {
 				if (this.channel && this.stoponmute && (this.fadespeed < 0)) { AkihabaraAudio.stopChannel(this.channel); }
 				if (this.audio && this.stoponmute && (this.fadespeed < 0)) { AkihabaraAudio.stopAudio(this.audio); }
-				gbox.trashObject(this);
+				AkihabaraGamebox.trashObject(this);
 			}
 		};
 	}

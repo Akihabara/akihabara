@@ -34,26 +34,26 @@ var AkihabaraDebug = {
 
 	setStatBar: function (txt) {
 		function createStatBar() {
-			if (!gbox._debugTool.statusBar) { return false; }
+			if (!AkihabaraGamebox._debugTool.statusBar) { return false; }
 
 			var statbar = document.createElement("div");
-			if (gbox._border) { statbar.style.border = "1px solid black"; }
+			if (AkihabaraGamebox._border) { statbar.style.border = "1px solid black"; }
 			statbar.style.margin = "auto";
-			statbar.style.backgroundColor = gbox._debugTool.statusBar.backgroundColor;
-			statbar.style.font = gbox._debugTool.statusBar.font;
-			statbar.style.color = gbox._debugTool.statusBar.color;
-			statbar.style.width = (gbox._camera.w * gbox._zoom) + "px";
-			gbox._container.appendChild(statbar);
-			gbox._statbar = statbar;
+			statbar.style.backgroundColor = AkihabaraGamebox._debugTool.statusBar.backgroundColor;
+			statbar.style.font = AkihabaraGamebox._debugTool.statusBar.font;
+			statbar.style.color = AkihabaraGamebox._debugTool.statusBar.color;
+			statbar.style.width = (AkihabaraGamebox._camera.w * AkihabaraGamebox._zoom) + "px";
+			AkihabaraGamebox._container.appendChild(statbar);
+			AkihabaraGamebox._statbar = statbar;
 		}
 
-		if (!gbox._statbar) { createStatBar(); }
-		gbox._statbar.innerHTML = (txt || "&nbsp");
+		if (!AkihabaraGamebox._statbar) { createStatBar(); }
+		AkihabaraGamebox._statbar.innerHTML = (txt || "&nbsp");
 	},
 
 	// Add a new debug utility and its data
 	addDebugAction: function  (name, data) {
-		gbox._debugTool[name] = data;
+		AkihabaraGamebox._debugTool[name] = data;
 	},
 
 	run: function (data) {
@@ -62,7 +62,7 @@ var AkihabaraDebug = {
 			var fps = data.fpsCounter,
 			thisFrame = new Date().getTime(),
 			diffTime = Math.ceil((thisFrame - fps.lastFps)),
-			ctx = gbox._screenCtx;
+			ctx = AkihabaraGamebox._screenCtx;
 
 			if (diffTime >= 1000) {
 				fps.currentFps = fps.frameCount;
@@ -75,18 +75,18 @@ var AkihabaraDebug = {
 			// Print the result on the main CTX
 			ctx.fillStyle = fps.color;
 			ctx.font = fps.font;
-			ctx.fillText('FPS: ' + fps.currentFps + '/' + gbox._fps, fps.x, fps.y);
+			ctx.fillText('FPS: ' + fps.currentFps + '/' + AkihabaraGamebox._fps, fps.x, fps.y);
 
 		}
 
 		if (data.statusBar) {
-			var statline = "Idle: " + gbox._framestart + "/" + gbox._mspf + (gbox._frameskip > 0 ? " (" + gbox._frameskip + "skip)" : "") + " | ";
+			var statline = "Idle: " + AkihabaraGamebox._framestart + "/" + AkihabaraGamebox._mspf + (AkihabaraGamebox._frameskip > 0 ? " (" + AkihabaraGamebox._frameskip + "skip)" : "") + " | ";
 			var cnt = 0, g = 0;
-			for (g = 0; g < gbox._groups.length; g++) {
-				if (gbox._groupplay[gbox._groups[g]]) {
+			for (g = 0; g < AkihabaraGamebox._groups.length; g++) {
+				if (AkihabaraGamebox._groupplay[AkihabaraGamebox._groups[g]]) {
 					cnt = 0;
-					for (var obj in gbox._objects[gbox._groups[g]]) { cnt++; }
-					if (cnt) { statline += gbox._groups[g] + "[" + cnt + "] "; }
+					for (var obj in AkihabaraGamebox._objects[AkihabaraGamebox._groups[g]]) { cnt++; }
+					if (cnt) { statline += AkihabaraGamebox._groups[g] + "[" + cnt + "] "; }
 				}
 			}
 			cnt = 0;
@@ -100,7 +100,7 @@ var AkihabaraDebug = {
 			statline += "| audio: " + ply + "/" + cnt + ":" + AkihabaraAudio._audioteam;
 
 			if (AkihabaraAudio._totalAudioMute) { statline += ' MUTE ON'; }
-			if (gbox._pauseGame) { statline += ' | PAUSE ON'; }
+			if (AkihabaraGamebox._pauseGame) { statline += ' | PAUSE ON'; }
 
 			this.setStatBar(statline);
 		}

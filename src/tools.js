@@ -47,7 +47,7 @@ var AkihabaraTools = {
 		for (var r = 0; r < data.rows.length; r++) {
 			for (var i = 0; i < data.rows[r].length; i++) {
 				this._images[id] = new Image();
-				gbox.addEventListener(this._images[id], 'load', loaded);
+				AkihabaraGamebox.addEventListener(this._images[id], 'load', loaded);
 				this._images[id].setAttribute("id", id);
 				this._images[id].src = data.rows[r][i].img;
 				this._count++;

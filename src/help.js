@@ -83,7 +83,7 @@ var help = {
 	* @returns True if the two objects are overlapping enough and by.accy > 0.
 	*/
 	isSquished: function (th, by) {
-		return ((by.accy > 0) && gbox.collides(th, by) && (Math.abs(th.y - (by.y + by.h)) < (th.h / 2)));
+		return ((by.accy > 0) && AkihabaraGamebox.collides(th, by) && (Math.abs(th.y - (by.y + by.h)) < (th.h / 2)));
 	},
 
 	/**
@@ -151,7 +151,7 @@ var help = {
 	*/
 	getTileInMap: function (x, y, map, ifout, mapid) {
 		if (!mapid) { mapid = "map"; }
-		var ts = gbox._tiles[map.tileset];
+		var ts = AkihabaraGamebox._tiles[map.tileset];
 		var tx = Math.floor(x / ts.tilew);
 		var ty = Math.floor(y / ts.tileh);
 		if ((ty < 0) || (ty >= map[mapid].length)) {
@@ -198,7 +198,7 @@ var help = {
 	// Args: (map)
 	// Outs: finalized map
 	finalizeTilemap: function (map) {
-		var ts = gbox._tiles[map.tileset];
+		var ts = AkihabaraGamebox._tiles[map.tileset];
 		map.h = map.map.length * ts.tileh;
 		map.w = map.map[0].length * ts.tilew;
 		map.hw = Math.floor(map.w / 2);
@@ -214,7 +214,7 @@ var help = {
 	* @returns A map object with map.w, map.h, map.hh, and map.hw set correctly.
 	*/
 	xPixelToTileX: function (map, x, gap) {
-		var ts = gbox._tiles[map.tileset];
+		var ts = AkihabaraGamebox._tiles[map.tileset];
 		return Math.floor(x / ts.tilew);
 	},
 
@@ -226,7 +226,7 @@ var help = {
 	* @returns A map object with map.w, map.h, map.hh, and map.hw set correctly.
 	*/
 	yPixelToTileY: function (map, y, gap) {
-		var ts = gbox._tiles[map.tileset];
+		var ts = AkihabaraGamebox._tiles[map.tileset];
 		return Math.floor(y / ts.tileh);
 	},
 
@@ -238,7 +238,7 @@ var help = {
 	* @returns The x-coordinate in pixels of the tile column.
 	*/
 	xPixelToTile: function (map, x, gap) {
-		var ts = gbox._tiles[map.tileset];
+		var ts = AkihabaraGamebox._tiles[map.tileset];
 		return (Math.floor(x / ts.tilew) + (gap ? gap : 0)) * ts.tilew;
 	},
 
@@ -250,7 +250,7 @@ var help = {
 	* @returns The y-coordinate in pixels of the tile row.
 	*/
 	yPixelToTile: function (map, y, gap) {
-		var ts = gbox._tiles[map.tileset];
+		var ts = AkihabaraGamebox._tiles[map.tileset];
 		return (Math.floor(y / ts.tileh) + (gap ? gap : 0)) * ts.tileh;
 	},
 
@@ -356,7 +356,7 @@ var help = {
 
 	/**
 	* Sets a tile in the map and draws it. Does not return anything.
-	* @param {Object} ctx The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
+	* @param {Object} ctx The canvas context for the map. Accessed via AkihabaraGamebox.getCanvasContext("canvasname")
 	* @param {Object} map The game map object.
 	* @param {Integer} x The index of the tile column within the map array -- so a 1 would mean the second column of tiles.
 	* @param {Integer} y The index of the tile row within the map array -- so a 1 would mean the second row of tiles.
@@ -364,21 +364,21 @@ var help = {
 	* @param {String} The ID of the map. Defaults to 'map'.
 	* @example
 	* // Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.
-	* help.setTileInMap(gbox.getCanvasContext("map_canvas"), map, 1, 1, null, "map");
+	* help.setTileInMap(AkihabaraGamebox.getCanvasContext("map_canvas"), map, 1, 1, null, "map");
 	*/
 	setTileInMap: function (ctx, tilemap, x, y, tile, map) {
-		var ts = gbox.getTiles(tilemap.tileset);
+		var ts = AkihabaraGamebox.getTiles(tilemap.tileset);
 		tilemap[(map == null ? "map" : map)][y][x] = tile;
 		if (tile == null) {
-			gbox.blitClear(ctx, {x: x * ts.tilew, y: y * ts.tilew, h: ts.tileh, w: ts.tilew});
+			AkihabaraGamebox.blitClear(ctx, {x: x * ts.tilew, y: y * ts.tilew, h: ts.tileh, w: ts.tilew});
 		} else {
-			gbox.blitTile(ctx, {tileset: tilemap.tileset, tile: tile, dx: x * ts.tilew, dy: y * ts.tilew});
+			AkihabaraGamebox.blitTile(ctx, {tileset: tilemap.tileset, tile: tile, dx: x * ts.tilew, dy: y * ts.tilew});
 		}
 	},
 
 	/**
 	* Sets a tile in the map and draws it using pixels as coords. Does not return anything.
-	* @param {Object} ctx The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
+	* @param {Object} ctx The canvas context for the map. Accessed via AkihabaraGamebox.getCanvasContext("canvasname")
 	* @param {Object} map The game map object.
 	* @param {Integer} x The index of the pixel column within the map array -- so a 1 would mean the second column of tiles.
 	* @param {Integer} y The index of the pixel row within the map array -- so a 1 would mean the second row of tiles.
@@ -386,7 +386,7 @@ var help = {
 	* @param {String} The ID of the map. Defaults to 'map'.
 	*/
 	setTileInMapAtPixel: function (ctx, tilemap, x, y, tile, map) {
-		var ts = gbox.getTiles(tilemap.tileset);
+		var ts = AkihabaraGamebox.getTiles(tilemap.tileset);
 		x = Math.floor(x / ts.tilew);
 		y = Math.floor(y / ts.tileh);
 		help.setTileInMap(ctx, tilemap, x, y, tile, map);
@@ -434,7 +434,7 @@ var help = {
 	* timestamp; // => '01:00:00';
 	*/
 	framestotime: function (frames) {
-		var csec = Math.ceil(frames / gbox.getFps() * 100);
+		var csec = Math.ceil(frames / AkihabaraGamebox.getFps() * 100);
 		return this.prepad((Math.floor(csec / 6000) % 60), 2, "0") + ":" + this.prepad((Math.floor(csec / 100) % 60), 2, "0") + ":" + this.prepad(csec % 100, 2, "0");
 	},
 
@@ -557,7 +557,7 @@ var help = {
 					data.splash.footnotes.push(footnotes[i]);
 				}
 			}
-			gbox.setSplashSettings(data.splash);
+			AkihabaraGamebox.setSplashSettings(data.splash);
 		}
 		var screenwidth = (data.width ? data.width : (data.portrait ? 240 : 320));
 		var screenheight = (data.height ? data.height : (data.portrait ? 320 : 240));
@@ -580,59 +580,59 @@ var help = {
 		}
 
 		if (typeof data.basepath === 'string') {
-			gbox.setBasePath(data.basepath);
+			AkihabaraGamebox.setBasePath(data.basepath);
 		}
-		if (data.debugfont) { gbox.setDebugFont(data.debugfont); }
-		if (data.offlinecache) { gbox.setOfflineCache(data.offlinecache); }
-		if (!data.splash || (data.splash.minilogo == null)) { gbox.setSplashSettings({minilogo: "logo"}); }
-		if (!data.splash || (data.splash.background == null)) { gbox.setSplashSettings({background: gbox._basepath + "splash.png"}); }
-		if (!data.splash || (data.splash.minimalTime == null)) { gbox.setSplashSettings({minimalTime: 3000}); }
-		if (!data.splash || (data.splash.footnotes == null)) { gbox.setSplashSettings({footnotes: footnotes}); }
+		if (data.debugfont) { AkihabaraGamebox.setDebugFont(data.debugfont); }
+		if (data.offlinecache) { AkihabaraGamebox.setOfflineCache(data.offlinecache); }
+		if (!data.splash || (data.splash.minilogo == null)) { AkihabaraGamebox.setSplashSettings({minilogo: "logo"}); }
+		if (!data.splash || (data.splash.background == null)) { AkihabaraGamebox.setSplashSettings({background: AkihabaraGamebox._basepath + "splash.png"}); }
+		if (!data.splash || (data.splash.minimalTime == null)) { AkihabaraGamebox.setSplashSettings({minimalTime: 3000}); }
+		if (!data.splash || (data.splash.footnotes == null)) { AkihabaraGamebox.setSplashSettings({footnotes: footnotes}); }
 		if (!data || !data.hardwareonly) {
 			document.body.style.backgroundColor = "#000000";
-			gbox.setScreenBorder(false);
+			AkihabaraGamebox.setScreenBorder(false);
 		}
 		if (data.backgroundColor) { document.body.style.backgroundColor = data.backgroundColor; }
 		if (help.geturlparameter("statusbar")) { AkihabaraDebug.statusBar(); }
-		if (help.geturlparameter("db") || device.doublebuffering) { gbox.setDoubleBuffering(true); }
-		if (help.geturlparameter("noautoskip")) { gbox.setAutoskip(null); }
+		if (help.geturlparameter("db") || device.doublebuffering) { AkihabaraGamebox.setDoubleBuffering(true); }
+		if (help.geturlparameter("noautoskip")) { AkihabaraGamebox.setAutoskip(null); }
 
 		if (help.geturlparameter("zoom")) {
-			gbox.setZoom(help.geturlparameter("zoom"));
+			AkihabaraGamebox.setZoom(help.geturlparameter("zoom"));
 		} else if (help.isDefined(data.zoom)) {
-			gbox.setZoom(data.zoom);
+			AkihabaraGamebox.setZoom(data.zoom);
 		} else if (help.isDefined(device.zoom)) {
-			gbox.setZoom(device.zoom);
+			AkihabaraGamebox.setZoom(device.zoom);
 		} else if (help.isDefined(device.width)) {
-			gbox.setZoom(device.width / screenwidth);
+			AkihabaraGamebox.setZoom(device.width / screenwidth);
 		} else if (help.isDefined(device.height)) {
-			gbox.setZoom(device.height / screenheight);
+			AkihabaraGamebox.setZoom(device.height / screenheight);
 		}
 
 		if (help.geturlparameter("fps")) {
-			gbox.setFps(help.geturlparameter("fps") * 1);
+			AkihabaraGamebox.setFps(help.geturlparameter("fps") * 1);
 		} else {
-			gbox.setFps((data.fps ? data.fps : 25));
+			AkihabaraGamebox.setFps((data.fps ? data.fps : 25));
 		}
 
-		if (help.geturlparameter("fskip")) { gbox.setFrameskip(help.geturlparameter("fskip")); }
+		if (help.geturlparameter("fskip")) { AkihabaraGamebox.setFrameskip(help.geturlparameter("fskip")); }
 
 		if (help.geturlparameter("forcedidle")) {
-			gbox.setForcedIdle(help.geturlparameter("forcedidle") * 1);
+			AkihabaraGamebox.setForcedIdle(help.geturlparameter("forcedidle") * 1);
 		} else if (help.isDefined(device.forcedidle)) {
-			gbox.setForcedIdle(device.forcedidle);
+			AkihabaraGamebox.setForcedIdle(device.forcedidle);
 		}
 
-		if (help.geturlparameter("canlog")) { gbox.setCanLog(true); }
+		if (help.geturlparameter("canlog")) { AkihabaraGamebox.setCanLog(true); }
 
-		if (!data || !data.hardwareonly) { gbox.initScreen(screenwidth, screenheight); }
+		if (!data || !data.hardwareonly) { AkihabaraGamebox.initScreen(screenwidth, screenheight); }
 
-		if (help.geturlparameter("showplayers")) { gbox.setShowPlayers(help.geturlparameter("showplayers") === "yes"); }
+		if (help.geturlparameter("showplayers")) { AkihabaraGamebox.setShowPlayers(help.geturlparameter("showplayers") === "yes"); }
 
 		if (help.geturlparameter("canaudio")) {
 			AkihabaraAudio.setCanAudio(help.geturlparameter("canaudio") === "yes");
 		} else {
-			AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || gbox.getFlag("experimental")));
+			AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || AkihabaraGamebox.getFlag("experimental")));
 		}
 
 		if (help.geturlparameter("audiocompatmode")) {
@@ -687,12 +687,12 @@ var help = {
 			if (help.geturlparameter("touch") !== "no" && (help.geturlparameter("touch") === "yes" || device.touch)) {
 				switch (data.padmode) {
 				case "fretboard":
-					AkihabaraIphofretboard.initialize({h: 100, bg: gbox._basepath + "fretboard.png"});
+					AkihabaraIphofretboard.initialize({h: 100, bg: AkihabaraGamebox._basepath + "fretboard.png"});
 					break;
 				case "none":
 					break;
 				default:
-					AkihabaraIphopad.initialize({h: 100, dpad: gbox._basepath + "dpad.png", buttons: gbox._basepath + "buttons.png", bg: gbox._basepath + "padbg.png"});
+					AkihabaraIphopad.initialize({h: 100, dpad: AkihabaraGamebox._basepath + "dpad.png", buttons: AkihabaraGamebox._basepath + "buttons.png", bg: AkihabaraGamebox._basepath + "padbg.png"});
 					break;
 				}
 			}

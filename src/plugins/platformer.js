@@ -48,10 +48,10 @@ var platformer = {
 	},
 
 	horizontalKeys: function (th, keys) {
-		if (gbox.keyIsPressed(keys.left)) {
+		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
 			th.pushing = platformer.PUSH_LEFT;
 			th.accx = help.limit(th.accx-1, -th.maxaccx, th.maxaccx);
-		} else if (gbox.keyIsPressed(keys.right)) {
+		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
 			th.pushing = platformer.PUSH_RIGHT;
 			th.accx = help.limit(th.accx + 1, -th.maxaccx, th.maxaccx);
 		} else th.pushing = platformer.PUSH_NONE;
@@ -97,7 +97,7 @@ var platformer = {
 				th.x = help.xPixelToTile(map, th.x + th.w)-th.w;
 				th.touchedrightwall = true;
 			}
-			t += gbox.getTiles(map.tileset).tileh/(precision?precision: 1);
+			t += AkihabaraGamebox.getTiles(map.tileset).tileh/(precision?precision: 1);
 		}
 	},
 
@@ -110,12 +110,12 @@ var platformer = {
 	},
 
 	jumpKeys: function (th, key) {
-		if ((platformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && gbox.keyIsHit(key.jump) && (th.curjsize == 0)) {
+		if ((platformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && AkihabaraGamebox.keyIsHit(key.jump) && (th.curjsize == 0)) {
 			if (key.audiojump) AkihabaraAudio.hitAudio(key.audiojump);
 			th.accy = -th.jumpaccy;
 			th.curjsize = th.jumpsize;
 			return true;
-		} else if (th.curjsize && gbox.keyIsHold(key.jump)) { // Jump modulation
+		} else if (th.curjsize && AkihabaraGamebox.keyIsHold(key.jump)) { // Jump modulation
 			th.accy--;
 			th.curjsize--;
 		} else
