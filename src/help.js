@@ -3,7 +3,7 @@
  * string/array handlers and the akihabaraInit function.
  * @namespace AkihabaraHelp
  */
-var help = {
+var AkihabaraHelp = {
 
 	/**
 	* Searches an object in an array filtering for one of their properties.

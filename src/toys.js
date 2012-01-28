@@ -4,7 +4,7 @@
  * like jumping characters, Z-Indexed objects, bullets, sparks, staff rolls, bonus screens, dialogues etc.
  * @namespace AkihabaraToys
  */
-var toys = {
+var AkihabaraToys = {
 	// State-based toys
 	// CONSTANTS
 	TOY_BUSY: 0,

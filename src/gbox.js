@@ -1,4 +1,4 @@
-var dynalist = {
+var AkihabaraDynalist = {
 
 	create: function () {
 		return {
@@ -141,7 +141,7 @@ var dynalist = {
 };
 
 // A special circular queue with some features useful for the resource loader
-var cyclelist = {
+var AkihabaraCyclelist = {
 
 	create: function (size) {
 		return {
@@ -189,7 +189,7 @@ var cyclelist = {
 };
 
 // A simple circular cache handler
-var cachelist = {
+var AkihabaraCachelist = {
 
 	create: function (size) {
 		return {
@@ -295,7 +295,7 @@ var AkihabaraGamebox = {
 	_garbage: [],
 	_zindexch: [],
 	_framestart: 0,
-	_zindex: dynalist.create(),
+	_zindex: AkihabaraDynalist.create(),
 	_db: false,
 	_systemcookie: "__gboxsettings",
 	_sessioncache: "",
@@ -1519,8 +1519,8 @@ var AkihabaraGamebox = {
 	// ---
 
 	_xmlhttp: null,
-	_loaderqueue: cyclelist.create(200),
-	_loadercache: cachelist.create(30),
+	_loaderqueue: AkihabaraCyclelist.create(200),
+	_loadercache: AkihabaraCachelist.create(30),
 
 	// Callback for loaded image
 	_loaderimageloaded: function () {
