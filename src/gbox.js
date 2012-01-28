@@ -67,7 +67,7 @@ var dynalist = {
 				if (this.data[obd].__prio === prio) { return; }
 				if (this.first !== this.last) {
 					if (this.data[obd].__prio < prio) {
-						if (this.data[obd].__id != this.last) {
+						if (this.data[obd].__id !== this.last) {
 							i = this.data[obd].__next;
 							while (i != null) {
 								if (this.data[i].__prio >= prio) {
@@ -76,7 +76,7 @@ var dynalist = {
 									i = this.data[i].__next;
 								}
 							}
-							if ((i == null) || (this.data[i].__first != this.data[obd].__id)) {
+							if ((i == null) || (this.data[i].__first !== this.data[obd].__id)) {
 								// disconnect
 								this.disconnect(obd);
 								// Reconnect
@@ -98,7 +98,7 @@ var dynalist = {
 							}
 						}
 					} else {
-						if (this.data[obd].__id != this.first) {
+						if (this.data[obd].__id !== this.first) {
 							i = this.data[obd].__first;
 							while (i != null) {
 								if (this.data[i].__prio <= prio) {
@@ -107,7 +107,7 @@ var dynalist = {
 									i = this.data[i].__first;
 								}
 							}
-							if ((i == null) || (this.data[i].__next != this.data[obd].__id)) {
+							if ((i == null) || (this.data[i].__next !== this.data[obd].__id)) {
 								// disconnect
 								this.disconnect(obd);
 								if (i == null) {
@@ -156,7 +156,7 @@ var cyclelist = {
 			getDone: function () { return this._done; }, // Number of popped elements since the last empty
 			getSize: function () { return this._size; }, // The maximum number of elements in the queue
 			isProcessing: function () { return this._current != null; }, // The last pop was not a null (i.e. the queue returned a valid object)
-			isEnded: function () { return (this._head == this._tail); }, // There are other elements in the queue
+			isEnded: function () { return (this._head === this._tail); }, // There are other elements in the queue
 			isBusy: function () { return (this.isProcessing() || !this.isEnded()); }, // There are elements in the queue/the last one pop returned an object that is being processed
 			getCurrent: function () { return this._current; }, // Return the last popped element
 			push: function (d) {
@@ -179,7 +179,7 @@ var cyclelist = {
 			dump: function () {
 				var r = "";
 				for (var i = 0; i < this._size; i++) {
-					r += i + ") " + this._data[i] + " | " + (i == this._head ? "HEAD " : "") + (i == this._tail ? "TAIL " : "") + "\n";
+					r += i + ") " + this._data[i] + " | " + (i === this._head ? "HEAD " : "") + (i === this._tail ? "TAIL " : "") + "\n";
 				}
 				r += "\n\n" + this._done + "/" + this._total;
 				return r;
@@ -299,7 +299,7 @@ var gbox = {
 	_db: false,
 	_systemcookie: "__gboxsettings",
 	_sessioncache: "",
-	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") == -1 ? "?" : "&") + "_brc = " + gbox._sessioncache); },
+	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") === -1 ? "?" : "&") + "_brc = " + gbox._sessioncache); },
 	_forcedidle: 0,
 	_gamewaiting: 0,
 	_canlog: false,
@@ -529,7 +529,7 @@ var gbox = {
 			gbox.showPauseMessage();
 		}
 
-		if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.run(gbox._debugTool); }
+		if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.run(gbox._debugTool); }
 	},
 
 	/**
@@ -570,7 +570,7 @@ var gbox = {
 	go: function () {
 
 		if (gbox._loaderqueue.isBusy()) {
-			if (gbox._gamewaiting == 1) {
+			if (gbox._gamewaiting === 1) {
 				gbox.blitFade(gbox._screenCtx, {alpha: 0.5});
 				gbox.blitText(gbox._screenCtx, {font: "_dbf", dx: 2, dy: 2, text: "LOADING..."});
 				gbox._gamewaiting = true;
@@ -593,7 +593,7 @@ var gbox = {
 			var i, gr = "";
 			for (var g = 0; g < gbox._renderorder.length; g++) {
 				if (gbox._groupplay[gbox._renderorder[g]]) {
-					if (gbox._renderorder[g] == gbox.ZINDEX_LAYER) {
+					if (gbox._renderorder[g] === gbox.ZINDEX_LAYER) {
 						var id;
 						for (i = 0; i < gbox._actionqueue.length; i++) {
 							id = gbox._zindex.first;
@@ -638,7 +638,7 @@ var gbox = {
 
 			// Handle holding
 			for (var key in AkihabaraInput._keymap) {
-				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] == -1) {
+				if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] === -1) {
 					AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] = 0;
 				} else {
 					if (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] && (AkihabaraInput._keyboard[AkihabaraInput._keymap[key]] < 100)) {
@@ -655,7 +655,7 @@ var gbox = {
 	},
 
 	setZindex: function (th, z) {
-		if ((th.__zt == null) || (th.zindex != z)) {
+		if ((th.__zt == null) || (th.zindex !== z)) {
 			th.zindex = z;
 			this._zindexch.push({o: {g: th.group, o: th.id}, z: z});
 		}
@@ -734,8 +734,8 @@ var gbox = {
 		var rt;
 		for (var i = 0; i < ca.length; i++) {
 			var c = ca[i];
-			while (c.charAt(0) == ' ') { c = c.substring(1, c.length); }
-			if (c.indexOf(nameeq) == 0) {
+			while (c.charAt(0) === ' ') { c = c.substring(1, c.length); }
+			if (c.indexOf(nameeq) === 0) {
 				rt = c.substring(nameeq.length, c.length);
 				if (a && a.number) {
 					return rt * 1;
@@ -857,7 +857,7 @@ var gbox = {
 	*/
 	soloGroup: function (gid) {
 		for (var i = 0; i < this._groups.length; i++) {
-			if (this._groups[i] == gid) {
+			if (this._groups[i] === gid) {
 				this.playGroup(this._groups[i]);
 			} else {
 				this.stopGroup(this._groups[i]);
@@ -1128,7 +1128,7 @@ var gbox = {
 	*/
 	addImage: function (id, filename) {
 		if (this._images[id]) {
-			if (this._images[id].getAttribute("src_org") == filename) {
+			if (this._images[id].getAttribute("src_org") === filename) {
 				return;
 			} else {
 				delete this._images[id];
@@ -1309,15 +1309,15 @@ var gbox = {
 		this._implicitsargs(data);
 		var dx = data.dx;
 		var dy = data.dy;
-		if (data.valign == gbox.ALIGN_BOTTOM) {
+		if (data.valign === gbox.ALIGN_BOTTOM) {
 			dy = dy + data.dh - fn.tileh;
 		} else {
-			if (data.valign == gbox.ALIGN_MIDDLE) { dy = dy + Math.floor(data.dh / 2) - fn.tileh; }
+			if (data.valign === gbox.ALIGN_MIDDLE) { dy = dy + Math.floor(data.dh / 2) - fn.tileh; }
 		}
-		if (data.halign == gbox.ALIGN_RIGHT) {
+		if (data.halign === gbox.ALIGN_RIGHT) {
 			dx = dx + data.dw - (data.text.length * fn.tilew);
 		} else {
-			if (data.halign == gbox.ALIGN_CENTER) { dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2); }
+			if (data.halign === gbox.ALIGN_CENTER) { dx = dx + Math.floor((data.dw - (data.text.length * fn.tilew)) / 2); }
 		}
 		tox.save();
 		tox.globalAlpha = (data.alpha ? data.alpha : 1);
@@ -1531,10 +1531,10 @@ var gbox = {
 	},
 	// Callback for loaded bundle
 	_loaderhmlhttploading: function () {
-		var rs = (typeof this.readyState != "undefined" ? this.readyState : gbox._xmlhttp.readyState);
-		var st = (typeof this.status != "undefined" ? this.status : gbox._xmlhttp.status);
-		var rt = (typeof this.responseText != "undefined" ? this.responseText : gbox._xmlhttp.responseText);
-		if (rs == 4 && (!st || st == 200)) {
+		var rs = (typeof this.readyState !== "undefined" ? this.readyState : gbox._xmlhttp.readyState);
+		var st = (typeof this.status !== "undefined" ? this.status : gbox._xmlhttp.status);
+		var rt = (typeof this.responseText !== "undefined" ? this.responseText : gbox._xmlhttp.responseText);
+		if (rs === 4 && (!st || st === 200)) {
 			if (rt) {
 				if (!gbox._loaderqueue.getCurrent().call.skipCacheSave) {
 					gbox._loadercache.add(gbox._loaderqueue.getCurrent().call.file, rt);
@@ -1614,7 +1614,8 @@ var gbox = {
 	},
 	_waitforloaded: function () {
 		var aul;
-		if (gbox._loaderqueue.isBusy() || (gbox._minimalexpired != 2)) {
+		var dw = 0, dh = 0;
+		if (gbox._loaderqueue.isBusy() || (gbox._minimalexpired !== 2)) {
 			gbox._screenCtx.save();
 			gbox.blitFade(gbox._screenCtx, {alpha: 1});
 			if (!gbox._minimalexpired && gbox._splashscreeniscompleted()) {
@@ -1622,9 +1623,9 @@ var gbox = {
 				setTimeout(gbox._minimaltimeexpired, gbox._splash.minimalTime);
 			}
 			if (gbox._splash.loading) { gbox._splash.loading(gbox._screenCtx, gbox._loaderqueue.getDone(), gbox._loaderqueue.getTotal()); }
-			if (gbox._flags.loadscreen == "c64") {
+			if (gbox._flags.loadscreen === "c64") {
 				var p = 0, l = 0;
-				while (p != gbox.getScreenH()) {
+				while (p !== gbox.getScreenH()) {
 					l = 10 + Math.floor(Math.random() * gbox.getScreenH() / 4);
 					if (p + l > gbox.getScreenH()) { l = gbox.getScreenH() - p; }
 					gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random() * gbox.PALETTES.c64.order.length)]];
@@ -1634,8 +1635,8 @@ var gbox = {
 				gbox._screenCtx.fillStyle = gbox.PALETTES.c64.colors.lightblue;
 				gbox._screenCtx.fillRect(Math.floor(gbox.getScreenW() / 10), Math.floor(gbox.getScreenH() / 10), gbox.getScreenW() - Math.floor(gbox.getScreenW() / 5), gbox.getScreenH() - Math.floor(gbox.getScreenH() / 5));
 				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
-					var dw = gbox.getScreenW() / 4;
-					var dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
+					dw = gbox.getScreenW() / 4;
+					dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
 					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: (gbox.getScreenW() - dw) / 2, dy: (gbox.getScreenH() - dh) / 2, dw: dw, dh: dh});
 				}
 			} else {
@@ -1643,8 +1644,8 @@ var gbox = {
 					gbox.blit(gbox._screenCtx, gbox.getImage("_splash"), {w: gbox.getImage("_splash").width, h: gbox.getImage("_splash").height, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()});
 				}
 				if (gbox._splash.minilogo && gbox.imageIsLoaded("logo")) {
-					var dw = gbox.getScreenW() / 4;
-					var dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
+					dw = gbox.getScreenW() / 4;
+					dh = (gbox.getImage("logo").height * dw) / gbox.getImage("logo").width;
 					gbox.blit(gbox._screenCtx, gbox.getImage(gbox._splash.minilogo), {w: gbox.getImage("logo").width, h: gbox.getImage("logo").height, dx: gbox.getScreenW() - dw - 5, dy: gbox.getScreenH() - dh - 5, dw: dw, dh: dh});
 				}
 				if (gbox._splash.footnotes && gbox.imageIsLoaded("_dbf")) {
@@ -1674,11 +1675,11 @@ var gbox = {
 				}
 			}
 			gbox._screenCtx.restore();
-			if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")"); }
+			if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.setStatBar("Loading... (" + gbox._loaderqueue.getDone() + "/" + gbox._loaderqueue.getTotal() + ")"); }
 			setTimeout(gbox._waitforloaded, 50);
 		} else {
 			gbox.deleteImage("_splash");
-			if (typeof AkihabaraDebug != "undefined") { AkihabaraDebug.setStatBar(); }
+			if (typeof AkihabaraDebug !== "undefined") { AkihabaraDebug.setStatBar(); }
 			gbox._cb();
 		}
 	},
@@ -1726,7 +1727,7 @@ var gbox = {
 		if (!xmlhttp) { try { xmlhttp = new XMLHttpRequest(); } catch (e) { xmlhttp = false; } }
 
 		/* IE6 */
-		if (typeof ActiveXObject != "undefined") {
+		if (typeof ActiveXObject !== "undefined") {
 			if (!xmlhttp) { try { xmlhttp = new ActiveXObject("MSXML2.XMLHTTP"); } catch (e) { xmlhttp = false; } }
 			if (!xmlhttp) { try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { xmlhttp = false; } }
 		}
