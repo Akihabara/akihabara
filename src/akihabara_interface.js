@@ -6,11 +6,15 @@
 **/
 var AkihabaraInterface = {
 	Audio: AkihabaraAudio,
-	Input: AkihabaraInput,
 	Gamecycle: AkihabaraGamecycle,
+	Help: AkihabaraHelp,
+	Input: AkihabaraInput,
+	Tools: AkihabaraTools,
+	Toys: AkihabaraToys,
+
 	plugins: {
-		"Topview": topview,
-		"Platformer": platformer,
-		"Shmup": shmup
+		"Topview": AkihabaraTopview,
+		"Platformer": AkihabaraPlatformer,
+		"Shmup": AkihabaraShmup
 	}
 };
