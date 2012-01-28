@@ -10,18 +10,20 @@ var platformer = {
 
 	initialize: function (th, data) {
 		Akihabara.extendsFrom(
-			Akihabara.extendsFrom(
-				{
-					maxaccx: 5, maxaccy: 10,
-					jumpsize: 6, jumpaccy: 6,
-					accx: 0, accy: 0,
-					x: 0, y: 0,
-					frames: {},
-					camera: true,
-					flipv: false,
-					side: false
-				}, data
-			), th
+			Akihabara.extendsFrom({
+				maxaccx: 5,
+				maxaccy: 10,
+				jumpsize: 6,
+				jumpaccy: 6,
+				accx: 0,
+				accy: 0,
+				x: 0,
+				y: 0,
+				frames: {},
+				camera: true,
+				flipv: false,
+				side: false
+			}, data), th
 		);
 		platformer.spawn(th);
 	},
@@ -50,16 +52,18 @@ var platformer = {
 	horizontalKeys: function (th, keys) {
 		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
 			th.pushing = platformer.PUSH_LEFT;
-			th.accx = AkihabaraHelp.limit(th.accx-1, -th.maxaccx, th.maxaccx);
+			th.accx = AkihabaraHelp.limit(th.accx - 1, -th.maxaccx, th.maxaccx);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
 			th.pushing = platformer.PUSH_RIGHT;
 			th.accx = AkihabaraHelp.limit(th.accx + 1, -th.maxaccx, th.maxaccx);
-		} else th.pushing = platformer.PUSH_NONE;
+		} else {
+			th.pushing = platformer.PUSH_NONE;
+		}
 	},
 
 	verticalTileCollision: function (th, map, tilemap) {
-		var bottom = AkihabaraHelp.getTileInMap(th.x + (th.w/2), th.y + th.h, map, 0, tilemap);
-		var top = AkihabaraHelp.getTileInMap(th.x + (th.w/2), th.y, map, 0, tilemap);
+		var bottom = AkihabaraHelp.getTileInMap(th.x + (th.w / 2), th.y + th.h, map, 0, tilemap);
+		var top = AkihabaraHelp.getTileInMap(th.x + (th.w / 2), th.y, map, 0, tilemap);
 		th.touchedfloor = false;
 		th.touchedceil = false;
 
@@ -70,7 +74,7 @@ var platformer = {
 		}
 		if (map.tileIsSolidFloor(th, bottom)) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.h)-th.h;
+			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.h) - th.h;
 			th.touchedfloor = true;
 		}
 	},
@@ -85,19 +89,19 @@ var platformer = {
 
 		while (t < th.h) {
 			left = AkihabaraHelp.getTileInMap(th.x, th.y + t, map, 0, tilemap);
-			right = AkihabaraHelp.getTileInMap(th.x + th.w-1, th.y + t, map, 0, tilemap);
+			right = AkihabaraHelp.getTileInMap(th.x + th.w - 1, th.y + t, map, 0, tilemap);
 
 			if ((th.accx < 0) && map.tileIsSolidFloor(th, left)) {
 				th.accx = 0;
-				th.x = AkihabaraHelp.xPixelToTile(map, th.x-1, 1);
+				th.x = AkihabaraHelp.xPixelToTile(map, th.x - 1, 1);
 				th.touchedleftwall = true;
 			}
 			if ((th.accx > 0) && map.tileIsSolidFloor(th, right)) {
 				th.accx = 0;
-				th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.w)-th.w;
+				th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.w) - th.w;
 				th.touchedrightwall = true;
 			}
-			t += AkihabaraGamebox.getTiles(map.tileset).tileh/(precision?precision: 1);
+			t += AkihabaraGamebox.getTiles(map.tileset).tileh / (precision ? precision : 1);
 		}
 	},
 
@@ -110,16 +114,17 @@ var platformer = {
 	},
 
 	jumpKeys: function (th, key) {
-		if ((platformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && AkihabaraGamebox.keyIsHit(key.jump) && (th.curjsize == 0)) {
-			if (key.audiojump) AkihabaraAudio.hitAudio(key.audiojump);
+		if ((platformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && AkihabaraGamebox.keyIsHit(key.jump) && (th.curjsize === 0)) {
+			if (key.audiojump) { AkihabaraAudio.hitAudio(key.audiojump); }
 			th.accy = -th.jumpaccy;
 			th.curjsize = th.jumpsize;
 			return true;
 		} else if (th.curjsize && AkihabaraGamebox.keyIsHold(key.jump)) { // Jump modulation
 			th.accy--;
 			th.curjsize--;
-		} else
+		} else {
 			th.curjsize = 0;
+		}
 		return false;
 	},
 
@@ -130,25 +135,29 @@ var platformer = {
 
 	handleAccellerations: function (th) {
 		// Gravity
-		if (!th.touchedfloor) th.accy++;
+		if (!th.touchedfloor) { th.accy++; }
 		// Attrito
-		if (th.pushing == platformer.PUSH_NONE) if (th.accx) th.accx = AkihabaraHelp.goToZero(th.accx);
+		if (th.pushing === platformer.PUSH_NONE) {
+			if (th.accx) { th.accx = AkihabaraHelp.goToZero(th.accx); }
+		}
 	},
 
 	setSide: function (th) {
-		if (th.accx) th.side = th.accx > 0;
+		if (th.accx) { th.side = th.accx > 0; }
 	},
 
 	setFrame: function (th) {
-		if (th.touchedfloor)
-			if (th.pushing != platformer.PUSH_NONE)
+		if (th.touchedfloor) {
+			if (th.pushing !== platformer.PUSH_NONE) {
 				th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.walking);
-			else
+			} else {
 				th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.still);
-		else if (th.accy > 0)
+			}
+		} else if (th.accy > 0) {
 			th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.falling);
-		else
+		} else {
 			th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.jumping);
+		}
 	},
 
 	auto: {
@@ -164,13 +173,18 @@ var platformer = {
 					th.pushing = platformer.PUSH_RIGHT;
 					th.accx = data.speed;
 				}
-			} else th.pushing = platformer.PUSH_NONE;
+			} else {
+				th.pushing = platformer.PUSH_NONE;
+			}
 		},
 		dontFall: function (th, map, tilemap) {
 			if (th.accx && th.touchedfloor) {
 				var til;
-				if (th.accx > 0) til = AkihabaraHelp.getTileInMap(platformer.getNextX(th) + th.w-1 + th.accx, th.y + th.h, map, 0, tilemap);
-				else til = AkihabaraHelp.getTileInMap(platformer.getNextX(th), th.y + th.h, map, 0, tilemap);
+				if (th.accx > 0) {
+					til = AkihabaraHelp.getTileInMap(platformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
+				} else {
+					til = AkihabaraHelp.getTileInMap(platformer.getNextX(th), th.y + th.h, map, 0, tilemap);
+				}
 				if (!map.tileIsSolidFloor(th, til)) {
 					th.side = !th.side;
 					th.accx = 0;
@@ -178,7 +192,7 @@ var platformer = {
 			}
 		},
 		horizontalBounce: function (th) {
-			if (th.touchedleftwall || th.touchedrightwall) th.side = !th.side;
+			if (th.touchedleftwall || th.touchedrightwall) { th.side = !th.side; }
 		}
 	}
-}
+};

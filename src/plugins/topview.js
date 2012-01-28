@@ -13,7 +13,7 @@ var topview = {
 	PUSH_UP: 3,
 	PUSH_DOWN: 4,
 
-	FACES: ["up","right","down","left"],
+	FACES: ["up", "right", "down", "left"],
 	FACES_ANGLE: [AkihabaraTrigo.ANGLE_UP, AkihabaraTrigo.ANGLE_RIGHT, AkihabaraTrigo.ANGLE_DOWN, AkihabaraTrigo.ANGLE_LEFT],
 	FACE_UP: 0,
 	FACE_RIGHT: 1,
@@ -45,7 +45,11 @@ var topview = {
 	* @param {int} t This is the tollerance (or margin for error) on the collide function.
 	*/
 	collides: function (fr, to, t) { // Special collision. Counts also the Z
-		if (Math.abs(fr.z, to.z) < 5) return AkihabaraGamebox.collides({x: fr.x + fr.colx, y: fr.y + fr.coly, h: fr.colh, w: fr.colw}, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t); else return false;
+		if (Math.abs(fr.z, to.z) < 5) {
+			return AkihabaraGamebox.collides({x: fr.x + fr.colx, y: fr.y + fr.coly, h: fr.colh, w: fr.colw}, {x: to.x + to.colx, y: to.y + to.coly, h: to.colh, w: to.colw}, t);
+		} else {
+			return false;
+		}
 	},
 
 	/**
@@ -98,34 +102,37 @@ var topview = {
 	*/
 	initialize: function (th, data) {
 		Akihabara.extendsFrom(
-			Akihabara.extendsFrom(
-				{
-					x: 0, y: 0,
-					z: 0,
-					accx: 0, accy: 0, accz: 0,
-					frames: {},
-					shadow: null,
-					maxacc: 4, controlmaxacc: 4,
-					responsive: 0, // Responsiveness
-					weapon: 0, // Weapon
-					camera: true,
-					flipv: false, fliph: false,
-					facing: topview.FACE_DOWN,
-					flipside: true,
-					haspushing: false,
-					frame: 0,
-					colh: AkihabaraGamebox.getTiles(th.tileset).tilehh,
-					colw: AkihabaraGamebox.getTiles(th.tileset).tilew,
-					colx: 0,
-					staticspeed: 0,
-					nodiagonals: false,
-					noreset: false
-				}, data
-			), th
+			Akihabara.extendsFrom({
+				x: 0,
+				y: 0,
+				z: 0,
+				accx: 0,
+				accy: 0,
+				accz: 0,
+				frames: {},
+				shadow: null,
+				maxacc: 4,
+				controlmaxacc: 4,
+				responsive: 0, // Responsiveness
+				weapon: 0, // Weapon
+				camera: true,
+				flipv: false,
+				fliph: false,
+				facing: topview.FACE_DOWN,
+				flipside: true,
+				haspushing: false,
+				frame: 0,
+				colh: AkihabaraGamebox.getTiles(th.tileset).tilehh,
+				colw: AkihabaraGamebox.getTiles(th.tileset).tilew,
+				colx: 0,
+				staticspeed: 0,
+				nodiagonals: false,
+				noreset: false
+			}, data), th
 		);
-		if (th.coly == null) th.coly = AkihabaraGamebox.getTiles(th.tileset).tileh-th.colh;
-		th.colhh = Math.floor(th.colh/2);
-		th.colhw = Math.floor(th.colw/2);
+		if (th.coly == null) { th.coly = AkihabaraGamebox.getTiles(th.tileset).tileh - th.colh; }
+		th.colhh = Math.floor(th.colh / 2);
+		th.colhw = Math.floor(th.colw / 2);
 
 		topview.spawn(th);
 	},
@@ -177,40 +184,58 @@ var topview = {
 		if (AkihabaraInput.keyIsPressed(keys.left) || keys.pressleft) {
 			th.xpushing = topview.PUSH_LEFT;
 			th.facing = topview.FACE_LEFT;
-			if (th.accx > th.responsive) th.accx = th.responsive;
-			if (th.staticspeed) th.accx = -th.staticspeed; else th.accx = AkihabaraHelp.limit(th.accx-1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.accx > th.responsive) { th.accx = th.responsive; }
+			if (th.staticspeed) {
+				th.accx = -th.staticspeed;
+			} else {
+				th.accx = AkihabaraHelp.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
+			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else if (AkihabaraInput.keyIsPressed(keys.right) || keys.pressright) {
 			th.xpushing = topview.PUSH_RIGHT;
 			th.facing = topview.FACE_RIGHT;
-			if (th.accx < -th.responsive) th.accx = -th.responsive;
-			if (th.staticspeed) th.accx = th.staticspeed; else th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.accx < -th.responsive) { th.accx = -th.responsive; }
+			if (th.staticspeed) {
+				th.accx = th.staticspeed;
+			} else {
+				th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
-		} else idlex = true;
+		} else {
+			idlex = true;
+		}
 
 		if (!cancely && (AkihabaraInput.keyIsPressed(keys.up) || keys.pressup)) {
 			th.ypushing = topview.PUSH_UP;
 			th.facing = topview.FACE_UP;
-			if (th.accy > th.responsive) th.accy = th.responsive;
-			if (th.staticspeed) th.accy = -th.staticspeed; else th.accy = AkihabaraHelp.limit(th.accy-1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.accy > th.responsive) { th.accy = th.responsive; }
+			if (th.staticspeed) {
+				th.accy = -th.staticspeed;
+			} else {
+				th.accy = AkihabaraHelp.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
+			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else if (!cancely && (AkihabaraInput.keyIsPressed(keys.down) || keys.pressdown)) {
 			th.ypushing = topview.PUSH_DOWN;
 			th.facing = topview.FACE_DOWN;
-			if (th.accy < -th.responsive) th.accy = -th.responsive;
-			if (th.staticspeed) th.accy = th.staticspeed; else th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+			if (th.accy < -th.responsive) { th.accy = -th.responsive; }
+			if (th.staticspeed) {
+				th.accy = th.staticspeed;
+			} else {
+				th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
-		} else idley = true;
-
-
+		} else {
+			idley = true;
+		}
 
 		if (idlex) {
-			if (cancelx) th.accx = 0;
-			if (cancelx || !th.noreset) th.xpushing = topview.PUSH_NONE;
+			if (cancelx) { th.accx = 0; }
+			if (cancelx || !th.noreset) { th.xpushing = topview.PUSH_NONE; }
 		}
 		if (idley) {
-			if (cancely) th.accy = 0;
-			if (cancely || !th.noreset) th.ypushing = topview.PUSH_NONE;
+			if (cancely) { th.accy = 0; }
+			if (cancely || !th.noreset) { th.ypushing = topview.PUSH_NONE; }
 		}
 	},
 
@@ -287,8 +312,8 @@ var topview = {
 	* </ul>
 	*/
 	handleAccellerations: function (th) {
-		if (!th.xpushing) th.accx = AkihabaraHelp.goToZero(th.accx);
-		if (!th.ypushing) th.accy = AkihabaraHelp.goToZero(th.accy);
+		if (!th.xpushing) { th.accx = AkihabaraHelp.goToZero(th.accx); }
+		if (!th.ypushing) { th.accy = AkihabaraHelp.goToZero(th.accy); }
 
 	},
 
@@ -325,10 +350,16 @@ var topview = {
 	*/
 	setFrame: function (th) {
 		var pref = "stand";
-		if (th.xpushing || th.ypushing)
-			if (th.haspushing && (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) pref = "pushing"; else pref = "moving";
-		if (th.flipside)
-			th.fliph = (th.facing == topview.FACE_RIGHT);
+		if (th.xpushing || th.ypushing) {
+			if (th.haspushing && (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) {
+				pref = "pushing";
+			} else {
+				pref = "moving";
+			}
+		}
+		if (th.flipside) {
+			th.fliph = (th.facing === topview.FACE_RIGHT);
+		}
 		th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames[pref + topview.FACES[th.facing]]);
 	},
 
@@ -350,43 +381,43 @@ var topview = {
 		th.touchedleft = false;
 		th.touchedright = false;
 
-		var tolerance = (data && (data.tolerance != null)?data.tolerance: 6);
-		var approximation = (data && (data.approximation != null)?data.approximation: 10);
-		var t = tolerance-approximation;
+		var tolerance = (data && (data.tolerance != null) ? data.tolerance : 6);
+		var approximation = (data && (data.approximation != null) ? data.approximation : 10);
+		var t = tolerance - approximation;
 		do {
 			t += approximation;
-			if (t > th.colw-tolerance-1) t = th.colw-tolerance-1;
-			var bottom = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh-1, map, defaulttile, tilemap);
+			if (t > th.colw - tolerance - 1) { t = th.colw - tolerance - 1; }
+			var bottom = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh - 1, map, defaulttile, tilemap);
 			var top = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
-			if (map.tileIsSolid(th, top)) th.touchedup = true;
-			if (map.tileIsSolid(th, bottom)) th.toucheddown = true;
-		} while (t != th.colw-tolerance-1);
+			if (map.tileIsSolid(th, top)) { th.touchedup = true; }
+			if (map.tileIsSolid(th, bottom)) { th.toucheddown = true; }
+		} while (t !== th.colw - tolerance - 1);
 
-		t = tolerance-approximation;
+		t = tolerance - approximation;
 		do {
 			t += approximation;
-			if (t > th.colh-tolerance-1) t = th.colh-tolerance-1;
+			if (t > th.colh - tolerance - 1) { t = th.colh - tolerance - 1; }
 			var left = AkihabaraHelp.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
-			var right = AkihabaraHelp.getTileInMap(th.x + th.colx + th.colw-1, th.y + th.coly + t, map, defaulttile, tilemap);
-			if (map.tileIsSolid(th, left)) th.touchedleft = true;
-			if (map.tileIsSolid(th, right)) th.touchedright = true;
-		} while (t != th.colh-tolerance-1);
+			var right = AkihabaraHelp.getTileInMap(th.x + th.colx + th.colw - 1, th.y + th.coly + t, map, defaulttile, tilemap);
+			if (map.tileIsSolid(th, left)) { th.touchedleft = true; }
+			if (map.tileIsSolid(th, right)) { th.touchedright = true; }
+		} while (t !== th.colh - tolerance - 1);
 
 		if (th.touchedup) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly, 1)-th.coly;
+			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly, 1) - th.coly;
 		}
 		if (th.toucheddown) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly + th.colh-1)-th.coly-th.colh;
+			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly + th.colh - 1) - th.coly - th.colh;
 		}
 		if (th.touchedleft) {
 			th.accx = 0;
-			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx, 1)-th.colx;
+			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx, 1) - th.colx;
 		}
 		if (th.touchedright) {
 			th.accx = 0;
-			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx + th.colw-1)-th.colx-th.colw;
+			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx + th.colw - 1) - th.colx - th.colw;
 		}
 	},
 
@@ -415,20 +446,20 @@ var topview = {
 				if (topview.pixelcollides({x: th.x + th.colx, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedleft = true;
 					th.accx = 0;
-					th.x = wl.x + wl.colx + wl.colw-th.colx;
+					th.x = wl.x + wl.colx + wl.colw - th.colx;
 				} else if (topview.pixelcollides({x: th.x + th.colx + th.colw, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedright = true;
 					th.accx = 0;
-					th.x = wl.x + wl.colx-th.colw-th.colx;
+					th.x = wl.x + wl.colx - th.colw - th.colx;
 				}
 				if (topview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh}, wl)) {
 					th.toucheddown = true;
 					th.accy = 0;
-					th.y = wl.y + wl.coly-th.colh-th.coly;
+					th.y = wl.y + wl.coly - th.colh - th.coly;
 				} else if (topview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly}, wl)) {
 					th.touchedup = true;
 					th.accy = 0;
-					th.y = wl.y + wl.coly + wl.colh-th.coly;
+					th.y = wl.y + wl.coly + wl.colh - th.coly;
 				}
 			}
 		}
@@ -451,8 +482,8 @@ var topview = {
 	floorCollision: function (th, data) {
 		th.touchedfloor = false;
 		if (th.z > 0) {
-			th.accz = (data == null?0:-Math.floor(th.accz/data.bounce));
-			if (data && data.audiobounce && th.accz) AkihabaraAudio.hitAudio(data.audiobounce);
+			th.accz = (data == null ? 0 : -Math.floor(th.accz / data.bounce));
+			if (data && data.audiobounce && th.accz) { AkihabaraAudio.hitAudio(data.audiobounce); }
 			th.z = 0;
 			th.touchedfloor = true;
 		}
@@ -465,25 +496,27 @@ var topview = {
 	// Helper: returns the ahead pixel (i.e. destination use action)
 	getAheadPixel: function (th, data) {
 		switch (th.facing) {
-			case topview.FACE_RIGHT:
-				return {x: th.x + th.colx + th.colw + data.distance, y: th.y + th.coly + th.colhh};
-			case topview.FACE_LEFT:
-				return {x: th.x + th.colx-data.distance, y: th.y + th.coly + th.colhh};
-			case topview.FACE_UP:
-				return {x: th.x + th.colx + th.colhw, y: th.y + th.coly-data.distance};
-			case topview.FACE_DOWN:
-				return {x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh + data.distance};
+		case topview.FACE_RIGHT:
+			return {x: th.x + th.colx + th.colw + data.distance, y: th.y + th.coly + th.colhh};
+		case topview.FACE_LEFT:
+			return {x: th.x + th.colx - data.distance, y: th.y + th.coly + th.colhh};
+		case topview.FACE_UP:
+			return {x: th.x + th.colx + th.colhw, y: th.y + th.coly - data.distance};
+		case topview.FACE_DOWN:
+			return {x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh + data.distance};
 		}
 	},
 
 	// Helper: trigger a method in colliding objects (i.e. "use action")
 	callInColliding: function (th, data) {
-		for (var i in AkihabaraGamebox._objects[data.group])
-			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && topview.pixelcollides(data, AkihabaraGamebox._objects[data.group][i]))
+		for (var i in AkihabaraGamebox._objects[data.group]) {
+			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && topview.pixelcollides(data, AkihabaraGamebox._objects[data.group][i])) {
 				if (AkihabaraGamebox._objects[data.group][i][data.call]) {
 					AkihabaraGamebox._objects[data.group][i][data.call](th);
 					return i;
 				}
+			}
+		}
 		return false;
 	},
 
@@ -492,36 +525,38 @@ var topview = {
 		if ((!th.wandercounter) || (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) {
 			th.wandercounter = AkihabaraHelp.random(data.minstep, data.steprange);
 			th.wanderdirection = AkihabaraHelp.random(0, 4);
-		} else th.wandercounter--;
+		} else {
+			th.wandercounter--;
+		}
 		switch (th.wanderdirection) {
-			case topview.FACE_LEFT:
-				th.xpushing = topview.PUSH_LEFT;
-				th.ypushing = topview.PUSH_NONE;
-				th.facing = topview.FACE_LEFT;
-				th.accx = -data.speed;
-				th.accy = 0;
-				break;
-			case topview.FACE_RIGHT:
-				th.xpushing = topview.PUSH_RIGHT;
-				th.ypushing = topview.PUSH_NONE;
-				th.facing = topview.FACE_RIGHT;
-				th.accx = data.speed;
-				th.accy = 0;
-				break;
-			case topview.FACE_UP:
-				th.ypushing = topview.PUSH_UP;
-				th.xpushing = topview.PUSH_NONE;
-				th.facing = topview.FACE_UP;
-				th.accy = -data.speed;
-				th.accx = 0;
-				break;
-			case topview.FACE_DOWN:
-				th.ypushing = topview.PUSH_DOWN;
-				th.xpushing = topview.PUSH_NONE;
-				th.facing = topview.FACE_DOWN;
-				th.accy = data.speed;
-				th.accx = 0;
-				break;
+		case topview.FACE_LEFT:
+			th.xpushing = topview.PUSH_LEFT;
+			th.ypushing = topview.PUSH_NONE;
+			th.facing = topview.FACE_LEFT;
+			th.accx = -data.speed;
+			th.accy = 0;
+			break;
+		case topview.FACE_RIGHT:
+			th.xpushing = topview.PUSH_RIGHT;
+			th.ypushing = topview.PUSH_NONE;
+			th.facing = topview.FACE_RIGHT;
+			th.accx = data.speed;
+			th.accy = 0;
+			break;
+		case topview.FACE_UP:
+			th.ypushing = topview.PUSH_UP;
+			th.xpushing = topview.PUSH_NONE;
+			th.facing = topview.FACE_UP;
+			th.accy = -data.speed;
+			th.accx = 0;
+			break;
+		case topview.FACE_DOWN:
+			th.ypushing = topview.PUSH_DOWN;
+			th.xpushing = topview.PUSH_NONE;
+			th.facing = topview.FACE_DOWN;
+			th.accy = data.speed;
+			th.accx = 0;
+			break;
 		}
 	},
 
@@ -529,87 +564,90 @@ var topview = {
 	fireBullet: function (gr, id, data) {
 		var ts = AkihabaraGamebox.getTiles(data.tileset);
 		var obj = AkihabaraGamebox.addObject(
-			Akihabara.extendsFrom(
-				{
-					_bullet: true,
-					zindex: 0,
-					fliph: false, flipv: false,
-					id: id,
-					group: gr,
-					cnt: 0,
-					tileset: "",
-					frames: {},
-					acc: 0,
-					angle: 0,
-					camera: data.from.camera,
-					accx: (data.accx == null?Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)):0),
-					accy: (data.accy == null?Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)):0),
-					accz: 0,
-					x: (data.sidex == topview.FACE_LEFT?data.from.x-ts.tilehw: (data.sidex == topview.FACE_RIGHT?data.from.x + data.from.w-ts.tilehw: data.from.x + data.from.hw-ts.tilehw)) + (data.gapx?data.gapx: 0),
-					y: (data.sidey == topview.FACE_UP?data.from.y-ts.tilehh: (data.sidey == topview.FACE_DOWN?data.from.y + data.from.h-ts.tilehh: data.from.y + data.from.hh-ts.tilehh)) + (data.gapy?data.gapy: 0),
-					z: (data.from.z == null?0:data.from.z),
-					collidegroup: "",
-					spark: topview.NOOP,
-					power: 1,
-					lifetime: null,
-					tilemap: null,
-					defaulttile: 0,
-					applyzgravity: false,
-					map: null,
-					mapindex: "",
-					spritewalls: null,
-					colx: (data.fullhit?0:null),
-					coly: (data.fullhit?0:null),
-					colh: (data.fullhit?ts.tileh: null),
-					colw: (data.fullhit?ts.tilew: null),
-					duration: null,
-					onWallHit: function () {
-						this.spark(this);
-						AkihabaraGamebox.trashObject(this);
-					},
-					bulletIsAlive: function () {
-						return AkihabaraGamebox.objectIsVisible(this);
-					}
-				}, data
-			)
+			Akihabara.extendsFrom({
+				_bullet: true,
+				zindex: 0,
+				fliph: false,
+				flipv: false,
+				id: id,
+				group: gr,
+				cnt: 0,
+				tileset: "",
+				frames: {},
+				acc: 0,
+				angle: 0,
+				camera: data.from.camera,
+				accx: (data.accx == null ? Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)) : 0),
+				accy: (data.accy == null ? Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)) : 0),
+				accz: 0,
+				x: (data.sidex === topview.FACE_LEFT ? data.from.x - ts.tilehw: (data.sidex === topview.FACE_RIGHT ? data.from.x + data.from.w - ts.tilehw: data.from.x + data.from.hw - ts.tilehw)) + (data.gapx ? data.gapx : 0),
+				y: (data.sidey === topview.FACE_UP ? data.from.y - ts.tilehh: (data.sidey === topview.FACE_DOWN ? data.from.y + data.from.h - ts.tilehh: data.from.y + data.from.hh - ts.tilehh)) + (data.gapy ? data.gapy : 0),
+				z: (data.from.z == null ? 0 : data.from.z),
+				collidegroup: "",
+				spark: topview.NOOP,
+				power: 1,
+				lifetime: null,
+				tilemap: null,
+				defaulttile: 0,
+				applyzgravity: false,
+				map: null,
+				mapindex: "",
+				spritewalls: null,
+				colx: (data.fullhit ? 0 : null),
+				coly: (data.fullhit ? 0 : null),
+				colh: (data.fullhit ? ts.tileh : null),
+				colw: (data.fullhit ? ts.tilew : null),
+				duration: null,
+				onWallHit: function () {
+					this.spark(this);
+					AkihabaraGamebox.trashObject(this);
+				},
+				bulletIsAlive: function () {
+					return AkihabaraGamebox.objectIsVisible(this);
+				}
+			}, data)
 		);
 
 		obj.initialize = function () {
 			topview.initialize(this);
 		};
 
-		obj[(data.logicon == null?"first":data.logicon)] = function () {
-			this.cnt = (this.cnt + 1)%10;
+		obj[(data.logicon == null ? "first" : data.logicon)] = function () {
+			this.cnt = (this.cnt + 1) % 10;
 
-			if (this.applyzgravity) topview.handleGravity(this); // z-gravity
+			if (this.applyzgravity) { topview.handleGravity(this); } // z-gravity
 			topview.applyForces(this); // Apply forces
-			if (this.applyzgravity) topview.applyGravity(this); // z-gravity
-			if (this.map != null) topview.tileCollision(this, this.map, this.mapindex, this.defaulttile); // tile collisions
-			if (this.spritewalls != null) topview.spritewallCollision(this, {group: this.spritewalls}); // walls collisions
-			if (this.applyzgravity) topview.floorCollision(this); // Collision with the floor (for z-gravity)
+			if (this.applyzgravity) { topview.applyGravity(this); }// z-gravity
+			if (this.map != null) { topview.tileCollision(this, this.map, this.mapindex, this.defaulttile); } // tile collisions
+			if (this.spritewalls != null) { topview.spritewallCollision(this, {group: this.spritewalls}); } // walls collisions
+			if (this.applyzgravity) { topview.floorCollision(this); } // Collision with the floor (for z-gravity)
 			topview.adjustZindex(this);
 			if (this.duration != null) {
 				this.duration--;
-				if (this.duration == 0) AkihabaraGamebox.trashObject(this);
+				if (this.duration === 0) { AkihabaraGamebox.trashObject(this); }
 			}
-			if (!this.bulletIsAlive()) AkihabaraGamebox.trashObject(this);
-			else if (this.toucheddown || this.touchedup || this.touchedleft || this.touchedright) this.onWallHit();
-			else if (this.collidegroup != null) {
+			if (!this.bulletIsAlive()) {
+				AkihabaraGamebox.trashObject(this);
+			} else if (this.toucheddown || this.touchedup || this.touchedleft || this.touchedright) {
+				this.onWallHit();
+			} else if (this.collidegroup != null) {
 				for (var i in AkihabaraGamebox._objects[this.collidegroup]) {
 					if ((!AkihabaraGamebox._objects[this.collidegroup][i].initialize) && topview.collides(this, AkihabaraGamebox._objects[this.collidegroup][i], AkihabaraGamebox._objects[this.collidegroup][i].tolerance)) {
-						if (AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet != null)
+						if (AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet != null) {
 							if (!AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet(this)) {
 								this.spark(this);
 								AkihabaraGamebox.trashObject(this);
 							}
+						}
 					}
 				}
 			}
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			if (!AkihabaraGamebox.objectIsTrash(this))
+		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
+			if (!AkihabaraGamebox.objectIsTrash(this)) {
 				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+			}
 		};
 
 		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
@@ -623,63 +661,62 @@ var topview = {
 		var ts = AkihabaraGamebox.getTiles(data.tileset);
 
 		var obj = AkihabaraGamebox.addObject(
-			Akihabara.extendsFrom(
-				{
-					zindex: 0,
-					fliph: false, flipv: false,
-					id: id,
-					group: gr,
-					cnt: 0,
-					tileset: "",
-					frames: {},
-					camera: true,
-					x: data.tilex*mts.tilew,
-					y: data.tiley*mts.tileh,
-					z: 0,
-					tilemap: null,
-					defaulttile: 0,
-					map: map,
-					colx: (data.fullhit?0:null),
-					coly: (data.fullhit?0:null),
-					colh: (data.fullhit?ts.tileh: null),
-					colw: (data.fullhit?ts.tilew: null),
-					opening: false,
-					doorheight: ts.tileh,
-					opencounter: 0,
-					closing: false,
-					audiobefore: null,
-					audioafter: null,
-					doOpen: function () {
-						this.opening = true;
-					},
-					whenClosed: topview.NOOP,
-					whenOpened: topview.NOOP,
-					whileMoving: topview.NOOP,
-					hitByBullet: function (by) {
+			Akihabara.extendsFrom({
+				zindex: 0,
+				fliph: false,
+				flipv: false,
+				id: id,
+				group: gr,
+				cnt: 0,
+				tileset: "",
+				frames: {},
+				camera: true,
+				x: data.tilex * mts.tilew,
+				y: data.tiley * mts.tileh,
+				z: 0,
+				tilemap: null,
+				defaulttile: 0,
+				map: map,
+				colx: (data.fullhit ? 0 : null),
+				coly: (data.fullhit ? 0 : null),
+				colh: (data.fullhit ? ts.tileh : null),
+				colw: (data.fullhit ? ts.tilew : null),
+				opening: false,
+				doorheight: ts.tileh,
+				opencounter: 0,
+				closing: false,
+				audiobefore: null,
+				audioafter: null,
+				doOpen: function () {
+					this.opening = true;
+				},
+				whenClosed: topview.NOOP,
+				whenOpened: topview.NOOP,
+				whileMoving: topview.NOOP,
+				hitByBullet: function (by) {
 
-					}
-				}, data
-			)
+				}
+			}, data)
 		);
 
 		// Closing animation
-		if (obj.closing) obj.opencounter = obj.doorheight;
+		if (obj.closing) { obj.opencounter = obj.doorheight; }
 
 		obj.initialize = function () {
 			this.ismoving = false;
 			topview.initialize(this);
 		};
 
-		obj[(data.logicon == null?"first":data.logicon)] = function () {
+		obj[(data.logicon == null ? "first" : data.logicon)] = function () {
 			if (this.closing) {
 				if (!this.ismoving) {
-					if (this.audiobefore) AkihabaraAudio.hitAudio(this.audiobefore);
+					if (this.audiobefore) { AkihabaraAudio.hitAudio(this.audiobefore); }
 					this.ismoving = true;
 				}
 				this.whileMoving();
 				this.opencounter--;
 				if (this.opencounter < 0) {
-					if (this.audioafter) AkihabaraAudio.hitAudio(this.audioafter);
+					if (this.audioafter) { AkihabaraAudio.hitAudio(this.audioafter); }
 					this.ismoving = false;
 					this.opencounter = 0;
 					this.closing = false;
@@ -688,22 +725,23 @@ var topview = {
 			}
 			if (this.opening) {
 				if (!this.ismoving) {
-					if (this.audiobefore) AkihabaraAudio.hitAudio(this.audiobefore);
+					if (this.audiobefore) { AkihabaraAudio.hitAudio(this.audiobefore); }
 					this.ismoving = true;
 				}
 				this.whileMoving();
 				this.opencounter++;
 				if (this.opencounter >= this.doorheight) {
-					if (this.audioafter) AkihabaraAudio.hitAudio(this.audioafter);
+					if (this.audioafter) { AkihabaraAudio.hitAudio(this.audioafter); }
 					this.ismoving = false;
-					if (!this.whenOpened()) AkihabaraGamebox.trashObject(this);
+					if (!this.whenOpened()) { AkihabaraGamebox.trashObject(this); }
 				}
 			}
 		};
 
-		obj[(data.bliton == null?"blit":data.bliton)] = function () {
-			if (!AkihabaraGamebox.objectIsTrash(this))
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h-this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
+			if (!AkihabaraGamebox.objectIsTrash(this)) {
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h - this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+			}
 		};
 
 		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
@@ -713,7 +751,7 @@ var topview = {
 	// Set the object speed making sure that the X and Y coords are multiple of the speed. Useful on maze-based games.
 	setStaticSpeed: function (th, speed) {
 		th.staticspeed = speed;
-		th.x = Math.round(th.x/speed)*speed;
-		th.y = Math.round(th.y/speed)*speed;
+		th.x = Math.round(th.x / speed) * speed;
+		th.y = Math.round(th.y / speed) * speed;
 	}
 };
