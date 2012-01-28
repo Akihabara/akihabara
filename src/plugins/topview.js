@@ -2,11 +2,9 @@
  * Top-view RPG specific libraries.
  * @namespace AkihabaraTopview
  */
+var AkihabaraTopview = {
 
-var topview = {
-
-	// CONSTANTS
-	NOOP: function () { },
+	NOOP: function () {},
 	PUSH_NONE: 0,
 	PUSH_LEFT: 1,
 	PUSH_RIGHT: 2,
@@ -82,7 +80,7 @@ var topview = {
 	* <li > camera{Boolean}: (defaults to true) < /li>
 	* <li > flipv{Boolean}: Notes if the object is flipped vertically(defaults to false) < /li>
 	* <li > fliph{Boolean}: Notes if the object is flipped horrizontally(defaults to false) < /li>
-	* <li > facing{Integer}: Stores the facing of the object. This is set with pre-defined Integer values from within topview.(defaults to topview.FACE_DOWN) < /li>
+	* <li > facing{Integer}: Stores the facing of the object. This is set with pre-defined Integer values from within AkihabaraTopview.(defaults to AkihabaraTopview.FACE_DOWN) < /li>
 	* <ul>
 	* <li > FACE_UP: 0, < /li>
 	* <li > FACE_RIGHT: 1, < /li>
@@ -118,7 +116,7 @@ var topview = {
 				camera: true,
 				flipv: false,
 				fliph: false,
-				facing: topview.FACE_DOWN,
+				facing: AkihabaraTopview.FACE_DOWN,
 				flipside: true,
 				haspushing: false,
 				frame: 0,
@@ -134,11 +132,11 @@ var topview = {
 		th.colhh = Math.floor(th.colh / 2);
 		th.colhw = Math.floor(th.colw / 2);
 
-		topview.spawn(th);
+		AkihabaraTopview.spawn(th);
 	},
 
 	/**
-	* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using AkihabaraHelp.copyModel.
+	* Spawns a new object in the AkihabaraTopview namespace. This also merges parameters in data into paramaters in th using AkihabaraHelp.copyModel.
 	* This initializes some basic basic variables for the object and sets the Z index.
 	* @param {Object} th References 'this' which is the object that called the method (generally).
 	* <ul>
@@ -148,9 +146,9 @@ var topview = {
 	* @param {Object} data This holds variables to be merged into th's stored info.
 	*/
 	spawn: function (th, data) {
-		th.xpushing = topview.PUSH_NONE; // user is moving side
-		th.vpushing = topview.PUSH_NONE; // user is moving side
-		th.zpushing = topview.PUSH_NONE; // user is moving side
+		th.xpushing = AkihabaraTopview.PUSH_NONE; // user is moving side
+		th.vpushing = AkihabaraTopview.PUSH_NONE; // user is moving side
+		th.zpushing = AkihabaraTopview.PUSH_NONE; // user is moving side
 		th.counter = 0; // self counter
 		th.hittimer = 0;
 		th.killed = false;
@@ -182,8 +180,8 @@ var topview = {
 		var idley = false;
 
 		if (AkihabaraInput.keyIsPressed(keys.left) || keys.pressleft) {
-			th.xpushing = topview.PUSH_LEFT;
-			th.facing = topview.FACE_LEFT;
+			th.xpushing = AkihabaraTopview.PUSH_LEFT;
+			th.facing = AkihabaraTopview.FACE_LEFT;
 			if (th.accx > th.responsive) { th.accx = th.responsive; }
 			if (th.staticspeed) {
 				th.accx = -th.staticspeed;
@@ -192,8 +190,8 @@ var topview = {
 			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else if (AkihabaraInput.keyIsPressed(keys.right) || keys.pressright) {
-			th.xpushing = topview.PUSH_RIGHT;
-			th.facing = topview.FACE_RIGHT;
+			th.xpushing = AkihabaraTopview.PUSH_RIGHT;
+			th.facing = AkihabaraTopview.FACE_RIGHT;
 			if (th.accx < -th.responsive) { th.accx = -th.responsive; }
 			if (th.staticspeed) {
 				th.accx = th.staticspeed;
@@ -206,8 +204,8 @@ var topview = {
 		}
 
 		if (!cancely && (AkihabaraInput.keyIsPressed(keys.up) || keys.pressup)) {
-			th.ypushing = topview.PUSH_UP;
-			th.facing = topview.FACE_UP;
+			th.ypushing = AkihabaraTopview.PUSH_UP;
+			th.facing = AkihabaraTopview.FACE_UP;
 			if (th.accy > th.responsive) { th.accy = th.responsive; }
 			if (th.staticspeed) {
 				th.accy = -th.staticspeed;
@@ -216,8 +214,8 @@ var topview = {
 			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else if (!cancely && (AkihabaraInput.keyIsPressed(keys.down) || keys.pressdown)) {
-			th.ypushing = topview.PUSH_DOWN;
-			th.facing = topview.FACE_DOWN;
+			th.ypushing = AkihabaraTopview.PUSH_DOWN;
+			th.facing = AkihabaraTopview.FACE_DOWN;
 			if (th.accy < -th.responsive) { th.accy = -th.responsive; }
 			if (th.staticspeed) {
 				th.accy = th.staticspeed;
@@ -231,11 +229,11 @@ var topview = {
 
 		if (idlex) {
 			if (cancelx) { th.accx = 0; }
-			if (cancelx || !th.noreset) { th.xpushing = topview.PUSH_NONE; }
+			if (cancelx || !th.noreset) { th.xpushing = AkihabaraTopview.PUSH_NONE; }
 		}
 		if (idley) {
 			if (cancely) { th.accy = 0; }
-			if (cancely || !th.noreset) { th.ypushing = topview.PUSH_NONE; }
+			if (cancely || !th.noreset) { th.ypushing = AkihabaraTopview.PUSH_NONE; }
 		}
 	},
 
@@ -284,8 +282,8 @@ var topview = {
 	* </ul>
 	*/
 	applyForces: function (th) {
-		th.x = topview.getNextX(th);
-		th.y = topview.getNextY(th);
+		th.x = AkihabaraTopview.getNextX(th);
+		th.y = AkihabaraTopview.getNextY(th);
 	},
 
 	/**
@@ -298,7 +296,7 @@ var topview = {
 	* </ul>
 	*/
 	applyGravity: function (th) {
-		th.z = topview.getNextZ(th);
+		th.z = AkihabaraTopview.getNextZ(th);
 	},
 
 	/**
@@ -358,9 +356,9 @@ var topview = {
 			}
 		}
 		if (th.flipside) {
-			th.fliph = (th.facing === topview.FACE_RIGHT);
+			th.fliph = (th.facing === AkihabaraTopview.FACE_RIGHT);
 		}
-		th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames[pref + topview.FACES[th.facing]]);
+		th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames[pref + AkihabaraTopview.FACES[th.facing]]);
 	},
 
 	/**
@@ -441,22 +439,22 @@ var topview = {
 	spritewallCollision: function (th, data) {
 		var wl;
 		for (var i in AkihabaraGamebox._objects[data.group]) {
-			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && topview.collides(th, AkihabaraGamebox._objects[data.group][i])) {
+			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && AkihabaraTopview.collides(th, AkihabaraGamebox._objects[data.group][i])) {
 				wl = AkihabaraGamebox._objects[data.group][i];
-				if (topview.pixelcollides({x: th.x + th.colx, y: th.y + th.coly + th.colhh}, wl)) {
+				if (AkihabaraTopview.pixelcollides({x: th.x + th.colx, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedleft = true;
 					th.accx = 0;
 					th.x = wl.x + wl.colx + wl.colw - th.colx;
-				} else if (topview.pixelcollides({x: th.x + th.colx + th.colw, y: th.y + th.coly + th.colhh}, wl)) {
+				} else if (AkihabaraTopview.pixelcollides({x: th.x + th.colx + th.colw, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedright = true;
 					th.accx = 0;
 					th.x = wl.x + wl.colx - th.colw - th.colx;
 				}
-				if (topview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh}, wl)) {
+				if (AkihabaraTopview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh}, wl)) {
 					th.toucheddown = true;
 					th.accy = 0;
 					th.y = wl.y + wl.coly - th.colh - th.coly;
-				} else if (topview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly}, wl)) {
+				} else if (AkihabaraTopview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly}, wl)) {
 					th.touchedup = true;
 					th.accy = 0;
 					th.y = wl.y + wl.coly + wl.colh - th.coly;
@@ -496,13 +494,13 @@ var topview = {
 	// Helper: returns the ahead pixel (i.e. destination use action)
 	getAheadPixel: function (th, data) {
 		switch (th.facing) {
-		case topview.FACE_RIGHT:
+		case AkihabaraTopview.FACE_RIGHT:
 			return {x: th.x + th.colx + th.colw + data.distance, y: th.y + th.coly + th.colhh};
-		case topview.FACE_LEFT:
+		case AkihabaraTopview.FACE_LEFT:
 			return {x: th.x + th.colx - data.distance, y: th.y + th.coly + th.colhh};
-		case topview.FACE_UP:
+		case AkihabaraTopview.FACE_UP:
 			return {x: th.x + th.colx + th.colhw, y: th.y + th.coly - data.distance};
-		case topview.FACE_DOWN:
+		case AkihabaraTopview.FACE_DOWN:
 			return {x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh + data.distance};
 		}
 	},
@@ -510,7 +508,7 @@ var topview = {
 	// Helper: trigger a method in colliding objects (i.e. "use action")
 	callInColliding: function (th, data) {
 		for (var i in AkihabaraGamebox._objects[data.group]) {
-			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && topview.pixelcollides(data, AkihabaraGamebox._objects[data.group][i])) {
+			if ((!AkihabaraGamebox._objects[data.group][i].initialize) && AkihabaraTopview.pixelcollides(data, AkihabaraGamebox._objects[data.group][i])) {
 				if (AkihabaraGamebox._objects[data.group][i][data.call]) {
 					AkihabaraGamebox._objects[data.group][i][data.call](th);
 					return i;
@@ -529,31 +527,31 @@ var topview = {
 			th.wandercounter--;
 		}
 		switch (th.wanderdirection) {
-		case topview.FACE_LEFT:
-			th.xpushing = topview.PUSH_LEFT;
-			th.ypushing = topview.PUSH_NONE;
-			th.facing = topview.FACE_LEFT;
+		case AkihabaraTopview.FACE_LEFT:
+			th.xpushing = AkihabaraTopview.PUSH_LEFT;
+			th.ypushing = AkihabaraTopview.PUSH_NONE;
+			th.facing = AkihabaraTopview.FACE_LEFT;
 			th.accx = -data.speed;
 			th.accy = 0;
 			break;
-		case topview.FACE_RIGHT:
-			th.xpushing = topview.PUSH_RIGHT;
-			th.ypushing = topview.PUSH_NONE;
-			th.facing = topview.FACE_RIGHT;
+		case AkihabaraTopview.FACE_RIGHT:
+			th.xpushing = AkihabaraTopview.PUSH_RIGHT;
+			th.ypushing = AkihabaraTopview.PUSH_NONE;
+			th.facing = AkihabaraTopview.FACE_RIGHT;
 			th.accx = data.speed;
 			th.accy = 0;
 			break;
-		case topview.FACE_UP:
-			th.ypushing = topview.PUSH_UP;
-			th.xpushing = topview.PUSH_NONE;
-			th.facing = topview.FACE_UP;
+		case AkihabaraTopview.FACE_UP:
+			th.ypushing = AkihabaraTopview.PUSH_UP;
+			th.xpushing = AkihabaraTopview.PUSH_NONE;
+			th.facing = AkihabaraTopview.FACE_UP;
 			th.accy = -data.speed;
 			th.accx = 0;
 			break;
-		case topview.FACE_DOWN:
-			th.ypushing = topview.PUSH_DOWN;
-			th.xpushing = topview.PUSH_NONE;
-			th.facing = topview.FACE_DOWN;
+		case AkihabaraTopview.FACE_DOWN:
+			th.ypushing = AkihabaraTopview.PUSH_DOWN;
+			th.xpushing = AkihabaraTopview.PUSH_NONE;
+			th.facing = AkihabaraTopview.FACE_DOWN;
 			th.accy = data.speed;
 			th.accx = 0;
 			break;
@@ -580,11 +578,11 @@ var topview = {
 				accx: (data.accx == null ? Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)) : 0),
 				accy: (data.accy == null ? Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)) : 0),
 				accz: 0,
-				x: (data.sidex === topview.FACE_LEFT ? data.from.x - ts.tilehw: (data.sidex === topview.FACE_RIGHT ? data.from.x + data.from.w - ts.tilehw: data.from.x + data.from.hw - ts.tilehw)) + (data.gapx ? data.gapx : 0),
-				y: (data.sidey === topview.FACE_UP ? data.from.y - ts.tilehh: (data.sidey === topview.FACE_DOWN ? data.from.y + data.from.h - ts.tilehh: data.from.y + data.from.hh - ts.tilehh)) + (data.gapy ? data.gapy : 0),
+				x: (data.sidex === AkihabaraTopview.FACE_LEFT ? data.from.x - ts.tilehw: (data.sidex === AkihabaraTopview.FACE_RIGHT ? data.from.x + data.from.w - ts.tilehw: data.from.x + data.from.hw - ts.tilehw)) + (data.gapx ? data.gapx : 0),
+				y: (data.sidey === AkihabaraTopview.FACE_UP ? data.from.y - ts.tilehh: (data.sidey === AkihabaraTopview.FACE_DOWN ? data.from.y + data.from.h - ts.tilehh: data.from.y + data.from.hh - ts.tilehh)) + (data.gapy ? data.gapy : 0),
 				z: (data.from.z == null ? 0 : data.from.z),
 				collidegroup: "",
-				spark: topview.NOOP,
+				spark: AkihabaraTopview.NOOP,
 				power: 1,
 				lifetime: null,
 				tilemap: null,
@@ -609,19 +607,19 @@ var topview = {
 		);
 
 		obj.initialize = function () {
-			topview.initialize(this);
+			AkihabaraTopview.initialize(this);
 		};
 
 		obj[(data.logicon == null ? "first" : data.logicon)] = function () {
 			this.cnt = (this.cnt + 1) % 10;
 
-			if (this.applyzgravity) { topview.handleGravity(this); } // z-gravity
-			topview.applyForces(this); // Apply forces
-			if (this.applyzgravity) { topview.applyGravity(this); }// z-gravity
-			if (this.map != null) { topview.tileCollision(this, this.map, this.mapindex, this.defaulttile); } // tile collisions
-			if (this.spritewalls != null) { topview.spritewallCollision(this, {group: this.spritewalls}); } // walls collisions
-			if (this.applyzgravity) { topview.floorCollision(this); } // Collision with the floor (for z-gravity)
-			topview.adjustZindex(this);
+			if (this.applyzgravity) { AkihabaraTopview.handleGravity(this); } // z-gravity
+			AkihabaraTopview.applyForces(this); // Apply forces
+			if (this.applyzgravity) { AkihabaraTopview.applyGravity(this); }// z-gravity
+			if (this.map != null) { AkihabaraTopview.tileCollision(this, this.map, this.mapindex, this.defaulttile); } // tile collisions
+			if (this.spritewalls != null) { AkihabaraTopview.spritewallCollision(this, {group: this.spritewalls}); } // walls collisions
+			if (this.applyzgravity) { AkihabaraTopview.floorCollision(this); } // Collision with the floor (for z-gravity)
+			AkihabaraTopview.adjustZindex(this);
 			if (this.duration != null) {
 				this.duration--;
 				if (this.duration === 0) { AkihabaraGamebox.trashObject(this); }
@@ -632,7 +630,7 @@ var topview = {
 				this.onWallHit();
 			} else if (this.collidegroup != null) {
 				for (var i in AkihabaraGamebox._objects[this.collidegroup]) {
-					if ((!AkihabaraGamebox._objects[this.collidegroup][i].initialize) && topview.collides(this, AkihabaraGamebox._objects[this.collidegroup][i], AkihabaraGamebox._objects[this.collidegroup][i].tolerance)) {
+					if ((!AkihabaraGamebox._objects[this.collidegroup][i].initialize) && AkihabaraTopview.collides(this, AkihabaraGamebox._objects[this.collidegroup][i], AkihabaraGamebox._objects[this.collidegroup][i].tolerance)) {
 						if (AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet != null) {
 							if (!AkihabaraGamebox._objects[this.collidegroup][i].hitByBullet(this)) {
 								this.spark(this);
@@ -690,9 +688,9 @@ var topview = {
 				doOpen: function () {
 					this.opening = true;
 				},
-				whenClosed: topview.NOOP,
-				whenOpened: topview.NOOP,
-				whileMoving: topview.NOOP,
+				whenClosed: AkihabaraTopview.NOOP,
+				whenOpened: AkihabaraTopview.NOOP,
+				whileMoving: AkihabaraTopview.NOOP,
 				hitByBullet: function (by) {
 
 				}
@@ -704,7 +702,7 @@ var topview = {
 
 		obj.initialize = function () {
 			this.ismoving = false;
-			topview.initialize(this);
+			AkihabaraTopview.initialize(this);
 		};
 
 		obj[(data.logicon == null ? "first" : data.logicon)] = function () {

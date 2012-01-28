@@ -2,11 +2,9 @@
  * The libraries for a 2D top-down Shmup game.
  * @namespace AkihabaraShmup
  */
-// Shoot'em up specifics
-var shmup = {
+var AkihabaraShmup = {
 
-	// CONSTANTS
-	NOOP: function () { },
+	NOOP: function () {},
 	PUSH_NONE: 0,
 	PUSH_LEFT: 1,
 	PUSH_RIGHT: 2,
@@ -34,12 +32,12 @@ var shmup = {
 				tolerance: 4
 			}, data), th
 		);
-		shmup.spawn(th);
+		AkihabaraShmup.spawn(th);
 	},
 
 	spawn: function (th, data) {
-		th.xpushing = shmup.PUSH_NONE; // user is moving side
-		th.vpushing = shmup.PUSH_NONE; // user is moving side
+		th.xpushing = AkihabaraShmup.PUSH_NONE; // user is moving side
+		th.vpushing = AkihabaraShmup.PUSH_NONE; // user is moving side
 		th.counter = 0; // self counter
 		th.hittimer = 0;
 		th.killed = false;
@@ -51,32 +49,32 @@ var shmup = {
 	controlKeys: function (th, keys) {
 
 		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
-			th.xpushing = shmup.PUSH_LEFT;
+			th.xpushing = AkihabaraShmup.PUSH_LEFT;
 			if (th.accx > th.responsive) { th.accx = th.responsive; }
 			th.accx = AkihabaraHelp.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
-			th.xpushing = shmup.PUSH_RIGHT;
+			th.xpushing = AkihabaraShmup.PUSH_RIGHT;
 			if (th.accx < -th.responsive) { th.accx = -th.responsive; }
 			th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else {
-			th.xpushing = shmup.PUSH_NONE;
+			th.xpushing = AkihabaraShmup.PUSH_NONE;
 		}
 		if (AkihabaraGamebox.keyIsPressed(keys.up)) {
-			th.ypushing = shmup.PUSH_UP;
+			th.ypushing = AkihabaraShmup.PUSH_UP;
 			if (th.accy > th.responsive) { th.accy = th.responsive; }
 			th.accy = AkihabaraHelp.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.down)) {
-			th.ypushing = shmup.PUSH_DOWN;
+			th.ypushing = AkihabaraShmup.PUSH_DOWN;
 			if (th.accy < -th.responsive) { th.accy = -th.responsive; }
 			th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else {
-			th.ypushing = shmup.PUSH_NONE;
+			th.ypushing = AkihabaraShmup.PUSH_NONE;
 		}
 	},
 
 	applyForces: function (th) {
-		th.x = shmup.getNextX(th);
-		th.y = shmup.getNextY(th);
+		th.x = AkihabaraShmup.getNextX(th);
+		th.y = AkihabaraShmup.getNextY(th);
 	},
 
 	handleAccellerations: function (th) {
@@ -126,7 +124,7 @@ var shmup = {
 				x: data.from.x + data.from.hw - ts.tilehw + (data.gapx ? data.gapx : 0),
 				y: (data.upper ? data.from.y - ts.tilehh + (data.gapy ? data.gapy : 0) : data.from.y + data.from.h - ts.tilehh - (data.gapy ? data.gapy : 0)),
 				collidegroup: "",
-				spark: shmup.NOOP,
+				spark: AkihabaraShmup.NOOP,
 				power: 1
 			}, data)
 		);
@@ -193,8 +191,8 @@ var shmup = {
 				defaultanimationset: "still",
 				hitanimationset: "still",
 				hittime: 5,
-				script: shmup.NOOP,
-				handler: shmup.NOOP,
+				script: AkihabaraShmup.NOOP,
+				handler: AkihabaraShmup.NOOP,
 				scriptline: (data.scriptline == null ? -1 : data.scriptline - 1),
 				newline: true,
 				waitframes: 0,
@@ -205,7 +203,7 @@ var shmup = {
 				ended: false,
 				health: 1,
 				hittimer: 0,
-				kill: shmup.NOOP,
+				kill: AkihabaraShmup.NOOP,
 				tolerance: 0,
 				initialize: null,
 				invulnerable: false,

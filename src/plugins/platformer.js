@@ -2,8 +2,8 @@
 * The libraries for generating a 2D platformer game.
 * @namespace AkihabaraPlatformer
 */
-var platformer = {
-	// CONSTANTS
+var AkihabaraPlatformer = {
+
 	PUSH_NONE: 0,
 	PUSH_LEFT: 1,
 	PUSH_RIGHT: 2,
@@ -25,7 +25,7 @@ var platformer = {
 				side: false
 			}, data), th
 		);
-		platformer.spawn(th);
+		AkihabaraPlatformer.spawn(th);
 	},
 
 	spawn: function (th, data) {
@@ -35,7 +35,7 @@ var platformer = {
 		th.touchedceil = false;
 		th.touchedleftwall = false;
 		th.touchedrightwall = false;
-		th.pushing = platformer.PUSH_NONE; // user is moving side
+		th.pushing = AkihabaraPlatformer.PUSH_NONE; // user is moving side
 		th.killed = false;
 		AkihabaraHelp.copyModel(th, data);
 	},
@@ -45,19 +45,19 @@ var platformer = {
 	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxaccy, th.maxaccy); },
 
 	applyGravity: function (th) {
-		th.x = platformer.getNextX(th);
-		th.y = platformer.getNextY(th);
+		th.x = AkihabaraPlatformer.getNextX(th);
+		th.y = AkihabaraPlatformer.getNextY(th);
 	},
 
 	horizontalKeys: function (th, keys) {
 		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
-			th.pushing = platformer.PUSH_LEFT;
+			th.pushing = AkihabaraPlatformer.PUSH_LEFT;
 			th.accx = AkihabaraHelp.limit(th.accx - 1, -th.maxaccx, th.maxaccx);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
-			th.pushing = platformer.PUSH_RIGHT;
+			th.pushing = AkihabaraPlatformer.PUSH_RIGHT;
 			th.accx = AkihabaraHelp.limit(th.accx + 1, -th.maxaccx, th.maxaccx);
 		} else {
-			th.pushing = platformer.PUSH_NONE;
+			th.pushing = AkihabaraPlatformer.PUSH_NONE;
 		}
 	},
 
@@ -114,7 +114,7 @@ var platformer = {
 	},
 
 	jumpKeys: function (th, key) {
-		if ((platformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && AkihabaraGamebox.keyIsHit(key.jump) && (th.curjsize === 0)) {
+		if ((AkihabaraPlatformer.canJump(th) || (key.doublejump && (th.accy >= 0))) && AkihabaraGamebox.keyIsHit(key.jump) && (th.curjsize === 0)) {
 			if (key.audiojump) { AkihabaraAudio.hitAudio(key.audiojump); }
 			th.accy = -th.jumpaccy;
 			th.curjsize = th.jumpsize;
@@ -137,7 +137,7 @@ var platformer = {
 		// Gravity
 		if (!th.touchedfloor) { th.accy++; }
 		// Attrito
-		if (th.pushing === platformer.PUSH_NONE) {
+		if (th.pushing === AkihabaraPlatformer.PUSH_NONE) {
 			if (th.accx) { th.accx = AkihabaraHelp.goToZero(th.accx); }
 		}
 	},
@@ -148,7 +148,7 @@ var platformer = {
 
 	setFrame: function (th) {
 		if (th.touchedfloor) {
-			if (th.pushing !== platformer.PUSH_NONE) {
+			if (th.pushing !== AkihabaraPlatformer.PUSH_NONE) {
 				th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.walking);
 			} else {
 				th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.still);
@@ -167,23 +167,23 @@ var platformer = {
 		goomba: function (th, data) {
 			if (data.moveWhileFalling || th.touchedfloor) {
 				if (th.side) {
-					th.pushing = platformer.PUSH_LEFT;
+					th.pushing = AkihabaraPlatformer.PUSH_LEFT;
 					th.accx = -data.speed;
 				} else {
-					th.pushing = platformer.PUSH_RIGHT;
+					th.pushing = AkihabaraPlatformer.PUSH_RIGHT;
 					th.accx = data.speed;
 				}
 			} else {
-				th.pushing = platformer.PUSH_NONE;
+				th.pushing = AkihabaraPlatformer.PUSH_NONE;
 			}
 		},
 		dontFall: function (th, map, tilemap) {
 			if (th.accx && th.touchedfloor) {
 				var til;
 				if (th.accx > 0) {
-					til = AkihabaraHelp.getTileInMap(platformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
+					til = AkihabaraHelp.getTileInMap(AkihabaraPlatformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
 				} else {
-					til = AkihabaraHelp.getTileInMap(platformer.getNextX(th), th.y + th.h, map, 0, tilemap);
+					til = AkihabaraHelp.getTileInMap(AkihabaraPlatformer.getNextX(th), th.y + th.h, map, 0, tilemap);
 				}
 				if (!map.tileIsSolidFloor(th, til)) {
 					th.side = !th.side;
