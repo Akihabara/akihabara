@@ -164,7 +164,7 @@ var toys = {
 				}
 			}
 			gbox.blitAll(gbox.getBufferContext(), gbox.getCanvas("menu-" + id), {dx: opt.x + th.toys[id].fw, dy: opt.y, camera: opt.camera});
-			if (!(th.toys[id].ok % 2)) {
+			if (th.toys[id].ok % 2 === 0) {
 				gbox.blitText(gbox.getBufferContext(), {font: opt.font, text: opt.selector, dx: opt.x, dy: opt.y + th.toys[id].selected * th.toys[id].fh, camera: opt.camera});
 			}
 			if (th.toys[id].ok) {
@@ -611,7 +611,7 @@ var toys = {
 							if (th.toys[id].counter === th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter = 0;
-								if (th.toys[id].scene.audio && !(th.toys[id].letter % 3)) { AkihabaraAudio.hitAudio(th.toys[id].scene.audio); }
+								if (th.toys[id].scene.audio && (th.toys[id].letter % 3 === 0)) { AkihabaraAudio.hitAudio(th.toys[id].scene.audio); }
 								var tmp = th.toys[id].letter;
 								var row = 0;
 								while (tmp > th.toys[id].scene.talk[row].length) {
