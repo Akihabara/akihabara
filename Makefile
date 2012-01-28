@@ -36,7 +36,7 @@ prepare:
 	git submodule init
 	git submodule update
 
-to_production: unify
+release: unify
 	closure $(GCC_OPTION) --js=$(NAME).js --js_output_file=$(NAME).min.js
 
 unify: clean
@@ -51,3 +51,6 @@ doc: prepare clean
 	dependencies/jsdoc/jsdoc src
 	mv out/*.html out/styles $(DOCDIR)
 	rm -rf out
+
+check:
+	find src -name "*.js" -exec jshint {} \;

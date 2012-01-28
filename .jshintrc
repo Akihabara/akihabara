@@ -2,8 +2,8 @@
     "predef": [
         "jasmine", "it", "describe", "expect", "ActiveXObject", "createRequest",
         "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer", "trigo", "help", "toys",
-        "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle",
-        "AkihabaraTrigo", "AkihabaraIphofretboard", "AkihabaraIphopad",
+        "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraGamecycle", "AkihabaraToys",
+        "AkihabaraTrigo", "AkihabaraIphofretboard", "AkihabaraIphopad", "AkihabaraHelp", "AkihabaraGamebox",
         "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
     ],
 
@@ -49,7 +49,7 @@
     "nomen"         : false,   // Prohibit use of initial or trailing underbars in names.
     "onevar"        : false,  // Allow only one `var` statement per function.
     "plusplus"      : false,  // Prohibit use of `++` & `--`.
-    "sub"           : false,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
+    "sub"           : true,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
     "trailing"      : true,   // Prohibit trailing whitespaces.
     "white"         : true,   // Check against strict whitespace and indentation rules.
     "smarttabs"     : false,  // Only tabs
