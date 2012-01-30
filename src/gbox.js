@@ -299,7 +299,7 @@ var AkihabaraGamebox = {
 	_db: false,
 	_systemcookie: "__gboxsettings",
 	_sessioncache: "",
-	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") === -1 ? "?" : "&") + "_brc = " + AkihabaraGamebox._sessioncache); },
+	_breakcacheurl: function (a) {return (this._flags.offlinecache ? a : a + (a.indexOf("?") === -1 ? "?" : "&") + "_brc=" + AkihabaraGamebox._sessioncache); },
 	_forcedidle: 0,
 	_gamewaiting: 0,
 	_canlog: false,
@@ -1087,7 +1087,7 @@ var AkihabaraGamebox = {
 	* @returns {Object} A DOM Image element, including the URL and last modified date of the image, its ID, and whether it was loaded successfully.
 	* @example
 	* image = AkihabaraGamebox.getImage('logo');
-	* image; // => <img src = ?"logo.png?_brc = 5-7-2010-15-48-42" src_org = ?"logo.png" id = ?"logo" wasloaded = ?"true" > ?
+	* image; // => <img src = ?"logo.png?_brc=5-7-2010-15-48-42" src_org = ?"logo.png" id = ?"logo" wasloaded = ?"true" > ?
 	*/
 	getImage: function (id) { return this._images[id]; },
 
