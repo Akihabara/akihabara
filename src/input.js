@@ -77,7 +77,7 @@ var AkihabaraInput = {
 		}
 	},
 
-	_showkeyboardpicker: function (th) {
+	_showkeyboardpicker: function () {
 		AkihabaraInput._keyboardpicker.value = "Click/Tap here to enable the keyboard";
 		AkihabaraInput._keyboardpicker.style.left = (AkihabaraGamebox._screenposition.x + 5) + "px";
 		AkihabaraInput._keyboardpicker.style.top = (AkihabaraGamebox._screenposition.y + 5) + "px";
@@ -87,7 +87,7 @@ var AkihabaraInput = {
 		AkihabaraInput._keyboardpicker.readOnly = null;
 	},
 
-	_hidekeyboardpicker: function (th) {
+	_hidekeyboardpicker: function () {
 		AkihabaraInput._keyboardpicker.style.zIndex = 100;
 		AkihabaraInput._keyboardpicker.readOnly = "yes";
 		AkihabaraInput._keyboardpicker.style.position = "absolute";
@@ -155,9 +155,9 @@ var AkihabaraInput = {
 		th.ontouchstart = function (evt) {
 			AkihabaraGamebox._screenposition = AkihabaraGamebox._domgetabsposition(AkihabaraGamebox._screen);
 			if (evt.touches[0].pageY - AkihabaraGamebox._screenposition.y < 30) {
-				AkihabaraInput._showkeyboardpicker(gbox);
+				AkihabaraInput._showkeyboardpicker();
 			} else {
-				AkihabaraInput._hidekeyboardpicker(gbox);
+				AkihabaraInput._hidekeyboardpicker();
 				evt.preventDefault();
 				evt.stopPropagation();
 			}
@@ -166,9 +166,9 @@ var AkihabaraInput = {
 		th.onmousedown = function (evt) {
 			AkihabaraGamebox._screenposition = AkihabaraGamebox._domgetabsposition(AkihabaraGamebox._screen);
 			if (evt.pageY - AkihabaraGamebox._screenposition.y < 30) {
-				AkihabaraInput._showkeyboardpicker(gbox);
+				AkihabaraInput._showkeyboardpicker();
 			} else {
-				AkihabaraInput._hidekeyboardpicker(gbox);
+				AkihabaraInput._hidekeyboardpicker();
 				evt.preventDefault();
 				evt.stopPropagation();
 			}

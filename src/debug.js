@@ -104,7 +104,111 @@ var AkihabaraDebug = {
 
 			this.setStatBar(statline);
 		}
+	},
 
+	/**
+	* Get the current URL
+	* @returns {String} url http://thecurrent.url
+	**/
+	getURL: function () {
+		return window.location.href;
+	},
+
+	/**
+	* Reads the value of a query parameter from the URL of the web page.
+	* @param {String} name The name of the URL parameter.
+	* @returns The value of the URL parameter, as a string.
+	* @example
+	* // If the URL is http://example.com/game.html?lives=3
+	* player.lives = AkihabaraHelp.getUrlValueFor("lives");
+	* player.lives; // => "3"
+	*/
+	getURLValueFor: function (name) {
+		name = name.replace(/[\[]/, "[").replace(/[\]]/, "]");
+		var regex = new RegExp("[?&]" + name + "=([^&#]*)");
+		var results = regex.exec(AkihabaraDebug.getURL());
+		if (results == null) {
+			return "";
+		} else {
+			return results[1];
+		}
+	},
+
+	/**
+	* Test all URL parameters and apply them on the given object
+	* @param {Object} device The object that will receive some params based on url settings
+	**/
+	applyURLParametersOn: function (device) {
+		if (AkihabaraDebug.getURLValueFor("statusbar")) {
+			AkihabaraDebug.statusBar();
+		}
+
+		if (AkihabaraDebug.getURLValueFor("db") || device.doublebuffering) {
+			AkihabaraGamebox.setDoubleBuffering(true);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("noautoskip")) {
+			AkihabaraGamebox.setAutoskip(null);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("zoom")) {
+			AkihabaraGamebox.setZoom(AkihabaraDebug.getURLValueFor("zoom"));
+		}
+
+		if (AkihabaraDebug.getURLValueFor("fps")) {
+			AkihabaraGamebox.setFps(AkihabaraDebug.getURLValueFor("fps") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("fskip")) {
+			AkihabaraGamebox.setFrameskip(AkihabaraDebug.getURLValueFor("fskip"));
+		}
+
+		if (AkihabaraDebug.getURLValueFor("forcedidle")) {
+			AkihabaraGamebox.setForcedIdle(AkihabaraDebug.getURLValueFor("forcedidle") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("canlog")) {
+			AkihabaraGamebox.setCanLog(true);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("showplayers")) {
+			AkihabaraGamebox.setShowPlayers(AkihabaraDebug.getURLValueFor("showplayers") === "yes");
+		}
+
+		if (AkihabaraDebug.getURLValueFor("canaudio")) {
+			AkihabaraAudio.setCanAudio(AkihabaraDebug.getURLValueFor("canaudio") === "yes");
+		}
+
+		if (AkihabaraDebug.getURLValueFor("audiocompatmode")) {
+			AkihabaraAudio.setAudioCompatMode(AkihabaraDebug.getURLValueFor("audiocompatmode") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("audioteam")) {
+			AkihabaraAudio.setAudioTeam(AkihabaraDebug.getURLValueFor("audioteam") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("loweraudioteam")) {
+			AkihabaraAudio.setLowerAudioTeam(AkihabaraDebug.getURLValueFor("loweraudioteam") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("audiocreatemode")) {
+			AkihabaraAudio.setAudioCreateMode(AkihabaraDebug.getURLValueFor("audiocreatemode") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("audiodequeuetime")) {
+			AkihabaraAudio.setAudioDequeueTime(AkihabaraDebug.getURLValueFor("audiodequeuetime") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("audiopositiondelay")) {
+			AkihabaraAudio.setAudioPositionDelay(AkihabaraDebug.getURLValueFor("audiopositiondelay") * 1);
+		}
+
+		if (AkihabaraDebug.getURLValueFor("forcedmimeaudio")) {
+			AkihabaraAudio.setForcedMimeAudio(AkihabaraDebug.getURLValueFor("forcedmimeaudio"));
+		}
+
+		if (AkihabaraDebug.getURLValueFor("audioissinglechannel")) {
+			AkihabaraAudio.setAudioIsSingleChannel(AkihabaraDebug.getURLValueFor("audioissinglechannel") === "yes");
+		}
 	}
-
 };
