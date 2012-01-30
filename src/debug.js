@@ -108,6 +108,3 @@ var AkihabaraDebug = {
 	}
 
 };
-
-// End file
-// Testing access
