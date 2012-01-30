@@ -1,13 +1,13 @@
 describe("AkihabaraDevices", function () {
 	it("should apply the default desktop capability to an object", function () {
 		var obj = {};
-		AkihabaraDevices.defaultDesktopCapability(obj);
+		AkihabaraDevices.applyDefaultDesktopCapabilityOn(obj);
 		expect(obj.zoom).toEqual(2);
 	});
 
 	it("should apply the default mobile capability to an object", function () {
 		var obj = {};
-		AkihabaraDevices.defaultMobileCapability(obj);
+		AkihabaraDevices.applyDefaultMobileCapabilityOn(obj);
 		expect(obj.touch).toEqual(true);
 		expect(obj.width).toEqual(320);
 	});
@@ -108,5 +108,13 @@ describe("AkihabaraDevices", function () {
 		var capabilities = {};
 		AkihabaraDevices.nintendo_wii(capabilities);
 		expect(capabilities.doublebuffering).toEqual(true);
+	});
+
+	it("should return false for a mobile device", function () {
+		expect(AkihabaraDevices.isMobile("Chrome")).toBeFalsy();
+	});
+
+	it("should return true for a mobile device", function () {
+		expect(AkihabaraDevices.isMobile("Android")).toBeTruthy();
 	});
 });

@@ -7,7 +7,7 @@ var AkihabaraDevices = {
 	* Apply desktop capabilities to a given object
 	* @param {Object} cap The object containing the capabilities
 	**/
-	defaultDesktopCapability: function (cap) {
+	applyDefaultDesktopCapabilityOn: function (cap) {
 		cap.zoom = 2;
 	},
 
@@ -15,9 +15,20 @@ var AkihabaraDevices = {
 	* Apply mobile capabilities to a given object
 	* @param {Object} cap The object containing the capabilities
 	**/
-	defaultMobileCapability: function (cap) {
+	applyDefaultMobileCapabilityOn: function (cap) {
 		cap.touch = true;
 		cap.width = 320;
+	},
+
+	/**
+	* Verify if a given device is mobile.
+	* This function was made to be used with configurationFor() and
+	* the names are defined using the same styles.
+	* @param {String} name The name of the device. The same used on ConfigurationFor()
+	* @returns {Boolean} True if the device is mobile and false otherwise
+	**/
+	isMobile: function (name) {
+		return !!{"Android": true, "iPhone": true, "iPad": true, "iPod": true}[name];
 	},
 
 	/**
@@ -27,8 +38,9 @@ var AkihabaraDevices = {
 	**/
 	configurationFor: function (agent) {
 		var cap = {};
+		var filteredagent = agent.match(/Android|Chrome|Firefox|iPhone|iPad|konqueror|Minefield|nintendo wii|Opera|MSIE 9\.0|MSIE 7\.0/i)[0];
 
-		switch (agent.match(/Android|Chrome|Firefox|iPhone|iPad|konqueror|Minefield|nintendo wii|Opera|MSIE 9\.0|MSIE 7\.0/i)[0]) {
+		switch (filteredagent) {
 		case "Android":
 			AkihabaraDevices.android(cap);
 			break;
@@ -57,6 +69,12 @@ var AkihabaraDevices = {
 		default:
 			cap.zoom = 2;
 			cap.audioisexperimental = true; // Audio is just experimental on all other devices.
+		}
+
+		if (AkihabaraDevices.isMobile(filteredagent)) {
+			AkihabaraDevices.applyDefaultMobileCapabilityOn(cap);
+		} else {
+			AkihabaraDevices.applyDefaultDesktopCapabilityOn(cap);
 		}
 
 		return cap;
@@ -131,7 +149,6 @@ var AkihabaraDevices = {
 	* @param {Object} cap Default capabilities to work with
 	**/
 	android: function (cap) {
-		AkihabaraDevices.defaultMobileCapability(cap);
 		cap.audiocompatmode = 2; // Audio loading mode.
 		cap.audioteam = 1; // Only a member is required in the audioteam.
 		cap.audioisexperimental = true; // Audio is experimental, since limited.
@@ -143,7 +160,6 @@ var AkihabaraDevices = {
 	* @param {Object} cap Default capabilities to work with
 	**/
 	iphone: function (cap) {
-		AkihabaraDevices.defaultMobileCapability(cap);
 		cap.audiocompatmode = 2; // Audio loading mode.
 		cap.audioteam = 1; // Only a member is required in the audioteam.
 		cap.audioisexperimental = true; // Audio is experimental, since limited.
@@ -155,7 +171,6 @@ var AkihabaraDevices = {
 	* @param {Object} cap Default capabilities to work with
 	**/
 	ipod: function (cap) {
-		AkihabaraDevices.defaultMobileCapability(cap);
 		cap.audiocompatmode = 2; // Audio loading mode.
 		cap.audioteam = 1; // Only a member is required in the audioteam.
 		cap.audioisexperimental = true; // Audio is experimental, since limited.
