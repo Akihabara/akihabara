@@ -71,6 +71,9 @@ var AkihabaraDevices = {
 			cap.audioisexperimental = true; // Audio is just experimental on all other devices.
 		}
 
+		// This flag says if the audio can be played for the current device
+		cap.canaudio = !!(document.createElement('audio').canPlayType);
+
 		if (AkihabaraDevices.isMobile(filteredagent)) {
 			AkihabaraDevices.applyDefaultMobileCapabilityOn(cap);
 		} else {
