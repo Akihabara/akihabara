@@ -4,6 +4,17 @@
  */
 var AkihabaraDebug = {
 
+	/**
+	* Writes the contents of an object to a string.
+	* @param {Object} Any object.
+	* @returns A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.
+	*/
+	objToStr: function (o) {
+		var ret = "";
+		for (var n in o) { ret += n + ":[" + o[n] + "] "; }
+		return ret;
+	},
+
 	fpsCounterInit: function (data) {
 
 		// Default options

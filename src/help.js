@@ -439,17 +439,6 @@ var AkihabaraHelp = {
 	},
 
 	/**
-	* Writes the contents of an object to a string. Useful for debugging.
-	* @param {Object} Any object.
-	* @returns A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.
-	*/
-	objToStr: function (o) {
-		var ret = "";
-		for (var n in o) { ret += n + ":[" + o[n] + "] "; }
-		return ret;
-	},
-
-	/**
 	* Tests whether an object contains a given parameter.
 	* @param {Object} A reference to a parameter of an object.
 	* @returns True if the object contains that parameter, false if it does not.
