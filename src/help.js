@@ -1,6 +1,6 @@
 /**
- * Help module provides some Javascript-specific functions, such object copying, randomizing functions,
- * string/array handlers and the akihabaraInit function.
+ * Help module provides some Javascript-specific functions, such object copying,
+ * randomizing functions, string/array handlers.
  * @namespace AkihabaraHelp
  */
 var AkihabaraHelp = {
