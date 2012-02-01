@@ -15,6 +15,25 @@ var AkihabaraDebug = {
 		return ret;
 	},
 
+	/**
+	* Converts a quantity of frames into a timestamp formatted "mm: ss: cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.
+	* @param {Integer} frames A quantity of frames.
+	* @returns A string containing a timestamp formatted "mm: ss: cs", representing the length of time it would take to render that many frames.
+	* @example
+	* // Assuming 25 frames per second, Akihabara's default.
+	* timestamp = AkihabaraHelp.framestotime(25);
+	* timestamp; // => '00:01:00';
+	* timestamp = AkihabaraHelp.framestotime(25 * 60);
+	* timestamp; // => '01:00:00';
+	*/
+	framesToTime: function (frames) {
+		var csec = Math.ceil(frames / AkihabaraGamebox.getFps() * 100);
+		return AkihabaraHelp.prepad((Math.floor(csec / 6000) % 60), 2, "0") +
+			":" + AkihabaraHelp.prepad((Math.floor(csec / 100) % 60), 2, "0") +
+			":" + AkihabaraHelp.prepad(csec % 100, 2, "0")
+		;
+	},
+
 	fpsCounterInit: function (data) {
 
 		// Default options
