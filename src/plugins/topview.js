@@ -22,23 +22,23 @@ var AkihabaraTopview = {
 	* Checks if an object checks that both objects are on the same Z plane and if so it calls AkihabaraGamebox.collides.
 	* @param {Object} fr The object which collision is being checked for.
 	* <ul>
-	* <li > x{Integer}: (required)Objects x position < /li>
-	* <li > y{Integer}: (required)Objects y position < /li>
-	* <li > z{Integer}: (required)Objects z position < /li>
-	* <li > colx{Integer}: (required)The dimension of the collision box along the x axis < /li>
-	* <li > coly{Integer}: (required)The dimension of the collision box along the y axis < /li>
-	* <li > colh{Integer}: (required)Collision box height < /li>
-	* <li > colw{Integer}: (required)Collision box width < /li>
+	* <li> x{Integer}: (required)Objects x position </li>
+	* <li> y{Integer}: (required)Objects y position </li>
+	* <li> z{Integer}: (required)Objects z position </li>
+	* <li> colx{Integer}: (required)The dimension of the collision box along the x axis </li>
+	* <li> coly{Integer}: (required)The dimension of the collision box along the y axis </li>
+	* <li> colh{Integer}: (required)Collision box height </li>
+	* <li> colw{Integer}: (required)Collision box width </li>
 	* </ul>
 	* @param {Object} to The object that collision is being checked against.
 	* <ul>
-	* <li > x{Integer}: (required)Objects x position < /li>
-	* <li > y{Integer}: (required)Objects y position < /li>
-	* <li > z{Integer}: (required)Objects z position < /li>
-	* <li > colx{Integer}: (required)Collision x < /li>
-	* <li > coly{Integer}: (required)Collision y < /li>
-	* <li > colh{Integer}: (required)Collision box height < /li>
-	* <li > colw{Integer}: (required)Collision box width < /li>
+	* <li> x{Integer}: (required)Objects x position </li>
+	* <li> y{Integer}: (required)Objects y position </li>
+	* <li> z{Integer}: (required)Objects z position </li>
+	* <li> colx{Integer}: (required)Collision x </li>
+	* <li> coly{Integer}: (required)Collision y </li>
+	* <li> colh{Integer}: (required)Collision box height </li>
+	* <li> colw{Integer}: (required)Collision box width </li>
 	* </ul>
 	* @param {int} t This is the tollerance (or margin for error) on the collide function.
 	*/
@@ -65,37 +65,37 @@ var AkihabaraTopview = {
 	* @param {Object} th Passes in the object being initialized.
 	* @param {Object} data This is used to pass in everything that's being initiliized. If a value is not in Data then a default value is used instead. This can pass in values which do not have a default.
 	* <ul>
-	* <li > x{Integer}: x position of the object. (defaults to 0) < /li>
-	* <li > y{Integer}: y position of the object. (defaults to 0) < /li>
-	* <li > z{Integer}: z index of the object. (defaults to 0) < /li>
-	* <li > accx{Integer}: The starting x velociyt of the object. (defaults to 0) < /li>
-	* <li > accy{Integer}: The starting y velocity of the object. (defaults to 0) < /li>
-	* <li > accz{Integer}: The starting z velocity of the object. (defaults to 0) < /li>
-	* <li > frames{Object}: This is stores the animation frames for the objects in a map style structure. An empty map means the default image will display with no animation frames. (defaults to an empty map) < /li>
-	* <li > shadow: (defaults to null) < /li> //incomplete
-	* <li > maxacc{Integer}: (defaults to )4 < /li>
-	* <li > controlmaxacc{Integer}: (defaults to 4) < /li>
-	* <li > responsive: (defaults to 0) < /li>
-	* <li > weapon: (defaults to 0) < /li>
-	* <li > camera{Boolean}: (defaults to true) < /li>
-	* <li > flipv{Boolean}: Notes if the object is flipped vertically(defaults to false) < /li>
-	* <li > fliph{Boolean}: Notes if the object is flipped horrizontally(defaults to false) < /li>
-	* <li > facing{Integer}: Stores the facing of the object. This is set with pre-defined Integer values from within AkihabaraTopview.(defaults to AkihabaraTopview.FACE_DOWN) < /li>
+	* <li> x{Integer}: x position of the object. (defaults to 0) </li>
+	* <li> y{Integer}: y position of the object. (defaults to 0) </li>
+	* <li> z{Integer}: z index of the object. (defaults to 0) </li>
+	* <li> accx{Integer}: The starting x velociyt of the object. (defaults to 0) </li>
+	* <li> accy{Integer}: The starting y velocity of the object. (defaults to 0) </li>
+	* <li> accz{Integer}: The starting z velocity of the object. (defaults to 0) </li>
+	* <li> frames{Object}: This is stores the animation frames for the objects in a map style structure. An empty map means the default image will display with no animation frames. (defaults to an empty map) </li>
+	* <li> shadow: (defaults to null) </li> //incomplete
+	* <li> maxacc{Integer}: (defaults to )4 </li>
+	* <li> controlmaxacc{Integer}: (defaults to 4) </li>
+	* <li> responsive: (defaults to 0) </li>
+	* <li> weapon: (defaults to 0) </li>
+	* <li> camera{Boolean}: (defaults to true) </li>
+	* <li> flipv{Boolean}: Notes if the object is flipped vertically(defaults to false) </li>
+	* <li> fliph{Boolean}: Notes if the object is flipped horrizontally(defaults to false) </li>
+	* <li> facing{Integer}: Stores the facing of the object. This is set with pre-defined Integer values from within AkihabaraTopview.(defaults to AkihabaraTopview.FACE_DOWN) </li>
 	* <ul>
-	* <li > FACE_UP: 0, < /li>
-	* <li > FACE_RIGHT: 1, < /li>
-	* <li > FACE_DOWN: 2, < /li>
-	* <li > FACE_LEFT: 3, < /li>
+	* <li> FACE_UP: 0, </li>
+	* <li> FACE_RIGHT: 1, </li>
+	* <li> FACE_DOWN: 2, </li>
+	* <li> FACE_LEFT: 3, </li>
 	* </ul>
-	* <li > flipside{Boolean}: (defaults to true) < /li>
-	* <li > haspushing{Boolean}: (defaults to false) < /li>
-	* <li > frame: (default to 0) < /li>
-	* <li > colh{Integer}: (defaults to AkihabaraGamebox.getTiles(th.tileset).tilehh) < /li>
-	* <li > colw{Integer}: (defaults to AkihabaraGamebox.getTiles(th.tileset).tilew) < /li>
-	* <li > colx{Integer}: (defaults to 0) < /li>
-	* <li > staticspeed{Integer}: (defaults to 0) < /li>
-	* <li > nodiagonals{Boolean}: (defaults to false) < /li>
-	* <li > noreset: (defaults to false) < /li>
+	* <li> flipside{Boolean}: (defaults to true) </li>
+	* <li> haspushing{Boolean}: (defaults to false) </li>
+	* <li> frame: (default to 0) </li>
+	* <li> colh{Integer}: (defaults to AkihabaraGamebox.getTiles(th.tileset).tilehh) </li>
+	* <li> colw{Integer}: (defaults to AkihabaraGamebox.getTiles(th.tileset).tilew) </li>
+	* <li> colx{Integer}: (defaults to 0) </li>
+	* <li> staticspeed{Integer}: (defaults to 0) </li>
+	* <li> nodiagonals{Boolean}: (defaults to false) </li>
+	* <li> noreset: (defaults to false) </li>
 	* </ul>
 	*/
 	initialize: function (th, data) {
@@ -140,8 +140,8 @@ var AkihabaraTopview = {
 	* This initializes some basic basic variables for the object and sets the Z index.
 	* @param {Object} th References 'this' which is the object that called the method (generally).
 	* <ul>
-	* <li > y {Integer}: (required) The object's y position. < /li>
-	* <li > h {Integer}: (required) The object's height. < /li>
+	* <li> y {Integer}: (required) The object's y position. </li>
+	* <li> h {Integer}: (required) The object's height. </li>
 	* </ul>
 	* @param {Object} data This holds variables to be merged into th's stored info.
 	*/
@@ -160,15 +160,15 @@ var AkihabaraTopview = {
 	* This sets and runs the control keys for the game.
 	* @param {Object} th This is the object that is being controlled by the keys (assumed to be the player)
 	* <ul>
-	* <li > accx: the object's currect acceleration in the x direction < /li>
-	* <li > accy: the object's currect acceleration in the y direction < /li>
-	* <li > responsive: minimum movement speed < /li>
-	* <li > staticspeed: turns off acceleration < /li>
-	* <li > nodiagonals: boolean determining if the object can move along both axis at once. < /li>
-	* <li > xpushing: a boolean that notes whether the object is pushing against something in the x direction. < /li>
-	* <li > ypushing: a boolean that notes whether the object is pushing against something in the y direction. < /li>
-	* <li > controlmaxacc: max acceleration for the object along an axis < /li>
-	* <li > noreset: checks for the object being allowed to reset its pushing status (?) < /li>
+	* <li> accx: the object's currect acceleration in the x direction </li>
+	* <li> accy: the object's currect acceleration in the y direction </li>
+	* <li> responsive: minimum movement speed </li>
+	* <li> staticspeed: turns off acceleration </li>
+	* <li> nodiagonals: boolean determining if the object can move along both axis at once. </li>
+	* <li> xpushing: a boolean that notes whether the object is pushing against something in the x direction. </li>
+	* <li> ypushing: a boolean that notes whether the object is pushing against something in the y direction. </li>
+	* <li> controlmaxacc: max acceleration for the object along an axis </li>
+	* <li> noreset: checks for the object being allowed to reset its pushing status (?) </li>
 	* </ul>
 	* @param {Object} keys These are the control keys being passed in for left, right, up, and down.
 	* //incomplete
@@ -241,9 +241,9 @@ var AkihabaraTopview = {
 	* Gets the next X position the object is going to move to.
 	* @param {Object} th The object being checked.
 	* <ul>
-	* <li > x: the current x position of the object < /li>
-	* <li > accx: the object's currect acceleration in the x direction < /li>
-	* <li > maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead) < /li>
+	* <li> x: the current x position of the object </li>
+	* <li> accx: the object's currect acceleration in the x direction </li>
+	* <li> maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
 	getNextX: function (th) { return th.x + AkihabaraHelp.limit(th.accx, -th.maxacc, th.maxacc); },
@@ -252,9 +252,9 @@ var AkihabaraTopview = {
 	* Gets the next Y position the object is going to move to.
 	* @param {Object} th The object being checked.
 	* <ul>
-	* <li > y: the current y position of the object < /li>
-	* <li > accy: the object's currect acceleration in the y direction < /li>
-	* <li > maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead) < /li>
+	* <li> y: the current y position of the object </li>
+	* <li> accy: the object's currect acceleration in the y direction </li>
+	* <li> maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
 	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxacc, th.maxacc); },
@@ -263,9 +263,9 @@ var AkihabaraTopview = {
 	* Gets the next Z position the object is going to move to.
 	* @param {Object} th The object being checked.
 	* <ul>
-	* <li > z: the current z position of the object < /li>
-	* <li > accz: the object's currect acceleration in the z direction < /li>
-	* <li > maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) < /li>
+	* <li> z: the current z position of the object </li>
+	* <li> accz: the object's currect acceleration in the z direction </li>
+	* <li> maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
 	getNextZ: function (th) { return th.z + AkihabaraHelp.limit(th.accz, -th.maxacc, th.maxacc); },
@@ -274,11 +274,11 @@ var AkihabaraTopview = {
 	* Sets the objects current location to its next location using the getNextX and getNextY methods.
 	* @param {Object} th The object being modified.
 	* <ul>
-	* <li > x: the current x position of the object < /li>
-	* <li > y: the current y position of the object < /li>
-	* <li > accx: the object's currect acceleration in the x direction < /li>
-	* <li > accy: the object's currect acceleration in the y direction < /li>
-	* <li > maxacc: the max accleration the object can have (if either acceleration is greater than this then this value is used instead for that acceleration) < /li>
+	* <li> x: the current x position of the object </li>
+	* <li> y: the current y position of the object </li>
+	* <li> accx: the object's currect acceleration in the x direction </li>
+	* <li> accy: the object's currect acceleration in the y direction </li>
+	* <li> maxacc: the max accleration the object can have (if either acceleration is greater than this then this value is used instead for that acceleration) </li>
 	* </ul>
 	*/
 	applyForces: function (th) {
@@ -290,9 +290,9 @@ var AkihabaraTopview = {
 	* This applies acceleration in the Z direction (not nessesarily gravity but whatever the next accerlation on the Z axis is)
 	* @param {Object} th The object being modified.
 	* <ul>
-	* <li > z: the current z position of the object < /li>
-	* <li > accz: the object's currect acceleration in the z direction < /li>
-	* <li > maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) < /li>
+	* <li> z: the current z position of the object </li>
+	* <li> accz: the object's currect acceleration in the z direction </li>
+	* <li> maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
 	applyGravity: function (th) {
@@ -303,10 +303,10 @@ var AkihabaraTopview = {
 	* Degrades all accelerations on an object by one toward zero.
 	* @param {Object} th The object being modified.
 	* <ul>
-	* <li > xpushing: a boolean that notes whether the object is pushing against something in the x direction. < /li>
-	* <li > ypushing: a boolean that notes whether the object is pushing against something in the y direction. < /li>
-	* <li > accx: the object's currect acceleration in the x direction < /li>
-	* <li > accy: the object's currect acceleration in the y direction < /li>
+	* <li> xpushing: a boolean that notes whether the object is pushing against something in the x direction. </li>
+	* <li> ypushing: a boolean that notes whether the object is pushing against something in the y direction. </li>
+	* <li> accx: the object's currect acceleration in the x direction </li>
+	* <li> accy: the object's currect acceleration in the y direction </li>
 	* </ul>
 	*/
 	handleAccellerations: function (th) {
@@ -319,7 +319,7 @@ var AkihabaraTopview = {
 	* Increases the Z acceleration on the object by one.
 	* @param {Object} th The object being modified.
 	* <ul>
-	* <li > accz: the acceleration on the Z axis < /li>
+	* <li> accz: the acceleration on the Z axis </li>
 	* </ul>
 	*/
 	handleGravity: function (th) {
@@ -330,19 +330,19 @@ var AkihabaraTopview = {
 	* This sets which frame the object is going to display based on an agregate word that describes predefined states.
 	* @param {Object} th The object whose frame is being set.
 	* <ul>
-	* <li > xpushing: a boolean that notes whether the object is pushing against something in the x direction. < /li>
-	* <li > ypushing: a boolean that notes whether the object is pushing against something in the y direction. < /li>
-	* <li > haspushing: a boolean that notes if the object changes when pushing against something. < /li>
-	* <li > toucheddown: a boolean that notes if the object is touching something below it on the screen. < /li>
-	* <li > touchedup: a boolean that notes if the object is touching something above it on the screen. < </li>
-	* <li > touchedright: a boolean that notes if the object is touching something right of it on the screen. < </li>
-	* <li > touchedleft: a boolean that notes if the object is touching something left of it on the screen. < </li>
-	* <li > flipside: </li>
-	* <li > fliph: </li>
-	* <li > facing: </li>
-	* <li > frames: </li>
-	* <li > frame: </li>
-	* <li > counter: </li>
+	* <li> xpushing: a boolean that notes whether the object is pushing against something in the x direction. </li>
+	* <li> ypushing: a boolean that notes whether the object is pushing against something in the y direction. </li>
+	* <li> haspushing: a boolean that notes if the object changes when pushing against something. </li>
+	* <li> toucheddown: a boolean that notes if the object is touching something below it on the screen. </li>
+	* <li> touchedup: a boolean that notes if the object is touching something above it on the screen. </li>
+	* <li> touchedright: a boolean that notes if the object is touching something right of it on the screen. </li>
+	* <li> touchedleft: a boolean that notes if the object is touching something left of it on the screen. </li>
+	* <li> flipside: </li>
+	* <li> fliph: </li>
+	* <li> facing: </li>
+	* <li> frames: </li>
+	* <li> frame: </li>
+	* <li> counter: </li>
 	* </ul>
 	* // incomplete
 	*/
@@ -369,8 +369,8 @@ var AkihabaraTopview = {
 	* @param {Object} defaulttile The default tile to be returned if nothing can be found. Null can be used here.
 	* @param {Object} data Passes is extra dat to the function. Can be set as null.
 	* <ul>
-	* <li > tolerance{Integer}: This is subtracted from the collision space to get the maximum collision area for the object. This defaults to 6. < /li>
-	* <li > approximation{Integer}: This is the amount that the checked values are incremented by until they reach the maximum value allowed. This defaults to 10. < /li>
+	* <li> tolerance{Integer}: This is subtracted from the collision space to get the maximum collision area for the object. This defaults to 6. </li>
+	* <li> approximation{Integer}: This is the amount that the checked values are incremented by until they reach the maximum value allowed. This defaults to 10. </li>
 	* </ul>
 	*/
 	tileCollision: function (th, map, tilemap, defaulttile, data) {
@@ -422,18 +422,18 @@ var AkihabaraTopview = {
 	/**
 	* @param {Object} th The object being checked for collisions.
 	* <ul>
-	* <li> < /li>
-	* <li> < /li>
-	* <li> < /li>
-	* <li> < /li>
+	* <li></li>
+	* <li></li>
+	* <li></li>
+	* <li></li>
 	* </ul>
 	* @param {Object} data This is used to pass in other data and arguments.
 	* <ul>
-	* <li > group {String}: (required) This is the group of objects being checked against. < /li>
-	* <li> < /li>
-	* <li> < /li>
-	* <li> < /li>
-	* <li> < /li>
+	* <li> group {String}: (required) This is the group of objects being checked against. </li>
+	* <li></li>
+	* <li></li>
+	* <li></li>
+	* <li></li>
 	* </ul> //incomplete
 	*/
 	spritewallCollision: function (th, data) {
@@ -467,14 +467,14 @@ var AkihabaraTopview = {
 	* This checks if the object's z index is 0 which means it has hit the floor. If this has occured it also plays an impact or bounce noise if one is passed in. Note: The area above the floor is in the negative z index space so a value of 1 for z will return that the object has collided with the floor and z will then be set to zero.
 	* @param {Object} th The object being checked for collision.
 	* <ul>
-	* <li > touchedfloor{boolean}: This value is not passed in but is created or set in the function. This contains the function's return value. < /li>
-	* <li> < /li>
-	* <li> < /li>
-	* <li> < /li>
+	* <li>touchedfloor{boolean}: This value is not passed in but is created or set in the function. This contains the function's return value.</li>
+	* <li></li>
+	* <li></li>
+	* <li></li>
 	* </ul>
 	* @param {Object} data This is used to pass in extra parameters.
 	* <ul>
-	* <li> < /li>
+	* <li></li>
 	* </ul>
 	*/
 	floorCollision: function (th, data) {
@@ -651,7 +651,6 @@ var AkihabaraTopview = {
 		AkihabaraGamebox.setZindex(obj, obj.y + obj.h);
 
 		return obj;
-
 	},
 
 	makedoor: function (gr, id, map, data) {
@@ -746,6 +745,7 @@ var AkihabaraTopview = {
 
 		return obj;
 	},
+
 	// Set the object speed making sure that the X and Y coords are multiple of the speed. Useful on maze-based games.
 	setStaticSpeed: function (th, speed) {
 		th.staticspeed = speed;
