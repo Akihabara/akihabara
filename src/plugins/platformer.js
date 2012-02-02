@@ -160,6 +160,16 @@ var AkihabaraPlatformer = {
 		}
 	},
 
+	/**
+	* Tests to see if an object is being "jumped on" by another object.
+	* @param {Object} th The object that is (possibly) being jumped on.
+	* @param {Object} by The object doing the jumping-on.
+	* @returns True if the two objects are overlapping enough and by.accy > 0.
+	*/
+	isSquished: function (th, by) {
+		return ((by.accy > 0) && AkihabaraGamebox.collides(th, by) && (Math.abs(th.y - (by.y + by.h)) < (th.h / 2)));
+	},
+
 	auto: {
 		// Moves on a platform. It tries to do not fall down, if specified.
 		// Args: (object, {moveWhileFalling: < moves while not touching the floor > ,speed: < movement speed > })

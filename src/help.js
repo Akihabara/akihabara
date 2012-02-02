@@ -77,16 +77,6 @@ var AkihabaraHelp = {
 	},
 
 	/**
-	* Tests to see if an object is being "jumped on" by another object. Only works for platformers, since it assumes accy > 0 means you're falling onto something else.
-	* @param {Object} th The object that is (possibly) being jumped on.
-	* @param {Object} by The object doing the jumping-on.
-	* @returns True if the two objects are overlapping enough and by.accy > 0.
-	*/
-	isSquished: function (th, by) {
-		return ((by.accy > 0) && AkihabaraGamebox.collides(th, by) && (Math.abs(th.y - (by.y + by.h)) < (th.h / 2)));
-	},
-
-	/**
 	* Generates uniformly distributed random integers between min and min + range, non-inclusive. So AkihabaraHelp.random(0, 2) will only return 0 and 1, etc.
 	* @param {Integer} min The minimum random value to be returned by the function.
 	* @param {Integer} range The number of different values returned by the function.
