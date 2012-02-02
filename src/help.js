@@ -271,24 +271,6 @@ var AkihabaraHelp = {
 	goToZero: function (v) { return (v ? v - (v / Math.abs(v)) : 0); },
 
 	/**
-	* Creates a subset of an existing set of parameters.
-	* @param {Object} obj An object containing a set of parameters, the source of the data.
-	* @param {Array} attrs An array of strings, containing the names of parameters you wish to copy.
-	* @returns A new set of parameters based on the subset specified.
-	* @example
-	* data = {a: 1, b: 2, c: "three"};
-	* newdata = AkihabaraHelp.createModel(data, ["a", "c"]);
-	* newdata; // => {a: 1, c: "three"}
-	*/
-	createModel: function (obj, attrs) {
-		var ret = {};
-		for (var i = 0; i < attrs.length; i++) {
-			ret[attrs[i]] = obj[attrs[i]];
-		}
-		return ret;
-	},
-
-	/**
 	* Sets a tile in the map and draws it. Does not return anything.
 	* @param {Object} ctx The canvas context for the map. Accessed via AkihabaraGamebox.getCanvasContext("canvasname")
 	* @param {Object} map The game map object.

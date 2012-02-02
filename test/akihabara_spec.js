@@ -15,4 +15,11 @@ describe("Akihabara", function () {
 		var obj = {a: 1, b: 2, c: "three"};
 		expect(Akihabara.cloneObject(obj)).toEqual(obj);
 	});
+
+	it("should create a new model with custom params based on a given one", function () {
+		var obj = {a: 1, b: 2, c: "three"};
+		expect(
+			Akihabara.createModel(obj, ["a", "c"])
+		).toEqual({a: 1, c: "three"});
+	});
 });
