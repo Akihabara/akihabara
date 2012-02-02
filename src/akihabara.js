@@ -100,53 +100,53 @@ var Akihabara = {
 		// Test and apply parameters passed in the URL
 		if (AkihabaraDebug) { AkihabaraDebug.applyURLParametersOn(device); }
 
-		if (AkihabaraHelp.isDefined(data.zoom)) {
+		if (data.zoom) {
 			AkihabaraGamebox.setZoom(data.zoom);
-		} else if (AkihabaraHelp.isDefined(device.zoom)) {
+		} else if (device.zoom) {
 			AkihabaraGamebox.setZoom(device.zoom);
-		} else if (AkihabaraHelp.isDefined(device.width)) {
+		} else if (device.width) {
 			AkihabaraGamebox.setZoom(device.width / screenwidth);
-		} else if (AkihabaraHelp.isDefined(device.height)) {
+		} else if (device.height) {
 			AkihabaraGamebox.setZoom(device.height / screenheight);
 		}
 
 		AkihabaraGamebox.setFps((data.fps ? data.fps : 25));
 
-		if (AkihabaraHelp.isDefined(device.forcedidle)) { AkihabaraGamebox.setForcedIdle(device.forcedidle); }
+		if (device.forcedidle) { AkihabaraGamebox.setForcedIdle(device.forcedidle); }
 
 		if (!data || !data.hardwareonly) { AkihabaraGamebox.initScreen(screenwidth, screenheight); }
 
 		AkihabaraAudio.setCanAudio(device.canaudio && (!device.audioisexperimental || AkihabaraGamebox.getFlag("experimental")));
 
-		if (AkihabaraHelp.isDefined(device.audiocompatmode)) {
+		if (device.audiocompatmode) {
 			AkihabaraAudio.setAudioCompatMode(device.audiocompatmode);
 		}
 
-		if (AkihabaraHelp.isDefined(device.audioteam)) {
+		if (device.audioteam) {
 			AkihabaraAudio.setAudioTeam(device.audioteam);
 		}
 
-		if (AkihabaraHelp.isDefined(device.loweraudioteam)) {
+		if (device.loweraudioteam) {
 			AkihabaraAudio.setLowerAudioTeam(device.loweraudioteam);
 		}
 
-		if (AkihabaraHelp.isDefined(device.audiocreatemode)) {
+		if (device.audiocreatemode) {
 			AkihabaraAudio.setAudioCreateMode(device.audiocreatemode);
 		}
 
-		if (AkihabaraHelp.isDefined(device.audiodequeuetime)) {
+		if (device.audiodequeuetime) {
 			AkihabaraAudio.setAudioDequeueTime(device.audiodequeuetime);
 		}
 
-		if (AkihabaraHelp.isDefined(device.audiopositiondelay)) {
+		if (device.audiopositiondelay) {
 			AkihabaraAudio.setAudioPositionDelay(device.audiopositiondelay);
 		}
 
-		if (AkihabaraHelp.isDefined(device.forcedmimeaudio)) {
+		if (device.forcedmimeaudio) {
 			AkihabaraAudio.setForcedMimeAudio(device.forcedmimeaudio);
 		}
 
-		if (AkihabaraHelp.isDefined(device.audioissinglechannel)) {
+		if (device.audioissinglechannel) {
 			AkihabaraAudio.setAudioIsSingleChannel(device.audioissinglechannel);
 		}
 

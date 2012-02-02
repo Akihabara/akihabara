@@ -409,18 +409,5 @@ var AkihabaraHelp = {
 		var i = 0;
 		while ((value > a[i][field]) && (i !== a.length - 1)) { i++; }
 		return a[i];
-	},
-
-	/**
-	* Tests whether an object contains a given parameter.
-	* @param {Object} A reference to a parameter of an object.
-	* @returns True if the object contains that parameter, false if it does not.
-	* @example
-	* foo = {a: 1, b: 2};
-	* AkihabaraHelp.isDefined(foo.a); // => true
-	* AkihabaraHelp.isDefined(foo.c); // => false
-	*/
-	isDefined: function (v) {
-		return ((typeof(v) !== 'undefined') || (v === null));
 	}
 };
