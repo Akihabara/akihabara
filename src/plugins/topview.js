@@ -136,7 +136,8 @@ var AkihabaraTopview = {
 	},
 
 	/**
-	* Spawns a new object in the AkihabaraTopview namespace. This also merges parameters in data into paramaters in th using AkihabaraHelp.copyModel.
+	* Spawns a new object in the AkihabaraTopview namespace.
+	* This also merges parameters in data into paramaters in th using Akihabara.extendsFrom().
 	* This initializes some basic basic variables for the object and sets the Z index.
 	* @param {Object} th References 'this' which is the object that called the method (generally).
 	* <ul>
@@ -152,7 +153,7 @@ var AkihabaraTopview = {
 		th.counter = 0; // self counter
 		th.hittimer = 0;
 		th.killed = false;
-		AkihabaraHelp.copyModel(th, data);
+		Akihabara.extendsFrom(data, th);
 		AkihabaraGamebox.setZindex(th, th.y + th.h); // these object follows the z-index and uses ZINDEX_LAYER
 	},
 
