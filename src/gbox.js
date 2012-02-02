@@ -906,14 +906,14 @@ var AkihabaraGamebox = {
 
 	/**
 	* Creates a <font> < /font > .
-	* @param {Object} data An object containing: <ul> < li > id: the id of the font < /li>
-	* <li > image: reference to the font image loaded (must contain font character tiles in ASCII order) < /li>
-	* <li > firstletter: the ASCII character that the font image's first character corresponds to < /li>
-	* <li > tileh: height in pixels of the character tiles < /li>
-	* <li > tilew: width in pixels of the character tiles < /li>
-	* <li > tilerow: width in pixels of each row in the font image < /li>
-	* <li > gapx: x-coord gap between tile columns, in pixels < /li>
-	* <li > gapy: y-coord gap between tile rows, in pixels < /li> < /ul>
+	* @param {Object} data An object containing: <ul> <li> id: the id of the font </li>
+	* <li> image: reference to the font image loaded (must contain font character tiles in ASCII order) </li>
+	* <li> firstletter: the ASCII character that the font image's first character corresponds to </li>
+	* <li> tileh: height in pixels of the character tiles </li>
+	* <li> tilew: width in pixels of the character tiles </li>
+	* <li> tilerow: width in pixels of each row in the font image </li>
+	* <li> gapx: x-coord gap between tile columns, in pixels </li>
+	* <li> gapy: y-coord gap between tile rows, in pixels </li> </ul>
 	* @example
 	* AkihabaraGamebox.('font', 'font.png');
 	* AkihabaraGamebox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
@@ -1112,8 +1112,8 @@ var AkihabaraGamebox = {
 
 	/**
 	* Gets the two-dimensional canvas context of a given canvas. The object it returns contains all the drawing functions for the canvas.
-	* See <a href = "http: //dev.w3.org/html5/spec/Overview.html#the-canvas-element" > W3C < /a> and
-	* <a href = "https: //developer.mozilla.org/en/canvas_tutorial/basic_usage" > Mozilla Developer Center < /a> for details.
+	* See <a href="http://dev.w3.org/html5/spec/Overview.html#the-canvas-element">W3C</a> and
+	* <a href="https://developer.mozilla.org/en/canvas_tutorial/basic_usage">Mozilla Developer Center</a> for details.
 	* @param {Object} id The identifier of the canvas.
 	* @returns {Object} A DOM Canvas context object.
 	*/
@@ -1147,13 +1147,13 @@ var AkihabaraGamebox = {
 
 	/**
 	* Creates a new Akihabara tileset, adding it to the engine.
-	* @param {Object} t An object containing: <ul> < li > id {String}: the new id of the tileset < /li>
-	* <li > image {String}: reference to the tileset image loaded < /li>
-	* <li > tileh {Integer}: height in pixels of the tiles < /li>
-	* <li > tilew {Integer}: width in pixels of the tiles < /li>
-	* <li > tilerow {Integer}: width in pixels of each row in the font image < /li>
-	* <li > gapx {Integer}: x-coord gap between tile columns, in pixels < /li>
-	* <li > gapy {Integer}: y-coord gap between tile rows, in pixels < /li> < /ul>
+	* @param {Object} t An object containing: <ul> <li> id {String}: the new id of the tileset </li>
+	* <li> image {String}: reference to the tileset image loaded </li>
+	* <li> tileh {Integer}: height in pixels of the tiles </li>
+	* <li> tilew {Integer}: width in pixels of the tiles </li>
+	* <li> tilerow {Integer}: width in pixels of each row in the font image </li>
+	* <li> gapx {Integer}: x-coord gap between tile columns, in pixels </li>
+	* <li> gapy {Integer}: y-coord gap between tile rows, in pixels </li> </ul>
 	*/
 	addTiles: function (t) {
 		t.tilehh = Math.floor(t.tileh / 2);
@@ -1164,13 +1164,13 @@ var AkihabaraGamebox = {
 	/**
 	* Gets an Akihabara tileset, adding it to the engine.
 	* @param {String} t The ID of a tileset.
-	* @returns An object containing: <ul> < li > id {String}: the new id of the tileset < /li>
-	* <li > image {String}: reference to the tileset image loaded < /li>
-	* <li > tileh {Integer}: height in pixels of the tiles < /li>
-	* <li > tilew {Integer}: width in pixels of the tiles < /li>
-	* <li > tilerow {Integer}: width in pixels of each row in the font image < /li>
-	* <li > gapx {Integer}: x-coord gap between tile columns, in pixels < /li>
-	* <li > gapy {Integer}: y-coord gap between tile rows, in pixels < /li> < /ul>
+	* @returns An object containing: <ul> <li> id {String}: the new id of the tileset </li>
+	* <li> image {String}: reference to the tileset image loaded </li>
+	* <li> tileh {Integer}: height in pixels of the tiles </li>
+	* <li> tilew {Integer}: width in pixels of the tiles </li>
+	* <li> tilerow {Integer}: width in pixels of each row in the font image </li>
+	* <li> gapx {Integer}: x-coord gap between tile columns, in pixels </li>
+	* <li> gapy {Integer}: y-coord gap between tile rows, in pixels </li> </ul>
 	*/
 	getTiles: function (t) { return this._tiles[t]; },
 
@@ -1207,13 +1207,13 @@ var AkihabaraGamebox = {
 	* Draws a tile to a canvas context
 	* @param {Object} tox The canvas context to be drawn on.
 	* @param {Object} data An object containing data about the tile to be drawn, including:
-	* <ul> < li > tileset {String}: the id of the tileset < /li>
-	* <li > tile {Integer}: the index of the tile within the tileset to be drawn < /li>
-	* <li > dx {Integer}: x coordinate to draw the tile at < /li>
-	* <li > dy {Integer}: y coordinate to draw the tile at < /li>
-	* <li > fliph {Integer}: horizontal flip, either 1 or -1 < /li>
-	* <li > flipv {Integer}: vertical flip, either 1 or -1 < /li>
-	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
+	* <ul> <li> tileset {String}: the id of the tileset </li>
+	* <li> tile {Integer}: the index of the tile within the tileset to be drawn </li>
+	* <li> dx {Integer}: x coordinate to draw the tile at </li>
+	* <li> dy {Integer}: y coordinate to draw the tile at </li>
+	* <li> fliph {Integer}: horizontal flip, either 1 or -1 </li>
+	* <li> flipv {Integer}: vertical flip, either 1 or -1 </li>
+	* <li> alpha {Float}: alpha value (0 is transparent, 1 is opaque) </li> </ul>
 	* @example
 	* // from capman, draws an current object's tile, called from inside its blit function
 	* AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: this.frame, dx: this.x, dy: this.y, fliph: this.fliph, flipv: this.flipv, camera: this.camera, alpha: 1});
@@ -1236,11 +1236,11 @@ var AkihabaraGamebox = {
 	* @param {Object} tox The canvas context to be drawn on.
 	* @param {Object} image The image to draw. Must be a DOM Image element, typicallly accessed via AkihabaraGamebox.getImage
 	* @param {Object} data An object containing data about the tile to be drawn, including:
-	* <ul> < li > dx {Integer}: (required) x coordinate to draw the image at < /li>
-	* <li > dy {Integer}: (required) y coordinate to draw the image at < /li>
-	* <li > fliph {Integer}: horizontal flip, either 1 or -1 < /li>
-	* <li > flipv {Integer}: vertical flip, either 1 or -1 < /li>
-	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
+	* <ul> <li> dx {Integer}: (required) x coordinate to draw the image at </li>
+	* <li> dy {Integer}: (required) y coordinate to draw the image at </li>
+	* <li> fliph {Integer}: horizontal flip, either 1 or -1 </li>
+	* <li> flipv {Integer}: vertical flip, either 1 or -1 </li>
+	* <li> alpha {Float}: alpha value (0 is transparent, 1 is opaque) </li> </ul>
 	* @example
 	* // draw an image at (100, 100)
 	* AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getImage("image_id"), {dx: 100, dy: 100});
@@ -1272,8 +1272,8 @@ var AkihabaraGamebox = {
 	* Draws a tilemap to a canvas context
 	* @param {Object} tox The canvas context to be drawn on.
 	* @param {Object} data An object containing a set of tilemap data, including:
-	* <ul> < li > tileset {String}: (required) the id of the tileset the tilemap is based on < /li>
-	* <li > map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile) < /li> < /ul>
+	* <ul> <li> tileset {String}: (required) the id of the tileset the tilemap is based on </li>
+	* <li> map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile) </li> </ul>
 	*/
 	blitTilemap: function (tox, data) {
 		if (tox == null) { return; }
@@ -1291,15 +1291,15 @@ var AkihabaraGamebox = {
 	* Draws text to a canvas context
 	* @param {Object} tox The canvas context to be drawn on.
 	* @param {Object} data An object containing a set of data, including:
-	* <ul> < li > font {String}: (required) the id of font to draw the text with < /li>
-	* <li > text {String}: (required) the text to display < /li>
-	* <li > dx {Integer}: (required) the x coordinate to draw the text at < /li>
-	* <li > dy {Integer}: (required) the y coordinate to draw the text at < /li>
-	* <li > dw {Integer}: the width of the text area -- required if you define data.halign < /li>
-	* <li > dh {Integer}: the height of the text area -- required if you define data.valign < /li>
-	* <li > valign {Integer}: either AkihabaraGamebox.ALIGN_BOTTOM (aligns from the bottom of the text area) or AkihabaraGamebox.ALIGN_MIDDLE (vertically centers text in text area) < /li>
-	* <li > halign {Integer}: either AkihabaraGamebox.ALIGN_RIGHT (aligns to the right hand side of text area) or AkihabaraGamebox.ALIGN_CENTER (horizontallly centers text in text area) < /li>
-	* <li > alpha {Float}: alpha value (0 is transparent, 1 is opaque) < /li> < /ul>
+	* <ul> <li> font {String}: (required) the id of font to draw the text with </li>
+	* <li> text {String}: (required) the text to display </li>
+	* <li> dx {Integer}: (required) the x coordinate to draw the text at </li>
+	* <li> dy {Integer}: (required) the y coordinate to draw the text at </li>
+	* <li> dw {Integer}: the width of the text area -- required if you define data.halign </li>
+	* <li> dh {Integer}: the height of the text area -- required if you define data.valign </li>
+	* <li> valign {Integer}: either AkihabaraGamebox.ALIGN_BOTTOM (aligns from the bottom of the text area) or AkihabaraGamebox.ALIGN_MIDDLE (vertically centers text in text area) </li>
+	* <li> halign {Integer}: either AkihabaraGamebox.ALIGN_RIGHT (aligns to the right hand side of text area) or AkihabaraGamebox.ALIGN_CENTER (horizontallly centers text in text area) </li>
+	* <li> alpha {Float}: alpha value (0 is transparent, 1 is opaque) </li> </ul>
 	*/
 	blitText: function (tox, data) {
 		if (tox == null) { return; }
@@ -1346,10 +1346,10 @@ var AkihabaraGamebox = {
 	* Clears a rectangular area of a canvas context.
 	* @param {Object} image The canvas context to be drawn on.
 	* @param {Object} data An object containing a set of data, including:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the top-left corner of the rectangle < /li>
-	* <li > y {Integer}: (required) the y coordinate of the top-left corner of the rectangle < /li>
-	* <li > w {Integer}: the width of the box; defaults to canvas width < /li>
-	* <li > h {Integer}: the height the box; defaults to canvas height < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the top-left corner of the rectangle </li>
+	* <li> y {Integer}: (required) the y coordinate of the top-left corner of the rectangle </li>
+	* <li> w {Integer}: the width of the box; defaults to canvas width </li>
+	* <li> h {Integer}: the height the box; defaults to canvas height </li> </ul>
 	*/
 	blitClear: function (image, data) {
 		if (image == null) { return; }
@@ -1369,8 +1369,8 @@ var AkihabaraGamebox = {
 	* Draws a filled rectangle over an entire canvas context.
 	* @param {Object} tox The canvas context to be filled.
 	* @param {Object} data An object containing a set of data, including:
-	* <ul> < li > alpha {Float}: the alpha value of the rectangle; defaults to 1 < /li>
-	* <li > color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black < /li> < /ul>
+	* <ul> <li> alpha {Float}: the alpha value of the rectangle; defaults to 1 </li>
+	* <li> color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black </li> </ul>
 	*/
 	blitFade: function (tox, data) {
 		if (tox) { this.blitRect(tox, {x: 0, y: 0, w: tox.canvas.width, h: tox.canvas.height, alpha: data.alpha, color: data.color}); }
@@ -1380,12 +1380,12 @@ var AkihabaraGamebox = {
 	* Draws a filled rectangle to a canvas context.
 	* @param {Object} tox The canvas context to be drawn on.
 	* @param {Object} data An object containing a set of data, including:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the top-left corner of the rectangle < /li>
-	* <li > y {Integer}: (required) the y coordinate of the top-left corner of the rectangle < /li>
-	* <li > w {Integer}: (required) the width of the box < /li>
-	* <li > h {Integer}: (required) the height the box < /li>
-	* <li > alpha {Float}: the alpha value of the rectangle; defaults to 1 < /li>
-	* <li > color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the top-left corner of the rectangle </li>
+	* <li> y {Integer}: (required) the y coordinate of the top-left corner of the rectangle </li>
+	* <li> w {Integer}: (required) the width of the box </li>
+	* <li> h {Integer}: (required) the height the box </li>
+	* <li> alpha {Float}: the alpha value of the rectangle; defaults to 1 </li>
+	* <li> color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black </li> </ul>
 	*/
 	blitRect: function (tox, data) {
 		if (tox == null) { return; }
@@ -1399,15 +1399,15 @@ var AkihabaraGamebox = {
 	/**
 	* Calculates a box collision between two collision boxes within a given tolerance. A higher tolerance means less precise collision.
 	* @param {Object} o1 A collision box you're testing for collision. Must contain:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > w {Integer}: (required) the width of the box < /li>
-	* <li > h {Integer}: (required) the height the box < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> w {Integer}: (required) the width of the box </li>
+	* <li> h {Integer}: (required) the height the box </li> </ul>
 	* @param {Object} o2 A collision box you're testing for collision. Must contain:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > w {Integer}: (required) the width of the box < /li>
-	* <li > h {Integer}: (required) the height the box < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> w {Integer}: (required) the width of the box </li>
+	* <li> h {Integer}: (required) the height the box </li> </ul>
 	* @param {Integer} t The tolerance for the collision, in pixels. A value of 0 means pixel-perfect box collision. A value of 2 would mean that the
 	* boxes could overlap by up to 2 pixels without being considered a collision.
 	* @returns True if the two collision boxes are colliding within the given tolerance.
@@ -1420,13 +1420,13 @@ var AkihabaraGamebox = {
 	/**
 	* Calculates a point-box collision between a point and a collision box within a given tolerance. A higher tolerance means less precise collision.
 	* @param {Object} o1 A point you're testing for collision. Must contain:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the point < /li>
-	* <li > y {Integer}: (required) the y coordinate of the point < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the point </li>
+	* <li> y {Integer}: (required) the y coordinate of the point </li> </ul>
 	* @param {Object} o2 A collision box you're testing for collision. Must contain:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > w {Integer}: (required) the width of the box < /li>
-	* <li > h {Integer}: (required) the height the box < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> w {Integer}: (required) the width of the box </li>
+	* <li> h {Integer}: (required) the height the box </li> </ul>
 	* @param {Integer} t The tolerance for the collision, in pixels. A value of 0 means pixel-perfect collision. A value of 2 would mean that the
 	* point could exist within the outermost 2 pixels of the box without being considered a collision.
 	* @returns True if the point is colliding with the box within the given tolerance.
@@ -1439,10 +1439,10 @@ var AkihabaraGamebox = {
 	/**
 	* Determines whether an object is visible by seeing if it collides with the camera's viewport.
 	* @param {Object} obj The object you're testing to see if it's visible. Must contain:
-	* <ul> < li > x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin < /li>
-	* <li > w {Integer}: (required) the width of the object's collision box < /li>
-	* <li > h {Integer}: (required) the height the object's box < /li> < /ul>
+	* <ul> <li> x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin </li>
+	* <li> w {Integer}: (required) the width of the object's collision box </li>
+	* <li> h {Integer}: (required) the height the object's box </li> </ul>
 	* @returns True if the object's collision box is within the camera's viewport.
 	*/
 	objectIsVisible: function (obj) { return this.collides(obj, this._camera, 0); },
