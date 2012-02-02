@@ -34,6 +34,22 @@ var Akihabara = {
 	},
 
 	/**
+	* Creates a duplicate of an existing set of parameters.
+	* @param {Object} model An object containing a set of parameters.
+	* @returns A new object, equivalent to 'model'.
+	* @example
+	* data = {a: 1, b: 2, c: "three"};
+	* newdata = AkihabaraHelp.cloneObject(data);
+	* newdata; // => {a: 1, b: 2, c: "three"}
+	*/
+	cloneObject: function (model) {
+		if (!model) { return model; }
+		var data = {};
+		for (var i in model) { data[i] = model[i]; }
+		return data;
+	},
+
+	/**
 	* This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. <br/>
 	* Many of these settings can be set manually by passing an object with the parameters defined.
 	* This function calls AkihabaraDebug.applyURLParametersOn to apply the url parameters to the game object.

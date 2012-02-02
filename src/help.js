@@ -329,22 +329,6 @@ var AkihabaraHelp = {
 	},
 
 	/**
-	* Creates a duplicate of an existing set of parameters.
-	* @param {Object} model An object containing a set of parameters.
-	* @returns A new object, equivalent to 'model'.
-	* @example
-	* data = {a: 1, b: 2, c: "three"};
-	* newdata = AkihabaraHelp.cloneObject(data);
-	* newdata; // => {a: 1, b: 2, c: "three"}
-	*/
-	cloneObject: function (model) {
-		if (!model) { return model; }
-		var data = {};
-		for (var i in model) { data[i] = model[i]; }
-		return data;
-	},
-
-	/**
 	* Sets a tile in the map and draws it. Does not return anything.
 	* @param {Object} ctx The canvas context for the map. Accessed via AkihabaraGamebox.getCanvasContext("canvasname")
 	* @param {Object} map The game map object.

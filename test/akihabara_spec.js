@@ -10,4 +10,9 @@ describe("Akihabara", function () {
 
 		expect(newTopview).toEqual({a: 1, b: 2, c: 3, d: "four"});
 	});
+
+	it("should receive a new object with the same properties than the old one", function () {
+		var obj = {a: 1, b: 2, c: "three"};
+		expect(Akihabara.cloneObject(obj)).toEqual(obj);
+	});
 });
