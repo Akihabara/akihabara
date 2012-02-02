@@ -271,27 +271,6 @@ var AkihabaraHelp = {
 	goToZero: function (v) { return (v ? v - (v / Math.abs(v)) : 0); },
 
 	/**
-	* Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
-	* @param {Object} data An object containing a set of parameters, the destination of the merge.
-	* @param {Object} model An object containing a set of parameters, the source of the merge.
-	* @returns A merged model where the values of 'data' remain untouched: only new parameters and values from 'model' make it in.
-	* @example
-	* dst = {a: 1, b: 2, c: "three"};
-	* src = {c: "three", d: "four"};
-	* merged = AkihabaraHelp.mergeWithModel(dst, src);
-	* merged; // => {a: 1, b: 2, c: 3, d: "four"};
-	*/
-	mergeWithModel: function (data, model) {
-		if (data == null) { data = {}; }
-		if (model != null) {
-			for (var i in model) {
-				if (data[i] == null) { data[i] = model[i]; }
-			}
-		}
-		return data;
-	},
-
-	/**
 	* Merges two sets of parameters together overwriting any existing parameters. This merges model- > data, and if data and model share parameters, data's are overwritten by model's.
 	* @param {Object} data An object containing a set of parameters, the destination of the merge.
 	* @param {Object} model An object containing a set of parameters, the source of the merge.
