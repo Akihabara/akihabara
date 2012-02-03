@@ -41,7 +41,7 @@ var AkihabaraShmup = {
 		th.counter = 0; // self counter
 		th.hittimer = 0;
 		th.killed = false;
-		Akihabara.extendsFrom(data, th);
+		Akihabara.copyModel(th, data);
 	},
 
 	getNextX: function (th) { return th.x + AkihabaraHelp.limit(th.accx, -th.maxacc, th.maxacc); },

@@ -37,7 +37,7 @@ var AkihabaraPlatformer = {
 		th.touchedrightwall = false;
 		th.pushing = AkihabaraPlatformer.PUSH_NONE; // user is moving side
 		th.killed = false;
-		Akihabara.extendsFrom(data, th);
+		Akihabara.copyModel(th, data);
 	},
 
 	getNextX: function (th) { return th.x + th.accx; },

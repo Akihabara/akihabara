@@ -34,6 +34,25 @@ var Akihabara = {
 	},
 
 	/**
+	* Merges two sets of parameters together overwriting any existing parameters. This merges model- > data, and if data and model share parameters, data's are overwritten by model's.
+	* @param {Object} data An object containing a set of parameters, the destination of the merge.
+	* @param {Object} model An object containing a set of parameters, the source of the merge.
+	* @returns A merged model where the values of 'model' take precedence over those of 'data'. The 'data' object is returned and will be an exact copy of 'model', plus any parameters that 'data' had before the merge that 'model' did not.
+	* @example
+	* dst = {a: 1, b: 2, c: "three"};
+	* src = {c: "three", d: "four"};
+	* merged = AkihabaraHelp.mergeWithModel(dst, src);
+	* merged; // => {a: 1, b: 2, c: "three", d: "four"}
+	*/
+	copyModel: function (data, model) {
+		if (data == null) { data = {}; }
+		if (model != null) {
+			for (var i in model) { data[i] = model[i]; }
+		}
+		return data;
+	},
+
+	/**
 	* Creates a subset of an existing set of parameters.
 	* @param {Object} obj An object containing a set of parameters, the source of the data.
 	* @param {Array} attrs An array of strings, containing the names of parameters you wish to copy.
