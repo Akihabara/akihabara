@@ -13,7 +13,13 @@ describe("Akihabara", function () {
 
 	it("should receive a new object with the same properties than the old one", function () {
 		var obj = {a: 1, b: 2, c: "three"};
-		expect(Akihabara.cloneObject(obj)).toEqual(obj);
+		expect(Akihabara.copyModel(obj)).toEqual(obj);
+	});
+
+	it("should receive a new object with the same properties than the old one", function () {
+		var obj = {a: 1, b: 2, c: "three"};
+		var copy = {a: 2, b: 3, c: "four"};
+		expect(Akihabara.cloneObject(obj, copy)).toEqual(obj);
 	});
 
 	it("should create a new model with custom params based on a given one", function () {
