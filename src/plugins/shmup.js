@@ -101,7 +101,7 @@ var AkihabaraShmup = {
 
 	setFrame: function (th) {
 		if (th.hittimer) { th.hittimer--; }
-		th.frame = AkihabaraHelpers.decideFrame(th.counter, (th.hittimer ? th.frames.hit : th.frames.still));
+		th.frame = AkihabaraGamebox.decideFrame(th.counter, (th.hittimer ? th.frames.hit : th.frames.still));
 	},
 
 	fireBullet: function (gr, id, data) {
@@ -150,7 +150,7 @@ var AkihabaraShmup = {
 		};
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
-			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraGamebox.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 		};
 
 		return obj;
@@ -325,7 +325,7 @@ var AkihabaraShmup = {
 		};
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
-			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraGamebox.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 			if (this.dohandler && (this.dohandler.render != null)) { this.dohandler.render(this); }
 		};
 

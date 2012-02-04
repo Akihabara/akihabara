@@ -358,7 +358,7 @@ var AkihabaraTopview = {
 		if (th.flipside) {
 			th.fliph = (th.facing === AkihabaraTopview.FACE_RIGHT);
 		}
-		th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames[pref + AkihabaraTopview.FACES[th.facing]]);
+		th.frame = AkihabaraGamebox.decideFrame(th.counter, th.frames[pref + AkihabaraTopview.FACES[th.facing]]);
 	},
 
 	/**
@@ -644,7 +644,7 @@ var AkihabaraTopview = {
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
 			if (!AkihabaraGamebox.objectIsTrash(this)) {
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraGamebox.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 			}
 		};
 
@@ -737,7 +737,7 @@ var AkihabaraTopview = {
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
 			if (!AkihabaraGamebox.objectIsTrash(this)) {
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h - this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraGamebox.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h - this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 			}
 		};
 

@@ -709,7 +709,7 @@ var AkihabaraToys = {
 					}
 					if (data.who[th.toys[id].scene.who].tileset) {
 						th.toys[id].anim = (th.toys[id].anim + 1) % 20;
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: data.who[th.toys[id].scene.who].tileset, tile: AkihabaraHelpers.decideFrame(th.toys[id].anim, data.who[th.toys[id].scene.who].frames), dx: data.who[th.toys[id].scene.who].portraitx, dy: data.who[th.toys[id].scene.who].portraity, camera: false, fliph: data.who[th.toys[id].scene.who].fliph, flipv: data.who[th.toys[id].scene.who].flipv});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: data.who[th.toys[id].scene.who].tileset, tile: AkihabaraGamebox.decideFrame(th.toys[id].anim, data.who[th.toys[id].scene.who].frames), dx: data.who[th.toys[id].scene.who].portraitx, dy: data.who[th.toys[id].scene.who].portraity, camera: false, fliph: data.who[th.toys[id].scene.who].fliph, flipv: data.who[th.toys[id].scene.who].flipv});
 					}
 					AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getCanvas("dialogue-" + id), {dx: 0, dy: 0});
 				} else if (th.toys[id].scene.scroller) { // SCROLLER (i.e. credits)
@@ -772,7 +772,7 @@ var AkihabaraToys = {
 
 				obj[(data.bliton == null ? "blit":data.bliton)] = function () {
 					if ((this.timer >= 0) && (!this.blinkspeed || (Math.floor(this.timer / this.blinkspeed) % 2))) {
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraGamebox.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
 					}
 				};
 
@@ -862,7 +862,7 @@ var AkihabaraToys = {
 
 				obj[(data.bliton == null ? "blit":data.bliton)] = function () {
 					if (!this.blinkspeed || (Math.floor(this.cnt / this.blinkspeed) % 2)) {
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraGamebox.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 					}
 				};
 

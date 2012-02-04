@@ -86,36 +86,6 @@ var AkihabaraHelpers = {
 	},
 
 	/**
-	* Determines which frame of a given animation to display. Will loop an animation.
-	* @param {Integer} cnt A global frame counter.
-	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
-	* @returns The particular animation frame to display during this step.
-	*/
-	decideFrame: function (cnt, anim) {
-		return anim.frames[Math.floor(cnt / anim.speed) % anim.frames.length];
-	},
-
-	/**
-	* Determines which frame of a given animation to display. Will remain on the last frame when the animation has played once.
-	* @param {Integer} cnt A global frame counter.
-	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
-	* @returns The particular animation frame to display during this step.
-	*/
-	decideFrameOnce: function (cnt, anim) {
-		return anim.frames[(cnt >= anim.frames.length * anim.speed ? anim.frames.length - 1 : Math.floor(cnt / anim.speed))];
-	},
-
-	/**
-	* Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.
-	* @param {Integer} cnt A global frame counter.
-	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
-	* @returns A boolean, true if the animation has been played at least once.
-	*/
-	isLastFrameOnce: function (cnt, anim) {
-		return (cnt >= anim.frames.length * anim.speed);
-	},
-
-	/**
 	* Given an incrementing value each step, this will return a value increasing from 0 until max/2,
 	* at which point it will decrement to 0, then go back up to max/2, in an endless cycle.
 	* @param {Integer} counter A counter.

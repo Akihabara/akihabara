@@ -149,14 +149,14 @@ var AkihabaraPlatformer = {
 	setFrame: function (th) {
 		if (th.touchedfloor) {
 			if (th.pushing !== AkihabaraPlatformer.PUSH_NONE) {
-				th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.walking);
+				th.frame = AkihabaraGamebox.decideFrame(th.counter, th.frames.walking);
 			} else {
-				th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.still);
+				th.frame = AkihabaraGamebox.decideFrame(th.counter, th.frames.still);
 			}
 		} else if (th.accy > 0) {
-			th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.falling);
+			th.frame = AkihabaraGamebox.decideFrame(th.counter, th.frames.falling);
 		} else {
-			th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.jumping);
+			th.frame = AkihabaraGamebox.decideFrame(th.counter, th.frames.jumping);
 		}
 	},
 
