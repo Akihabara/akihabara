@@ -21,12 +21,13 @@ FILES = $(SRCDIR)/akihabara.js \
 	$(SRCDIR)/debug.js \
 	$(SRCDIR)/gamecycle.js \
 	$(SRCDIR)/gbox.js \
-	$(SRCDIR)/help.js \
+	$(SRCDIR)/helpers.js \
 	$(SRCDIR)/input.js \
 	$(SRCDIR)/iphofretboard.js \
 	$(SRCDIR)/iphopad.js \
 	$(SRCDIR)/platformer.js \
 	$(SRCDIR)/shmup.js \
+	$(SRCDIR)/tile.js \
 	$(SRCDIR)/tools.js \
 	$(SRCDIR)/topview.js \
 	$(SRCDIR)/toys.js \

@@ -48,13 +48,13 @@ var AkihabaraToys = {
 
 		randomly: function (th, id, data) {
 			if (AkihabaraToys._maketoy(th, id)) {
-				th.toys[id].time = AkihabaraHelp.random(data.base, data.range);
+				th.toys[id].time = AkihabaraHelpers.random(data.base, data.range);
 			}
 			if (th.toys[id].time) {
 				th.toys[id].time--;
 				return AkihabaraToys._toybusy(th, id);
 			} else {
-				th.toys[id].time = AkihabaraHelp.random(data.base, data.range);
+				th.toys[id].time = AkihabaraHelpers.random(data.base, data.range);
 				return AkihabaraToys._toydone(th, id);
 			}
 		},
@@ -196,10 +196,10 @@ var AkihabaraToys = {
 
 						if (this.w[i].widget === "label") {
 							if (this.w[i].prepad != null) {
-								this.w[i].text = AkihabaraHelp.prepad(this.w[i].value, this.w[i].prepad, this.w[i].padwith);
+								this.w[i].text = AkihabaraHelpers.prepad(this.w[i].value, this.w[i].prepad, this.w[i].padwith);
 							} else {
 								if (this.w[i].postpad != null) {
-									this.w[i].text = AkihabaraHelp.postpad(this.w[i].value, this.w[i].postpad, this.w[i].padwith);
+									this.w[i].text = AkihabaraHelpers.postpad(this.w[i].value, this.w[i].postpad, this.w[i].padwith);
 								} else {
 									this.w[i].text = this.w[i].value + "";
 								}
@@ -709,7 +709,7 @@ var AkihabaraToys = {
 					}
 					if (data.who[th.toys[id].scene.who].tileset) {
 						th.toys[id].anim = (th.toys[id].anim + 1) % 20;
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: data.who[th.toys[id].scene.who].tileset, tile: AkihabaraHelp.decideFrame(th.toys[id].anim, data.who[th.toys[id].scene.who].frames), dx: data.who[th.toys[id].scene.who].portraitx, dy: data.who[th.toys[id].scene.who].portraity, camera: false, fliph: data.who[th.toys[id].scene.who].fliph, flipv: data.who[th.toys[id].scene.who].flipv});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: data.who[th.toys[id].scene.who].tileset, tile: AkihabaraHelpers.decideFrame(th.toys[id].anim, data.who[th.toys[id].scene.who].frames), dx: data.who[th.toys[id].scene.who].portraitx, dy: data.who[th.toys[id].scene.who].portraity, camera: false, fliph: data.who[th.toys[id].scene.who].fliph, flipv: data.who[th.toys[id].scene.who].flipv});
 					}
 					AkihabaraGamebox.blitAll(AkihabaraGamebox.getBufferContext(), AkihabaraGamebox.getCanvas("dialogue-" + id), {dx: 0, dy: 0});
 				} else if (th.toys[id].scene.scroller) { // SCROLLER (i.e. credits)
@@ -772,7 +772,7 @@ var AkihabaraToys = {
 
 				obj[(data.bliton == null ? "blit":data.bliton)] = function () {
 					if ((this.timer >= 0) && (!this.blinkspeed || (Math.floor(this.timer / this.blinkspeed) % 2))) {
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.timer, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.fliph, flipv: this.flipv, alpha: this.alpha});
 					}
 				};
 
@@ -862,7 +862,7 @@ var AkihabaraToys = {
 
 				obj[(data.bliton == null ? "blit":data.bliton)] = function () {
 					if (!this.blinkspeed || (Math.floor(this.cnt / this.blinkspeed) % 2)) {
-						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+						AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 					}
 				};
 

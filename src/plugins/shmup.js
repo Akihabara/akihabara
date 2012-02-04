@@ -44,29 +44,29 @@ var AkihabaraShmup = {
 		Akihabara.copyModel(th, data);
 	},
 
-	getNextX: function (th) { return th.x + AkihabaraHelp.limit(th.accx, -th.maxacc, th.maxacc); },
-	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxacc, th.maxacc); },
+	getNextX: function (th) { return th.x + AkihabaraHelpers.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + AkihabaraHelpers.limit(th.accy, -th.maxacc, th.maxacc); },
 	controlKeys: function (th, keys) {
 
 		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
 			th.xpushing = AkihabaraShmup.PUSH_LEFT;
 			if (th.accx > th.responsive) { th.accx = th.responsive; }
-			th.accx = AkihabaraHelp.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
+			th.accx = AkihabaraHelpers.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
 			th.xpushing = AkihabaraShmup.PUSH_RIGHT;
 			if (th.accx < -th.responsive) { th.accx = -th.responsive; }
-			th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+			th.accx = AkihabaraHelpers.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else {
 			th.xpushing = AkihabaraShmup.PUSH_NONE;
 		}
 		if (AkihabaraGamebox.keyIsPressed(keys.up)) {
 			th.ypushing = AkihabaraShmup.PUSH_UP;
 			if (th.accy > th.responsive) { th.accy = th.responsive; }
-			th.accy = AkihabaraHelp.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
+			th.accy = AkihabaraHelpers.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.down)) {
 			th.ypushing = AkihabaraShmup.PUSH_DOWN;
 			if (th.accy < -th.responsive) { th.accy = -th.responsive; }
-			th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+			th.accy = AkihabaraHelpers.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
 		} else {
 			th.ypushing = AkihabaraShmup.PUSH_NONE;
 		}
@@ -78,8 +78,8 @@ var AkihabaraShmup = {
 	},
 
 	handleAccellerations: function (th) {
-		if (!th.xpushing) { th.accx = AkihabaraHelp.goToZero(th.accx); }
-		if (!th.ypushing) { th.accy = AkihabaraHelp.goToZero(th.accy); }
+		if (!th.xpushing) { th.accx = AkihabaraHelpers.goToZero(th.accx); }
+		if (!th.ypushing) { th.accy = AkihabaraHelpers.goToZero(th.accy); }
 	},
 
 	keepInBounds: function (th) {
@@ -101,7 +101,7 @@ var AkihabaraShmup = {
 
 	setFrame: function (th) {
 		if (th.hittimer) { th.hittimer--; }
-		th.frame = AkihabaraHelp.decideFrame(th.counter, (th.hittimer ? th.frames.hit : th.frames.still));
+		th.frame = AkihabaraHelpers.decideFrame(th.counter, (th.hittimer ? th.frames.hit : th.frames.still));
 	},
 
 	fireBullet: function (gr, id, data) {
@@ -150,7 +150,7 @@ var AkihabaraShmup = {
 		};
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
-			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 		};
 
 		return obj;
@@ -325,7 +325,7 @@ var AkihabaraShmup = {
 		};
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
-			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
+			AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames[this.animationset]), dx: this.x, dy: this.y, camera: this.camera, fliph: this.side, flipv: this.flipv});
 			if (this.dohandler && (this.dohandler.render != null)) { this.dohandler.render(this); }
 		};
 
@@ -399,7 +399,7 @@ var AkihabaraShmup = {
 		};
 
 		var obj = AkihabaraGamebox.addObject(
-			Akihabara.extendsFrom(AkihabaraHelp.cloneObject(data), scroller_model)
+			Akihabara.extendsFrom(AkihabaraHelpers.cloneObject(data), scroller_model)
 		);
 
 		obj[(data.logicon == null ? "first" : data.logicon)] = function () {

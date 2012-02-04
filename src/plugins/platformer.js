@@ -42,7 +42,7 @@ var AkihabaraPlatformer = {
 
 	getNextX: function (th) { return th.x + th.accx; },
 
-	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxaccy, th.maxaccy); },
+	getNextY: function (th) { return th.y + AkihabaraHelpers.limit(th.accy, -th.maxaccy, th.maxaccy); },
 
 	applyGravity: function (th) {
 		th.x = AkihabaraPlatformer.getNextX(th);
@@ -52,29 +52,29 @@ var AkihabaraPlatformer = {
 	horizontalKeys: function (th, keys) {
 		if (AkihabaraGamebox.keyIsPressed(keys.left)) {
 			th.pushing = AkihabaraPlatformer.PUSH_LEFT;
-			th.accx = AkihabaraHelp.limit(th.accx - 1, -th.maxaccx, th.maxaccx);
+			th.accx = AkihabaraHelpers.limit(th.accx - 1, -th.maxaccx, th.maxaccx);
 		} else if (AkihabaraGamebox.keyIsPressed(keys.right)) {
 			th.pushing = AkihabaraPlatformer.PUSH_RIGHT;
-			th.accx = AkihabaraHelp.limit(th.accx + 1, -th.maxaccx, th.maxaccx);
+			th.accx = AkihabaraHelpers.limit(th.accx + 1, -th.maxaccx, th.maxaccx);
 		} else {
 			th.pushing = AkihabaraPlatformer.PUSH_NONE;
 		}
 	},
 
 	verticalTileCollision: function (th, map, tilemap) {
-		var bottom = AkihabaraHelp.getTileInMap(th.x + (th.w / 2), th.y + th.h, map, 0, tilemap);
-		var top = AkihabaraHelp.getTileInMap(th.x + (th.w / 2), th.y, map, 0, tilemap);
+		var bottom = AkihabaraHelpers.getTileInMap(th.x + (th.w / 2), th.y + th.h, map, 0, tilemap);
+		var top = AkihabaraHelpers.getTileInMap(th.x + (th.w / 2), th.y, map, 0, tilemap);
 		th.touchedfloor = false;
 		th.touchedceil = false;
 
 		if (map.tileIsSolidCeil(th, top)) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y, 1);
+			th.y = AkihabaraHelpers.yPixelToTile(map, th.y, 1);
 			th.touchedceil = true;
 		}
 		if (map.tileIsSolidFloor(th, bottom)) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.h) - th.h;
+			th.y = AkihabaraHelpers.yPixelToTile(map, th.y + th.h) - th.h;
 			th.touchedfloor = true;
 		}
 	},
@@ -88,17 +88,17 @@ var AkihabaraPlatformer = {
 		th.touchedrightwall = false;
 
 		while (t < th.h) {
-			left = AkihabaraHelp.getTileInMap(th.x, th.y + t, map, 0, tilemap);
-			right = AkihabaraHelp.getTileInMap(th.x + th.w - 1, th.y + t, map, 0, tilemap);
+			left = AkihabaraHelpers.getTileInMap(th.x, th.y + t, map, 0, tilemap);
+			right = AkihabaraHelpers.getTileInMap(th.x + th.w - 1, th.y + t, map, 0, tilemap);
 
 			if ((th.accx < 0) && map.tileIsSolidFloor(th, left)) {
 				th.accx = 0;
-				th.x = AkihabaraHelp.xPixelToTile(map, th.x - 1, 1);
+				th.x = AkihabaraHelpers.xPixelToTile(map, th.x - 1, 1);
 				th.touchedleftwall = true;
 			}
 			if ((th.accx > 0) && map.tileIsSolidFloor(th, right)) {
 				th.accx = 0;
-				th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.w) - th.w;
+				th.x = AkihabaraHelpers.xPixelToTile(map, th.x + th.w) - th.w;
 				th.touchedrightwall = true;
 			}
 			t += AkihabaraGamebox.getTiles(map.tileset).tileh / (precision ? precision : 1);
@@ -138,7 +138,7 @@ var AkihabaraPlatformer = {
 		if (!th.touchedfloor) { th.accy++; }
 		// Attrito
 		if (th.pushing === AkihabaraPlatformer.PUSH_NONE) {
-			if (th.accx) { th.accx = AkihabaraHelp.goToZero(th.accx); }
+			if (th.accx) { th.accx = AkihabaraHelpers.goToZero(th.accx); }
 		}
 	},
 
@@ -149,14 +149,14 @@ var AkihabaraPlatformer = {
 	setFrame: function (th) {
 		if (th.touchedfloor) {
 			if (th.pushing !== AkihabaraPlatformer.PUSH_NONE) {
-				th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.walking);
+				th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.walking);
 			} else {
-				th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.still);
+				th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.still);
 			}
 		} else if (th.accy > 0) {
-			th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.falling);
+			th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.falling);
 		} else {
-			th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames.jumping);
+			th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames.jumping);
 		}
 	},
 
@@ -191,9 +191,9 @@ var AkihabaraPlatformer = {
 			if (th.accx && th.touchedfloor) {
 				var til;
 				if (th.accx > 0) {
-					til = AkihabaraHelp.getTileInMap(AkihabaraPlatformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
+					til = AkihabaraHelpers.getTileInMap(AkihabaraPlatformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
 				} else {
-					til = AkihabaraHelp.getTileInMap(AkihabaraPlatformer.getNextX(th), th.y + th.h, map, 0, tilemap);
+					til = AkihabaraHelpers.getTileInMap(AkihabaraPlatformer.getNextX(th), th.y + th.h, map, 0, tilemap);
 				}
 				if (!map.tileIsSolidFloor(th, til)) {
 					th.side = !th.side;

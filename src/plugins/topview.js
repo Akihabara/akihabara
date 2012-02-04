@@ -186,7 +186,7 @@ var AkihabaraTopview = {
 			if (th.staticspeed) {
 				th.accx = -th.staticspeed;
 			} else {
-				th.accx = AkihabaraHelp.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
+				th.accx = AkihabaraHelpers.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
 			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else if (AkihabaraInput.keyIsPressed(keys.right) || keys.pressright) {
@@ -196,7 +196,7 @@ var AkihabaraTopview = {
 			if (th.staticspeed) {
 				th.accx = th.staticspeed;
 			} else {
-				th.accx = AkihabaraHelp.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+				th.accx = AkihabaraHelpers.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
 			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else {
@@ -210,7 +210,7 @@ var AkihabaraTopview = {
 			if (th.staticspeed) {
 				th.accy = -th.staticspeed;
 			} else {
-				th.accy = AkihabaraHelp.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
+				th.accy = AkihabaraHelpers.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
 			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else if (!cancely && (AkihabaraInput.keyIsPressed(keys.down) || keys.pressdown)) {
@@ -220,7 +220,7 @@ var AkihabaraTopview = {
 			if (th.staticspeed) {
 				th.accy = th.staticspeed;
 			} else {
-				th.accy = AkihabaraHelp.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+				th.accy = AkihabaraHelpers.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
 			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else {
@@ -246,7 +246,7 @@ var AkihabaraTopview = {
 	* <li> maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
-	getNextX: function (th) { return th.x + AkihabaraHelp.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextX: function (th) { return th.x + AkihabaraHelpers.limit(th.accx, -th.maxacc, th.maxacc); },
 
 	/**
 	* Gets the next Y position the object is going to move to.
@@ -257,7 +257,7 @@ var AkihabaraTopview = {
 	* <li> maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
-	getNextY: function (th) { return th.y + AkihabaraHelp.limit(th.accy, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + AkihabaraHelpers.limit(th.accy, -th.maxacc, th.maxacc); },
 
 	/**
 	* Gets the next Z position the object is going to move to.
@@ -268,7 +268,7 @@ var AkihabaraTopview = {
 	* <li> maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
-	getNextZ: function (th) { return th.z + AkihabaraHelp.limit(th.accz, -th.maxacc, th.maxacc); },
+	getNextZ: function (th) { return th.z + AkihabaraHelpers.limit(th.accz, -th.maxacc, th.maxacc); },
 
 	/**
 	* Sets the objects current location to its next location using the getNextX and getNextY methods.
@@ -310,8 +310,8 @@ var AkihabaraTopview = {
 	* </ul>
 	*/
 	handleAccellerations: function (th) {
-		if (!th.xpushing) { th.accx = AkihabaraHelp.goToZero(th.accx); }
-		if (!th.ypushing) { th.accy = AkihabaraHelp.goToZero(th.accy); }
+		if (!th.xpushing) { th.accx = AkihabaraHelpers.goToZero(th.accx); }
+		if (!th.ypushing) { th.accy = AkihabaraHelpers.goToZero(th.accy); }
 
 	},
 
@@ -358,7 +358,7 @@ var AkihabaraTopview = {
 		if (th.flipside) {
 			th.fliph = (th.facing === AkihabaraTopview.FACE_RIGHT);
 		}
-		th.frame = AkihabaraHelp.decideFrame(th.counter, th.frames[pref + AkihabaraTopview.FACES[th.facing]]);
+		th.frame = AkihabaraHelpers.decideFrame(th.counter, th.frames[pref + AkihabaraTopview.FACES[th.facing]]);
 	},
 
 	/**
@@ -385,8 +385,8 @@ var AkihabaraTopview = {
 		do {
 			t += approximation;
 			if (t > th.colw - tolerance - 1) { t = th.colw - tolerance - 1; }
-			var bottom = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh - 1, map, defaulttile, tilemap);
-			var top = AkihabaraHelp.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
+			var bottom = AkihabaraHelpers.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh - 1, map, defaulttile, tilemap);
+			var top = AkihabaraHelpers.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
 			if (map.tileIsSolid(th, top)) { th.touchedup = true; }
 			if (map.tileIsSolid(th, bottom)) { th.toucheddown = true; }
 		} while (t !== th.colw - tolerance - 1);
@@ -395,27 +395,27 @@ var AkihabaraTopview = {
 		do {
 			t += approximation;
 			if (t > th.colh - tolerance - 1) { t = th.colh - tolerance - 1; }
-			var left = AkihabaraHelp.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
-			var right = AkihabaraHelp.getTileInMap(th.x + th.colx + th.colw - 1, th.y + th.coly + t, map, defaulttile, tilemap);
+			var left = AkihabaraHelpers.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
+			var right = AkihabaraHelpers.getTileInMap(th.x + th.colx + th.colw - 1, th.y + th.coly + t, map, defaulttile, tilemap);
 			if (map.tileIsSolid(th, left)) { th.touchedleft = true; }
 			if (map.tileIsSolid(th, right)) { th.touchedright = true; }
 		} while (t !== th.colh - tolerance - 1);
 
 		if (th.touchedup) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly, 1) - th.coly;
+			th.y = AkihabaraHelpers.yPixelToTile(map, th.y + th.coly, 1) - th.coly;
 		}
 		if (th.toucheddown) {
 			th.accy = 0;
-			th.y = AkihabaraHelp.yPixelToTile(map, th.y + th.coly + th.colh - 1) - th.coly - th.colh;
+			th.y = AkihabaraHelpers.yPixelToTile(map, th.y + th.coly + th.colh - 1) - th.coly - th.colh;
 		}
 		if (th.touchedleft) {
 			th.accx = 0;
-			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx, 1) - th.colx;
+			th.x = AkihabaraHelpers.xPixelToTile(map, th.x + th.colx, 1) - th.colx;
 		}
 		if (th.touchedright) {
 			th.accx = 0;
-			th.x = AkihabaraHelp.xPixelToTile(map, th.x + th.colx + th.colw - 1) - th.colx - th.colw;
+			th.x = AkihabaraHelpers.xPixelToTile(map, th.x + th.colx + th.colw - 1) - th.colx - th.colw;
 		}
 	},
 
@@ -521,8 +521,8 @@ var AkihabaraTopview = {
 	// Enemy methods
 	wander: function (th, map, tilemap, defaulttile, data) {
 		if ((!th.wandercounter) || (th.toucheddown || th.touchedup || th.touchedleft || th.touchedright)) {
-			th.wandercounter = AkihabaraHelp.random(data.minstep, data.steprange);
-			th.wanderdirection = AkihabaraHelp.random(0, 4);
+			th.wandercounter = AkihabaraHelpers.random(data.minstep, data.steprange);
+			th.wanderdirection = AkihabaraHelpers.random(0, 4);
 		} else {
 			th.wandercounter--;
 		}
@@ -644,7 +644,7 @@ var AkihabaraTopview = {
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
 			if (!AkihabaraGamebox.objectIsTrash(this)) {
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 			}
 		};
 
@@ -737,7 +737,7 @@ var AkihabaraTopview = {
 
 		obj[(data.bliton == null ? "blit" : data.bliton)] = function () {
 			if (!AkihabaraGamebox.objectIsTrash(this)) {
-				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelp.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h - this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
+				AkihabaraGamebox.blitTile(AkihabaraGamebox.getBufferContext(), {tileset: this.tileset, tile: AkihabaraHelpers.decideFrame(this.cnt, this.frames), dx: this.x, dy: this.y + this.z + this.opencounter, h: this.h - this.opencounter, camera: this.camera, fliph: this.fliph, flipv: this.flipv});
 			}
 		};
 

@@ -21,16 +21,16 @@ var AkihabaraDebug = {
 	* @returns A string containing a timestamp formatted "mm: ss: cs", representing the length of time it would take to render that many frames.
 	* @example
 	* // Assuming 25 frames per second, Akihabara's default.
-	* timestamp = AkihabaraHelp.framestotime(25);
+	* timestamp = AkihabaraHelpers.framestotime(25);
 	* timestamp; // => '00:01:00';
-	* timestamp = AkihabaraHelp.framestotime(25 * 60);
+	* timestamp = AkihabaraHelpers.framestotime(25 * 60);
 	* timestamp; // => '01:00:00';
 	*/
 	framesToTime: function (frames) {
 		var csec = Math.ceil(frames / AkihabaraGamebox.getFps() * 100);
-		return AkihabaraHelp.prepad((Math.floor(csec / 6000) % 60), 2, "0") +
-			":" + AkihabaraHelp.prepad((Math.floor(csec / 100) % 60), 2, "0") +
-			":" + AkihabaraHelp.prepad(csec % 100, 2, "0")
+		return AkihabaraHelpers.prepad((Math.floor(csec / 6000) % 60), 2, "0") +
+			":" + AkihabaraHelpers.prepad((Math.floor(csec / 100) % 60), 2, "0") +
+			":" + AkihabaraHelpers.prepad(csec % 100, 2, "0")
 		;
 	},
 
@@ -150,7 +150,7 @@ var AkihabaraDebug = {
 	* @returns The value of the URL parameter, as a string.
 	* @example
 	* // If the URL is http://example.com/game.html?lives=3
-	* player.lives = AkihabaraHelp.getUrlValueFor("lives");
+	* player.lives = AkihabaraHelpers.getUrlValueFor("lives");
 	* player.lives; // => "3"
 	*/
 	getURLValueFor: function (name) {

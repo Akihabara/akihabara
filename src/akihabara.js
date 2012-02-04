@@ -41,7 +41,7 @@ var Akihabara = {
 	* @example
 	* dst = {a: 1, b: 2, c: "three"};
 	* src = {c: "three", d: "four"};
-	* merged = AkihabaraHelp.mergeWithModel(dst, src);
+	* merged = AkihabaraHelpers.mergeWithModel(dst, src);
 	* merged; // => {a: 1, b: 2, c: "three", d: "four"}
 	*/
 	copyModel: function (data, model) {
@@ -59,7 +59,7 @@ var Akihabara = {
 	* @returns A new set of parameters based on the subset specified.
 	* @example
 	* data = {a: 1, b: 2, c: "three"};
-	* newdata = AkihabaraHelp.createModel(data, ["a", "c"]);
+	* newdata = AkihabaraHelpers.createModel(data, ["a", "c"]);
 	* newdata; // => {a: 1, c: "three"}
 	*/
 	createModel: function (obj, attrs) {
@@ -76,7 +76,7 @@ var Akihabara = {
 	* @returns A new object, equivalent to 'model'.
 	* @example
 	* data = {a: 1, b: 2, c: "three"};
-	* newdata = AkihabaraHelp.cloneObject(data);
+	* newdata = AkihabaraHelpers.cloneObject(data);
 	* newdata; // => {a: 1, b: 2, c: "three"}
 	*/
 	cloneObject: function (model) {
