@@ -62,8 +62,8 @@ var AkihabaraPlatformer = {
 	},
 
 	verticalTileCollision: function (th, map, tilemap) {
-		var bottom = AkihabaraHelpers.getTileInMap(th.x + (th.w / 2), th.y + th.h, map, 0, tilemap);
-		var top = AkihabaraHelpers.getTileInMap(th.x + (th.w / 2), th.y, map, 0, tilemap);
+		var bottom = AkihabaraGamebox.getTileInMap(th.x + (th.w / 2), th.y + th.h, map, 0, tilemap);
+		var top = AkihabaraGamebox.getTileInMap(th.x + (th.w / 2), th.y, map, 0, tilemap);
 		th.touchedfloor = false;
 		th.touchedceil = false;
 
@@ -88,8 +88,8 @@ var AkihabaraPlatformer = {
 		th.touchedrightwall = false;
 
 		while (t < th.h) {
-			left = AkihabaraHelpers.getTileInMap(th.x, th.y + t, map, 0, tilemap);
-			right = AkihabaraHelpers.getTileInMap(th.x + th.w - 1, th.y + t, map, 0, tilemap);
+			left = AkihabaraGamebox.getTileInMap(th.x, th.y + t, map, 0, tilemap);
+			right = AkihabaraGamebox.getTileInMap(th.x + th.w - 1, th.y + t, map, 0, tilemap);
 
 			if ((th.accx < 0) && map.tileIsSolidFloor(th, left)) {
 				th.accx = 0;
@@ -191,9 +191,9 @@ var AkihabaraPlatformer = {
 			if (th.accx && th.touchedfloor) {
 				var til;
 				if (th.accx > 0) {
-					til = AkihabaraHelpers.getTileInMap(AkihabaraPlatformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
+					til = AkihabaraGamebox.getTileInMap(AkihabaraPlatformer.getNextX(th) + th.w - 1 + th.accx, th.y + th.h, map, 0, tilemap);
 				} else {
-					til = AkihabaraHelpers.getTileInMap(AkihabaraPlatformer.getNextX(th), th.y + th.h, map, 0, tilemap);
+					til = AkihabaraGamebox.getTileInMap(AkihabaraPlatformer.getNextX(th), th.y + th.h, map, 0, tilemap);
 				}
 				if (!map.tileIsSolidFloor(th, til)) {
 					th.side = !th.side;
