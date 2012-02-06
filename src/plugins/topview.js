@@ -385,8 +385,8 @@ var AkihabaraTopview = {
 		do {
 			t += approximation;
 			if (t > th.colw - tolerance - 1) { t = th.colw - tolerance - 1; }
-			var bottom = AkihabaraGamebox.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh - 1, map, defaulttile, tilemap);
-			var top = AkihabaraGamebox.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
+			var bottom = AkihabaraTile.getTileInMap(th.x + th.colx + t, th.y + th.coly + th.colh - 1, map, defaulttile, tilemap);
+			var top = AkihabaraTile.getTileInMap(th.x + th.colx + t, th.y + th.coly, map, defaulttile, tilemap);
 			if (map.tileIsSolid(th, top)) { th.touchedup = true; }
 			if (map.tileIsSolid(th, bottom)) { th.toucheddown = true; }
 		} while (t !== th.colw - tolerance - 1);
@@ -395,8 +395,8 @@ var AkihabaraTopview = {
 		do {
 			t += approximation;
 			if (t > th.colh - tolerance - 1) { t = th.colh - tolerance - 1; }
-			var left = AkihabaraGamebox.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
-			var right = AkihabaraGamebox.getTileInMap(th.x + th.colx + th.colw - 1, th.y + th.coly + t, map, defaulttile, tilemap);
+			var left = AkihabaraTile.getTileInMap(th.x + th.colx, th.y + th.coly + t, map, defaulttile, tilemap);
+			var right = AkihabaraTile.getTileInMap(th.x + th.colx + th.colw - 1, th.y + th.coly + t, map, defaulttile, tilemap);
 			if (map.tileIsSolid(th, left)) { th.touchedleft = true; }
 			if (map.tileIsSolid(th, right)) { th.touchedright = true; }
 		} while (t !== th.colh - tolerance - 1);
