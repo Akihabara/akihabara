@@ -1,13 +1,11 @@
 {
     "predef": [
         "jasmine", "it", "describe", "expect", "ActiveXObject", "createRequest",
-        "gbox", "gamecycle", "audio", "topview", "shmup", "input", "platformer",
-        "trigo", "help", "toys",
 
         "Akihabara", "AkihabaraAudio", "AkihabaraInput", "AkihabaraDebug", "AkihabaraDevices",
         "AkihabaraGamecycle", "AkihabaraToys", "AkihabaraTrigo", "AkihabaraIphofretboard",
-        "AkihabaraIphopad", "AkihabaraHelp", "AkihabaraGamebox", "AkihabaraTools",
-        "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
+        "AkihabaraIphopad", "AkihabaraHelpers", "AkihabaraGamebox", "AkihabaraTools",
+        "AkihabaraTile", "AkihabaraTopview", "AkihabaraShmup", "AkihabaraPlatformer"
     ],
 
     // Browser, Frameworks and Globals

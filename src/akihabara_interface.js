@@ -7,10 +7,11 @@
 var AkihabaraInterface = {
 	Audio: AkihabaraAudio,
 	Gamecycle: AkihabaraGamecycle,
-	Help: AkihabaraHelpers,
+	Helpers: AkihabaraHelpers,
 	Input: AkihabaraInput,
 	Tools: AkihabaraTools,
 	Toys: AkihabaraToys,
+	Tile: AkihabaraTile,
 
 	plugins: {
 		"Topview": AkihabaraTopview,
