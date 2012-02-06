@@ -69,12 +69,12 @@ var AkihabaraPlatformer = {
 
 		if (map.tileIsSolidCeil(th, top)) {
 			th.accy = 0;
-			th.y = AkihabaraHelpers.yPixelToTile(map, th.y, 1);
+			th.y = AkihabaraTile.yPixelToTile(map, th.y, 1);
 			th.touchedceil = true;
 		}
 		if (map.tileIsSolidFloor(th, bottom)) {
 			th.accy = 0;
-			th.y = AkihabaraHelpers.yPixelToTile(map, th.y + th.h) - th.h;
+			th.y = AkihabaraTile.yPixelToTile(map, th.y + th.h) - th.h;
 			th.touchedfloor = true;
 		}
 	},
@@ -93,12 +93,12 @@ var AkihabaraPlatformer = {
 
 			if ((th.accx < 0) && map.tileIsSolidFloor(th, left)) {
 				th.accx = 0;
-				th.x = AkihabaraHelpers.xPixelToTile(map, th.x - 1, 1);
+				th.x = AkihabaraTile.xPixelToTile(map, th.x - 1, 1);
 				th.touchedleftwall = true;
 			}
 			if ((th.accx > 0) && map.tileIsSolidFloor(th, right)) {
 				th.accx = 0;
-				th.x = AkihabaraHelpers.xPixelToTile(map, th.x + th.w) - th.w;
+				th.x = AkihabaraTile.xPixelToTile(map, th.x + th.w) - th.w;
 				th.touchedrightwall = true;
 			}
 			t += AkihabaraGamebox.getTiles(map.tileset).tileh / (precision ? precision : 1);

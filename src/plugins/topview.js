@@ -403,19 +403,19 @@ var AkihabaraTopview = {
 
 		if (th.touchedup) {
 			th.accy = 0;
-			th.y = AkihabaraHelpers.yPixelToTile(map, th.y + th.coly, 1) - th.coly;
+			th.y = AkihabaraTile.yPixelToTile(map, th.y + th.coly, 1) - th.coly;
 		}
 		if (th.toucheddown) {
 			th.accy = 0;
-			th.y = AkihabaraHelpers.yPixelToTile(map, th.y + th.coly + th.colh - 1) - th.coly - th.colh;
+			th.y = AkihabaraTile.yPixelToTile(map, th.y + th.coly + th.colh - 1) - th.coly - th.colh;
 		}
 		if (th.touchedleft) {
 			th.accx = 0;
-			th.x = AkihabaraHelpers.xPixelToTile(map, th.x + th.colx, 1) - th.colx;
+			th.x = AkihabaraTile.xPixelToTile(map, th.x + th.colx, 1) - th.colx;
 		}
 		if (th.touchedright) {
 			th.accx = 0;
-			th.x = AkihabaraHelpers.xPixelToTile(map, th.x + th.colx + th.colw - 1) - th.colx - th.colw;
+			th.x = AkihabaraTile.xPixelToTile(map, th.x + th.colx + th.colw - 1) - th.colx - th.colw;
 		}
 	},
 
