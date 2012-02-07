@@ -43,7 +43,7 @@ var AkihabaraTrigo = {
 	* @returns The angle between points p1 and p2, plus transl.
 	*/
 	getAngle: function (p1, p2, transl) {
-		return this.addAngle(Math.atan2(p2.y - p1.y, p2.x - p1.x), (transl ? transl : 0));
+		return AkihabaraTrigo.addAngle(Math.atan2(p2.y - p1.y, p2.x - p1.x), (transl ? transl : 0));
 	},
 
 	/**
