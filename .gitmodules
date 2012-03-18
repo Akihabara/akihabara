@@ -1,3 +1,3 @@
 [submodule "dependencies/jsdoc"]
 	path = dependencies/jsdoc
-	url = git://github.com/micmath/jsdoc.git
+	url = git://github.com/jsdoc3/jsdoc.git
