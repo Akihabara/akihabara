@@ -68,13 +68,14 @@ var AkihabaraTopview = {
 	* <li> x{Integer}: x position of the object. (defaults to 0) </li>
 	* <li> y{Integer}: y position of the object. (defaults to 0) </li>
 	* <li> z{Integer}: z index of the object. (defaults to 0) </li>
-	* <li> accx{Integer}: The starting x velociyt of the object. (defaults to 0) </li>
-	* <li> accy{Integer}: The starting y velocity of the object. (defaults to 0) </li>
-	* <li> accz{Integer}: The starting z velocity of the object. (defaults to 0) </li>
+	* <li> velx{Integer}: The starting x velociyt of the object. (defaults to 0) </li>
+	* <li> vely{Integer}: The starting y velocity of the object. (defaults to 0) </li>
+	* <li> velz{Integer}: The starting z velocity of the object. (defaults to 0) </li>
+	* <li> acc{Integer}: The default acceleration. (defaults to 1) </li>
 	* <li> frames{Object}: This is stores the animation frames for the objects in a map style structure. An empty map means the default image will display with no animation frames. (defaults to an empty map) </li>
 	* <li> shadow: (defaults to null) </li> //incomplete
-	* <li> maxacc{Integer}: (defaults to )4 </li>
-	* <li> controlmaxacc{Integer}: (defaults to 4) </li>
+	* <li> maxvel{Integer}: (defaults to )4 </li>
+	* <li> controlmaxvel{Integer}: (defaults to 4) </li>
 	* <li> responsive: (defaults to 0) </li>
 	* <li> weapon: (defaults to 0) </li>
 	* <li> camera{Boolean}: (defaults to true) </li>
@@ -104,13 +105,14 @@ var AkihabaraTopview = {
 				x: 0,
 				y: 0,
 				z: 0,
-				accx: 0,
-				accy: 0,
-				accz: 0,
+				velx: 0,
+				vely: 0,
+				velz: 0,
+				acc: 1,
 				frames: {},
 				shadow: null,
-				maxacc: 4,
-				controlmaxacc: 4,
+				maxvel: 4,
+				controlmaxvel: 4,
 				responsive: 0, // Responsiveness
 				weapon: 0, // Weapon
 				camera: true,
@@ -160,14 +162,14 @@ var AkihabaraTopview = {
 	* This sets and runs the control keys for the game.
 	* @param {Object} th This is the object that is being controlled by the keys (assumed to be the player)
 	* <ul>
-	* <li> accx: the object's currect acceleration in the x direction </li>
-	* <li> accy: the object's currect acceleration in the y direction </li>
+	* <li> velx: the object's currect acceleration in the x direction </li>
+	* <li> vely: the object's currect acceleration in the y direction </li>
 	* <li> responsive: minimum movement speed </li>
 	* <li> staticspeed: turns off acceleration </li>
 	* <li> nodiagonals: boolean determining if the object can move along both axis at once. </li>
 	* <li> xpushing: a boolean that notes whether the object is pushing against something in the x direction. </li>
 	* <li> ypushing: a boolean that notes whether the object is pushing against something in the y direction. </li>
-	* <li> controlmaxacc: max acceleration for the object along an axis </li>
+	* <li> controlmaxvel: max acceleration for the object along an axis </li>
 	* <li> noreset: checks for the object being allowed to reset its pushing status (?) </li>
 	* </ul>
 	* @param {Object} keys These are the control keys being passed in for left, right, up, and down.
@@ -182,21 +184,21 @@ var AkihabaraTopview = {
 		if (AkihabaraInput.keyIsPressed(keys.left) || keys.pressleft) {
 			th.xpushing = AkihabaraTopview.PUSH_LEFT;
 			th.facing = AkihabaraTopview.FACE_LEFT;
-			if (th.accx > th.responsive) { th.accx = th.responsive; }
+			if (th.velx > th.responsive) { th.velx = th.responsive; }
 			if (th.staticspeed) {
-				th.accx = -th.staticspeed;
+				th.velx = -th.staticspeed;
 			} else {
-				th.accx = AkihabaraHelpers.limit(th.accx - 1, -th.controlmaxacc, th.controlmaxacc);
+				th.velx = AkihabaraHelpers.limit(th.velx - th.acc, -th.controlmaxvel, th.controlmaxvel);
 			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else if (AkihabaraInput.keyIsPressed(keys.right) || keys.pressright) {
 			th.xpushing = AkihabaraTopview.PUSH_RIGHT;
 			th.facing = AkihabaraTopview.FACE_RIGHT;
-			if (th.accx < -th.responsive) { th.accx = -th.responsive; }
+			if (th.velx < -th.responsive) { th.velx = -th.responsive; }
 			if (th.staticspeed) {
-				th.accx = th.staticspeed;
+				th.velx = th.staticspeed;
 			} else {
-				th.accx = AkihabaraHelpers.limit(th.accx + 1, -th.controlmaxacc, th.controlmaxacc);
+				th.velx = AkihabaraHelpers.limit(th.velx + th.acc, -th.controlmaxvel, th.controlmaxvel);
 			}
 			if (th.nodiagonals) { cancely = true; idley = true; }
 		} else {
@@ -206,21 +208,21 @@ var AkihabaraTopview = {
 		if (!cancely && (AkihabaraInput.keyIsPressed(keys.up) || keys.pressup)) {
 			th.ypushing = AkihabaraTopview.PUSH_UP;
 			th.facing = AkihabaraTopview.FACE_UP;
-			if (th.accy > th.responsive) { th.accy = th.responsive; }
+			if (th.vely > th.responsive) { th.vely = th.responsive; }
 			if (th.staticspeed) {
-				th.accy = -th.staticspeed;
+				th.vely = -th.staticspeed;
 			} else {
-				th.accy = AkihabaraHelpers.limit(th.accy - 1, -th.controlmaxacc, th.controlmaxacc);
+				th.vely = AkihabaraHelpers.limit(th.vely - th.acc, -th.controlmaxvel, th.controlmaxvel);
 			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else if (!cancely && (AkihabaraInput.keyIsPressed(keys.down) || keys.pressdown)) {
 			th.ypushing = AkihabaraTopview.PUSH_DOWN;
 			th.facing = AkihabaraTopview.FACE_DOWN;
-			if (th.accy < -th.responsive) { th.accy = -th.responsive; }
+			if (th.vely < -th.responsive) { th.vely = -th.responsive; }
 			if (th.staticspeed) {
-				th.accy = th.staticspeed;
+				th.vely = th.staticspeed;
 			} else {
-				th.accy = AkihabaraHelpers.limit(th.accy + 1, -th.controlmaxacc, th.controlmaxacc);
+				th.vely = AkihabaraHelpers.limit(th.vely + th.acc, -th.controlmaxvel, th.controlmaxvel);
 			}
 			if (th.nodiagonals) { cancelx = true; idlex = true; }
 		} else {
@@ -228,11 +230,11 @@ var AkihabaraTopview = {
 		}
 
 		if (idlex) {
-			if (cancelx) { th.accx = 0; }
+			if (cancelx) { th.velx = 0; }
 			if (cancelx || !th.noreset) { th.xpushing = AkihabaraTopview.PUSH_NONE; }
 		}
 		if (idley) {
-			if (cancely) { th.accy = 0; }
+			if (cancely) { th.vely = 0; }
 			if (cancely || !th.noreset) { th.ypushing = AkihabaraTopview.PUSH_NONE; }
 		}
 	},
@@ -242,33 +244,33 @@ var AkihabaraTopview = {
 	* @param {Object} th The object being checked.
 	* <ul>
 	* <li> x: the current x position of the object </li>
-	* <li> accx: the object's currect acceleration in the x direction </li>
-	* <li> maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead) </li>
+	* <li> velx: the object's currect acceleration in the x direction </li>
+	* <li> maxvel: the max velocity the object can have (if velx is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
-	getNextX: function (th) { return th.x + AkihabaraHelpers.limit(th.accx, -th.maxacc, th.maxacc); },
+	getNextX: function (th) { return th.x + AkihabaraHelpers.limit(th.velx, -th.maxvel, th.maxvel); },
 
 	/**
 	* Gets the next Y position the object is going to move to.
 	* @param {Object} th The object being checked.
 	* <ul>
 	* <li> y: the current y position of the object </li>
-	* <li> accy: the object's currect acceleration in the y direction </li>
-	* <li> maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead) </li>
+	* <li> vely: the object's currect acceleration in the y direction </li>
+	* <li> maxvel: the max velocity the object can have (if vely is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
-	getNextY: function (th) { return th.y + AkihabaraHelpers.limit(th.accy, -th.maxacc, th.maxacc); },
+	getNextY: function (th) { return th.y + AkihabaraHelpers.limit(th.vely, -th.maxvel, th.maxvel); },
 
 	/**
 	* Gets the next Z position the object is going to move to.
 	* @param {Object} th The object being checked.
 	* <ul>
 	* <li> z: the current z position of the object </li>
-	* <li> accz: the object's currect acceleration in the z direction </li>
-	* <li> maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) </li>
+	* <li> velz: the object's currect acceleration in the z direction </li>
+	* <li> maxvel: the max velocity the object can have (if velz is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
-	getNextZ: function (th) { return th.z + AkihabaraHelpers.limit(th.accz, -th.maxacc, th.maxacc); },
+	getNextZ: function (th) { return th.z + AkihabaraHelpers.limit(th.velz, -th.maxvel, th.maxvel); },
 
 	/**
 	* Sets the objects current location to its next location using the getNextX and getNextY methods.
@@ -276,9 +278,9 @@ var AkihabaraTopview = {
 	* <ul>
 	* <li> x: the current x position of the object </li>
 	* <li> y: the current y position of the object </li>
-	* <li> accx: the object's currect acceleration in the x direction </li>
-	* <li> accy: the object's currect acceleration in the y direction </li>
-	* <li> maxacc: the max accleration the object can have (if either acceleration is greater than this then this value is used instead for that acceleration) </li>
+	* <li> velx: the object's currect acceleration in the x direction </li>
+	* <li> vely: the object's currect acceleration in the y direction </li>
+	* <li> maxvel: the max velocity the object can have (if either acceleration is greater than this then this value is used instead for that acceleration) </li>
 	* </ul>
 	*/
 	applyForces: function (th) {
@@ -291,8 +293,8 @@ var AkihabaraTopview = {
 	* @param {Object} th The object being modified.
 	* <ul>
 	* <li> z: the current z position of the object </li>
-	* <li> accz: the object's currect acceleration in the z direction </li>
-	* <li> maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead) </li>
+	* <li> velz: the object's currect acceleration in the z direction </li>
+	* <li> maxvel: the max velocity the object can have (if velz is greater than this then this value is used instead) </li>
 	* </ul>
 	*/
 	applyGravity: function (th) {
@@ -305,13 +307,13 @@ var AkihabaraTopview = {
 	* <ul>
 	* <li> xpushing: a boolean that notes whether the object is pushing against something in the x direction. </li>
 	* <li> ypushing: a boolean that notes whether the object is pushing against something in the y direction. </li>
-	* <li> accx: the object's currect acceleration in the x direction </li>
-	* <li> accy: the object's currect acceleration in the y direction </li>
+	* <li> velx: the object's currect acceleration in the x direction </li>
+	* <li> vely: the object's currect acceleration in the y direction </li>
 	* </ul>
 	*/
-	handleAccellerations: function (th) {
-		if (!th.xpushing) { th.accx = AkihabaraHelpers.goToZero(th.accx); }
-		if (!th.ypushing) { th.accy = AkihabaraHelpers.goToZero(th.accy); }
+	handleVelocity: function (th) {
+		if (!th.xpushing) { th.velx = AkihabaraHelpers.goToZero(th.velx); }
+		if (!th.ypushing) { th.vely = AkihabaraHelpers.goToZero(th.vely); }
 
 	},
 
@@ -319,11 +321,11 @@ var AkihabaraTopview = {
 	* Increases the Z acceleration on the object by one.
 	* @param {Object} th The object being modified.
 	* <ul>
-	* <li> accz: the acceleration on the Z axis </li>
+	* <li> velz: the acceleration on the Z axis </li>
 	* </ul>
 	*/
 	handleGravity: function (th) {
-		th.accz++;
+		th.velz++;
 	},
 
 	/**
@@ -402,19 +404,19 @@ var AkihabaraTopview = {
 		} while (t !== th.colh - tolerance - 1);
 
 		if (th.touchedup) {
-			th.accy = 0;
+			th.vely = 0;
 			th.y = AkihabaraTile.yPixelToTile(map, th.y + th.coly, 1) - th.coly;
 		}
 		if (th.toucheddown) {
-			th.accy = 0;
+			th.vely = 0;
 			th.y = AkihabaraTile.yPixelToTile(map, th.y + th.coly + th.colh - 1) - th.coly - th.colh;
 		}
 		if (th.touchedleft) {
-			th.accx = 0;
+			th.velx = 0;
 			th.x = AkihabaraTile.xPixelToTile(map, th.x + th.colx, 1) - th.colx;
 		}
 		if (th.touchedright) {
-			th.accx = 0;
+			th.velx = 0;
 			th.x = AkihabaraTile.xPixelToTile(map, th.x + th.colx + th.colw - 1) - th.colx - th.colw;
 		}
 	},
@@ -443,20 +445,20 @@ var AkihabaraTopview = {
 				wl = AkihabaraGamebox._objects[data.group][i];
 				if (AkihabaraTopview.pixelcollides({x: th.x + th.colx, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedleft = true;
-					th.accx = 0;
+					th.velx = 0;
 					th.x = wl.x + wl.colx + wl.colw - th.colx;
 				} else if (AkihabaraTopview.pixelcollides({x: th.x + th.colx + th.colw, y: th.y + th.coly + th.colhh}, wl)) {
 					th.touchedright = true;
-					th.accx = 0;
+					th.velx = 0;
 					th.x = wl.x + wl.colx - th.colw - th.colx;
 				}
 				if (AkihabaraTopview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly + th.colh}, wl)) {
 					th.toucheddown = true;
-					th.accy = 0;
+					th.vely = 0;
 					th.y = wl.y + wl.coly - th.colh - th.coly;
 				} else if (AkihabaraTopview.pixelcollides({x: th.x + th.colx + th.colhw, y: th.y + th.coly}, wl)) {
 					th.touchedup = true;
-					th.accy = 0;
+					th.vely = 0;
 					th.y = wl.y + wl.coly + wl.colh - th.coly;
 				}
 			}
@@ -480,8 +482,8 @@ var AkihabaraTopview = {
 	floorCollision: function (th, data) {
 		th.touchedfloor = false;
 		if (th.z > 0) {
-			th.accz = (data == null ? 0 : -Math.floor(th.accz / data.bounce));
-			if (data && data.audiobounce && th.accz) { AkihabaraAudio.hitAudio(data.audiobounce); }
+			th.velz = (data == null ? 0 : -Math.floor(th.velz / data.bounce));
+			if (data && data.audiobounce && th.velz) { AkihabaraAudio.hitAudio(data.audiobounce); }
 			th.z = 0;
 			th.touchedfloor = true;
 		}
@@ -531,29 +533,29 @@ var AkihabaraTopview = {
 			th.xpushing = AkihabaraTopview.PUSH_LEFT;
 			th.ypushing = AkihabaraTopview.PUSH_NONE;
 			th.facing = AkihabaraTopview.FACE_LEFT;
-			th.accx = -data.speed;
-			th.accy = 0;
+			th.velx = -data.speed;
+			th.vely = 0;
 			break;
 		case AkihabaraTopview.FACE_RIGHT:
 			th.xpushing = AkihabaraTopview.PUSH_RIGHT;
 			th.ypushing = AkihabaraTopview.PUSH_NONE;
 			th.facing = AkihabaraTopview.FACE_RIGHT;
-			th.accx = data.speed;
-			th.accy = 0;
+			th.velx = data.speed;
+			th.vely = 0;
 			break;
 		case AkihabaraTopview.FACE_UP:
 			th.ypushing = AkihabaraTopview.PUSH_UP;
 			th.xpushing = AkihabaraTopview.PUSH_NONE;
 			th.facing = AkihabaraTopview.FACE_UP;
-			th.accy = -data.speed;
-			th.accx = 0;
+			th.vely = -data.speed;
+			th.velx = 0;
 			break;
 		case AkihabaraTopview.FACE_DOWN:
 			th.ypushing = AkihabaraTopview.PUSH_DOWN;
 			th.xpushing = AkihabaraTopview.PUSH_NONE;
 			th.facing = AkihabaraTopview.FACE_DOWN;
-			th.accy = data.speed;
-			th.accx = 0;
+			th.vely = data.speed;
+			th.velx = 0;
 			break;
 		}
 	},
@@ -575,9 +577,9 @@ var AkihabaraTopview = {
 				acc: 0,
 				angle: 0,
 				camera: data.from.camera,
-				accx: (data.accx == null ? Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)) : 0),
-				accy: (data.accy == null ? Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)) : 0),
-				accz: 0,
+				velx: (data.velx == null ? Math.floor(AkihabaraTrigo.translateX(0, data.angle, data.acc)) : 0),
+				vely: (data.vely == null ? Math.floor(AkihabaraTrigo.translateY(0, data.angle, data.acc)) : 0),
+				velz: 0,
 				x: (data.sidex === AkihabaraTopview.FACE_LEFT ? data.from.x - ts.tilehw: (data.sidex === AkihabaraTopview.FACE_RIGHT ? data.from.x + data.from.w - ts.tilehw: data.from.x + data.from.hw - ts.tilehw)) + (data.gapx ? data.gapx : 0),
 				y: (data.sidey === AkihabaraTopview.FACE_UP ? data.from.y - ts.tilehh: (data.sidey === AkihabaraTopview.FACE_DOWN ? data.from.y + data.from.h - ts.tilehh: data.from.y + data.from.hh - ts.tilehh)) + (data.gapy ? data.gapy : 0),
 				z: (data.from.z == null ? 0 : data.from.z),
